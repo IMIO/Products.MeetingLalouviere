@@ -22,7 +22,7 @@ msgstr "Tableau de bord"
 # portal_tabs
 #. Default: "College"
 msgid "Meeting config Lalouviere College"
-msgstr "CollÃ¨ge communal"
+msgstr "Collège communal"
 
 #. Default: "Council"
 msgid "Meeting config Lalouviere Council"
@@ -30,7 +30,7 @@ msgstr "Conseil communal"
 
 #. Default: "If you don't fill this field, meeting assembly will be used for this item."
 msgid "MeetingLalouviere_descr_assembly"
-msgstr "Laissez ce champ vide pour utiliser l'assemblÃ©e qui sera dÃ©finie sur la sÃ©ance"
+msgstr "Laissez ce champ vide pour utiliser l'assemblée qui sera définie sur la séance"
 
 #. Default: "Transcript of commission"
 msgid "MeetingLalouviere_descr_commissionTranscript"
@@ -59,11 +59,11 @@ msgstr " "
 # MeetingGroup
 #. Default: "Leave empty to use the signatures defined on the meeting"
 msgid "MeetingLalouviere_descr_signatures"
-msgstr "Si vous ne remplissez pas le champ, les signatures certifiÃ©es dÃ©finies sur la configuration de sÃ©ance seront utilisÃ©es.  Si vous utilisez ce champ, il est obligatoire de dÃ©finir 12 lignes (les 6 premiÃ¨res pour le collÃ¨ge et les 6 derniÃ¨res pour le conseil).  Si une signature ne doit pas Ãªtre surchagÃ©e, utilisez des tirets '-'."
+msgstr "Si vous ne remplissez pas le champ, les signatures certifiées définies sur la configuration de séance seront utilisées.  Si vous utilisez ce champ, il est obligatoire de définir 12 lignes (les 6 premières pour le collège et les 6 dernières pour le conseil).  Si une signature ne doit pas être surchagée, utilisez des tirets '-'."
 
 #. Default: "Transcript of commission"
 msgid "MeetingLalouviere_label_commissionTranscript"
-msgstr "ProcÃ¨s-verbal de la commission"
+msgstr "Procès-verbal de la commission"
 
 #. Default: "Commission"
 msgid "MeetingLalouviere_label_councilcategory"
@@ -71,7 +71,7 @@ msgstr "Commission"
 
 #. Default: "Deliberation"
 msgid "MeetingLalouviere_label_councildecision"
-msgstr "DÃ©libÃ©ration"
+msgstr "Délibération"
 
 #. Default: "Explanatory note"
 msgid "MeetingLalouviere_label_councildescription"
@@ -79,7 +79,7 @@ msgstr "Note explicative"
 
 #. Default: "Default value for the item motivation field"
 msgid "MeetingLalouviere_label_defaultMeetingItemMotivation"
-msgstr "Valeur par dÃ©faut du champ 'Motivation'"
+msgstr "Valeur par défaut du champ 'Motivation'"
 
 #. Default: "Follow-up"
 msgid "MeetingLalouviere_label_followUp"
@@ -91,11 +91,11 @@ msgstr "Interventions"
 
 #. Default: "Assembly which are specific to this meeting item"
 msgid "MeetingLalouviere_label_itemAssembly"
-msgstr "AssemblÃ©e spÃ©cifique liÃ©e Ã  ce point"
+msgstr "Assemblée spécifique liée à ce point"
 
 #. Default: "Premeeting observations"
 msgid "MeetingLalouviere_label_meetingcouncilobservations"
-msgstr "Avant-sÃ©ance"
+msgstr "Avant-séance"
 
 #. Default: "Motivation"
 msgid "MeetingLalouviere_label_motivation"
@@ -103,78 +103,78 @@ msgstr "Motivation"
 
 #. Default: "Needed follow-up"
 msgid "MeetingLalouviere_label_neededFollowUp"
-msgstr "Suivi Ã  apporter"
+msgstr "Suivi à apporter"
 
 #. Default: "Assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly"
-msgstr "AssemblÃ©e de la Commission"
+msgstr "Assemblée de la Commission"
 
 #. Default: "Assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_2"
-msgstr "AssemblÃ©e de la Commission"
+msgstr "Assemblée de la Commission"
 
 #. Default: "Premeeting 2 default assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_2_default"
-msgstr "AssemblÃ©e par dÃ©faut de la commission 2"
+msgstr "Assemblée par défaut de la commission 2"
 
 #. Default: "Assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_3"
-msgstr "AssemblÃ©e de la Commission"
+msgstr "Assemblée de la Commission"
 
 #. Default: "Premeeting 3 default assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_3_default"
-msgstr "AssemblÃ©e par dÃ©faut de la commission 3"
+msgstr "Assemblée par défaut de la commission 3"
 
 #. Default: "Assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_4"
-msgstr "AssemblÃ©e de la Commission"
+msgstr "Assemblée de la Commission"
 
 #. Default: "Premeeting 4 default assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_4_default"
-msgstr "AssemblÃ©e par dÃ©faut de la commission 4"
+msgstr "Assemblée par défaut de la commission 4"
 
 #. Default: "Assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_5"
-msgstr "AssemblÃ©e de la Commission"
+msgstr "Assemblée de la Commission"
 
 #. Default: "Premeeting 5 default assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_5_default"
-msgstr "AssemblÃ©e par dÃ©faut de la commission 5"
+msgstr "Assemblée par défaut de la commission 5"
 
 #. Default: "Assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_6"
-msgstr "AssemblÃ©e de la Commission"
+msgstr "Assemblée de la Commission"
 
 #. Default: "Premeeting 6 default assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_6_default"
-msgstr "AssemblÃ©e par dÃ©faut de la commission 6"
+msgstr "Assemblée par défaut de la commission 6"
 
 #. Default: "Assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_7"
-msgstr "AssemblÃ©e de la Commission"
+msgstr "Assemblée de la Commission"
 
 #. Default: "Premeeting 7 default assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_7_default"
-msgstr "AssemblÃ©e par dÃ©faut de la commission 7"
+msgstr "Assemblée par défaut de la commission 7"
 
 #. Default: "Premeeting 1 default assembly"
 msgid "MeetingLalouviere_label_preMeetingAssembly_default"
-msgstr "AssemblÃ©e par dÃ©faut de la commission 1"
+msgstr "Assemblée par défaut de la commission 1"
 
 #. Default: "Provided follow-up"
 msgid "MeetingLalouviere_label_providedFollowUp"
-msgstr "Suivi apportÃ©"
+msgstr "Suivi apporté"
 
 # MeetingItem
 #. Default: "Signatures delegation"
 msgid "MeetingLalouviere_label_signatures"
-msgstr "DÃ©lÃ©gation de signatures"
+msgstr "Délégation de signatures"
 
 # import what was done in MeetingCommunes
 # MeetingItem
 #. Default: "Decision"
 msgid "PloneMeeting_label_decision"
-msgstr "DÃ©cision"
+msgstr "Décision"
 
 #. Default: "Date"
 msgid "PloneMeeting_label_preMeetingDate"
@@ -182,7 +182,7 @@ msgstr "Date de la Commission"
 
 #. Default: "Default date for the pre-meeting"
 msgid "PloneMeeting_label_preMeetingDateDefault"
-msgstr "Date par dÃ©faut des Commissions"
+msgstr "Date par défaut des Commissions"
 
 #. Default: "Date"
 msgid "PloneMeeting_label_preMeetingDate_2"
@@ -242,7 +242,7 @@ msgstr "Observations pour les commissions"
 
 #. Default: "Linked items"
 msgid "PloneMeeting_label_predecessor"
-msgstr "Point(s) liÃ©(s)"
+msgstr "Point(s) lié(s)"
 
 # object_buttons
 #. Default: "Send to council"
@@ -251,7 +251,7 @@ msgstr "Envoyer au Conseil communal"
 
 #. Default: "Sent to council"
 msgid "Sent to council"
-msgstr "EnvoyÃ© au Conseil communal"
+msgstr "Envoyé au Conseil communal"
 
 #. Default: "PloneMeeting"
 msgid "app_name"
@@ -268,27 +268,27 @@ msgstr "correspondants financier"
 
 #. Default: "Please as this item comes from the college, you need to define the 'commission' for it before being able to propose it."
 msgid "check_category"
-msgstr "Attention, comme ce point provient du CollÃ¨ge communal, vous devez dÃ©finir la commission Ã  laquelle il doit passer en passant par l'onglet 'Modifier' avant de pouvoir le proposer au chef de bureau."
+msgstr "Attention, comme ce point provient du Collège communal, vous devez définir la commission à laquelle il doit passer en passant par l'onglet 'Modifier' avant de pouvoir le proposer au chef de bureau."
 
 #. Default: "Please as you defined an item initiator, check if the linked category should not be 'Points conseillers'. If not, just ignore this message, it will not be displayed anymore when the item will be validated."
 msgid "check_intitiator_and_category"
-msgstr "Attention, en gÃ©nÃ©ral si vous sÃ©lectionnez une personne 'A l'initative de ce point', la catÃ©gorie 'Points conseillers' doit Ãªtre Ã©galement sÃ©lectionnÃ©e.  VÃ©rifiez vos donnÃ©es, si elles sont justes, ignorez cet avertissement, il disparaÃ®tra une fois le point 'validÃ©'."
+msgstr "Attention, en général si vous sélectionnez une personne 'A l'initative de ce point', la catégorie 'Points conseillers' doit être également sélectionnée.  Vérifiez vos données, si elles sont justes, ignorez cet avertissement, il disparaîtra une fois le point 'validé'."
 
 #. Default: "Item created from a college item"
 msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
-msgstr "Point crÃ©Ã© depuis un point CollÃ¨ge"
+msgstr "Point créé depuis un point Collège"
 
 #. Default: "Decision"
 msgid "decision"
-msgstr "DÃ©cision"
+msgstr "Décision"
 
 #. Default: "Decisions"
 msgid "decisions"
-msgstr "ProcÃ¨s-verbal"
+msgstr "Procès-verbal"
 
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
-msgstr "DÃ©finissez ici le texte prÃ©dÃ©fini qui sera prÃ©sent dans le champ 'DÃ©libÃ©ration/Extrait du ProcÃ¨s-verbal' chaque fois qu'un utilisateur crÃ©e un nouveau point."
+msgstr "Définissez ici le texte prédéfini qui sera présent dans le champ 'Délibération/Extrait du Procès-verbal' chaque fois qu'un utilisateur crée un nouveau point."
 
 # Suffix
 #. Default: "directors"
@@ -302,24 +302,24 @@ msgstr "chefs de division"
 
 #. Default: "No follow up is needed"
 msgid "follow_up_no"
-msgstr "Pas de suivi Ã  apporter"
+msgstr "Pas de suivi à apporter"
 
 #. Default: "The needed follow up has been provided (printed in dashboard)"
 msgid "follow_up_provided"
-msgstr "Le suivi nÃ©cessaire a Ã©tÃ© apportÃ© (imprimÃ© dans le tableau de bord)"
+msgstr "Le suivi nécessaire a été apporté (imprimé dans le tableau de bord)"
 
 #. Default: "The needed follow up has been provided (no more printed in dashboard)"
 msgid "follow_up_provided_not_printed"
-msgstr "Le suivi nÃ©cessaire a Ã©tÃ© apportÃ© (pas imprimÃ© dans le tableau de bord)"
+msgstr "Le suivi nécessaire a été apporté (pas imprimé dans le tableau de bord)"
 
 #. Default: "A follow up is needed"
 msgid "follow_up_yes"
-msgstr "Un suivi est Ã  apporter"
+msgstr "Un suivi est à apporter"
 
 # Suffix
 #. Default: "follow-up writers"
 msgid "followupwriters"
-msgstr "rÃ©dacteurs de suivi"
+msgstr "rédacteurs de suivi"
 
 #. Default: "Configure PloneMeeting"
 msgid "hs_configuration"
@@ -331,7 +331,7 @@ msgstr "Bienvenue sur PloneMeeting!"
 
 #. Default: "Public meeting"
 msgid "ip_public"
-msgstr "SÃ©ance publique"
+msgstr "Séance publique"
 
 #. Default: "Closed session"
 msgid "ip_secret"
@@ -340,11 +340,11 @@ msgstr "Huis clos"
 # Other
 #. Default: "Late items"
 msgid "late_presented_items"
-msgstr "Points ajoutÃ©s Ã  la sÃ©ance aprÃ¨s gel de celle-ci"
+msgstr "Points ajoutés à la séance après gel de celle-ci"
 
 #. Default: "Assembly"
 msgid "listingheader_premeeting_assembly"
-msgstr "AssemblÃ©e"
+msgstr "Assemblée"
 
 #. Default: "Date"
 msgid "listingheader_premeeting_date"
@@ -368,7 +368,7 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activ
 
 #. Default: "<span class='follow_up_no'>No follow-up needed.</span>"
 msgid "no_followup_needed_itemview"
-msgstr "<span class='follow_up_no'>Aucun suivi nÃ©cessaire.</span>"
+msgstr "<span class='follow_up_no'>Aucun suivi nécessaire.</span>"
 
 # Suffix
 #. Default: "office managers"
@@ -377,11 +377,11 @@ msgstr "chefs de bureau"
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
-msgstr "SÃ©lectionnez les groupes qui pourront remettre un avis sur ce point. SÃ©lectionnez plusieurs groupes Ã  l'aide de CTRL+clic"
+msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
 
 #. Default: "Decision"
 msgid "portletdecisions_title"
-msgstr "ProcÃ¨s-verbaux"
+msgstr "Procès-verbaux"
 
 #. Default: "Meeting"
 msgid "portletmeetings_title"
@@ -393,7 +393,7 @@ msgstr "Echevins"
 
 #. Default: "The preparatory meeting must occur before the meeting."
 msgid "pre_date_after_meeting_date"
-msgstr "La date de la commission doit Ãªtre avant la date de la sÃ©ance."
+msgstr "La date de la commission doit être avant la date de la séance."
 
 #. Default: "Preparatory meeting"
 msgid "pre_meeting"
@@ -401,11 +401,11 @@ msgstr "Commissions"
 
 #. Default: "Specify here the date of the pre-meeting, relative to its meeting, in the same format as fields above.  Leave empty not to use this functionnality."
 msgid "pre_meeting_date_default_descr"
-msgstr "SpÃ©cifiez ici les dates par dÃ©faut pour les commissions (mÃªme format que les champs ci-dessus).  Laissez le champ vide si vous ne souhaitez pas utiliser cette fonctionnalitÃ©."
+msgstr "Spécifiez ici les dates par défaut pour les commissions (même format que les champs ci-dessus).  Laissez le champ vide si vous ne souhaitez pas utiliser cette fonctionnalité."
 
 #. Default: "MeetingItemCollege"
 msgid "predecessor_MeetingItemCollege"
-msgstr "CollÃ¨ge"
+msgstr "Collège"
 
 #. Default: "MeetingItemCouncil"
 msgid "predecessor_MeetingItemCouncil"
@@ -441,39 +441,39 @@ msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exe
 
 #. Default: "Present every selected items"
 msgid "present_several_items"
-msgstr "PrÃ©senter tous les points sÃ©lectionnÃ©s"
+msgstr "Présenter tous les points sélectionnés"
 
 #. Default: "<a href='activateFollowUp'>Click here</a> if you want to define that a follow-up is still needed or <a href='deactivateFollowUp'>click here</a> to deactivate needed follow-up."
 msgid "provided_followup_actions_itemview"
-msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activateFollowUp' title='Activer Ã  nouveau le suivi.'><img src='follow_up_yes.png' ></a>&nbsp;<a href='deactivateFollowUp' title='DÃ©sactiver le suivi (aucun suivi n Ã©tait nÃ©cessaire).'><img src='follow_up_no.png' /></a>&nbsp;<a href='followUpNotPrinted' title='A ne pas imprimer dans le tableau de bord.'><img src='not_printed_in_dashboard.gif' /></a></span>"
+msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activateFollowUp' title='Activer à nouveau le suivi.'><img src='follow_up_yes.png' ></a>&nbsp;<a href='deactivateFollowUp' title='Désactiver le suivi (aucun suivi n était nécessaire).'><img src='follow_up_no.png' /></a>&nbsp;<a href='followUpNotPrinted' title='A ne pas imprimer dans le tableau de bord.'><img src='not_printed_in_dashboard.gif' /></a></span>"
 
 #. Default: "<span class='follow_up_provided'>The needed follow-up has been provided.</span>"
 msgid "provided_followup_itemview"
-msgstr "<span class='follow_up_provided'>Le suivi nÃ©cessaire a Ã©tÃ© apportÃ© sur ce point (<img src='printed_in_dashboard.gif' /> imprimÃ© dans le tableau de bord).</span>"
+msgstr "<span class='follow_up_provided'>Le suivi nécessaire a été apporté sur ce point (<img src='printed_in_dashboard.gif' /> imprimé dans le tableau de bord).</span>"
 
 #. Default: "<a href='activateFollowUp'>Click here</a> if you want to define that a follow-up is still needed or <a href='deactivateFollowUp'>click here</a> to deactivate needed follow-up."
 msgid "provided_followup_not_printed_actions_itemview"
-msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activateFollowUp' title='Activer Ã  nouveau le suivi'><img src='follow_up_yes.png' ></a>&nbsp;<a href='deactivateFollowUp' title='DÃ©sactiver le suivi (aucun suivi n Ã©tait nÃ©cessaire).'><img src='follow_up_no.png' /></a>&nbsp;<a href='confirmFollowUp' title='A imprimer dans le tableau de bord.'><img src='printed_in_dashboard.gif' /></a></span>"
+msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activateFollowUp' title='Activer à nouveau le suivi'><img src='follow_up_yes.png' ></a>&nbsp;<a href='deactivateFollowUp' title='Désactiver le suivi (aucun suivi n était nécessaire).'><img src='follow_up_no.png' /></a>&nbsp;<a href='confirmFollowUp' title='A imprimer dans le tableau de bord.'><img src='printed_in_dashboard.gif' /></a></span>"
 
 #. Default: "<span class='follow_up_provided'>The needed follow-up has been provided.</span>"
 msgid "provided_followup_not_printed_itemview"
-msgstr "<span class='follow_up_provided_not_printed'>Le suivi nÃ©cessaire a Ã©tÃ© apportÃ© sur ce point (<img src='not_printed_in_dashboard.gif' /> pas imprimÃ© dans le tableau de bord).</span>"
+msgstr "<span class='follow_up_provided_not_printed'>Le suivi nécessaire a été apporté sur ce point (<img src='not_printed_in_dashboard.gif' /> pas imprimé dans le tableau de bord).</span>"
 
 #. Default: "The comment was : ${comments}.\n\nMore information at ${objectUrl}."
 msgid "returnedToService_mail_body"
 msgstr ""
-"Commentaire laissÃ© par le SecrÃ©tariat communal : ${comments}.\n"
+"Commentaire laissé par le Secrétariat communal : ${comments}.\n"
 "\n"
 "Plus d'information ici: ${objectUrl}."
 
 #. Default: "The item '${itemTitle}' has been send back to you by the secretary"
 msgid "returnedToService_mail_subject"
-msgstr "Le point '${itemTitle}' vous a Ã©tÃ© renvoyÃ© pour corrections par le SecrÃ©tariat communal"
+msgstr "Le point '${itemTitle}' vous a été renvoyé pour corrections par le Secrétariat communal"
 
 # Suffix
 #. Default: "reviewers"
 msgid "reviewers"
-msgstr "Ã©chevins"
+msgstr "échevins"
 
 #. Default: "Configure PloneMeeting"
 msgid "search_advanced"
@@ -485,11 +485,11 @@ msgstr "tous les PVs"
 
 #. Default: "corrected items"
 msgid "searchcorrecteditems"
-msgstr "points corrigÃ©s"
+msgstr "points corrigés"
 
 #. Default: "decided items"
 msgid "searchdecideditems"
-msgstr "points dÃ©cidÃ©s"
+msgstr "points décidés"
 
 #. Default: "Items of my group"
 msgid "searchgroupitems"
@@ -505,32 +505,32 @@ msgstr "points de mes commissions"
 
 #. Default: "items of my commissions to edit"
 msgid "searchitemsofmycommissionstoedit"
-msgstr "points de mes commissions Ã©ditables"
+msgstr "points de mes commissions éditables"
 
 #. Default: "items to follow"
 msgid "searchitemstofollow"
-msgstr "points Ã  suivre"
+msgstr "points à suivre"
 
 #. Default: "items to validate"
 msgid "searchitemstovalidate"
-msgstr "points Ã  valider"
+msgstr "points à valider"
 
 #. Default: "items with follow-up provided"
 msgid "searchitemswithfollowupprovided"
-msgstr "points suivi apportÃ©"
+msgstr "points suivi apporté"
 
 # searches
 #. Default: "proposed items"
 msgid "searchproposeditems"
-msgstr "points proposÃ©s"
+msgstr "points proposés"
 
 #. Default: "items to correct"
 msgid "searchreturnedtoserviceitems"
-msgstr "points Ã  corriger"
+msgstr "points à corriger"
 
 #. Default: "validated items"
 msgid "searchvalidateditems"
-msgstr "points validÃ©s"
+msgstr "points validés"
 
 # Suffix
 #. Default: "service heads"
@@ -539,13 +539,12 @@ msgstr "chefs de service"
 
 #. Default: "Please enter 12 lines for signatures delegations"
 msgid "signatures_length_error"
-msgstr "Renseignez 12 lignes pour les signatures.  Si une signature ne doit pas Ãªtre surchargÃ©e (si la signature dÃ©finie dans la configuration de sÃ©ance dans le champ 'Signatures certifiÃ©es' doit Ãªtre utilisÃ©e), renseignez un tiret (-)."
+msgstr "Renseignez 12 lignes pour les signatures.  Si une signature ne doit pas être surchargée (si la signature définie dans la configuration de séance dans le champ 'Signatures certifiées' doit être utilisée), renseignez un tiret (-)."
 
 #. Default: "<a href='deactivateFollowUp'>Click here</a> if you want to deactivate the needed follow-up or <a href='confirmFollowUp'>click here</a> if you want to specify that needed follow-up has been provided.</span>"
 msgid "yes_followup_needed_actions_itemview"
-msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='confirmFollowUp' title='Marquer que le suivi nÃ©cesaire a Ã©tÃ© apportÃ©.'><img src='follow_up_provided.png' ></a>&nbsp;<a href='deactivateFollowUp' title='DÃ©sactiver le suivi (aucun suivi n Ã©tait nÃ©cessaire).'><img src='follow_up_no.png' /></a></span>"
+msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='confirmFollowUp' title='Marquer que le suivi nécesaire a été apporté.'><img src='follow_up_provided.png' ></a>&nbsp;<a href='deactivateFollowUp' title='Désactiver le suivi (aucun suivi n était nécessaire).'><img src='follow_up_no.png' /></a></span>"
 
 #. Default: "<span class='follow_up_yes'>A follow-up is needed.</span>"
 msgid "yes_followup_needed_itemview"
-msgstr "<span class='follow_up_yes'>Un suivi est nÃ©cessaire.</span>"
-
+msgstr "<span class='follow_up_yes'>Un suivi est nécessaire.</span>"
