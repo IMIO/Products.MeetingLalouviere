@@ -6,12 +6,31 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="PloneMeeting">
 
-<body metal:fill-slot="main"
+  <metal:title fill-slot="content-title">
+  <tal:comment replace="nothing">Title, with number of items</tal:comment>
+  <h1 class="documentFirstHeading">
+    <span tal:content="python: context.portal_plonemeeting.formatDate(context.getDate(), prefixed=True)"
+          tal:omit-tag="">Meeting title</span>&nbsp;-
+    <span tal:condition="python:not here.adapted().isDecided()"
+          tal:content="python: here.translate('agenda', domain='PloneMeeting')"></span>
+    <span tal:condition="python:here.adapted().isDecided()"
+          tal:content="python: here.translate('decisions', domain='PloneMeeting')"></span>
+    <tal:comment replace="nothing">Display number of items in the meeting</tal:comment>
+    <span class="discreet">(<span tal:replace="python: context.getItemsCount()"></span>
+      <span i18n:translate="">items_count</span>)
+    </span>
+  </h1>
+  </metal:title>
+  <metal:description fill-slot="content-description">
+   <tal:comment replace="nothing">Just hide the description as shown by default by Plone</tal:comment>
+  </metal:description>
+
+<body metal:fill-slot="content-core"
       tal:define="tool python: context.portal_plonemeeting;
+                  member context/@@plone_portal_state/member;
                   meetingConfig python:tool.getMeetingConfig(context);
                   meetingUid context/UID;
                   bilingual python: 'secondLanguage' in tool.getModelAdaptations();
-                  langs python: tool.getAvailableInterfaceLanguages(True, True);
                   iStartNumber python: context.getBatchStartNumber(late=False);
                   lStartNumber python: context.getBatchStartNumber(late=True);
                   showColors context/portal_plonemeeting/showColorsForUser;
@@ -19,8 +38,13 @@
                   showLateItems python: context.mustShowLateItems(iStartNumber, meetingConfig.getMaxShownMeetingItems());
                   usedAttrs meetingConfig/getUsedMeetingAttributes;
                   useUserReplacements meetingConfig/getUseUserReplacements;
-                  showAvailableItems python:member.has_permission('Modify portal content', context) and context.wfConditions().mayAcceptItems()"
+                  showAvailableItems python:member.has_permission('Modify portal content', context) and context.wfConditions().mayAcceptItems();
+                  toLocalizedTime nocall: context/@@plone/toLocalizedTime;"
       tal:attributes="onLoad python: 'javascript: askInitialItemsLists(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')' % (showColors, showLateItems, showAvailableItems, iStartNumber, lStartNumber, context.numberOfItems(), context.numberOfItems(True), meetingConfig.getMaxShownMeetingItems())">
+
+  <script language="javascript"
+    tal:content="python: 'ploneEditor = \'%s\';' % (member.getProperty('wysiwyg_editor') or here.portal_properties.site_properties.default_editor)">
+  </script>
 
   <tal:mustShowPage condition="showPage">
   <script language="javascript"
@@ -39,7 +63,7 @@
   var numberOfLateItems = 0; // Idem, but late items.
   /* The following field will be computed when this page is loaded. It is the
      maximum number of normal items shown at once. */
-  var maxShownItems = 0; 
+  var maxShownItems = 0;
   var checkBoxesChecked = true;
 
   function presentSelectedItems() {
@@ -147,8 +171,8 @@
     maxShownItems = maxItems*1;
     // First, set the cookie for showing/hiding item descriptions and decisions
     if (readCookie('pmShowDescriptions') == null){
-      // No cookie? By default create one that shows the descriptions.
-      createCookie('pmShowDescriptions', 'true')
+      // No cookie? By default create one that hides the descriptions.
+      createCookie('pmShowDescriptions', 'false')
     }
     // Load the lists of available, meeting and late items
     if (showAvailableItems == "True")
@@ -180,53 +204,21 @@
     catch (err) { inputWidget.style.background = wrongTextInput; }
   }
 
-  function moveMeetingItem(moveType, itemUid, inputField) {
+  function moveMeetingItem(url, inputField) {
     // Moves an item up, down or to a given number in an items list.
-    var theForm = document.forms["formMoveMeetingItem"];
-    theForm.itemUid.value = itemUid;
-    theForm.moveType.value = moveType;
-    if (moveType == 'number') theForm.moveNumber.value = inputField.value;
-    theForm.iStartNumber.value = iStartNumber;
-    theForm.lStartNumber.value = lStartNumber;
-    theForm.submit();
+    url = url + '&iStartNumber=' + iStartNumber;
+    url = url + '&lStartNumber=' + lStartNumber;
+    if (url.indexOf('?moveType=number') >= 0) {url = url + '&moveNumber=' + inputField.value;}
+    window.location = url;
   }
-  function setToDiscuss(discussAction, itemUid) {
-  // Changes the "toDiscuss" status of a meeting item.
-    var theForm = document.forms["formSetToDiscuss"];
-    theForm.itemUid.value = itemUid;
-    theForm.discussAction.value = discussAction;
-    theForm.iStartNumber.value = iStartNumber;
-    theForm.lStartNumber.value = lStartNumber;
-    theForm.submit();
+  function synchronousToggleToDiscuss(url) {
+  // intermediate method that call the @@synchronous_toggle_to_discuss and add iStartNumber
+  //  and lStartNumber that are javascript variables only available in javascripts...
+    url = url + '&iStartNumber=' + iStartNumber;
+    url = url + '&lStartNumber=' + lStartNumber;
+    window.location = url;
     }
 
-  function toggleToDiscuss(UID, img_tag) {
-    var selector = "tr.UID_" + UID + " .ToDiscuss";
-    var $td = jq(selector);
-    if ($td.length == 1) {
-      var $old = jq('img', $td);
-      $td.empty();
-      var $img = jq(img_tag).appendTo($td);
-      $img.click(function() {
-        asyncToDiscuss(UID);
-      });
-    };
-  }
-
-  function asyncToDiscuss(UID) {
-    jq.ajax({
-      url: meetingUrl + "/toggle_to_discuss_on_item",
-      dataType: 'html',
-      data: {UID:UID},
-      success: function(data) { 
-        toggleToDiscuss(UID, data);
-        },
-      error: function(jqXHR, textStatus, errorThrown) {
-        /*console.log(textStatus);*/
-        }
-      });
-   }
-    
   function toggleItemsList(whichItems, imageWidget) {
     listToToggle = document.getElementById(whichItems);
     if (imageWidget.name == 'expandedItems') {
@@ -240,23 +232,14 @@
       listToToggle.style.display = '';
     }
   }
-  // Function for triggering a transition from a list of items
-  function triggerTransitionFromList(objectUid, transition, confirm, comment) {
-    /* After the transition has been triggered, we must come back to the right
-       page within the items list, so we transmit the start number of current
-       page for late and normal items, stored in a global Javascript variable.*/
-    triggerTransition(objectUid, transition, confirm, comment,
-                      iStartNumber, lStartNumber);
-  }
+
   -->
   </script>
   <script language="javascript" tal:content="context/getJsItemUids"></script>
- 
-  <div tal:replace="structure provider:plone.abovecontenttitle" />
 
   <tal:comment replace="nothing">Form used for moving an item up or down in an items list.</tal:comment>
   <form name="formMoveMeetingItem" method="POST"
-        tal:attributes="action python: context.absolute_url_path() + '/meeting_changeitemsorder'">
+        tal:attributes="action python: context.absolute_url_path() + '/change_item_order'">
     <input type="hidden" name="itemUid"/>
     <input type="hidden" name="moveType"/>
     <input type="hidden" name="moveNumber"/>
@@ -266,7 +249,7 @@
 
   <tal:comment replace="nothing">Form used for changing the "toDiscuss" status of a meeting item.</tal:comment>
   <form name="formSetToDiscuss" method="POST"
-        tal:attributes="action python: context.absolute_url_path() + '/meetingitem_discuss'">
+        tal:attributes="action python: context.absolute_url_path() + '/@@synchronous_toggle_to_discuss'">
       <input type="hidden" name="itemUid"/>
       <input type="hidden" name="discussAction"/>
       <input type="hidden" name="iStartNumber"/>
@@ -279,24 +262,6 @@
       <input type="hidden" name="meetingUid"/>
       <input type="hidden" name="idType" value="number"/>
   </form>
-
-  <tal:comment replace="nothing">Title, with number of items</tal:comment>
-  <h1 class="documentFirstHeading">
-    <span tal:content="python: tool.formatDate(context.getDate(), prefixed=True)"
-          tal:omit-tag="">Meeting title</span>&nbsp;-
-    <span tal:condition="python:not here.adapted().isDecided()"
-          tal:content="python: here.utranslate('agenda', domain='PloneMeeting')"></span>
-    <span tal:condition="python:here.adapted().isDecided()"
-          tal:content="python: here.utranslate('decisions', domain='PloneMeeting')"></span>
-    <tal:comment replace="nothing">Display number of items in the meeting</tal:comment>
-    <span class="discreet">(<span tal:replace="python: context.getItemsCount()"></span>
-      <span i18n:translate="">items_count</span>)
-    </span>
-    <metal:field use-macro="here/hs_macros/macros/hsLanguageSelector" />
-  </h1>
-  <div tal:replace="structure provider:plone.belowcontenttitle"></div>
-  <metal:field use-macro="here/hs_macros/macros/objectHistory" />
-  <div tal:replace="structure provider:plone.abovecontentbody"></div>
 
   <div class="discreet">
   <tal:comment replace="nothing">Place</tal:comment>
@@ -340,14 +305,14 @@
   <tal:comment replace="nothing">Assembly.  Backward compatibility for people that used the 'assembly' field before and the 'attendees' now, if the field is not empty, we display it</tal:comment>
   <div class="discreet" tal:condition="python: ('assembly' in usedAttrs) or context.getAssembly()">
     <b i18n:translate="meeting_assembly"></b>&nbsp;&nbsp;
-       <span tal:replace="structure python: context.getStrikedField(context.getAssembly())"/>
+       <span tal:replace="structure context/getStrikedAssembly"/>
   </div>
 
   <tal:comment replace="nothing">Attendees, excused, absents, replacements</tal:comment>
-  <table id="meeting_users" class="vertical listing discreet" cellspacing="0" cellpadding="0"
+  <table id="meeting_users" class="listing discreet" cellspacing="0" cellpadding="0"
          tal:condition="python: ('attendees' in usedAttrs) and not context.getAssembly()"
          tal:attributes="style python: (request.get('showPersons', 'true')=='true') and 'display:table' or 'display:none'"
-         tal:define="allUsers meetingConfig/getActiveMeetingUsers;
+         tal:define="allUsers context/getAllUsedMeetingUsers;
                      attendees context/getAttendees;
                      excused context/getExcused;
                      absents context/getAbsents;
@@ -355,14 +320,17 @@
                      lateAttendees context/getLateAttendees;
                      userReplacements context/getUserReplacements">
     <tal:comment replace="nothing">Column captions</tal:comment>
+    <thead>
     <tr>
-      <th></th>
-      <th i18n:translate="is_attendee"></th>
-      <th tal:condition="python: 'excused' in usedAttrs" i18n:translate="is_excused"></th>
-      <th tal:condition="python: 'absents' in usedAttrs" i18n:translate="is_absent"></th>
-      <th tal:condition="python: 'signatories' in usedAttrs" i18n:translate="is_signer"></th>
-      <th tal:condition="useUserReplacements" i18n:translate="is_replaced"></th>
+      <th class="nosort"></th>
+      <th class="nosort" i18n:translate="is_attendee"></th>
+      <th class="nosort" tal:condition="python: 'excused' in usedAttrs" i18n:translate="is_excused"></th>
+      <th class="nosort" tal:condition="python: 'absents' in usedAttrs" i18n:translate="is_absent"></th>
+      <th class="nosort" tal:condition="python: 'signatories' in usedAttrs" i18n:translate="is_signer"></th>
+      <th class="nosort" tal:condition="useUserReplacements" i18n:translate="is_replaced"></th>
     </tr>
+    </thead>
+    <tbody>
     <tr tal:repeat="mUser allUsers">
       <td><b tal:content="mUser/Title"></b></td>
       <td align="center" tal:define="aId mUser/getId">
@@ -395,12 +363,26 @@
         <span tal:condition="python: mUser.getId() in userReplacements" tal:content="python: getattr(meetingConfig.meetingusers, userReplacements[mUser.getId()]).Title()"></span>
       </td>
     </tr>
+    </tbody>
   </table>
 
   <tal:comment replace="nothing">Signatures. Backward compatibility for people that used the 'signatures' field</tal:comment>
   <div class="discreet" tal:condition="python: ('signatures' in usedAttrs) or context.getSignatures()">
     <b i18n:translate="meeting_signatures"></b>&nbsp;&nbsp;
        <span tal:replace="python: context.getSignatures().replace('\r\n', '<br/>').replace('\n', '<br/>')"/>
+  </div>
+
+  <div class="discreet">
+  <tal:comment replace="nothing">Pre-meeting info</tal:comment>
+  <tal:pre condition="python: 'preMeetingDate' in usedAttrs">
+  <b i18n:translate="pre_meeting"></b>:&nbsp;&nbsp;
+  <b i18n:translate="PloneMeeting_label_preMeetingDate"></b>&nbsp;&nbsp;<span
+     tal:replace="python: toLocalizedTime(context.getPreMeetingDate(),long_format=1)"></span>
+  </tal:pre>
+  <tal:prePlace tal:condition="python: 'preMeetingPlace' in usedAttrs">
+    &nbsp;&nbsp;<b i18n:translate="PloneMeeting_label_preMeetingPlace"></b>&nbsp;&nbsp;
+    <span tal:replace="context/getPreMeetingPlace"></span>
+  </tal:prePlace>
   </div>
 
   <tal:comment replace="nothing">XXX begin changes for MeetingLalouviere</tal:comment>
@@ -444,7 +426,7 @@
                </tal:defines>
               </tr>
               </tal:loop>
-            </table>  
+            </table>
         </dd>
       </dl>
 </tal:premeetings>
@@ -452,7 +434,12 @@
 
   <tal:comment replace="nothing">Show items that may be presented into the current meeting</tal:comment>
   <fieldset tal:define="whichItems string:availableItems" tal:condition="showAvailableItems">
-    <legend i18n:translate='available_items'>Available items</legend>
+    <legend> <span i18n:translate='available_items'>Available items</span>
+      <img tal:attributes="src string: $portal_url/treeExpanded.gif;
+                           name string:expandedItems;
+                           onClick python:'toggleItemsList(\'availableItems\', this)'"
+           style="cursor:pointer"/>
+    </legend>
     <span id="availableItems"><div align="center"><img tal:attributes="src string: $portal_url/waiting.gif"/></div></span>
   </fieldset>
 
@@ -483,20 +470,26 @@
     <span id="lateItems"><div align="center"><img tal:attributes="src string: $portal_url/waiting.gif"/></div></span>
   </fieldset>
 
+  <tal:comment replace="nothing">Action on selected items</tal:comment>
+  <div tal:condition="python: tool.isManager() and context.adapted().isDecided() and not context.queryState() in context.meetingClosedStates" id="showItemsDecidedTransitions" >
+    <div metal:use-macro="here/hs_macros/macros/showItemsDecidedTransitions"></div>
+  </div>
+  <div class="visualClear"></div>
+
   <tal:comment replace="nothing">Observations</tal:comment>
-  <tal:field define="fieldName python: 'observations'"
+  <tal:field define="fieldName python: 'observations'; ajaxEdit python:True"
              condition="python: context.showObs('observations')">
     <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
   </tal:field>
 
   <tal:comment replace="nothing">Pre-observations</tal:comment>
-  <tal:field define="fieldName python: 'preObservations'"
+  <tal:field define="fieldName python: 'preObservations'; ajaxEdit python:True"
              condition="python: context.showObs('preObservations')">
     <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
   </tal:field>
 
   <tal:comment replace="nothing">For the admin only</tal:comment>
-  <fieldset tal:condition="python: member.has_permission('Manage portal', portal)">
+  <fieldset tal:condition="python: member.has_role('Manager')">
     <legend i18n:translate="for_admin_only" i18n:domain="PloneMeeting"></legend>
     <table cellpadding="0" cellspacing="0" width="100%">
       <tr valign="top" tal:define="mode python:'view'">
@@ -515,7 +508,7 @@
 
   <tal:comment replace="nothing">Actions</tal:comment>
   <br/>
-  <span tal:define="itemOrMeeting python:here">
+  <span tal:define="object python:here;">
     <div metal:use-macro="here/plonemeeting_actions/macros/ploneMeetingActions" />
   </span>
   <br/>
@@ -530,8 +523,6 @@
   <img tal:attributes="src string: $portal_url/refuse.png"
        align="left"><p>&nbsp;<span i18n:translate="">hide_meeting_view_page</span></p>
   </tal:mustHidePage>
-
-  <div tal:replace="structure provider:plone.belowcontentbody" />
 
 </body>
 </html>
