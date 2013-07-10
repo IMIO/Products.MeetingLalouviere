@@ -30,13 +30,6 @@
    description="MeetingLalouviere unit testing profile"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
-  <genericsetup:registerProfile
-    name="migrations"
-    title="MeetingLalouviere / Migrations"
-    description="MeetingLalouviere profile for performing migrations"
-    provides="Products.GenericSetup.interfaces.EXTENSION"
-    for="Products.CMFCore.interfaces.ISiteRoot" />
-
   <!-- ##/code-section profiles.zcml-bottom -->
 
 </configure>
