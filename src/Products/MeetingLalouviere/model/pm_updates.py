@@ -385,6 +385,7 @@ def update_item_schema(baseSchema):
             optional=True,
             default_method='getDefaultMotivation',
             widget=RichWidget(
+                rows=15,
                 condition="python: here.attributeIsUsed('motivation')",
                 label='Motivation',
                 label_msgid='MeetingLalouviere_label_motivation',
@@ -401,6 +402,7 @@ def update_item_schema(baseSchema):
         TextField(
             name='interventions',
             widget=RichWidget(
+                rows=15,
                 condition="python: here.portal_type == 'MeetingItemCouncil' and here.portal_plonemeeting.isManager()",
                 label='Interventions',
                 label_msgid='MeetingLalouviere_label_interventions',
@@ -417,6 +419,7 @@ def update_item_schema(baseSchema):
         TextField(
             name='commissionTranscript',
             widget=RichWidget(
+                rows=15,
                 condition="python: here.portal_type == 'MeetingItemCouncil'",
                 label='CommissionTranscript',
                 label_msgid='MeetingLalouviere_label_commissionTranscript',
@@ -453,6 +456,7 @@ def update_item_schema(baseSchema):
             name='neededFollowUp',
             optional=True,
             widget=RichWidget(
+                rows=15,
                 condition="python: here.attributeIsUsed('neededFollowUp') and "
                           "here.queryState() in here.itemDecidedStates",
                 label='NeededFollowUp',
@@ -472,6 +476,7 @@ def update_item_schema(baseSchema):
             name='providedFollowUp',
             optional=True,
             widget=RichWidget(
+                rows=15,
                 condition="python: here.attributeIsUsed('providedFollowUp') and "
                           "here.queryState() in here.itemDecidedStates",
                 label='ProvidedFollowUp',
