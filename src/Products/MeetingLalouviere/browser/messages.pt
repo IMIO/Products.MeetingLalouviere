@@ -1,0 +1,6 @@
+<tal:block condition='view/available' repeat='message view/getMessages'>
+<dl class="#" tal:attributes="class string:portalMessage ${message/type};">
+            <dt i18n:translate="" i18n:domain="plone" tal:content="python: message['type'].capitalize()">Info</dt>
+            <dd i18n:translate="" i18n:domain="PloneMeeting" tal:content="message/msg">Message.</dd>
+        </dl>
+</tal:block>

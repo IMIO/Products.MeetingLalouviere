@@ -1,0 +1,10 @@
+Products.MeetingLalouviere Changelog
+====================================
+
+3.0dev (unreleased)
+-------------------
+- Nothing changed yet
+
+2.1.2 (2012-09-19)
+------------------
+- Original release

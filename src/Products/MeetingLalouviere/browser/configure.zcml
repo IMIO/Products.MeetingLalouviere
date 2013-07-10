@@ -1,0 +1,40 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="urban">
+
+  <browser:page
+      for="*"
+      name="isloggedinfordef"
+      class=".isLoggedInForDEF.IsLoggedInForDEFView"
+      template="isLoggedInForDEF.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="*"
+      name="loguserfromdef"
+      class=".logUserFromDEF.LogUserFromDEFView"
+      template="logUserFromDEF.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="*"
+      name="createitemfromdef"
+      class=".createItemFromDEF.CreateItemFromDEFView"
+      template="createItemFromDEF.pt"
+      permission="zope2.View"
+      />
+
+  <browser:viewlet
+      name="plone.belowcontenttitle.messages"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+      class=".viewlets.MessagesViewlet"
+      for="Products.PloneMeeting.interfaces.IMeetingItem"
+      permission="zope2.View"
+      />
+
+</configure>
+

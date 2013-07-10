@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="urban">
+
+<body>
+<metal:main fill-slot="main">
+<metal:main_macro define-macro="main">
+    <metal:body define-macro="body_macro">
+     <tal:block define="mayadd view/mayUserAddItem">
+      <div tal:condition="mayadd">
+       <tal:block define="dummy view/createItem" />
+      </div>
+      <div tal:condition="not: mayadd">
+      Nope...
+      </div>
+     </tal:block>
+    </metal:body>
+</metal:main_macro>
+</metal:main>
+</body>
+</html>
