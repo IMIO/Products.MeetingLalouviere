@@ -2,15 +2,14 @@
 #
 # File: MeetingLalouviere.py
 #
-# Copyright (c) 2013 by CommunesPlone.org
+# Copyright (c) 2013 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
 # GNU General Public License (GPL)
 #
 
-__author__ = """Gauthier Bastien <gbastien@commune.sambreville.be>, Stephan Geulette
-<stephan.geulette@uvcw.be>"""
+__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
 __docformat__ = 'plaintext'
 
 

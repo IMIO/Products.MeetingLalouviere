@@ -12,7 +12,7 @@
     <role name="MeetingObserverLocal"/>
     <role name="MeetingObserverLocalCopy"/>
     <role name="MeetingOfficeManager"/>
-    <role name="MeetingPowerObserver"/>
+    <role name="MeetingPowerObserverLocal"/>
     <role name="MeetingReviewer"/>
     <role name="MeetingServiceHead"/>
 <!-- ##code-section roles -->

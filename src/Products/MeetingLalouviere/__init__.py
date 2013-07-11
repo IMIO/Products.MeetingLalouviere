@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: MeetingCommunes.py
+# File: MeetingLalouviere.py
 #
 # Copyright (c) 2013 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
@@ -70,3 +70,4 @@ def initialize(context):
 
     ##code-section custom-init-bottom #fill in your manual code here
     ##/code-section custom-init-bottom
+
