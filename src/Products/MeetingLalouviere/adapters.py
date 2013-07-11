@@ -544,7 +544,7 @@ class CustomMeetingItem(MeetingItem):
         # to be set in council also.  By default they are just 'presented'
         if not self.context.portal_type == 'MeetingItemCouncil':
             return
-        if usage == 'as_recurring_item':
+        if usage == 'as_recurring_item' and self.context.getMeeting().queryState() == 'in_committee':
             item = self.getSelf()
             if item.queryState() == 'presented':
                 self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')

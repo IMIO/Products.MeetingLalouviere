@@ -2,11 +2,19 @@
 from Products.PloneMeeting.profiles import *
 
 # File types -------------------------------------------------------------------
+
 annexe = MeetingFileTypeDescriptor('annexe', 'Annexe', 'attach.png', '')
-annexeBudget = MeetingFileTypeDescriptor('annexeBudget', 'Article Budgétaire', 'budget.png', '')
+annexeBudget = MeetingFileTypeDescriptor('annexeBudget', 'Article Budgetaire', 'budget.png', '')
 annexeCahier = MeetingFileTypeDescriptor('annexeCahier', 'Cahier des Charges', 'cahier.gif', '')
-annexeRemarks = MeetingFileTypeDescriptor('annexeRemarks', 'Remarques secrétaires', 'secretary_remarks.png', '')
-annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe à la décision', 'attach.png', '', True, active=False)
+itemAnnex = MeetingFileTypeDescriptor('item-annex', 'Other annex(es)', 'attach.png', '')
+annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe a la decision', 'attach.png', '', True)
+# Some type of annexes taken from the default PloneMeeting test profile
+marketingAnalysis = MeetingFileTypeDescriptor(
+    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', True,
+    active=False)
+overheadAnalysis = MeetingFileTypeDescriptor(
+    'overhead-analysis', 'Administrative overhead analysis',
+    'attach.png', '')
 
 # Pod templates ----------------------------------------------------------------
 # MeetingItem
@@ -129,7 +137,20 @@ councilTemplates = [councilOJExplanatoryTemplate, councilFardesTemplate, council
                     councilPVConvCommSpecTemplate, councilPVTemplate,
                     councilNoteExplTemplate, councilProjetDelibTemplate, councilDelibTemplate]
 
+# Categories -------------------------------------------------------------------
+recurring = CategoryDescriptor('recurrents', 'Recurrents')
+categories = [recurring,
+              CategoryDescriptor('recurrents2', 'Recurrents2'),
+              CategoryDescriptor('travaux', 'Travaux'),
+              CategoryDescriptor('urbanisme', 'Urbanisme'),
+              CategoryDescriptor('comptabilite', 'Comptabilite/Recettes'),
+              CategoryDescriptor('personnel', 'Personnel'),
+              CategoryDescriptor('population', 'Population/Etat-civil'),
+              CategoryDescriptor('locations', 'Locations'),
+              CategoryDescriptor('divers', 'Divers'), ]
+
 # Users and groups -------------------------------------------------------------
+admin = UserDescriptor('admin', ['Manager', 'MeetingManager'])
 pmManager = UserDescriptor('pmManager', ['MeetingManager'])
 pmCreator1 = UserDescriptor('pmCreator1', [])
 pmCreator1b = UserDescriptor('pmCreator1b', [])
@@ -154,12 +175,16 @@ developers = GroupDescriptor('developers', 'Developers', 'Devel', givesMandatory
 developers.creators.append(pmCreator1)
 developers.creators.append(pmCreator1b)
 developers.creators.append(pmManager)
+developers.creators.append(admin)
 developers.directors.append(pmReviewer1)
 developers.directors.append(pmManager)
+developers.directors.append(admin)
 developers.reviewers.append(pmReviewer1)
 developers.reviewers.append(pmManager)
+developers.reviewers.append(admin)
 developers.observers.append(pmReviewer1)
 developers.observers.append(pmManager)
+developers.observers.append(admin)
 developers.advisers.append(pmAdviser1)
 setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
@@ -203,9 +228,10 @@ collegeMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
                           'Echevin Un, Echevin Deux, Echevin Trois - Echevins,\n' \
                           'Jacqueline Exemple, Responsable du CPAS'
 collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, 1er Echevin'
-collegeMeeting.categories = []
+collegeMeeting.categories = categories
 collegeMeeting.shortName = 'College'
-collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeDecision]
+collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex,
+                                   annexeDecision, overheadAnalysis, marketingAnalysis]
 collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations', 'interventions', 'commissionTranscript')
 collegeMeeting.xhtmlTransformTypes = ('removeBlanks',)
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
@@ -232,30 +258,51 @@ collegeMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), ve
 collegeMeeting.podTemplates = collegeTemplates
 collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
 collegeMeeting.useGroupsAsCategories = True
-collegeMeeting.recurringItems = []
 collegeMeeting.meetingUsers = []
 
-# Conseil communal
-# Categories -------------------------------------------------------------------
-categories = [
-              CategoryDescriptor('recurrent', 'Point récurrent', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-travaux', 'Commission Travaux'),
-              CategoryDescriptor('commission-enseignement', 'Commission Enseignement'),
-              CategoryDescriptor('commission-cadre-de-vie-et-logement', 'Commission Cadre de Vie et Logement'),
-              CategoryDescriptor('commission-ag', 'Commission AG'),
-              CategoryDescriptor('commission-finances-et-patrimoine', 'Commission Finances et Patrimoine'),
-              CategoryDescriptor('commission-police', 'Commission Police'),
-              CategoryDescriptor('commission-speciale', 'Commission Spéciale', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-travaux-1er-supplement', 'Commission Travaux (1er supplément)', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-enseignement-1er-supplement', 'Commission Enseignement (1er supplément)', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-cadre-de-vie-et-logement-1er-supplement', 'Commission Cadre de Vie et Logement (1er supplément)', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-ag-1er-supplement', 'Commission AG (1er supplément)', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-finances-et-patrimoine-1er-supplement', 'Commission Finances et Patrimoine (1er supplément)', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-police-1er-supplement', 'Commission Police (1er supplément)', usingGroups=('secretary', )),
-              CategoryDescriptor('commission-speciale-1er-supplement', 'Commission Spéciale (1er supplément)', usingGroups=('secretary', )),
-              CategoryDescriptor('points-conseillers-2eme-supplement', 'Points conseillers (2ème supplément)', usingGroups=('secretary', )),
-             ]
+collegeMeeting.recurringItems = [
+    RecurringItemDescriptor(
+        id='recurringagenda1',
+        title='Approuve le proces-verbal de la seance anterieure',
+        description='Approuve le proces-verbal de la seance anterieure',
+        category='recurrents',
+        proposingGroup='developers',
+        decision='Proces-verbal approuve'),
+    RecurringItemDescriptor(
+        id='recurringofficialreport1',
+        title='Autorise et signe les bons de commande de la semaine',
+        description='Autorise et signe les bons de commande de la semaine',
+        category='recurrents',
+        proposingGroup='developers',
+        decision='Bons de commande signes'),
+    RecurringItemDescriptor(
+        id='recurringofficialreport2',
+        title='Ordonnance et signe les mandats de paiement de la semaine',
+        description='Ordonnance et signe les mandats de paiement de la semaine',
+        category='recurrents',
+        proposingGroup='developers',
+        decision='Mandats de paiement de la semaine approuves'),
+    RecurringItemDescriptor(
+        id='template1',
+        title='Tutelle CPAS',
+        description='Tutelle CPAS',
+        category='',
+        proposingGroup='developers',
+        templateUsingGroups=['developers', 'vendors'],
+        usages=['as_template_item', ],
+        decision=""" """),
+    RecurringItemDescriptor(
+        id='template2',
+        title='Controle medical systematique agent contractuel',
+        description='Controle medical systematique agent contractuel',
+        category='',
+        proposingGroup='vendors',
+        templateUsingGroups=['vendors', ],
+        usages=['as_template_item', ],
+        decision=""" """)
+]
 
+# Conseil communal
 councilMeeting = MeetingConfigDescriptor(
     'meeting-config-council', 'Conseil Communal',
     'Conseil Communal')
@@ -279,7 +326,7 @@ Le Président,
 J.GOBERT"""
 councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
-councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeRemarks, annexeDecision]
+councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex, annexeDecision]
 councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations', 'interventions', 'commissionTranscript')
 councilMeeting.xhtmlTransformTypes = ('removeBlanks',)
 councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations', 'privacy', 'itemAssembly', ]
@@ -316,26 +363,15 @@ councilMeeting.podTemplates = councilTemplates
 councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service',]
 councilMeeting.sortingMethodOnAddItem = 'on_privacy_then_categories'
 councilMeeting.useGroupsAsCategories = False
-councilMeeting.recurringItems = [
-    RecurringItemDescriptor(
-        id='recurrent-approuve-pv',
-        title='Approbation du procès-verbal du Conseil communal du ...',
-        description='',
-        category='recurrent',
-        proposingGroup='developers',
-        decision='',
-        meetingTransitionInsertingMe='setInCouncil'),
-    RecurringItemDescriptor(
-        id='recurrent-questions-actualite',
-        title='Questions d\'actualités',
-        description='',
-        category='recurrent',
-        proposingGroup='developers',
-        decision='',
-        meetingTransitionInsertingMe='setInCouncil'),
-]
 councilMeeting.meetingUsers = [muser_voter1, muser_voter2, ]
-
+councilMeeting.recurringItems = [
+    RecurringItemDescriptor('recItem1',
+                            'Recurring item #1',
+                            'vendors',
+                            category='developers',
+                            description='<p>This is the first recurring item.</p>',
+                            decision='Recurring Item approved')
+]
 data = PloneMeetingConfiguration(
     meetingFolderTitle='Mes seances',
     meetingConfigs=(collegeMeeting, councilMeeting),
