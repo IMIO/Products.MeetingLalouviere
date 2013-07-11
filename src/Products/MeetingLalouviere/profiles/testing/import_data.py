@@ -154,6 +154,8 @@ developers = GroupDescriptor('developers', 'Developers', 'Devel', givesMandatory
 developers.creators.append(pmCreator1)
 developers.creators.append(pmCreator1b)
 developers.creators.append(pmManager)
+developers.directors.append(pmReviewer1)
+developers.directors.append(pmManager)
 developers.reviewers.append(pmReviewer1)
 developers.reviewers.append(pmManager)
 developers.observers.append(pmReviewer1)
@@ -165,6 +167,7 @@ setattr(developers, 'echevinServices', 'developers')
 #give an advice on recurring items
 vendors = GroupDescriptor('vendors', 'Vendors', 'Devil', givesMandatoryAdviceOn="python: item.id == 'recurringagenda1'")
 vendors.creators.append(pmCreator2)
+vendors.directors.append(pmReviewer2)
 vendors.reviewers.append(pmReviewer2)
 vendors.observers.append(pmReviewer2)
 vendors.advisers.append(pmReviewer2)
@@ -177,9 +180,9 @@ vendors.observers.append(voter1)
 vendors.observers.append(voter2)
 
 pmManager_observer = MeetingUserDescriptor('pmManager',
-                                           duty='SecrÃ©taire de la Chancellerie',
+                                           duty='Secretaire de la Chancellerie',
                                            usages=['assemblyMember'])
-cadranel_signer = MeetingUserDescriptor('cadranel', duty='SecrÃ©taire',
+cadranel_signer = MeetingUserDescriptor('cadranel', duty='Secretaire',
                                         usages=['assemblyMember', 'signer'],
                                         signatureImage='SignatureCadranel.jpg',
                                         signatureIsDefault=True)
@@ -304,7 +307,7 @@ councilMeeting.maxDaysDecisions = 60
 councilMeeting.meetingAppDefaultView = 'topic_searchmyitems'
 councilMeeting.itemDocFormats = ('odt', 'pdf')
 councilMeeting.meetingDocFormats = ('odt', 'pdf')
-councilMeeting.useAdvices = False
+councilMeeting.useAdvices = True
 councilMeeting.enforceAdviceMandatoriness = False
 councilMeeting.enableAdviceInvalidation = False
 councilMeeting.useCopies = True
