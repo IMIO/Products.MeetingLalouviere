@@ -33,7 +33,7 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
 
     def setUp(self):
         """Redefine advices related states."""
-        super(testAdvices, self).setUp()
+        super(mcta, self).setUp()
         self.setMeetingConfig(self.meetingConfig2.getId())
         self.meetingConfig.setItemAdviceStates(('proposed_to_director', 'validated', ))
         self.meetingConfig.setItemAdviceEditStates(('proposed_to_director', ))
