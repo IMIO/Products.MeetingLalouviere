@@ -364,7 +364,8 @@ def adaptFCKMenuStyles(context, portal):
     '''
        Add the "highlight-red" style to the FCK menu styles
     '''
-    if isNotMeetingLalouviereProfile(context): return
+    if isNotMeetingLalouviereProfile(context):
+        return
 
     logStep("adaptFCKMenuStyles", context)
 
