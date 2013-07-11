@@ -130,106 +130,6 @@ councilTemplates = [councilOJExplanatoryTemplate, councilFardesTemplate, council
                     councilNoteExplTemplate, councilProjetDelibTemplate, councilDelibTemplate]
 
 # Users and groups -------------------------------------------------------------
-jgobert = UserDescriptor('jgobert',  ['MeetingPowerObserver'], fullname='Jaques Gobert', email="jgobert@lalouviere.be")
-asabbatini = UserDescriptor('asabbatini', ['MeetingPowerObserver'], fullname='Annie Sabbatini', email="asabbatini@lalouviere.be")
-jgodin = UserDescriptor('jgodin', ['MeetingPowerObserver'], fullname='Jean Godin', email="jgodin@lalouviere.be")
-odestrebecq = UserDescriptor('odestrebecq', ['MeetingPowerObserver'], fullname='Olivier Destrebecq', email="odestrebecq@lalouviere.be")
-ghaine = UserDescriptor('ghaine', ['MeetingPowerObserver'], fullname='Georges Haine', email="ghaine@lalouviere.be")
-adupont = UserDescriptor('adupont', ['MeetingPowerObserver'], fullname='Alexandra Dupont', email="adupont@lalouviere.be")
-fghiot = UserDescriptor('fghiot', ['MeetingPowerObserver'], fullname='Françoise Ghiot', email="fghiot@lalouviere.be")
-jcwargnie = UserDescriptor('jcwargnie', ['MeetingPowerObserver'], fullname='Jean-Claude Wargnie', email="jcwargnie@lalouviere.be")
-dstaquet = UserDescriptor('dstaquet', ['MeetingPowerObserver'], fullname='Danièle Staquet', email="dstaquet@lalouviere.be")
-bliebin = UserDescriptor('bliebin', ['MeetingPowerObserver'], fullname='Bernard Liebin', email="bliebin@lalouviere.be")
-cburgeon = UserDescriptor('cburgeon', ['MeetingPowerObserver'], fullname='Colette Burgeon', email="cburgeon@lalouviere.be")
-mdubois = UserDescriptor('mdubois', ['MeetingPowerObserver'], fullname='Michel Dubois', email="mdubois@lalouviere.be")
-ydrugmand = UserDescriptor('ydrugmand', ['MeetingPowerObserver'], fullname='Yves Drugmand', email="ydrugmand@lalouviere.be")
-gmaggiordomo = UserDescriptor('gmaggiordomo', ['MeetingPowerObserver'], fullname='Giuseppe Maggiordomo', email="gmaggiordomo@lalouviere.be")
-ozrihen = UserDescriptor('ozrihen', ['MeetingPowerObserver'], fullname='Olga Zrihen', email="ozrihen@lalouviere.be")
-mdimattia = UserDescriptor('mdimattia', ['MeetingPowerObserver'], fullname='Michele Di Mattia', email="mdimattia@lalouviere.be")
-trotolo = UserDescriptor('trotolo', ['MeetingPowerObserver'], fullname='Térèsa Rotolo', email="trotolo@lalouviere.be")
-fromeo = UserDescriptor('fromeo', ['MeetingPowerObserver'], fullname='Francesco Romeo', email="fromeo@lalouviere.be")
-mhanot = UserDescriptor('mhanot', ['MeetingPowerObserver'], fullname='Muriel Hanot', email="mhanot@lalouviere.be")
-ivansteen = UserDescriptor('ivansteen', ['MeetingPowerObserver'], fullname='Isabelle Van Steen', email="ivansteen@lalouviere.be")
-jkeijzer = UserDescriptor('jkeijzer', ['MeetingPowerObserver'], fullname='Jan Keijzer', email="jkeijzer@lalouviere.be")
-afagbemi = UserDescriptor('afagbemi', ['MeetingPowerObserver'], fullname='Affissou Fagbemi', email="afagbemi@lalouviere.be")
-agava = UserDescriptor('agava', ['MeetingPowerObserver'], fullname='Antonio Gava', email="agava@lalouviere.be")
-apourbaix = UserDescriptor('apourbaix', ['MeetingPowerObserver'], fullname='Alain Pourbaix', email="apourbaix@lalouviere.be")
-lduval = UserDescriptor('lduval', ['MeetingPowerObserver'], fullname='Lucien Duval', email="lduval@lalouviere.be")
-jchristiaens = UserDescriptor('jchristiaens', ['MeetingPowerObserver'], fullname='Jonathan Christiaens', email="jchristiaens@lalouviere.be")
-mvanhooland = UserDescriptor('mvanhooland', ['MeetingPowerObserver'], fullname='Michaël Van Hooland', email="mvanhooland@lalouviere.be")
-frmili = UserDescriptor('frmili', ['MeetingPowerObserver'], fullname='Fatima Rmili', email="frmili@lalouviere.be")
-pwaterlot = UserDescriptor('pwaterlot', ['MeetingPowerObserver'], fullname='Philippe Waterlot', email="pwaterlot@lalouviere.be")
-abuscemi = UserDescriptor('abuscemi', ['MeetingPowerObserver'], fullname='Antonio Buscemi', email="abuscemi@lalouviere.be")
-lwimlot = UserDescriptor('lwimlot', ['MeetingPowerObserver'], fullname='Laurent Wimlot', email="lwimlot@lalouviere.be")
-cboulangier = UserDescriptor('cboulangier', ['MeetingPowerObserver'], fullname='Cécile Boulangier', email="cboulangier@lalouviere.be")
-vlibois = UserDescriptor('vlibois', ['MeetingPowerObserver'], fullname='Vincent Libois', email="vlibois@lalouviere.be")
-ammarin = UserDescriptor('ammarin', ['MeetingPowerObserver'], fullname='Anne-Marie Marin', email="ammarin@lalouviere.be")
-agorez = UserDescriptor('agorez', ['MeetingPowerObserver'], fullname='André Gorez', email="agorez@lalouviere.be")
-jpmichiels = UserDescriptor('jpmichiels', ['MeetingPowerObserver'], fullname='Jean-Pierre Michiels', email="jpmichiels@lalouviere.be")
-cdelplancq = UserDescriptor('cdelplancq', ['MeetingPowerObserver'], fullname='Christophe Delplancq', email="cdelplancq@lalouviere.be")
-fvermeer = UserDescriptor('fvermeer', ['MeetingPowerObserver'], fullname='Fabienne Vermeer', email="fvermeer@lalouviere.be")
-lbaccareladurso = UserDescriptor('lbaccareladurso', ['MeetingPowerObserver'], fullname='Louisa Baccarela d\'Urso', email="lbaccareladurso@lalouviere.be")
-clicata = UserDescriptor('clicata', ['MeetingPowerObserver'], fullname='Cosimo Licata', email="clicata@lalouviere.be")
-mroland = UserDescriptor('mroland', ['MeetingPowerObserver'], fullname='Marie Roland', email="mroland@lalouviere.be")
-collegecommunal = UserDescriptor('collegecommunal', ['MeetingPowerObserver'], fullname='Collège communal', email="collegecommunal@lalouviere.be")
-groupeps = UserDescriptor('groupeps', ['MeetingPowerObserver'], fullname='Groupe PS', email="groupeps@lalouviere.be")
-groupemr = UserDescriptor('groupemr', ['MeetingPowerObserver'], fullname='Groupe MR', email="groupemr@lalouviere.be")
-groupecdh = UserDescriptor('groupecdh', ['MeetingPowerObserver'], fullname='Groupe cdH', email="groupecdh@lalouviere.be")
-groupeecolo = UserDescriptor('groupeecolo', ['MeetingPowerObserver'], fullname='Groupe Ecolo', email="groupeecolo@lalouviere.be")
-groupeptb = UserDescriptor('groupeptb', ['MeetingPowerObserver'], fullname='Groupe PTB+', email="groupeptb@lalouviere.be")
-groupefn = UserDescriptor('groupefn', ['MeetingPowerObserver'], fullname='Groupe FN', email="groupefn@lalouviere.be")
-groupeindependant = UserDescriptor('groupeindependant', ['MeetingPowerObserver'], fullname='Groupe Indépendant', email="groupeindependant@lalouviere.be")
-
-jgobert_mu = MeetingUserDescriptor('jgobert', duty='Bourgmestre', usages=['asker', ], active=False)
-asabbatini_mu = MeetingUserDescriptor('asabbatini', gender='f', duty='1er Echevin', usages=['asker', ], active=False)
-jgodin_mu = MeetingUserDescriptor('jgodin', gender='m', duty='2ème Echevin', usages=['asker', ], active=False)
-odestrebecq_mu = MeetingUserDescriptor('odestrebecq', duty='3ème Echevin', usages=['asker', ], active=False)
-ghaine_mu = MeetingUserDescriptor('ghaine', duty='4ème Echevin', usages=['asker', ], active=False)
-adupont_mu = MeetingUserDescriptor('adupont', gender='f', duty='5ème Echevin', usages=['asker', ], active=False)
-fghiot_mu = MeetingUserDescriptor('fghiot', gender='f', duty='6ème Echevin', usages=['asker', ], active=False)
-jcwargnie_mu = MeetingUserDescriptor('jcwargnie', duty='7ème Echevin', usages=['asker', ], active=False)
-dstaquet_mu = MeetingUserDescriptor('dstaquet', gender='f', duty='Présidente du CPAS', usages=['asker', ])
-bliebin_mu = MeetingUserDescriptor('bliebin', duty='Conseiller communal', usages=['asker', ])
-cburgeon_mu = MeetingUserDescriptor('cburgeon', gender='f', duty='Conseillère communale', usages=['asker', ])
-mdubois_mu = MeetingUserDescriptor('mdubois', duty='Conseiller communal', usages=['asker', ])
-ydrugmand_mu = MeetingUserDescriptor('ydrugmand', duty='Conseiller communal', usages=['asker', ])
-gmaggiordomo_mu = MeetingUserDescriptor('gmaggiordomo', duty='Conseiller communal', usages=['asker', ])
-ozrihen_mu = MeetingUserDescriptor('ozrihen', gender='f', duty='Conseillère communale', usages=['asker', ])
-mdimattia_mu = MeetingUserDescriptor('mdimattia', duty='Conseiller communal', usages=['asker', ])
-trotolo_mu = MeetingUserDescriptor('trotolo', gender='f', duty='Conseillère communale', usages=['asker', ])
-fromeo_mu = MeetingUserDescriptor('fromeo', duty='Conseiller communal', usages=['asker', ])
-mhanot_mu = MeetingUserDescriptor('mhanot', gender='f', duty='Conseillère communale', usages=['asker', ])
-ivansteen_mu = MeetingUserDescriptor('ivansteen', gender='f', duty='Conseillère communale', usages=['asker', ])
-jkeijzer_mu = MeetingUserDescriptor('jkeijzer', duty='Conseiller communal', usages=['asker', ])
-afagbemi_mu = MeetingUserDescriptor('afagbemi', duty='Conseiller communal', usages=['asker', ])
-agava_mu = MeetingUserDescriptor('agava', duty='Conseiller communal', usages=['asker', ])
-apourbaix_mu = MeetingUserDescriptor('apourbaix', duty='Conseiller communal', usages=['asker', ])
-lduval_mu = MeetingUserDescriptor('lduval', duty='Conseiller communal', usages=['asker', ])
-jchristiaens_mu = MeetingUserDescriptor('jchristiaens', duty='Conseiller communal', usages=['asker', ])
-mvanhooland_mu = MeetingUserDescriptor('mvanhooland', duty='Conseiller communal', usages=['asker', ])
-frmili_mu = MeetingUserDescriptor('frmili', gender='f', duty='Conseillère communale', usages=['asker', ])
-pwaterlot_mu = MeetingUserDescriptor('pwaterlot', duty='Conseiller communal', usages=['asker', ])
-abuscemi_mu = MeetingUserDescriptor('abuscemi', duty='Conseiller communal', usages=['asker', ])
-lwimlot_mu = MeetingUserDescriptor('lwimlot', duty='Conseiller communal', usages=['asker', ])
-cboulangier_mu = MeetingUserDescriptor('cboulangier', gender='f', duty='Conseillère communale', usages=['asker', ])
-vlibois_mu = MeetingUserDescriptor('vlibois', duty='Conseiller communal', usages=['asker', ])
-ammarin_mu = MeetingUserDescriptor('ammarin', gender='f', duty='Conseillère communale', usages=['asker', ])
-agorez_mu = MeetingUserDescriptor('agorez', duty='Conseiller communal', usages=['asker', ])
-jpmichiels_mu = MeetingUserDescriptor('jpmichiels', duty='Conseiller communal', usages=['asker', ])
-cdelplancq_mu = MeetingUserDescriptor('cdelplancq', duty='Conseiller communal', usages=['asker', ])
-fvermeer_mu = MeetingUserDescriptor('fvermeer', gender='f', duty='Conseillère communale', usages=['asker', ])
-lbaccareladurso_mu = MeetingUserDescriptor('lbaccareladurso', gender='f', duty='Conseillère communale', usages=['asker', ])
-clicata_mu = MeetingUserDescriptor('clicata', duty='Conseiller communal', usages=['asker', ])
-mroland_mu = MeetingUserDescriptor('mroland', gender='f', duty='Conseillère communale', usages=['asker', ])
-collegecommunal_mu = MeetingUserDescriptor('collegecommunal', gender='', duty='', usages=['asker', ])
-groupeps_mu = MeetingUserDescriptor('groupeps', gender='', duty='', usages=['asker', ])
-groupemr_mu = MeetingUserDescriptor('groupemr', gender='', duty='', usages=['asker', ])
-groupecdh_mu = MeetingUserDescriptor('groupecdh', gender='', duty='', usages=['asker', ])
-groupeecolo_mu = MeetingUserDescriptor('groupeecolo', gender='', duty='', usages=['asker', ])
-groupeptb_mu = MeetingUserDescriptor('groupeptb', gender='', duty='', usages=['asker', ])
-groupefn_mu = MeetingUserDescriptor('groupefn', gender='', duty='', usages=['asker', ])
-groupeindependant_mu = MeetingUserDescriptor('groupeindependant', gender='', duty='', usages=['asker', ])
-
 pmManager = UserDescriptor('pmManager', ['MeetingManager'])
 pmCreator1 = UserDescriptor('pmCreator1', [])
 pmCreator1b = UserDescriptor('pmCreator1b', [])
@@ -237,61 +137,57 @@ pmReviewer1 = UserDescriptor('pmReviewer1', [])
 pmCreator2 = UserDescriptor('pmCreator2', [])
 pmReviewer2 = UserDescriptor('pmReviewer2', [])
 pmAdviser1 = UserDescriptor('pmAdviser1', [])
-pmServiceHead1 = UserDescriptor('pmServiceHead1', [])
-pmOfficeManager1 = UserDescriptor('pmOfficeManager1', [])
-pmDivisionHead1 = UserDescriptor('pmDivisionHead1', [])
-pmDirector1 = UserDescriptor('pmDirector1', [])
-pmDirector2 = UserDescriptor('pmDirector2', [])
+voter1 = UserDescriptor('voter1', [], fullname='M. Voter One')
+voter2 = UserDescriptor('voter2', [], fullname='M. Voter Two')
+powerobserver1 = UserDescriptor('powerobserver1', [], fullname='M. Power Observer1')
+# powerobserver1 is MeetingPowerObserverLocal because in the meetingPma '_powerobservers' group
+plonemeeting_assembly_powerobservers = PloneGroupDescriptor('meeting-config-council_powerobservers',
+                                                            'meeting-config-council_powerobservers',
+                                                            [])
+powerobserver1.ploneGroups = [plonemeeting_assembly_powerobservers, ]
+powerobserver2 = UserDescriptor('powerobserver2', [], fullname='M. Power Observer2')
 
-groups = [
-           GroupDescriptor('developers', 'Developers', 'Devel'),
-           GroupDescriptor('vendors', 'Vendors', 'Devil'),
-           GroupDescriptor('secretary', 'Secretary', 'Secr'),
-         ]
+# Add a vintage group
+endUsers = GroupDescriptor('endUsers', 'End users', 'EndUsers', active=False)
 
-groups[0].creators.append(pmCreator1)
-groups[0].creators.append(pmCreator1b)
-groups[0].creators.append(pmManager)
-groups[0].reviewers.append(pmReviewer1)
-groups[0].reviewers.append(pmReviewer2)
-groups[0].reviewers.append(pmManager)
-groups[0].observers.append(pmReviewer1)
-groups[0].observers.append(pmManager)
-groups[0].advisers.append(pmAdviser1)
-groups[0].serviceheads.append(pmServiceHead1)
-groups[0].officemanagers.append(pmOfficeManager1)
-groups[0].divisionheads.append(pmDivisionHead1)
-groups[0].directors.append(pmDirector1)
+developers = GroupDescriptor('developers', 'Developers', 'Devel', givesMandatoryAdviceOn="python:False")
+developers.creators.append(pmCreator1)
+developers.creators.append(pmCreator1b)
+developers.creators.append(pmManager)
+developers.reviewers.append(pmReviewer1)
+developers.reviewers.append(pmManager)
+developers.observers.append(pmReviewer1)
+developers.observers.append(pmManager)
+developers.advisers.append(pmAdviser1)
+setattr(developers, 'signatures', 'developers signatures')
+setattr(developers, 'echevinServices', 'developers')
 
-#pmReviewer1 can validate every levels
-groups[0].serviceheads.append(pmReviewer1)
-groups[0].officemanagers.append(pmReviewer1)
-groups[0].divisionheads.append(pmReviewer1)
-groups[0].directors.append(pmReviewer1)
+#give an advice on recurring items
+vendors = GroupDescriptor('vendors', 'Vendors', 'Devil', givesMandatoryAdviceOn="python: item.id == 'recurringagenda1'")
+vendors.creators.append(pmCreator2)
+vendors.reviewers.append(pmReviewer2)
+vendors.observers.append(pmReviewer2)
+vendors.advisers.append(pmReviewer2)
+setattr(vendors, 'signatures', '')
 
-groups[1].creators.append(pmCreator2)
-groups[1].reviewers.append(pmReviewer2)
-groups[1].observers.append(pmReviewer2)
-groups[1].advisers.append(pmReviewer2)
-groups[1].directors.append(pmDirector2)
+# Do voters able to see items to vote for
+developers.observers.append(voter1)
+developers.observers.append(voter2)
+vendors.observers.append(voter1)
+vendors.observers.append(voter2)
 
-groups[0].creators.append(pmManager)
-groups[0].serviceheads.append(pmManager)
-groups[0].officemanagers.append(pmManager)
-groups[0].divisionheads.append(pmManager)
-groups[0].directors.append(pmManager)
-groups[0].reviewers.append(pmManager)
-groups[0].observers.append(pmManager)
-groups[0].advisers.append(pmManager)
-
-groups[2].creators.append(pmManager)
-groups[2].serviceheads.append(pmManager)
-groups[2].officemanagers.append(pmManager)
-groups[2].divisionheads.append(pmManager)
-groups[2].directors.append(pmManager)
-groups[2].reviewers.append(pmManager)
-groups[2].observers.append(pmManager)
-groups[2].advisers.append(pmManager)
+pmManager_observer = MeetingUserDescriptor('pmManager',
+                                           duty='SecrÃ©taire de la Chancellerie',
+                                           usages=['assemblyMember'])
+cadranel_signer = MeetingUserDescriptor('cadranel', duty='SecrÃ©taire',
+                                        usages=['assemblyMember', 'signer'],
+                                        signatureImage='SignatureCadranel.jpg',
+                                        signatureIsDefault=True)
+# Add meeting users (voting purposes)
+muser_voter1 = MeetingUserDescriptor('voter1', duty='Voter1',
+                                     usages=['assemblyMember', 'voter', ])
+muser_voter2 = MeetingUserDescriptor('voter2', duty='Voter2',
+                                     usages=['assemblyMember', 'voter', ])
 
 
 # Meeting configurations -------------------------------------------------------
@@ -329,7 +225,7 @@ collegeMeeting.useAdvices = True
 collegeMeeting.enforceAdviceMandatoriness = False
 collegeMeeting.enableAdviceInvalidation = False
 collegeMeeting.useCopies = True
-collegeMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'), groups[1].getIdSuffixed('reviewers'), groups[2].getIdSuffixed('reviewers'),]
+collegeMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
 collegeMeeting.podTemplates = collegeTemplates
 collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
 collegeMeeting.useGroupsAsCategories = True
@@ -412,7 +308,7 @@ councilMeeting.useAdvices = False
 councilMeeting.enforceAdviceMandatoriness = False
 councilMeeting.enableAdviceInvalidation = False
 councilMeeting.useCopies = True
-councilMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'), groups[1].getIdSuffixed('reviewers'), groups[2].getIdSuffixed('reviewers'),]
+councilMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
 councilMeeting.podTemplates = councilTemplates
 councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service',]
 councilMeeting.sortingMethodOnAddItem = 'on_privacy_then_categories'
@@ -435,19 +331,12 @@ councilMeeting.recurringItems = [
         decision='',
         meetingTransitionInsertingMe='setInCouncil'),
 ]
-councilMeeting.meetingUsers = [jgobert_mu, asabbatini_mu, jgodin_mu, odestrebecq_mu, ghaine_mu,
-                               adupont_mu, fghiot_mu, jcwargnie_mu, dstaquet_mu, bliebin_mu, cburgeon_mu,
-                               mdubois_mu, ydrugmand_mu, gmaggiordomo_mu, ozrihen_mu, mdimattia_mu, trotolo_mu,
-                               fromeo_mu, mhanot_mu, ivansteen_mu, jkeijzer_mu, afagbemi_mu, agava_mu,
-                               apourbaix_mu, lduval_mu, jchristiaens_mu, mvanhooland_mu, frmili_mu, pwaterlot_mu,
-                               abuscemi_mu, lwimlot_mu, cboulangier_mu, vlibois_mu, ammarin_mu, agorez_mu, jpmichiels_mu,
-                               cdelplancq_mu, fvermeer_mu, lbaccareladurso_mu, clicata_mu, mroland_mu, collegecommunal_mu,
-                               groupeps_mu, groupemr_mu, groupecdh_mu, groupeecolo_mu, groupeptb_mu, groupefn_mu, groupeindependant_mu, ]
+councilMeeting.meetingUsers = [muser_voter1, muser_voter2, ]
 
 data = PloneMeetingConfiguration(
-           meetingFolderTitle='Mes séances',
-           meetingConfigs=(collegeMeeting, councilMeeting),
-           groups=groups)
-data.unoEnabledPython='/usr/bin/python'
-data.usedColorSystem='state_color'
+    meetingFolderTitle='Mes seances',
+    meetingConfigs=(collegeMeeting, councilMeeting),
+    groups=(developers, vendors, endUsers))
+data.unoEnabledPython = '/usr/bin/python'
+data.usersOutsideGroups = [voter1, voter2, powerobserver1, powerobserver2]
 # ------------------------------------------------------------------------------

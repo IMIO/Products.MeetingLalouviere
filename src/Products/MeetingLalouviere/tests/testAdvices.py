@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2008-2010 by PloneGov
+# File: testAdvices.py
+#
+# Copyright (c) 2007-2012 by CommunesPlone.org
 #
 # GNU General Public License (GPL)
 #
@@ -20,21 +22,25 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
-from Products.MeetingLalouviere.testing import MLL_TEST_PROFILE_FUNCTIONAL
-from Products.MeetingLalouviere.tests.helpers import MeetingLalouviereTestingHelpers
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
+    MeetingLalouviereTestCase
+from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
 
 
-class MeetingLalouviereTestCase(MeetingCommunesTestCase, MeetingLalouviereTestingHelpers):
-    """Base class for defining MeetingLalouviere test cases."""
+class testAdvices(MeetingLalouviereTestCase, mcta):
+    '''Tests various aspects of advices management.
+       Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
-    layer = MLL_TEST_PROFILE_FUNCTIONAL
+    def setUp(self):
+        """Redefine advices related states."""
+        super(testAdvices, self).setUp()
+        self.meetingConfig.setItemAdviceStates(('proposed_to_director', 'validated', ))
+        self.meetingConfig.setItemAdviceEditStates(('proposed_to_director', ))
+        self.meetingConfig.setItemAdviceViewStates(('presented', ))
 
 
-# this is necessary to execute base test
-# test_tescasesubproduct_VerifyTestFiles from PloneMeeting
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(MeetingCommunesTestCase, prefix='test_testcasesubproduct_'))
+    suite.addTest(makeSuite(testAdvices, prefix='test_subproduct_'))
     return suite
