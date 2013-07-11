@@ -24,36 +24,10 @@
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
     MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
-from DateTime import DateTime
 
 
-class testCustomMeetingItem(MeetingLalouviereTestCase, pmtmi):
+class testCustomMeetingItem(MeetingLalouviereTestCase):
     """
         Tests the MeetingItem adapted methods
     """
 
-    def afterSetUp(self):
-        MeetingLalouviereTestCase.afterSetUp(self)
-
-    def _createMeetingWithItems(self):
-        '''Create a meeting with a bunch of items.'''
-        meetingDate = DateTime().strftime('%y/%m/%d %H:%M:%S')
-        meeting = self.create('Meeting', date=meetingDate)
-        item1 = self.create('MeetingItem')
-        item1.setProposingGroup('developers')
-        item2 = self.create('MeetingItem')
-        item2.setProposingGroup('vendors')
-        for item in (item1, item2):
-            self.do(item, 'propose')
-            self.do(item, 'validate')
-            self.do(item, 'present')
-        return meeting
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    # launch only tests prefixed by 'test_mll_' to avoid launching the tests coming from pmtmi
-    suite.addTest(makeSuite(testCustomMeetingItem, prefix='test_mll_'))
-    return suite

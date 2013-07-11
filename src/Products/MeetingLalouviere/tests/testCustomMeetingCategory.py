@@ -29,12 +29,4 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
 class testCustomMeetingCategory(MeetingLalouviereTestCase):
     '''Tests the MeetingGroup adapted methods.'''
 
-    def afterSetUp(self):
-        MeetingLalouviereTestCase.afterSetUp(self)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(testCustomMeetingCategory))
-    return suite
+    pass

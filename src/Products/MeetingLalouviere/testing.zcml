@@ -3,6 +3,7 @@
            i18n_domain="MeetingLalouviere">
 
     <include file="configure.zcml"/>
+    <include package="Products.PloneMeeting"/>
 
     <genericsetup:registerProfile
         name="testing"

@@ -24,16 +24,12 @@
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
     MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testMeeting import testMeeting as pmtm
 
 
-class testCustomMeeting(MeetingLalouviereTestCase, pmtm):
+class testCustomMeeting(MeetingLalouviereTestCase):
     """
         Tests the Meeting adapted methods
     """
-
-    def afterSetUp(self):
-        MeetingLalouviereTestCase.afterSetUp(self)
 
     def test_mll_getCategories(self):
         """
@@ -41,7 +37,7 @@ class testCustomMeeting(MeetingLalouviereTestCase, pmtm):
           This method is used in "meeting-config-council"
         """
         self.meetingConfig = self.meetingConfig2
-        self.login('pmManager')
+        self.changeUser('pmManager')
         m = self.create('Meeting', date='2009/11/26 09:00:00')
         expectedNormal = ['recurrent', 'commission-travaux', 'commission-enseignement',
                           'commission-cadre-de-vie-et-logement',
@@ -66,11 +62,3 @@ class testCustomMeeting(MeetingLalouviereTestCase, pmtm):
           Already tested in MeetingLaouviere.tests.testMeeting.py
         '''
         pass
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    # launch only tests prefixed by 'test_mll_' to avoid launching the tests coming from pmtm
-    suite.addTest(makeSuite(testCustomMeeting, prefix='test_mll_'))
-    return suite
