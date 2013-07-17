@@ -26,14 +26,31 @@ from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     '''Override some values of PloneMeetingTestingHelpers.'''
 
-    TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToDirector', )
+    TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToServiceHead',
+                                        'proposeToOfficeManager',
+                                        'proposeToDivisionHead',
+                                        'proposeToDirector', )
     TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('proposeToDirector', )
-    TRANSITIONS_FOR_VALIDATING_ITEM_1 = ('proposeToDirector', 'validate', )
+    TRANSITIONS_FOR_VALIDATING_ITEM_1 = ('proposeToServiceHead',
+                                         'proposeToOfficeManager',
+                                         'proposeToDivisionHead',
+                                         'proposeToDirector',
+                                         'validate', )
     TRANSITIONS_FOR_VALIDATING_ITEM_2 = ('proposeToDirector', 'validate', )
-    TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('proposeToDirector', 'validate', 'present', )
+    TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('proposeToServiceHead',
+                                         'proposeToOfficeManager',
+                                         'proposeToDivisionHead',
+                                         'proposeToDirector',
+                                         'validate',
+                                         'present', )
     TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('proposeToDirector', 'validate', 'present', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('freeze', 'decide', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('setInCommittee', 'setInCouncil', )
+
+    TRANSITIONS_FOR_DECIDING_MEETING_1 = ('freeze', 'decide', )
+    TRANSITIONS_FOR_DECIDING_MEETING_2 = ('setInCommittee', 'setInCouncil', )
+    TRANSITIONS_FOR_CLOSING_MEETING_1 = ('freeze', 'decide', 'close', )
+    TRANSITIONS_FOR_CLOSING_MEETING_2 = ('setInCommittee', 'setInCouncil', 'close', )
     BACK_TO_WF_PATH_1 = {
         'itemcreated': ('backToItemFrozen',
                         'backToPresented',
@@ -63,5 +80,6 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         'validated': ('backToItemFrozen',
                       'backToPresented',
                       'backToValidated', )}
+
     WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed_to_director',
                               'validated': 'validated'}

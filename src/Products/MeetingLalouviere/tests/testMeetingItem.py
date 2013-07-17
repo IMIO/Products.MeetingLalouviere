@@ -35,7 +35,7 @@ class testMeetingItem(MeetingLalouviereTestCase, tmi):
         Tests the MeetingItem class methods.
     """
 
-    def test_subproduct_IsPrivacyViewable(self):
+    def test_subproduct_call_IsPrivacyViewable(self):
         '''
           Original test, see doc string in PloneMeeting.
           Here, as soon as a user can access an item, the item isPrivacyViewable.
