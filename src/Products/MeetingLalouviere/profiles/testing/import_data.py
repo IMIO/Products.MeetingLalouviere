@@ -138,16 +138,18 @@ councilTemplates = [councilOJExplanatoryTemplate, councilFardesTemplate, council
                     councilNoteExplTemplate, councilProjetDelibTemplate, councilDelibTemplate]
 
 # Categories -------------------------------------------------------------------
-recurring = CategoryDescriptor('recurrents', 'Recurrents')
-categories = [recurring,
-              CategoryDescriptor('recurrents2', 'Recurrents2'),
-              CategoryDescriptor('travaux', 'Travaux'),
-              CategoryDescriptor('urbanisme', 'Urbanisme'),
-              CategoryDescriptor('comptabilite', 'Comptabilite/Recettes'),
-              CategoryDescriptor('personnel', 'Personnel'),
-              CategoryDescriptor('population', 'Population/Etat-civil'),
-              CategoryDescriptor('locations', 'Locations'),
-              CategoryDescriptor('divers', 'Divers'), ]
+categories = [
+    CategoryDescriptor('deployment', 'Deployment topics'),
+    CategoryDescriptor('maintenance', 'Maintenance topics'),
+    CategoryDescriptor('development', 'Development topics'),
+    CategoryDescriptor('events', 'Events'),
+    CategoryDescriptor('research', 'Research topics'),
+    CategoryDescriptor('projects', 'Projects'),
+    # A vintage category
+    CategoryDescriptor('marketing', 'Marketing', active=False),
+    # usingGroups category
+    CategoryDescriptor('subproducts', 'Subproducts wishes', usingGroups=('vendors',)),
+]
 
 # Users and groups -------------------------------------------------------------
 admin = UserDescriptor('admin', ['Manager', 'MeetingManager'])
@@ -244,7 +246,7 @@ collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'propo
 collegeMeeting.meetingTopicStates = ('created', 'frozen')
 collegeMeeting.decisionTopicStates = ('decided', 'closed')
 collegeMeeting.itemAdviceStates = ('validated',)
-collegeMeeting.recordItemHistoryStates = ['',]
+collegeMeeting.recordItemHistoryStates = ['', ]
 collegeMeeting.maxShownMeetings = 5
 collegeMeeting.maxDaysDecisions = 60
 collegeMeeting.meetingAppDefaultView = 'topic_searchmyitems'
@@ -262,44 +264,20 @@ collegeMeeting.meetingUsers = []
 
 collegeMeeting.recurringItems = [
     RecurringItemDescriptor(
-        id='recurringagenda1',
-        title='Approuve le proces-verbal de la seance anterieure',
-        description='Approuve le proces-verbal de la seance anterieure',
-        category='recurrents',
-        proposingGroup='developers',
-        decision='Proces-verbal approuve'),
+        id='recItem1',
+        description='<p>This is the first recurring item.</p>',
+        title='Recurring item #1',
+        proposingGroup='',
+        category='developers',
+        decision='First recurring item approved'),
+
     RecurringItemDescriptor(
-        id='recurringofficialreport1',
-        title='Autorise et signe les bons de commande de la semaine',
-        description='Autorise et signe les bons de commande de la semaine',
-        category='recurrents',
-        proposingGroup='developers',
-        decision='Bons de commande signes'),
-    RecurringItemDescriptor(
-        id='recurringofficialreport2',
-        title='Ordonnance et signe les mandats de paiement de la semaine',
-        description='Ordonnance et signe les mandats de paiement de la semaine',
-        category='recurrents',
-        proposingGroup='developers',
-        decision='Mandats de paiement de la semaine approuves'),
-    RecurringItemDescriptor(
-        id='template1',
-        title='Tutelle CPAS',
-        description='Tutelle CPAS',
-        category='',
-        proposingGroup='developers',
-        templateUsingGroups=['developers', 'vendors'],
-        usages=['as_template_item', ],
-        decision=""" """),
-    RecurringItemDescriptor(
-        id='template2',
-        title='Controle medical systematique agent contractuel',
-        description='Controle medical systematique agent contractuel',
-        category='',
-        proposingGroup='vendors',
-        templateUsingGroups=['vendors', ],
-        usages=['as_template_item', ],
-        decision=""" """)
+        id='recItem2',
+        title='Recurring item #2',
+        description='<p>This is the second recurring item.</p>',
+        proposingGroup='',
+        category='developers',
+        decision='Second recurring item approved'),
 ]
 
 # Conseil communal
@@ -364,14 +342,8 @@ councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service',]
 councilMeeting.sortingMethodOnAddItem = 'on_privacy_then_categories'
 councilMeeting.useGroupsAsCategories = False
 councilMeeting.meetingUsers = [muser_voter1, muser_voter2, ]
-councilMeeting.recurringItems = [
-    RecurringItemDescriptor('recItem1',
-                            'Recurring item #1',
-                            'vendors',
-                            category='developers',
-                            description='<p>This is the first recurring item.</p>',
-                            decision='Recurring Item approved')
-]
+councilMeeting.recurringItems = []
+
 data = PloneMeetingConfiguration(
     meetingFolderTitle='Mes seances',
     meetingConfigs=(collegeMeeting, councilMeeting),

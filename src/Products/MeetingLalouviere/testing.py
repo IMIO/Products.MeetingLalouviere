@@ -12,14 +12,14 @@ MLL_ZCML = zca.ZCMLSandbox(filename="testing.zcml",
 MLL_Z2 = z2.IntegrationTesting(bases=(z2.STARTUP, MLL_ZCML),
                                name='MLL_Z2')
 
-MLL_TEST_PROFILE = PloneWithPackageLayer(
+MLL_TESTING_PROFILE = PloneWithPackageLayer(
     zcml_filename="testing.zcml",
     zcml_package=Products.MeetingLalouviere,
     additional_z2_products=('Products.MeetingLalouviere',
                             'Products.PloneMeeting',
                             'Products.CMFPlacefulWorkflow'),
     gs_profile_id='Products.MeetingLalouviere:testing',
-    name="MLL_TEST_PROFILE")
+    name="MLL_TESTING_PROFILE")
 
-MLL_TEST_PROFILE_FUNCTIONAL = FunctionalTesting(
-    bases=(MLL_TEST_PROFILE,), name="MLL_TEST_PROFILE_FUNCTIONAL")
+MLL_TESTING_PROFILE_FUNCTIONAL = FunctionalTesting(
+    bases=(MLL_TESTING_PROFILE,), name="MLL_TESTING_PROFILE_FUNCTIONAL")

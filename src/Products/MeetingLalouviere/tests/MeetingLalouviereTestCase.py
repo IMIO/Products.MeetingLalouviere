@@ -21,14 +21,14 @@
 #
 
 from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
-from Products.MeetingLalouviere.testing import MLL_TEST_PROFILE_FUNCTIONAL
+from Products.MeetingLalouviere.testing import MLL_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingLalouviere.tests.helpers import MeetingLalouviereTestingHelpers
 
 
 class MeetingLalouviereTestCase(MeetingCommunesTestCase, MeetingLalouviereTestingHelpers):
     """Base class for defining MeetingLalouviere test cases."""
 
-    layer = MLL_TEST_PROFILE_FUNCTIONAL
+    layer = MLL_TESTING_PROFILE_FUNCTIONAL
 
 
 # this is necessary to execute base test

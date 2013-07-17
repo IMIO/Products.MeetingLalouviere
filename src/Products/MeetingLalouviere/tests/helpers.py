@@ -20,10 +20,10 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
+from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
 
-class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
+class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     '''Override some values of PloneMeetingTestingHelpers.'''
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToDirector', )
@@ -32,23 +32,36 @@ class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
     TRANSITIONS_FOR_VALIDATING_ITEM_2 = ('proposeToDirector', 'validate', )
     TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('proposeToDirector', 'validate', 'present', )
     TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('proposeToDirector', 'validate', 'present', )
-    BACK_TO_WF_PATH = {'proposed': ('backToItemFrozen', 'backToPresented', 'backToValidated', 'backToProposedToDirector', ),
-                       'validated': ('backToItemFrozen', 'backToPresented', 'backToValidated', )}
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('freeze', 'decide', )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('setInCommittee', 'setInCouncil', )
+    BACK_TO_WF_PATH_1 = {
+        'itemcreated': ('backToItemFrozen',
+                        'backToPresented',
+                        'backToValidated',
+                        'backToProposedToDirector',
+                        'backToProposedToDivisionHead',
+                        'backToProposedToOfficeManager',
+                        'backToProposedToServiceHead',
+                        'backToItemCreated'),
+        'proposed': ('backToItemFrozen',
+                     'backToPresented',
+                     'backToValidated',
+                     'backToProposedToDirector', ),
+        'validated': ('backToItemFrozen',
+                      'backToPresented',
+                      'backToValidated', )}
+    BACK_TO_WF_PATH_2 = {
+        'itemcreated': ('backToItemFrozen',
+                        'backToPresented',
+                        'backToValidated',
+                        'backToProposedToDirector',
+                        'backToItemCreated'),
+        'proposed': ('backToItemFrozen',
+                     'backToPresented',
+                     'backToValidated',
+                     'backToProposedToDirector', ),
+        'validated': ('backToItemFrozen',
+                      'backToPresented',
+                      'backToValidated', )}
     WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed_to_director',
                               'validated': 'validated'}
-
-    def _doTransitionsFor(self, itemOrMeeting, transitions):
-        """Overrided from PloneMeetingTestingHelpers, check XXX here under."""
-        currentUser = self.portal.portal_membership.getAuthenticatedMember().getId()
-        # do things as admin to avoid permission issues
-        self.changeUser('admin')
-        # XXX begin changes for MeetingLalouviere
-        if itemOrMeeting.portal_type == 'MeetingItemCouncil':
-            # a category is mandatory for 'MeetingItemCouncil'
-            if not itemOrMeeting.getCategory():
-                itemOrMeeting.setCategory(itemOrMeeting.listCategories()[1])
-        # XXX end changes
-        for tr in transitions:
-            if tr in self.transitions(itemOrMeeting):
-                self.do(itemOrMeeting, tr)
-        self.changeUser(currentUser)
