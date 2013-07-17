@@ -25,12 +25,12 @@
 from DateTime import DateTime
 
 from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
-from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as tmi
+from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
     MeetingLalouviereTestCase
 
 
-class testMeetingItem(MeetingLalouviereTestCase, tmi):
+class testMeetingItem(MeetingLalouviereTestCase, mctmi):
     """
         Tests the MeetingItem class methods.
     """

@@ -83,3 +83,15 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed_to_director',
                               'validated': 'validated'}
+
+    def _createMeetingWithItems(self):
+        '''Create a meeting with a bunch of items.
+           Overrided to do it as 'Manager' to be able
+           to add recurring items.'''
+        from plone.app.testing.helpers import setRoles
+        currentMember = self.portal.portal_membership.getAuthenticatedMember()
+        currentMemberRoles = currentMember.getRoles()
+        setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
+        meeting = MeetingCommunesTestingHelpers._createMeetingWithItems(self)
+        setRoles(self.portal, currentMember.getId(), currentMemberRoles)
+        return meeting
