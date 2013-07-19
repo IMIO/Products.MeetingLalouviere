@@ -62,6 +62,16 @@ class CustomMeeting(Meeting):
     def __init__(self, item):
         self.context = item
 
+    security.declarePublic('isDecided')
+    def isDecided(self):
+        """
+          The meeting is supposed 'decided', if at least :
+          - in_council for MeetingCouncil
+          - decided for MeetingCollege
+        """
+        meeting = self.getSelf()
+        return meeting.queryState() in ('in_council', 'decided', 'closed', 'archived')
+
     # Implements here methods that will be used by templates
     security.declarePublic('getPrintableItems')
     def getPrintableItems(self, itemUids, late=False, ignore_review_states=[],
