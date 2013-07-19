@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeeting.py
+# File: testMeetingFileType.py
 #
-# Copyright (c) 2007-2012 by CommunesPlone.org
+# Copyright (c) 2007-2013 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -23,15 +23,15 @@
 #
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingCommunes.tests.testMeetingFileType import testMeetingFileType as mctmft
 
 
-class testMeeting(MeetingLalouviereTestCase, mctm):
-    """Tests the Meeting class methods."""
+class testMeetingFileType(MeetingLalouviereTestCase, mctmft):
+    '''Tests the MeetingFileType class methods.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeeting, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testMeetingFileType, prefix='test_subproduct_'))
     return suite

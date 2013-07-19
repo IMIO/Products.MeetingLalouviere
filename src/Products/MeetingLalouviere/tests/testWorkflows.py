@@ -23,9 +23,7 @@
 #
 
 from AccessControl import Unauthorized
-from Products.MeetingLalouviere.config import *
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
-    MeetingLalouviereTestCase
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.tests.testWorkflows import testWorkflows as pmtw
 from DateTime import DateTime
 
@@ -42,59 +40,13 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
        (self.assertRaise). Instead, we check that the user has the permission
        to do so (getSecurityManager().checkPermission)."""
 
-    def afterSetUp(self):
-        MeetingLalouviereTestCase.afterSetUp(self)
-
-    def afterSetUpPM(self):
-        """
-            The afterSetUp method from PloneMeeting must be called in each test
-            and not in afterSetUp method of this class.
-            If not, this test transaction doesn't contain what's done
-            in plonemeeting afterSetUp and it is not cleared
-        """
-        pass
-        #pmtw.afterSetUp(self)
-
-    def test_mll_VerifyTestNumbers(self):
-        """
-            We verify that there are the same test methods in original product and this sub-product
-        """
-        tpm = self.getTestMethods(pmtw, 'test')
-        tmc = self.getTestMethods(testWorkflows, 'test_mll_call_')
-        missing = []
-        for key in tpm:
-            key2 = key.replace('test', 'test_mll_call_')
-            if not key2 in tmc:
-                missing.append(key)
-        if len(missing):
-            self.fail("missing test methods %s from PloneMeeting test class '%s'" % (missing, 'testWorkflows'))
-
-    def test_mll_call_CreateItem(self):
-        """
-            Creates an item (in "created" state) and checks that only
-            allowed persons may see this item.
-        """
-        #we do the test for the college config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        pmtw.testCreateItem(self)
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
-        pmtw.testCreateItem(self)
-
-    def test_mll_call_RemoveObjects(self):
-        """
-            Tests objects removal (items, meetings, annexes...).
-            Already tested in PloneMeeting, we pass...
-        """
-        pass
-
-    def test_mll_call_WholeDecisionProcess(self):
+    def test_subproduct_call_WholeDecisionProcess(self):
         """
             This test covers the whole decision workflow. It begins with the
             creation of some items, and ends by closing a meeting.
             This call 2 sub tests for each process : college and council
         """
-        #self._testWholeDecisionProcessCollege()
+        self._testWholeDecisionProcessCollege()
         self._testWholeDecisionProcessCouncil()
 
     def _testWholeDecisionProcessCollege(self):
@@ -284,18 +236,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.assertEquals(item1.queryState(), 'accepted_but_modified')
         self.assertEquals(item2.queryState(), 'accepted')
 
-    def test_mll_call_WorkflowPermissions(self):
-        """
-            This test checks whether workflow permissions are correct while
-            creating and changing state of items and meetings. During the test,
-            some users go from one group to the other. The test checks that in
-            this case local roles (whose permissions depend on) are correctly
-            updated.
-            Mechanism already tested in PloneMeeting, we pass...
-        """
-        pass
-
-    def test_mll_call_RecurringItems(self):
+    def test_subproduct_call_RecurringItems(self):
         """
             Tests the recurring items system.
         """
@@ -318,7 +259,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.do(meeting, 'close')
         self.failUnless(len(meeting.getAllItems()) == 2)
 
-    def test_mll_FreezeMeeting(self):
+    def test_subproduct_FreezeMeeting(self):
         """
            When we freeze a meeting, every presented items will be frozen
            too and their state will be set to 'itemfrozen'.  When the meeting
@@ -351,7 +292,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
 
-    def test_mll_CloseMeeting(self):
+    def test_subproduct_CloseMeeting(self):
         """
            When we close a meeting, every items are set to accepted if they are still
            not decided...
@@ -412,20 +353,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         #presented change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
 
-    def test_mll_call_RemoveContainer(self):
-        """
-          We avoid a strange behaviour of Plone.  Removal of a container
-          does not check inner objects security...
-          Check that removing an item or a meeting by is container fails.
-        """
-        #we do the test for the college config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        pmtw.testRemoveContainer(self)
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
-        pmtw.testRemoveContainer(self)
-
-    def test_mll_call_DeactivateMeetingGroup(self):
+    def test_subproduct_call_DeactivateMeetingGroup(self):
         '''Deactivating a MeetingGroup will transfer every users of every
            sub Plone groups to the '_observers' Plone group'''
         #we do the test for the college config

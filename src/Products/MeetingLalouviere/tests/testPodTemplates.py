@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeeting.py
+# File: testPodTemplates.py
 #
-# Copyright (c) 2007-2012 by CommunesPlone.org
+# Copyright (c) 2013 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -23,15 +23,15 @@
 #
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingCommunes.tests.testPodTemplates import testPodTemplates as mctpt
 
 
-class testMeeting(MeetingLalouviereTestCase, mctm):
-    """Tests the Meeting class methods."""
+class testPodTemplates(MeetingLalouviereTestCase, mctpt):
+    '''Tests various aspects of document generation through POD templates.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeeting, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testPodTemplates, prefix='test_subproduct_'))
     return suite

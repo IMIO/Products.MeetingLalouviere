@@ -176,6 +176,26 @@ collegeMeeting.recurringItems = [
         proposingGroup='',
         category='developers',
         decision='Second recurring item approved'),
+
+    RecurringItemDescriptor(
+        id='template1',
+        title='Template 1',
+        description='Template 1',
+        category='',
+        proposingGroup='developers',
+        templateUsingGroups=['developers', 'vendors'],
+        usages=['as_template_item', ],
+        decision="""<p>Template 1.</p>"""),
+    RecurringItemDescriptor(
+        id='template2',
+        title='Template 2',
+        description='Template 2',
+        category='',
+        proposingGroup='vendors',
+        templateUsingGroups=['vendors', ],
+        usages=['as_template_item', ],
+        decision="""
+            <p>Template 2.</p>"""),
 ]
 
 # Conseil communal

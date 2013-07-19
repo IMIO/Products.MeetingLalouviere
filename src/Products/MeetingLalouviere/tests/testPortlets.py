@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: testAdvices.py
+# File: testPortlets.py
 #
 # Copyright (c) 2007-2012 by CommunesPlone.org
 #
@@ -21,25 +21,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
+
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
+from Products.MeetingCommunes.tests.testPortlets import testPortlets as mctp
 
 
-class testAdvices(MeetingLalouviereTestCase, mcta):
-    '''Tests various aspects of advices management.
-       Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
-
-    def setUp(self):
-        """Redefine advices related states."""
-        super(mcta, self).setUp()
-        self.setMeetingConfig(self.meetingConfig2.getId())
-        self.meetingConfig.setItemAdviceStates(('proposed_to_director', 'validated', ))
-        self.meetingConfig.setItemAdviceEditStates(('proposed_to_director', ))
-        self.meetingConfig.setItemAdviceViewStates(('presented', ))
+class testPortlets(MeetingLalouviereTestCase, mctp):
+    '''Tests the portlets methods.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testAdvices, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testPortlets, prefix='test_subproduct_'))
     return suite

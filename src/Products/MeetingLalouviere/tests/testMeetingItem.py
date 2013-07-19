@@ -25,9 +25,8 @@
 from DateTime import DateTime
 
 from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
-    MeetingLalouviereTestCase
 
 
 class testMeetingItem(MeetingLalouviereTestCase, mctmi):

@@ -22,12 +22,11 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
-    MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testChangeItemOrderView import testChangeItemOrderView as mcciov
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
+from Products.MeetingCommunes.tests.testChangeItemOrderView import testChangeItemOrderView as mctciov
 
 
-class testChangeItemOrderView(MeetingLalouviereTestCase, mcciov):
+class testChangeItemOrderView(MeetingLalouviereTestCase, mctciov):
     '''Tests the ChangeItemOrderView class methods.'''
 
 
