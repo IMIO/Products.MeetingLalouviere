@@ -51,8 +51,8 @@ class testCustomMeeting(MeetingLalouviereTestCase):
                            'points-conseillers-3eme-supplement']
         for supplCat in supplCategories:
             newCatId = self.meetingConfig.categories.invokeFactory('MeetingCategory',
-                                                        id=supplCat,
-                                                        title='supplCat')
+                                                                   id=supplCat,
+                                                                   title='supplCat')
             newCat = getattr(self.meetingConfig.categories, newCatId)
             newCat.processForm()
         self.changeUser('pmManager')
