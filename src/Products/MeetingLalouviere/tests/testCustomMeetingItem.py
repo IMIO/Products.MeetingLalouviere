@@ -30,4 +30,3 @@ class testCustomMeetingItem(MeetingLalouviereTestCase):
     """
         Tests the MeetingItem adapted methods
     """
-

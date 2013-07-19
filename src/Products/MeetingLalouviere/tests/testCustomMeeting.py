@@ -37,6 +37,24 @@ class testCustomMeeting(MeetingLalouviereTestCase):
           This method is used in "meeting-config-council"
         """
         self.meetingConfig = self.meetingConfig2
+        # add some "Suppl" categories
+        self.changeUser('admin')
+        supplCategories = ['deployment-1er-supplement',
+                           'maintenance-1er-supplement',
+                           'development-1er-supplement',
+                           'events-1er-supplement',
+                           'research-1er-supplement',
+                           'projects-1er-supplement',
+                           'marketing-1er-supplement',
+                           'subproducts-1er-supplement',
+                           'points-conseillers-2eme-supplement',
+                           'points-conseillers-3eme-supplement']
+        for supplCat in supplCategories:
+            newCatId = self.meetingConfig.categories.invokeFactory('MeetingCategory',
+                                                        id=supplCat,
+                                                        title='supplCat')
+            newCat = getattr(self.meetingConfig.categories, newCatId)
+            newCat.processForm()
         self.changeUser('pmManager')
         m = self.create('Meeting', date='2009/11/26 09:00:00')
         expectedNormal = ['deployment',
@@ -48,6 +66,7 @@ class testCustomMeeting(MeetingLalouviereTestCase):
                           'marketing',
                           'subproducts']
         self.assertEquals(m.getNormalCategories(), expectedNormal)
+
         expectedFirstSuppl = ['deployment-1er-supplement',
                               'maintenance-1er-supplement',
                               'development-1er-supplement',
