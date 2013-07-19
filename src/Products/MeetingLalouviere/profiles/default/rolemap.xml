@@ -10,9 +10,7 @@
     <role name="MeetingMember"/>
     <role name="MeetingObserverGlobal"/>
     <role name="MeetingObserverLocal"/>
-    <role name="MeetingObserverLocalCopy"/>
     <role name="MeetingOfficeManager"/>
-    <role name="MeetingPowerObserverLocal"/>
     <role name="MeetingReviewer"/>
     <role name="MeetingServiceHead"/>
 <!-- ##code-section roles -->

@@ -8,7 +8,7 @@
     id="MeetingLalouviere-Update-RoleMappings" 
     handler="Products.MeetingLalouviere.setuphandlers.updateRoleMappings"
     title="Update Workflow role mappings for MeetingLalouviere"
-    version="2013-07-11T11:14:08.117610">
+    version="2013-07-19T11:52:52.397790">
    <dependency step="MeetingLalouviere-QI-dependencies"/>
    updates the workflow role mappings for MeetingLalouviere
  </import-step>
@@ -17,7 +17,7 @@
     id="MeetingLalouviere-postInstall" 
     handler="Products.MeetingLalouviere.setuphandlers.postInstall"
     title="manual coded post-install for MeetingLalouviere"
-    version="2013-07-11T11:14:08.117610">
+    version="2013-07-19T11:52:52.397790">
    <dependency step="MeetingLalouviere-QI-dependencies"/>
    manual coded post-install for MeetingLalouviere
  </import-step>
