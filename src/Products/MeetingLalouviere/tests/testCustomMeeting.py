@@ -39,23 +39,28 @@ class testCustomMeeting(MeetingLalouviereTestCase):
         self.meetingConfig = self.meetingConfig2
         self.changeUser('pmManager')
         m = self.create('Meeting', date='2009/11/26 09:00:00')
-        expectedNormal = ['recurrent', 'commission-travaux', 'commission-enseignement',
-                          'commission-cadre-de-vie-et-logement',
-                          'commission-ag',
-                          'commission-finances-et-patrimoine',
-                          'commission-police',
-                          'commission-speciale']
+        expectedNormal = ['deployment',
+                          'maintenance',
+                          'development',
+                          'events',
+                          'research',
+                          'projects',
+                          'marketing',
+                          'subproducts']
         self.assertEquals(m.getNormalCategories(), expectedNormal)
-        expectedFirstSuppl = ['commission-travaux-1er-supplement',
-                              'commission-enseignement-1er-supplement',
-                              'commission-cadre-de-vie-et-logement-1er-supplement',
-                              'commission-ag-1er-supplement',
-                              'commission-finances-et-patrimoine-1er-supplement',
-                              'commission-police-1er-supplement',
-                              'commission-speciale-1er-supplement']
+        expectedFirstSuppl = ['deployment-1er-supplement',
+                              'maintenance-1er-supplement',
+                              'development-1er-supplement',
+                              'events-1er-supplement',
+                              'research-1er-supplement',
+                              'projects-1er-supplement',
+                              'marketing-1er-supplement',
+                              'subproducts-1er-supplement']
         self.assertEquals(m.getFirstSupplCategories(), expectedFirstSuppl)
         expectedSecondSuppl = ['points-conseillers-2eme-supplement']
         self.assertEquals(m.getSecondSupplCategories(), expectedSecondSuppl)
+        expectedThirdSuppl = ['points-conseillers-3eme-supplement']
+        self.assertEquals(m.getThirdSupplCategories(), expectedThirdSuppl)
 
     def test_mll_getAvailableItems(self):
         '''

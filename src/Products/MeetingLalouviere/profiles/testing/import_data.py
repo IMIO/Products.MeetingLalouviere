@@ -149,6 +149,19 @@ categories = [
     CategoryDescriptor('marketing', 'Marketing', active=False),
     # usingGroups category
     CategoryDescriptor('subproducts', 'Subproducts wishes', usingGroups=('vendors',)),
+    # first suppl categories
+    CategoryDescriptor('deployment-1er-supplement', 'Deployment topics (1er supplement)'),
+    CategoryDescriptor('maintenance-1er-supplement', 'Maintenance topics (1er supplement)'),
+    CategoryDescriptor('development-1er-supplement', 'Development topics (1er supplement)'),
+    CategoryDescriptor('events-1er-supplement', 'Events (1er supplement)'),
+    CategoryDescriptor('research-1er-supplement', 'Research topics (1er supplement)'),
+    CategoryDescriptor('projects-1er-supplement', 'Projects (1er supplement)'),
+    CategoryDescriptor('marketing-1er-supplement', 'Marketing (1er supplement)', active=False),
+    CategoryDescriptor('subproducts-1er-supplement', 'Subproducts wishes (1er supplement)', usingGroups=('vendors',)),
+    # second suppl categories
+    CategoryDescriptor('points-conseillers-2eme-supplement', 'Points conseillers (2eme supplement)'),
+    # third suppl categories
+    CategoryDescriptor('points-conseillers-3eme-supplement', 'Points conseillers (3eme supplement)'),
 ]
 
 # Users and groups -------------------------------------------------------------
