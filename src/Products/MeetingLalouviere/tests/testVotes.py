@@ -2,7 +2,7 @@
 #
 # File: testVotes.py
 #
-# Copyright (c) 2012-2013 by PloneGov
+# Copyright (c) 2013 by Imio.be
 #
 # GNU General Public License (GPL)
 #

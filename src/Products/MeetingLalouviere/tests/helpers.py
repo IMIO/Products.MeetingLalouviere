@@ -52,6 +52,11 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     TRANSITIONS_FOR_CLOSING_MEETING_1 = ('freeze', 'decide', 'close', )
     TRANSITIONS_FOR_CLOSING_MEETING_2 = ('setInCommittee', 'setInCouncil', 'close', )
     BACK_TO_WF_PATH_1 = {
+        # Meeting
+        'created': ('backToPublished',
+                    'backToFrozen',
+                    'backToCreated',),
+        # MeetingItem
         'itemcreated': ('backToItemFrozen',
                         'backToPresented',
                         'backToValidated',
@@ -84,7 +89,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed_to_director',
                               'validated': 'validated'}
 
-    def _createMeetingWithItems(self):
+    def _createMeetingWithItems(self, withItems=True):
         '''Create a meeting with a bunch of items.
            Overrided to do it as 'Manager' to be able
            to add recurring items.'''
@@ -92,6 +97,6 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         currentMember = self.portal.portal_membership.getAuthenticatedMember()
         currentMemberRoles = currentMember.getRoles()
         setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
-        meeting = MeetingCommunesTestingHelpers._createMeetingWithItems(self)
+        meeting = MeetingCommunesTestingHelpers._createMeetingWithItems(self, withItems=withItems)
         setRoles(self.portal, currentMember.getId(), currentMemberRoles)
         return meeting

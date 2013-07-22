@@ -47,9 +47,11 @@ from Products.MeetingLalouviere.interfaces import \
     IMeetingItemCouncilLalouviereWorkflowConditions, IMeetingItemCouncilLalouviereWorkflowActions,\
     IMeetingCouncilLalouviereWorkflowConditions, IMeetingCouncilLalouviereWorkflowActions
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
-                                              COUNCIL_COMMISSION_IDS_2013, \
-                                              COUNCIL_MEETING_COMMISSION_IDS_2013, \
-                                              COMMISSION_EDITORS_SUFFIX
+    COUNCIL_COMMISSION_IDS_2013, COUNCIL_MEETING_COMMISSION_IDS_2013, COMMISSION_EDITORS_SUFFIX
+
+# disable most of wfAdaptations
+customWfAdaptations = ('archiving', 'local_meeting_managers', )
+MeetingConfig.wfAdaptations = customWfAdaptations
 
 
 class CustomMeeting(Meeting):
@@ -65,9 +67,9 @@ class CustomMeeting(Meeting):
     security.declarePublic('isDecided')
     def isDecided(self):
         """
-          The meeting is supposed 'decided', if at least :
-          - in_council for MeetingCouncil
-          - decided for MeetingCollege
+          The meeting is supposed 'decided', if at least in state :
+          - 'in_council' for MeetingCouncil
+          - 'decided' for MeetingCollege
         """
         meeting = self.getSelf()
         return meeting.queryState() in ('in_council', 'decided', 'closed', 'archived')
@@ -475,7 +477,7 @@ class CustomMeetingItem(MeetingItem):
     customMeetingNotClosedStates = ('frozen', 'in_committee', 'in_council', 'decided', )
     MeetingItem.meetingNotClosedStates = customMeetingNotClosedStates
 
-    customMeetingTransitionsAcceptingRecurringItems = ('_init_', 'freeze', 'setInCommittee', 'setInCouncil', )
+    customMeetingTransitionsAcceptingRecurringItems = ('_init_', 'freeze', 'decide', 'setInCommittee', 'setInCouncil', )
     MeetingItem.meetingTransitionsAcceptingRecurringItems = customMeetingTransitionsAcceptingRecurringItems
 
     def __init__(self, item):
@@ -1356,13 +1358,9 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
         # Every item that is "presented" will be automatically set to "accepted"
         for item in self.context.getAllItems():
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'itemfreeze')
-            if item.queryState() == 'itemfrozen':
                 self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')
             if item.queryState() == 'item_in_committee':
                 self.context.portal_workflow.doActionFor(item, 'setItemInCouncil')
-            if item.queryState() == 'itemfrozen':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')
             if item.queryState() == 'item_in_council':
                 self.context.portal_workflow.doActionFor(item, 'accept')
         # For this meeting, what is the number of the first item ?

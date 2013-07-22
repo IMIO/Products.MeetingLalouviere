@@ -23,12 +23,13 @@
 #
 
 from AccessControl import Unauthorized
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testWorkflows import testWorkflows as pmtw
 from DateTime import DateTime
+from plone.app.testing.helpers import setRoles
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
+from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 
 
-class testWorkflows(MeetingLalouviereTestCase, pmtw):
+class testWorkflows(MeetingLalouviereTestCase, mctw):
     """Tests the default workflows implemented in MeetingLalouviere.
 
        WARNING:
@@ -47,13 +48,14 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
             This call 2 sub tests for each process : college and council
         """
         self._testWholeDecisionProcessCollege()
+        self.setMeetingConfig(self.meetingConfig2.getId())
         self._testWholeDecisionProcessCouncil()
 
     def _testWholeDecisionProcessCollege(self):
         '''This test covers the whole decision workflow. It begins with the
            creation of some items, and ends by closing a meeting.'''
         # pmCreator1 creates an item with 1 annex and proposes it
-        self.login('pmCreator1')
+        self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
         annex1 = self.addAnnex(item1)
         self.addAnnex(item1, decisionRelated=True)
@@ -105,18 +107,18 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.changeUser('pmManager')
         self.failIf(self.hasPermission('Modify portal content', item2))
         # do the complete validation
-        self.login('admin')
+        self.changeUser('admin')
         self.do(item2, 'proposeToOfficeManager')
         self.do(item2, 'proposeToDivisionHead')
         self.do(item2, 'proposeToDirector')
         # pmManager inserts item1 into the meeting and publishes it
         self.changeUser('pmManager')
         managerAnnex = self.addAnnex(item1)
-        self.portal.delete_givenuid(managerAnnex.UID())
+        self.portal.restrictedTraverse('@@delete_givenuid')(managerAnnex.UID())
         self.do(item1, 'present')
         # Now reviewers can't add annexes anymore
         self.changeUser('pmReviewer2')
-        self.assertRaises(Unauthorized, self.addAnnex, item2)
+        self.assertRaises(Unauthorized, self.addAnnex, item1)
         # freeze the meeting
         self.changeUser('pmManager')
         self.do(meeting, 'freeze')
@@ -143,24 +145,27 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
             This test covers the whole decision workflow. It begins with the
             creation of some items, and ends by closing a meeting.
         """
-        #meeting-config-college is tested in test_mc_WholeDecisionProcessCollege
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
+        # add a recurring item that is inserted when the meeting is 'setInCouncil'
+        self.changeUser('admin')
+        self.create('RecurringMeetingItem', title='Rec item 1',
+                    proposingGroup='developers',
+                    category='deployment',
+                    meetingTransitionInsertingMe='setInCouncil')
         # pmCreator1 creates an item with 1 annex and proposes it
-        self.login('pmCreator1')
-        item1 = self.create('MeetingItem', title='The first item')
+        self.changeUser('pmCreator1')
+        item1 = self.create('MeetingItem', title='The first item', autoAddCategory=False)
         self.addAnnex(item1)
         # The creator can add a decision annex on created item
         self.addAnnex(item1, decisionRelated=True)
         # the item is not proposable until it has a category
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        item1.setCategory('commission-travaux')
+        item1.setCategory('deployment')
         self.do(item1, 'proposeToDirector')
         self.failIf(self.hasPermission('Modify portal content', item1))
         # The creator cannot add a decision annex on proposed item
         self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.login('pmDirector1')
+        self.changeUser('pmDirector1')
         self.addAnnex(item1, decisionRelated=True)
         self.do(item1, 'validate')
         self.failIf(self.hasPermission('Modify portal content', item1))
@@ -175,12 +180,12 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.changeUser('pmCreator2')
         item2 = self.create('MeetingItem', title='The second item',
                             preferredMeeting=meeting.UID())
-        item2.setCategory('commission-ag')
+        item2.setCategory('events')
         self.do(item2, 'proposeToDirector')
         # pmManager inserts item1 into the meeting and freezes it
         self.changeUser('pmManager')
         managerAnnex = self.addAnnex(item1)
-        self.portal.delete_givenuid(managerAnnex.UID())
+        self.portal.restrictedTraverse('@@delete_givenuid')(managerAnnex.UID())
         self.do(item1, 'present')
         self.changeUser('pmCreator1')
         # The creator cannot add any kind of annex on presented item
@@ -206,8 +211,8 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failIf(len(meeting.getItems()) != 1)
         self.do(meeting, 'setInCouncil')
         self.do(item2, 'present')
-        # setting the meeting in council add 2 recurring items...
-        self.failIf(len(meeting.getItems()) != 4)
+        # setting the meeting in council (setInCouncil) add 1 recurring item...
+        self.failIf(len(meeting.getItems()) != 3)
         self.failIf(len(meeting.getLateItems()) != 0)
         # an item can be send back to the service so MeetingMembers
         # can edit it and send it back to the meeting
@@ -240,24 +245,32 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         """
             Tests the recurring items system.
         """
-        #no recurring items for college
-        #we do the test for the council config
+        # call MeetingCommunes test and add our own
+        mctw.test_subproduct_call_RecurringItems(self)
+        # we do the test for the council config
         self.meetingConfig = getattr(self.tool, 'meeting-config-council')
         self._testRecurringItemsCouncil()
-        #recurring items are added when the meeting is "set in council"
 
     def _testRecurringItemsCouncil(self):
         '''Tests the recurring items system.
            Recurring items are added when the meeting is setInCouncil.'''
-        self.login('pmManager')
+        # First, define a recurring item in the meeting config
+        # that will be added when the meeting is set to 'in_council'
+        self.changeUser('admin')
+        self.create('RecurringMeetingItem', title='Rec item 1',
+                    proposingGroup='developers',
+                    category='deployment',
+                    meetingTransitionInsertingMe='setInCouncil')
+        setRoles(self.portal, 'pmManager', ['MeetingManager', 'Manager', ])
+        self.changeUser('pmManager')
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         self.failUnless(len(meeting.getAllItems()) == 0)
         self.do(meeting, 'setInCommittee')
         self.failUnless(len(meeting.getAllItems()) == 0)
         self.do(meeting, 'setInCouncil')
-        self.failUnless(len(meeting.getAllItems()) == 2)
+        self.failUnless(len(meeting.getAllItems()) == 1)
         self.do(meeting, 'close')
-        self.failUnless(len(meeting.getAllItems()) == 2)
+        self.failUnless(len(meeting.getAllItems()) == 1)
 
     def test_subproduct_FreezeMeeting(self):
         """
@@ -267,15 +280,14 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
            'presented' state
         """
         # First, define recurring items in the meeting config
-        self.login('pmManager')
+        self.changeUser('pmManager')
         #create a meeting
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         #create 2 items and present them to the meeting
         item1 = self.create('MeetingItem', title='The first item')
         item2 = self.create('MeetingItem', title='The second item')
         for item in (item1, item2,):
-            for tr in item.wfConditions().transitionsForPresentingAnItem:
-                self.do(item, tr)
+            self.presentItem(item)
         wftool = self.portal.portal_workflow
         #every presented items are in the 'presented' state
         self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
@@ -298,7 +310,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
            not decided...
         """
         # First, define recurring items in the meeting config
-        self.login('pmManager')
+        self.changeUser('pmManager')
         #create a meeting (with 7 items)
         meetingDate = DateTime().strftime('%y/%m/%d %H:%M:00')
         meeting = self.create('Meeting', date=meetingDate)
@@ -318,8 +330,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         item7 = self.create('MeetingItem')  # id=o8
         item7.setProposingGroup('vendors')
         for item in (item1, item2, item3, item4, item5, item6, item7):
-            for tr in item.wfConditions().transitionsForPresentingAnItem:
-                self.do(item, tr)
+            self.presentItem(item)
         #we freeze the meeting
         self.do(meeting, 'freeze')
         #a MeetingManager can put the item back to presented
@@ -353,15 +364,15 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         #presented change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
 
-    def test_subproduct_call_DeactivateMeetingGroup(self):
-        '''Deactivating a MeetingGroup will transfer every users of every
-           sub Plone groups to the '_observers' Plone group'''
-        #we do the test for the college config
-        pmtw.testDeactivateMeetingGroup(self)
+    def test_subproduct_RecurringItemsCollege(self):
+        '''Call MeetingCommunes test, but give the pmManager the 'Manager' role
+           so he has got no problems to add recurring items (need to be able to trigger every transitions).'''
+        setRoles(self.portal, 'pmManager', ['MeetingManager', 'Manager', ])
+        mctw.test_subproduct_RecurringItemsCollege(self)
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testWorkflows, prefix='test_mll_'))
+    suite.addTest(makeSuite(testWorkflows, prefix='test_subproduct_'))
     return suite
