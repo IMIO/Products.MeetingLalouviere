@@ -367,7 +367,6 @@ def update_meeting_schema(baseSchema):
 
     ),)
 
-    baseSchema['assembly'].widget.description_msgid = "assembly_meeting_descr"
     baseSchema['observations'].widget.label_method = "getLabelObservations"
 
     completeMeetingSchema = baseSchema + specificSchema.copy()

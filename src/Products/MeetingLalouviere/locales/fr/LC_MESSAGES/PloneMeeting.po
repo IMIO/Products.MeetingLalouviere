@@ -257,10 +257,6 @@ msgstr "Envoyé au Conseil communal"
 msgid "app_name"
 msgstr "PloneMeeting"
 
-#. Default: "Add [[ ]] around absent people (like [[Mister Sample Peter]])"
-msgid "assembly_meeting_descr"
-msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exemple : [[Mr. Untel Didier]]"
-
 # Suffix
 #. Default: "budget impact reviewers"
 msgid "budgetimpactreviewers"
@@ -548,3 +544,4 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='confi
 #. Default: "<span class='follow_up_yes'>A follow-up is needed.</span>"
 msgid "yes_followup_needed_itemview"
 msgstr "<span class='follow_up_yes'>Un suivi est nécessaire.</span>"
+

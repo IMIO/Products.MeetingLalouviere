@@ -417,3 +417,4 @@ msgstr "Le point a été validé: il est maintenant visible par le gestionnaire 
 #. Default: "Validated"
 msgid "validated"
 msgstr "Validé"
+

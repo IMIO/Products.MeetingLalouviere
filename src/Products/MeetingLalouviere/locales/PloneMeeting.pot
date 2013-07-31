@@ -483,10 +483,6 @@ msgstr ""
 msgid "ip_secret"
 msgstr ""
 
-#. Default: "Add [[ ]] around absent people (like [[Mister Sample Peter]])"
-msgid "assembly_meeting_descr"
-msgstr ""
-
 #. Default: "The comment was : ${comments}.\n\nMore information at ${objectUrl}."
 msgid "returnedToService_mail_body"
 msgstr ""
