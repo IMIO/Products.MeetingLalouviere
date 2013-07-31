@@ -58,13 +58,10 @@ def postInstall(context):
     setDefaultMeetingItemMotivation(context, site)
     # Set a default value for each MeetingConfig.preMeetingAssembly_default
     setDefaultPreMeetingsAssembly(context, site)
-    # Add the "highlight-red" style to FCKeditor so it is useable
-    adaptFCKMenuStyles(context, site)
     # Make sure the 'home' tab is shown
     showHomeTab(context, site)
-    # Reinstall plonemeetingskin
+    # Reinstall the skin
     reinstallPloneMeetingSkin(context, site)
-
 
 
 ##code-section FOOT
@@ -161,62 +158,62 @@ def addSearches(context, portal):
     topicsInfo = {}
     topicsInfo['meeting-config-council'] = (
     # Items in state 'proposed_to_officemanager'
-    ( 'searchproposeditems',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchproposeditems',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), ('proposed_to_officemanager', ), '', 'python: not here.portal_plonemeeting.userIsAmong("officemanagers")',
     ),
     # Items in state 'proposed_to_director'
     # Used in the "todo" portlet
-    ( 'searchitemstovalidate',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchitemstovalidate',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), ('proposed_to_director', ), '', 'python: here.portal_plonemeeting.userIsAmong("directors")',
     ),
     # Items in state 'validated'
-    ( 'searchvalidateditems',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchvalidateditems',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), ('validated', ), '', '',
     ),
     # Items in state 'returned_to_service
-    ( 'searchreturnedtoserviceitems',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchreturnedtoserviceitems',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), ('returned_to_service', ), '', 'python: here.portal_plonemeeting.userIsAmong("officemanagers") or here.portal_plonemeeting.userIsAmong("creators")',
     ),
     # Items returned to secretary after corrections
-    ( 'searchcorrecteditems',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchcorrecteditems',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), (), 'searchCorrectedItems', 'python: here.portal_plonemeeting.isManager()',
     ),
     # Items of my commissions
-    ( 'searchitemsofmycommissions',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchitemsofmycommissions',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), (), 'searchItemsOfMyCommissions', 'python: here.portal_plonemeeting.userIsAmong("commissioneditors")',
     ),
     # Items of my commissions I can edit
-    ( 'searchitemsofmycommissionstoedit',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchitemsofmycommissionstoedit',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), (), 'searchItemsOfMyCommissionsToEdit', 'python: here.portal_plonemeeting.userIsAmong("commissioneditors")',
     ),
     # All 'decided' items
-    ( 'searchdecideditems',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+    ('searchdecideditems',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
     ), ('accepted', 'refused', 'delayed', 'accepted_but_modified'), '', '',
     ),
     )
 
     topicsInfo['meeting-config-college'] = (
     # Items that need a follow-up (getFollowUp == follow_up_yes)
-    ( 'searchitemstofollow',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATSimpleStringCriterion', 'follow_up_yes'),
+    ('searchitemstofollow',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATSimpleStringCriterion', 'follow_up_yes'),
     ), (), '', 'python: here.portal_plonemeeting.isManager()',
     ),
     # Items that needed a follow-up that has been provided (getFollowUp == follow_up_provided)
-    ( 'searchitemswithfollowupprovided',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATListCriterion', ['follow_up_provided', 'follow_up_provided_not_printed', ]),
+    ('searchitemswithfollowupprovided',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATListCriterion', ['follow_up_provided', 'follow_up_provided_not_printed', ]),
     ), (), '', 'python: here.portal_plonemeeting.isManager()',
     ),
     # The follow-up dashboard showing items with follow_up_needed and items with follow_up_confirmed to print
-    ( 'searchitemsfollowupdashboard',
-    (  ('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATListCriterion', ['follow_up_yes', 'follow_up_provided', ]),
+    ('searchitemsfollowupdashboard',
+    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATListCriterion', ['follow_up_yes', 'follow_up_provided', ]),
     ), (), '', '',
     ),
     )
@@ -283,12 +280,12 @@ def setDefaultMeetingItemMotivation(context, portal):
 
     logStep("setDefaultMeetingItemMotivation", context)
 
-    data = {'meeting-config-college':"""<p>Vu l'arrÃªtÃ© du Gouvernement Wallon du 22 avril 2004 portant codification de la lÃ©gislation relative aux pouvoirs locaux; dit le code de la dÃ©mocratie locale et de la dÃ©centralisation;</p>
+    data = {'meeting-config-college': """<p>Vu l'arrÃªtÃ© du Gouvernement Wallon du 22 avril 2004 portant codification de la lÃ©gislation relative aux pouvoirs locaux; dit le code de la dÃ©mocratie locale et de la dÃ©centralisation;</p>
 <p>Vu le dÃ©cret du 27 mai 2004 portant confirmation dudit arrÃªtÃ© du gouvernement Wallon du 22 avril 2004;</p>
 <p>Vu la nouvelle Loi communale;</p>
 <p>Vu l'article 123 de la nouvelle Loi communale;</p>
 <p>Vu l'article L1123-23 du code de la DÃ©mocratie locale et de la DÃ©centralisation;</p>""",
-    'meeting-config-council':"""<p>Vu, d'une part, l'arrÃªtÃ© du Gouvernement Wallon du 22 avril 2004 portant codification de la lÃ©gislation relative aux pouvoirs locaux et d'autre part, le dÃ©cret du 27 mai 2004 portant confirmation dudit arrÃªtÃ©;</p>
+    'meeting-config-council': """<p>Vu, d'une part, l'arrÃªtÃ© du Gouvernement Wallon du 22 avril 2004 portant codification de la lÃ©gislation relative aux pouvoirs locaux et d'autre part, le dÃ©cret du 27 mai 2004 portant confirmation dudit arrÃªtÃ©;</p>
 <p>Vu l'article 117 de la nouvelle Loi Communale;</p>
 <p>Vu l'article L 1122-30 du Code de DÃ©mocratie Locale et de la DÃ©centralisation;</p>""",
 }
@@ -306,7 +303,8 @@ def setDefaultPreMeetingsAssembly(context, portal):
     '''
        Define a default value for each MeetingConfig.preMeetingAssembly_default
     '''
-    if isNotMeetingLalouviereProfile(context): return
+    if isNotMeetingLalouviereProfile(context):
+        return
 
     logStep("setDefaultPreMeetingsAssembly", context)
 
@@ -321,7 +319,7 @@ M.J.KEIJZER, Mmes C.BOULANGIER, F.VERMEER, L.BACCARELLA, M.C.LICATA,
 Mme M.ROLAND, Conseillers communaux"""
     mc.setPreMeetingAssembly_default(data)
     # Commission Enseignement
-    data="""M.A.GAVA, PrÃ©sident,
+    data = """M.A.GAVA, PrÃ©sident,
 MM.L.WIMLOT, V.LIBOIS, Vice-prÃ©sidents,
 MM.M.DUBOIS, M.DI MATTIA, J.KEIJZER, A.FAGBEMI, Mme F.RMILI,
 M.A.BUSCEMI, Mme A-M.MARIN, MM.A.GOREZ, J-P.MICHIELS, C.DELPLANCQ,
@@ -360,29 +358,6 @@ Mme L.BACCARELLA, M.C.LICATA, Conseillers communaux
     mc.setPreMeetingAssembly_6_default(data)
 
 
-def adaptFCKMenuStyles(context, portal):
-    '''
-       Add the "highlight-red" style to the FCK menu styles
-    '''
-    if isNotMeetingLalouviereProfile(context):
-        return
-
-    logStep("adaptFCKMenuStyles", context)
-
-    fckeditor_properties = getattr(portal.portal_properties, 'fckeditor_properties', None)
-
-    if fckeditor_properties:
-        fck_menu_styles = fckeditor_properties.fck_menu_styles
-        if not "highlight-red" in fck_menu_styles:
-            # Add the style
-            newStyle = """
-<Style name="Mettre en Ã©vidence" element="span">
-<Attribute name="class" value="highlight-red" />
-</Style>"""
-            fck_menu_styles = fck_menu_styles+newStyle
-            fckeditor_properties.manage_changeProperties(fck_menu_styles=fck_menu_styles)
-
-
 def showHomeTab(context, site):
     """
        Make sure the 'home' tab is shown...
@@ -408,12 +383,12 @@ def reinstallPloneMeetingSkin(context, site):
         return
 
     logStep("reinstallPloneMeetingSkin", context)
-    profileId = u'profile-Products.plonemeetingskin:default'
     try:
-        site.portal_setup.runAllImportStepsFromProfile(profileId)
+        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
+        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
     except KeyError:
         # if the Products.plonemeetingskin profile is not available
-        # (not using plonemeetingskin or in tests?) we pass...
+        # (not using plonemeetingskin or in testing?) we pass...
         pass
 
 ##/code-section FOOT

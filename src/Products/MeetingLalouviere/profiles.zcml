@@ -15,7 +15,7 @@
       description="Extension profile for MeetingLalouviere."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  
+
   <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
   <genericsetup:registerProfile
    name="lalouviere"
@@ -29,6 +29,14 @@
    title="PloneMeeting / Unit testing profile for La Louviere"
    description="MeetingLalouviere unit testing profile"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+  <genericsetup:upgradeStep
+      title="Go to MeetingLalouviere 3.0"
+      description=""
+      source="*"
+      destination="3.0"
+      handler="Products.MeetingLalouviere.migrations.migrate_to_3_0.migrate"
+      profile="Products.MeetingLalouviere:default" />
 
   <!-- ##/code-section profiles.zcml-bottom -->
 
