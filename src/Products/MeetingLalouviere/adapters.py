@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-# Copyright (c) 2011 by CommunesPlone.org
+#
+# File: adapters.py
+#
+# Copyright (c) 2013 by Imio.be
 #
 # GNU General Public License (GPL)
 #

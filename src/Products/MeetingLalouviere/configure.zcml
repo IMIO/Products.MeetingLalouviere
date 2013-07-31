@@ -72,7 +72,7 @@
   <!-- ##code-section configure.zcml.core -->
   <subscriber for="Products.PloneMeeting.interfaces.IMeetingItem
                    Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-              handler=".setuphandlers.onMeetingItemTransition"/>
+              handler=".events.onMeetingItemTransition"/>
   <!-- ##/code-section configure.zcml.core -->
 
 </configure>

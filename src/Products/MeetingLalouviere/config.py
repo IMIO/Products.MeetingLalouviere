@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: MeetingLalouviere.py
+# File: config.py
 #
-# Copyright (c) 2013 by CommunesPlone
+# Copyright (c) 2013 by Imio.be
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #

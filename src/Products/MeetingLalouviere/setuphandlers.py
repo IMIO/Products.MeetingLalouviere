@@ -416,11 +416,4 @@ def reinstallPloneMeetingSkin(context, site):
         # (not using plonemeetingskin or in tests?) we pass...
         pass
 
-
-def onMeetingItemTransition(obj, event):
-    '''Called whenever a transition has been fired on a meetingItem.
-       Reindex the previous_review_state index.'''
-    if not event.transition or (obj != event.object):
-        return
-    obj.reindexObject(idxs=['previous_review_state', ])
 ##/code-section FOOT
