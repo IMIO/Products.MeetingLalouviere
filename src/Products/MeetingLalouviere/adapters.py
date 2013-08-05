@@ -800,7 +800,7 @@ class CustomMeetingConfig(MeetingConfig):
         #now we have in the dict foundGroups the group the user is in in the key and the highest level in the value
         res = []
         for foundGroup in foundGroups:
-            params = {'portal_type': 'MeetingItemCollege',
+            params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
                       'getProposingGroup': foundGroup,
                       'review_state': statesMapping[foundGroups[foundGroup]],
                       'sort_on': sortKey,
@@ -820,7 +820,7 @@ class CustomMeetingConfig(MeetingConfig):
     security.declarePublic('searchCorrectedItems')
     def searchCorrectedItems(self, sortKey, sortOrder, filterKey, filterValue, **kwargs):
         '''Returns a list of items freshly corrected.'''
-        params = {'portal_type': self.getItemTypeName(),
+        params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
                   'previous_review_state': 'returned_to_service',
                   'sort_on': sortKey,
                   'sort_order': sortOrder
@@ -849,7 +849,7 @@ class CustomMeetingConfig(MeetingConfig):
         cats = [cat[:-len(COMMISSION_EDITORS_SUFFIX)] for cat in res]
         #we add the corresponding '1er-supplement' suffixed cat too
         cats = cats + [cat+'-1er-supplement' for cat in cats]
-        params = {'portal_type': self.getItemTypeName(),
+        params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
                   'getCategory': cats,
                   'sort_on': sortKey,
                   'sort_order': sortOrder
@@ -879,7 +879,7 @@ class CustomMeetingConfig(MeetingConfig):
         cats = [cat[:-len(COMMISSION_EDITORS_SUFFIX)] for cat in res]
         #we add the corresponding '1er-supplement' suffixed cat too
         cats = cats + [cat+'-1er-supplement' for cat in cats]
-        params = {'portal_type': self.getItemTypeName(),
+        params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
                   'getCategory': cats,
                   'review_state': 'item_in_committee',
                   'sort_on': sortKey,
@@ -897,7 +897,7 @@ class CustomMeetingConfig(MeetingConfig):
     security.declarePublic('searchItemsForDashboard')
     def searchItemsForDashboard(self, sortKey, sortOrder, filterKey, filterValue, **kwargs):
         '''Returns a list of items that will be used for the dashboard.'''
-        params = {'portal_type': self.getItemTypeName(),
+        params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
                   'review_state': ['accepted', 'refused', 'delayed', 'accepted_but_modified', ],
                   'getFollowUp': ['follow_up_yes', 'follow_up_provided', ],
                   'sort_on': sortKey,
