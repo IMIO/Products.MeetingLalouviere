@@ -61,6 +61,8 @@
            factory="Products.MeetingLalouviere.adapters.CustomMeetingGroup"
            provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
 
+  <!-- Indexes -->
+  <adapter name="previous_review_state" factory=".indexes.previous_review_state" />
   <!-- ##/code-section configure.zcml.header -->
 
   <i18n:registerTranslations directory="locales" />
