@@ -6,6 +6,7 @@
 
   <!-- ##code-section configure.zcml.header -->
   <include package=".browser" />
+  <include package="collective.ckeditor"/>
 
   <!-- WF actions and conditions for Meeting and MeetingItem for College -->
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
