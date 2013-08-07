@@ -4,6 +4,7 @@ Products.MeetingLalouviere Changelog
 3.0.3dev (unreleased)
 ---------------------
 - Adapted all tests to call PloneMeeting ones
+- Added specific search for user gdecoster (http://trac.imio.be/trac/ticket/6354)
 
 2.1.2 (2012-09-19)
 ------------------
