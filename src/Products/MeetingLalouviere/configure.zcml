@@ -6,7 +6,11 @@
 
   <!-- ##code-section configure.zcml.header -->
   <include package=".browser" />
+  <include package="Products.CMFPlacefulWorkflow"/>
+  <include package="communesplone.iconified_document_actions"/>
+  <include package="plonetheme.imioapps"/>
   <include package="collective.ckeditor"/>
+  <include package="Products.PloneMeeting"/>
 
   <!-- WF actions and conditions for Meeting and MeetingItem for College -->
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
