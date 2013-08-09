@@ -235,7 +235,6 @@
       <div tal:replace="structure context/getBudgetInfos"></div>
     </fieldset>
 
-    <tal:comment replace="nothing">XXX Motivations</tal:comment>
     <tal:field define="fieldName python: 'motivation'; ajaxEdit python:True">
        <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
     </tal:field>
