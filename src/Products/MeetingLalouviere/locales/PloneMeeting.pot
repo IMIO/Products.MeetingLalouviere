@@ -191,14 +191,6 @@ msgstr ""
 msgid "Send to council"
 msgstr ""
 
-#. Default: "Motivation"
-msgid "MeetingLalouviere_label_motivation"
-msgstr ""
-
-#. Default: ""
-msgid "MeetingLalouviere_descr_motivation"
-msgstr ""
-
 #. Default: "Transcript of commission"
 msgid "MeetingLalouviere_label_commissionTranscript"
 msgstr ""
@@ -297,10 +289,6 @@ msgstr ""
 
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
-msgstr ""
-
-#. Default: "Default value for the item motivation field"
-msgid "MeetingLalouviere_label_defaultMeetingItemMotivation"
 msgstr ""
 
 #. Default: "The preparatory meeting must occur before the meeting."

@@ -44,10 +44,6 @@ msgstr " "
 msgid "MeetingLalouviere_descr_interventions"
 msgstr "Retranscription des interventions"
 
-#. Default: ""
-msgid "MeetingLalouviere_descr_motivation"
-msgstr " "
-
 #. Default: "Needed follow-up"
 msgid "MeetingLalouviere_descr_neededFollowUp"
 msgstr " "
@@ -77,10 +73,6 @@ msgstr "Délibération"
 msgid "MeetingLalouviere_label_councildescription"
 msgstr "Note explicative"
 
-#. Default: "Default value for the item motivation field"
-msgid "MeetingLalouviere_label_defaultMeetingItemMotivation"
-msgstr "Valeur par défaut du champ 'Motivation'"
-
 #. Default: "Follow-up"
 msgid "MeetingLalouviere_label_followUp"
 msgstr "Suivi"
@@ -96,10 +88,6 @@ msgstr "Assemblée spécifique liée à ce point"
 #. Default: "Premeeting observations"
 msgid "MeetingLalouviere_label_meetingcouncilobservations"
 msgstr "Avant-séance"
-
-#. Default: "Motivation"
-msgid "MeetingLalouviere_label_motivation"
-msgstr "Motivation"
 
 #. Default: "Needed follow-up"
 msgid "MeetingLalouviere_label_neededFollowUp"
