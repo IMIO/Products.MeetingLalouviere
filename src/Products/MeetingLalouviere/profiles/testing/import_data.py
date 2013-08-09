@@ -92,6 +92,7 @@ developers.observers.append(pmReviewer1)
 developers.observers.append(pmManager)
 developers.observers.append(admin)
 developers.advisers.append(pmAdviser1)
+developers.advisers.append(pmManager)
 setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
 
@@ -103,6 +104,7 @@ vendors.directors.append(pmDirector2)
 vendors.reviewers.append(pmReviewer2)
 vendors.observers.append(pmReviewer2)
 vendors.advisers.append(pmReviewer2)
+vendors.advisers.append(pmManager)
 setattr(vendors, 'signatures', '')
 
 # Do voters able to see items to vote for
@@ -140,7 +142,8 @@ collegeMeeting.shortName = 'College'
 collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex,
                                    annexeDecision, overheadAnalysis, marketingAnalysis]
 collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
-collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations', 'interventions', 'commissionTranscript')
+collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
+                                       'observations', 'interventions', 'commissionTranscript')
 collegeMeeting.xhtmlTransformTypes = ('removeBlanks',)
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
 collegeMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
@@ -148,7 +151,10 @@ collegeMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.
 collegeMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
-collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'proposedToOfficeManager', 'proposedToDivisionHead', 'proposedToDirector', 'validated', 'presented', 'itemfrozen', 'accepted', 'refused', 'delayed', 'pre_accepted', 'removed',)
+collegeMeeting.itemTopicStates = ('itemcreated', 'proposed_to_servicehead', 'proposed_to_officemanager',
+                                  'proposed_to_divisionhead', 'proposed_to_director', 'validated',
+                                  'presented', 'itemfrozen', 'accepted', 'refused',
+                                  'delayed', 'pre_accepted', 'removed',)
 collegeMeeting.meetingTopicStates = ('created', 'frozen')
 collegeMeeting.decisionTopicStates = ('decided', 'closed')
 collegeMeeting.itemAdviceStates = ('validated',)
@@ -234,15 +240,17 @@ J.GOBERT"""
 councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
 councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex, annexeDecision]
-councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations', 'interventions', 'commissionTranscript')
+councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations',
+                                       'interventions', 'commissionTranscript')
 councilMeeting.xhtmlTransformTypes = ('removeBlanks',)
-councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations', 'privacy', 'itemAssembly', 'itemIsSigned', ]
-councilMeeting.usedMeetingAttributes = ('place', 'observations', 'signatures', 'assembly', 'preMeetingDate', 'preMeetingPlace', 'preMeetingAssembly', \
-                                        'preMeetingDate_2', 'preMeetingPlace_2', 'preMeetingAssembly_2', 'preMeetingDate_3', 'preMeetingPlace_3', 'preMeetingAssembly_3', \
-                                        'preMeetingDate_4', 'preMeetingPlace_4', 'preMeetingAssembly_4', 'preMeetingDate_5', 'preMeetingPlace_5', 'preMeetingAssembly_5', \
-                                        'preMeetingDate_6', 'preMeetingPlace_6', 'preMeetingAssembly_6', 'preMeetingDate_7', 'preMeetingPlace_7', 'preMeetingAssembly_7',
-                                        'startDate', 'endDate',
-)
+councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations',
+                                     'privacy', 'itemAssembly', 'itemIsSigned', ]
+councilMeeting.usedMeetingAttributes = (
+    'place', 'observations', 'signatures', 'assembly', 'preMeetingDate', 'preMeetingPlace', 'preMeetingAssembly',
+    'preMeetingDate_2', 'preMeetingPlace_2', 'preMeetingAssembly_2', 'preMeetingDate_3', 'preMeetingPlace_3',
+    'preMeetingAssembly_3', 'preMeetingDate_4', 'preMeetingPlace_4', 'preMeetingAssembly_4', 'preMeetingDate_5',
+    'preMeetingPlace_5', 'preMeetingAssembly_5', 'preMeetingDate_6', 'preMeetingPlace_6', 'preMeetingAssembly_6',
+    'preMeetingDate_7', 'preMeetingPlace_7', 'preMeetingAssembly_7', 'startDate', 'endDate', )
 councilMeeting.recordMeetingHistoryStates = []
 councilMeeting.itemWorkflow = 'meetingitemcouncillalouviere_workflow'
 councilMeeting.meetingWorkflow = 'meetingcouncillalouviere_workflow'
@@ -251,11 +259,13 @@ councilMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMe
 councilMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions'
 councilMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions'
 #show every items states
-councilMeeting.itemTopicStates = ('itemcreated', 'proposed_to_officemanager', 'validated', 'presented', 'itemfrozen', 'item_in_committee', 'item_in_council', 'returned_to_service', 'accepted', 'accepted_but_modified', 'refused', 'delayed')
+councilMeeting.itemTopicStates = ('itemcreated', 'proposed_to_director', 'validated', 'presented', 'itemfrozen',
+                                  'item_in_committee', 'item_in_council', 'returned_to_service', 'accepted',
+                                  'accepted_but_modified', 'refused', 'delayed')
 councilMeeting.meetingTopicStates = ('created', 'frozen', 'in_committee')
 councilMeeting.decisionTopicStates = ('in_council', 'closed')
-councilMeeting.itemAdviceStates = ('validated',)
-councilMeeting.recordItemHistoryStates = ['',]
+councilMeeting.itemAdviceStates = ('proposed_to_director', 'validated',)
+councilMeeting.recordItemHistoryStates = ['', ]
 councilMeeting.maxShownMeetings = 5
 councilMeeting.maxDaysDecisions = 60
 councilMeeting.meetingAppDefaultView = 'topic_searchmyitems'
