@@ -86,23 +86,9 @@ def update_config_schema(baseSchema):
             ),
         ),
 
-        TextField(
-            name='defaultMeetingItemMotivation',
-            widget=RichWidget(
-                label='DefaultMeetingItemMotivation',
-                label_msgid='MeetingLalouviere_label_defaultMeetingItemMotivation',
-                description='DefaultMeetingItemMotivation',
-                description_msgid='default_meetingitem_motivation',
-                i18n_domain='PloneMeeting',
-            ),
-            default_content_type="text/html",
-            allowable_content_types=('text/html',),
-            default_output_type="text/html",
-        ),
     ),)
 
     completeConfigSchema = baseSchema + specificSchema.copy()
-    completeConfigSchema.moveField('defaultMeetingItemMotivation', after='budgetDefault')
     return completeConfigSchema
 MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
 
@@ -377,26 +363,6 @@ Meeting.schema = update_meeting_schema(Meeting.schema)
 def update_item_schema(baseSchema):
 
     specificSchema = Schema((
-        #additional field for deliberation part of the item where to put the "motivation" of the decision
-        #the existing "decision" field is still used and will contain the real "decision" part of the deliberation
-        TextField(
-            name='motivation',
-            optional=True,
-            default_method='getDefaultMotivation',
-            widget=RichWidget(
-                rows=15,
-                condition="python: here.attributeIsUsed('motivation')",
-                label='Motivation',
-                label_msgid='MeetingLalouviere_label_motivation',
-                description='Motivation of the decision',
-                description_msgid='MeetingLalouviere_descr_motivation',
-                i18n_domain='PloneMeeting',
-            ),
-            default_content_type="text/html",
-            searchable=True,
-            allowable_content_types=('text/html',),
-            default_output_type="text/html",
-        ),
         #specific field for council added for MeetingManagers to transcribe interventions
         TextField(
             name='interventions',

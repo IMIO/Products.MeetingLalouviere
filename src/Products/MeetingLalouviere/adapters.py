@@ -369,12 +369,6 @@ class CustomMeeting(Meeting):
         return tuple(res)
     Meeting.getCommissionCategories = getCommissionCategories
 
-    security.declarePublic('getStrikedAssembly')
-    def getStrikedAssembly(self):
-        '''The text between [[xxx]] is striked. Used to mark absents.
-           You can define mltAssembly to customize your assembly (bold, italics, ...).'''
-        return self.getStrikedField(self.context.getAssembly())
-
     security.declarePublic('showAllItemsAtOnce')
     def showAllItemsAtOnce(self):
         '''Monkeypatch for hiding the allItemsAtOnce field.'''
@@ -652,13 +646,6 @@ class CustomMeetingItem(MeetingItem):
         return True
     MeetingItem.isPrivacyViewable = isPrivacyViewable
 
-    security.declarePublic('getDefaultMotivation')
-    def getDefaultMotivation(self):
-        '''Returns the default item motivation content from the MeetingConfig.'''
-        mc = self.portal_plonemeeting.getMeetingConfig(self)
-        return mc.getDefaultMeetingItemMotivation()
-    MeetingItem.getDefaultMotivation=getDefaultMotivation
-
     security.declarePublic('getMeetingsAcceptingItems')
     def getMeetingsAcceptingItems(self):
         '''Overrides the default method so we only display meetings that are
@@ -719,32 +706,6 @@ class CustomMeetingItem(MeetingItem):
         elif itemState == 'returned_to_service':
             res.append(('return_to_service.png', 'returned_to_service'))
         return res
-
-    security.declarePublic('getStrikedField')
-    def getStrikedField(self, plaintext):
-        '''Format the given plaintext to be striked when rendered in HTML.
-           The text between [[xxx]] is striked. Used to mark absents.
-           You can define mltAssembly to customize your assembly (bold, italics, ...).'''
-        return plaintext.replace('[[','<strike>').replace(']]','</strike>').replace('<p>','<p class="mltAssembly">')
-    MeetingItem.getStrikedField = getStrikedField
-    Meeting.getStrikedField = getStrikedField
-
-    security.declarePublic('getStrikedItemAssembly')
-    def getStrikedItemAssembly(self):
-        '''The text between [[xxx]] is striked. Used to mark absents.
-           You can define mltAssembly to customize your assembly (bold, italics, ...).'''
-        return self.getStrikedField(self.context.getItemAssembly())
-
-    security.declarePublic('getDeliberation')
-    def getDeliberation(self):
-        '''Returns the entire deliberation depending on fields used.'''
-        return self.getMotivation() + self.getDecision()
-    MeetingItem.getDeliberation = getDeliberation
-
-    security.declarePublic('getExtraFieldsToCopyWhenCloning')
-    def getExtraFieldsToCopyWhenCloning(self):
-        '''See doc in PloneMeeting.interfaces.py.'''
-        return ['motivation', ]
 
 
 class CustomMeetingConfig(MeetingConfig):
