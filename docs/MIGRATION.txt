@@ -1,0 +1,16 @@
+Migration to MeetingLalouviere 3.0
+==================================
+
+On Plone 3, before copying Data.fs :
+------------------------------------
+- Follow http://www.imio.be/support/documentation/how-to/migration-de-plonemeeting-2.1.x-vers-plonemeeting-3.x
+
+
+Before Plone migration :
+------------------------
+- In Products.contentmigration.basemigrator.walker.py, comment lines doing a rollback on error : Line 212 and 214
+- Launch ipdb in the browser then :
+from Products.MeetingLalouviere.migrations.migrate_to_3_0 import createUserFromLDAP
+createUserFromLDAP(context)
+Then launch Plone migration... and wait... wait... wait... zzz...
+- Then uncomment Line 212 and 214 in Products.contentmigration.basemigrator.walker.py
