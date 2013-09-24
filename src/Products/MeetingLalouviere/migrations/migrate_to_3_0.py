@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
 import logging
-logger = logging.getLogger('MeetingCommunes')
+logger = logging.getLogger('MeetingLalouviere')
 from Products.PloneMeeting.config import TOPIC_SEARCH_SCRIPT, POWEROBSERVERS_GROUP_SUFFIX
 
 
@@ -11,6 +11,18 @@ def migrate(context):
     _adaptItemsToValidateTopic(portal)
     _removeGlobalPowerObservers(portal)
     portal.portal_setup.runAllImportStepsFromProfile(u'profile-Products.MeetingLalouviere:default')
+
+
+def createUserFromLDAP(context):
+    '''Called before the migration.'''
+    # get every existing users, look at the Creator index
+    CreatorIndex = context.restrictedTraverse('portal_catalog/Indexes/Creator')
+    source_users = context.acl_users.source_users
+    for userId in CreatorIndex._index:
+        if source_users.getUserById(userId):
+            continue
+        # create the user
+        source_users.addUser(userId, userId, 'unknown_password')
 
 
 def _adaptItemsToValidateTopic(portal):
