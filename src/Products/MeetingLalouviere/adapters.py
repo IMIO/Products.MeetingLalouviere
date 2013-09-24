@@ -26,7 +26,6 @@
 from sets import Set
 from DateTime import DateTime
 from appy.gen import No
-from appy.gen.utils import Keywords
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
 from zope.interface import implements
@@ -35,7 +34,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import DisplayList
 from Products.PloneMeeting.MeetingItem import MeetingItem, \
     MeetingItemWorkflowConditions, MeetingItemWorkflowActions
-from Products.PloneMeeting.utils import checkPermission, sendMail, getLastEvent
+from Products.PloneMeeting.utils import checkPermission, sendMail, getLastEvent, prepareSearchValue
 from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions, \
     MeetingWorkflowConditions, Meeting
@@ -769,7 +768,7 @@ class CustomMeetingConfig(MeetingConfig):
                      }
             # Manage filter
             if filterKey:
-                params[filterKey] = Keywords(filterValue).get()
+                params[filterKey] = prepareSearchValue(filterValue)
             # update params with kwargs
             params.update(kwargs)
             # Perform the query in portal_catalog
@@ -788,7 +787,7 @@ class CustomMeetingConfig(MeetingConfig):
                   }
         # Manage filter
         if filterKey:
-            params[filterKey] = Keywords(filterValue).get()
+            params[filterKey] = prepareSearchValue(filterValue)
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
@@ -817,7 +816,7 @@ class CustomMeetingConfig(MeetingConfig):
                   }
         # Manage filter
         if filterKey:
-            params[filterKey] = Keywords(filterValue).get()
+            params[filterKey] = prepareSearchValue(filterValue)
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
@@ -848,7 +847,7 @@ class CustomMeetingConfig(MeetingConfig):
                   }
         # Manage filter
         if filterKey:
-            params[filterKey] = Keywords(filterValue).get()
+            params[filterKey] = prepareSearchValue(filterValue)
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
@@ -866,7 +865,7 @@ class CustomMeetingConfig(MeetingConfig):
                   }
         # Manage filter
         if filterKey:
-            params[filterKey] = Keywords(filterValue).get()
+            params[filterKey] = prepareSearchValue(filterValue)
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
