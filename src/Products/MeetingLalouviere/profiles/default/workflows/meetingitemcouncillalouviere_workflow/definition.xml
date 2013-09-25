@@ -475,7 +475,6 @@
         i18n:attributes="title">
   <exit-transition transition_id="backToPresented"/>
   <exit-transition transition_id="setItemInCouncil"/>
-  <exit-transition transition_id="return_to_service"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -639,7 +638,6 @@
   <exit-transition transition_id="refuse"/>
   <exit-transition transition_id="backToItemInCommittee"/>
   <exit-transition transition_id="accept_but_modify"/>
-  <exit-transition transition_id="return_to_service"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -908,7 +906,6 @@
         i18n:attributes="title">
   <exit-transition transition_id="backToValidated"/>
   <exit-transition transition_id="setItemInCommittee"/>
-  <exit-transition transition_id="return_to_service"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -1336,173 +1333,6 @@
    <permission-role>MeetingCommissionEditor</permission-role>
   </permission-map>
  </state>
- <state state_id="returned_to_service"
-        title="returned_to_service"
-        i18n:attributes="title">
-  <exit-transition transition_id="return_to_secretary"/>
-  <exit-transition transition_id="return_to_secretary_in_committee"/>
-  <exit-transition transition_id="return_to_secretary_in_council"/>
-  <permission-map name="Access contents information"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingServiceHead</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingDivisionHead</permission-role>
-   <permission-role>MeetingDirector</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="Delete objects"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="MeetingLalouviere: Read commission transcript"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingServiceHead</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingDivisionHead</permission-role>
-   <permission-role>MeetingDirector</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="MeetingLalouviere: Write commission transcript"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="Modify portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Add MeetingFile"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Add annex"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Read decision"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingServiceHead</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingDivisionHead</permission-role>
-   <permission-role>MeetingDirector</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Read decision annex"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingServiceHead</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingDivisionHead</permission-role>
-   <permission-role>MeetingDirector</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Read item observations"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingServiceHead</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingDivisionHead</permission-role>
-   <permission-role>MeetingDirector</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Read optional advisers"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingServiceHead</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingDivisionHead</permission-role>
-   <permission-role>MeetingDirector</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Write decision"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Write decision annex"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Write item observations"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Write optional advisers"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="Review portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="View"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingServiceHead</permission-role>
-   <permission-role>MeetingOfficeManager</permission-role>
-   <permission-role>MeetingDivisionHead</permission-role>
-   <permission-role>MeetingDirector</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
- </state>
  <state state_id="validated"
         title="validated"
         i18n:attributes="title">
@@ -1798,54 +1628,6 @@
   <action url="" category="workflow" i18n:translate="">refuse</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayDecide()</guard-expression>
-  </guard>
- </transition>
- <transition transition_id="return_to_secretary"
-             title="return_to_secretary"
-             new_state="presented"
-             trigger="USER"
-             before_script=""
-             after_script=""
-             i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">return_to_secretary</action>
-  <guard>
-    <guard-expression>python:here.wfConditions().mayReturnToSecretary()</guard-expression>
-  </guard>
- </transition>
- <transition transition_id="return_to_secretary_in_committee"
-             title="return_to_secretary_in_committee"
-             new_state="item_in_committee"
-             trigger="USER"
-             before_script=""
-             after_script=""
-             i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">return_to_secretary_in_committee</action>
-  <guard>
-    <guard-expression>python:here.wfConditions().mayReturnToSecretaryInCommittee()</guard-expression>
-  </guard>
- </transition>
- <transition transition_id="return_to_secretary_in_council"
-             title="return_to_secretary_in_council"
-             new_state="item_in_council"
-             trigger="USER"
-             before_script=""
-             after_script=""
-             i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">return_to_secretary_in_council</action>
-  <guard>
-    <guard-expression>python:here.wfConditions().mayReturnToSecretaryInCouncil()</guard-expression>
-  </guard>
- </transition>
- <transition transition_id="return_to_service"
-             title="return_to_service"
-             new_state="returned_to_service"
-             trigger="USER"
-             before_script=""
-             after_script=""
-             i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">return_to_service</action>
-  <guard>
-    <guard-expression>python:here.wfConditions().mayReturnToService()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="setItemInCommittee"

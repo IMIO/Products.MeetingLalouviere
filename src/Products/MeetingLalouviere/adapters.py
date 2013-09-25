@@ -51,8 +51,67 @@ from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
     COUNCIL_COMMISSION_IDS_2013, COUNCIL_MEETING_COMMISSION_IDS_2013, COMMISSION_EDITORS_SUFFIX
 
 # disable most of wfAdaptations
-customWfAdaptations = ('archiving', 'local_meeting_managers', )
+customWfAdaptations = ('archiving', 'local_meeting_managers', 'return_to_proposing_group', )
 MeetingConfig.wfAdaptations = customWfAdaptations
+
+# configure parameters for the returned_to_proposing_group wfAdaptation
+# we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
+from Products.PloneMeeting.model import adaptations
+RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen', 'itempublished',
+                                              'item_in_committee', 'item_in_council', )
+adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES
+RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
+    # view permissions
+    'Access contents information':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'View':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read decision':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read optional advisers':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read decision annex':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read item observations':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'MeetingLalouviere: Read commission transcript':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    # edit permissions
+    'Modify portal content':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'PloneMeeting: Write decision':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'Review portal content':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'Add portal content':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'PloneMeeting: Add annex':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'PloneMeeting: Add MeetingFile':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'PloneMeeting: Write decision annex':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'PloneMeeting: Write optional advisers':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'PloneMeeting: Write optional advisers':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    # MeetingManagers edit permissions
+    'Delete objects':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'PloneMeeting: Write item observations':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    'MeetingLalouviere: Write commission transcript':
+    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+}
+
+adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
 
 class CustomMeeting(Meeting):
@@ -1095,18 +1154,6 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         if checkPermission(ReviewPortalContent, self.context) and \
            meeting and (meeting.queryState() in ['decided', 'closed']):
             res = True
-        return res
-
-    security.declarePublic('isLateFor')
-    def isLateFor(self, meeting):
-        res = False
-        if meeting and (meeting.queryState() in MeetingItem.meetingAlreadyFrozenStates) and \
-           (meeting.UID() == self.context.getPreferredMeeting()):
-            itemValidationDate = self._getDateOfAction(self.context, 'validate')
-            meetingFreezingDate = self._getDateOfAction(meeting, 'freeze')
-            if itemValidationDate and meetingFreezingDate:
-                if itemValidationDate > meetingFreezingDate:
-                    res = True
         return res
 
     security.declarePublic('mayValidate')

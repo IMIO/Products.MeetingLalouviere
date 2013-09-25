@@ -276,7 +276,7 @@ groups = [
            GroupDescriptor('personnel', 'Service du personnel', 'Pers'),
            GroupDescriptor('comptabilite', 'Service comptabilité', 'Compt', givesMandatoryAdviceOn='python:True'),
            GroupDescriptor('travaux', 'Service travaux', 'Trav'),
-           GroupDescriptor('conseillers', 'Conseillers', 'Conseillers'),           
+           GroupDescriptor('conseillers', 'Conseillers', 'Conseillers'),
            GroupDescriptor('secretaire-communal', 'Secrétaire communal', 'SecrComm'),
            GroupDescriptor('secretaire-communal-adj', 'Secrétaire communal ADJ', 'SecrCommAdj'),
          ]
@@ -476,6 +476,7 @@ councilMeeting.usedMeetingAttributes = ('place', 'observations', 'signatures', '
                                         'startDate', 'endDate',
 )
 councilMeeting.recordMeetingHistoryStates = []
+councilMeeting.workflowAdaptations = ['return_to_proposing_group', ]
 councilMeeting.itemWorkflow = 'meetingitemcouncillalouviere_workflow'
 councilMeeting.meetingWorkflow = 'meetingcouncillalouviere_workflow'
 councilMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions'

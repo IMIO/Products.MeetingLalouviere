@@ -22,6 +22,10 @@
 # 02110-1301, USA.
 #
 
+from DateTime import DateTime
+
+from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
+
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 
@@ -69,6 +73,70 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
     def test_subproduct_WFA_add_published_state(self):
         '''No sense...'''
         pass
+
+    def _return_to_proposing_group_active_state_to_clone(self):
+        '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
+           RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE defined value.
+           In our usecase, this is Nonsense as we use RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
+        return
+
+    def _return_to_proposing_group_active_custom_permissions(self):
+        '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
+           RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS defined value.
+           In our use case, just test that permissions of 'returned_to_proposing_group' state
+           are the one defined in RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
+        itemWF = getattr(self.wfTool, self.meetingConfig.getItemWorkflow())
+        returned_to_proposing_group_state_permissions = itemWF.states['returned_to_proposing_group'].permission_roles
+        for permission in returned_to_proposing_group_state_permissions:
+            self.assertEquals(returned_to_proposing_group_state_permissions[permission],
+                              RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[permission])
+
+    def _return_to_proposing_group_active_wf_functionality(self):
+        '''Tests the workflow functionality of using the 'return_to_proposing_group' wfAdaptation.
+           Same as default test until the XXX here under.'''
+        # while it is active, the creators of the item can edit the item as well as the MeetingManagers
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        self.proposeItem(item)
+        self.changeUser('pmReviewer1')
+        self.validateItem(item)
+        # create a Meeting and add the item to it
+        self.changeUser('pmManager')
+        meeting = self.create('Meeting', date=DateTime())
+        self.presentItem(item)
+        # now that it is presented, the pmCreator1/pmReviewer1 can not edit it anymore
+        for userId in ('pmCreator1', 'pmReviewer1'):
+            self.changeUser(userId)
+            self.failIf(self.hasPermission('Modify portal content', item))
+        # the item can be send back to the proposing group by the MeetingManagers only
+        for userId in ('pmCreator1', 'pmReviewer1'):
+            self.changeUser(userId)
+            self.failIf(self.wfTool.getTransitionsFor(item))
+        self.changeUser('pmManager')
+        self.failUnless('return_to_proposing_group' in [tr['name'] for tr in self.wfTool.getTransitionsFor(item)])
+        # send the item back to the proposing group so the proposing group as an edit access to it
+        self.do(item, 'return_to_proposing_group')
+        self.changeUser('pmCreator1')
+        self.failUnless(self.hasPermission('Modify portal content', item))
+        # MeetingManagers can still edit it also
+        self.changeUser('pmManager')
+        self.failUnless(self.hasPermission('Modify portal content', item))
+        # the creator can send the item back to the meeting managers, as the meeting managers
+        for userId in ('pmCreator1', 'pmManager'):
+            self.changeUser(userId)
+            self.failUnless('backTo_presented_from_returned_to_proposing_group' in
+                            [tr['name'] for tr in self.wfTool.getTransitionsFor(item)])
+        # when the creator send the item back to the meeting, it is in the right state depending
+        # on the meeting state.  Here, when meeting is 'created', the item is back to 'presented'
+        self.do(item, 'backTo_presented_from_returned_to_proposing_group')
+        self.assertEquals(item.queryState(), 'presented')
+        # XXX changed by MeetingLalouviere
+        # send the item back to proposing group, set the meeting in_committee then send the item back to the meeting
+        # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
+        self.do(item, 'return_to_proposing_group')
+        self.do(meeting, 'setInCommittee')
+        self.do(item, 'backTo_item_in_committee_from_returned_to_proposing_group')
+        self.assertEquals(item.queryState(), 'item_in_committee')
 
 
 def test_suite():
