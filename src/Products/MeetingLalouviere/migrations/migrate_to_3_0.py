@@ -8,6 +8,16 @@ from Products.PloneMeeting.config import TOPIC_SEARCH_SCRIPT, POWEROBSERVERS_GRO
 # The migration class ----------------------------------------------------------
 class Migrate_To_3_0(Migrator):
 
+    def _createUsersFromLDAP(self):
+        # get every existing users, look at the Creator index
+        CreatorIndex = self.portal.restrictedTraverse('portal_catalog/Indexes/Creator')
+        source_users = self.portal.acl_users.source_users
+        for userId in CreatorIndex._index:
+            if source_users.getUserById(userId):
+                continue
+            # create the user
+            source_users.addUser(userId, userId, 'unknown_password')
+
     def _adaptItemsToValidateTopic(self):
         """
           Old versions of the searchitemstovalidate topic did not use a search script, correct this!
