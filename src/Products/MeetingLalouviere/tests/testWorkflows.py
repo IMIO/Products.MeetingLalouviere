@@ -220,10 +220,10 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.failIf(self.hasPermission('Modify portal content', item1))
         self.changeUser('pmManager')
         # send the item back to the service
-        self.do(item1, 'return_to_service')
+        self.do(item1, 'return_to_proposing_group')
         self.changeUser('pmCreator1')
         self.failUnless(self.hasPermission('Modify portal content', item1))
-        self.do(item1, 'return_to_secretary_in_council')
+        self.do(item1, 'backTo_item_in_council_from_returned_to_proposing_group')
         self.failIf(self.hasPermission('Modify portal content', item1))
         # item state follow meeting state
         self.changeUser('pmManager')

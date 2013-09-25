@@ -252,6 +252,7 @@ councilMeeting.usedMeetingAttributes = (
     'preMeetingPlace_5', 'preMeetingAssembly_5', 'preMeetingDate_6', 'preMeetingPlace_6', 'preMeetingAssembly_6',
     'preMeetingDate_7', 'preMeetingPlace_7', 'preMeetingAssembly_7', 'startDate', 'endDate', )
 councilMeeting.recordMeetingHistoryStates = []
+councilMeeting.workflowAdaptations = ['return_to_proposing_group', ]
 councilMeeting.itemWorkflow = 'meetingitemcouncillalouviere_workflow'
 councilMeeting.meetingWorkflow = 'meetingcouncillalouviere_workflow'
 councilMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions'

@@ -36,7 +36,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
     def test_subproduct_call_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
-                          set(('archiving', 'local_meeting_managers', )))
+                          set(('archiving', 'local_meeting_managers', 'return_to_proposing_group', )))
 
     def test_subproduct_call_WFA_no_publication(self):
         '''No sense...'''
@@ -73,6 +73,11 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
     def test_subproduct_WFA_add_published_state(self):
         '''No sense...'''
         pass
+
+    def _return_to_proposing_group_inactive(self):
+        '''Tests while 'return_to_proposing_group' wfAdaptation is inactive.'''
+        # this is active by default in MeetingLalouviere council wf
+        return
 
     def _return_to_proposing_group_active_state_to_clone(self):
         '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
