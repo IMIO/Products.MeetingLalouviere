@@ -143,6 +143,12 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, 'backTo_item_in_committee_from_returned_to_proposing_group')
         self.assertEquals(item.queryState(), 'item_in_committee')
 
+    def test_subproduct_call_WFA_hide_decisions_when_under_writing(self):
+        '''Only launch the test for meetingConfig not for meetingConfig2 as no
+           'decided' state exists in meetingConfig2 for the 'Meeting'.'''
+        self.meetingConfig2.setMeetingWorkflow(self.meetingConfig.getMeetingWorkflow())
+        mctwfa.test_pm_WFA_hide_decisions_when_under_writing(self)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
