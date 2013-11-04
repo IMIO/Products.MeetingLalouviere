@@ -28,6 +28,18 @@ from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig a
 class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
     '''Call testMeetingConfig tests.'''
 
+    def test_subproduct_call_searchItemsToPrevalidate(self):
+        '''No sense...'''
+        pass
+
+    def test_subproduct_call_searchItemsToValidate(self):
+        '''Not used here...'''
+        pass
+
+    def test_subproduct_call_searchReviewableItems(self):
+        '''Test the searchReviewableItems search.'''
+        pass
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
