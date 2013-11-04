@@ -232,7 +232,7 @@ class CustomMeeting(Meeting):
     def getNormalCategories(self):
         '''Returns the 'normal' categories'''
         mc = self.portal_plonemeeting.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectables=False)
+        categories = mc.getCategories(onlySelectable=False)
         res = []
         firstSupplCatIds = self.getFirstSupplCategories()
         secondSupplCatIds = self.getSecondSupplCategories()
@@ -250,7 +250,7 @@ class CustomMeeting(Meeting):
     def getFirstSupplCategories(self):
         '''Returns the '1er-supplement' categories'''
         mc = self.portal_plonemeeting.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectables=False)
+        categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
             catId = cat.getId()
@@ -263,7 +263,7 @@ class CustomMeeting(Meeting):
     def getSecondSupplCategories(self):
         '''Returns the '2eme-supplement' categories'''
         mc = self.portal_plonemeeting.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectables=False)
+        categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
             catId = cat.getId()
@@ -276,7 +276,7 @@ class CustomMeeting(Meeting):
     def getThirdSupplCategories(self):
         '''Returns the '3eme-supplement' categories'''
         mc = self.portal_plonemeeting.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectables=False)
+        categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
             catId = cat.getId()
@@ -798,12 +798,12 @@ class CustomMeetingConfig(MeetingConfig):
         foundGroups = {}
         #check that we have a real PM group, not "echevins", or "Administrators"
         for group in groups:
-            isOK = False
+            realPMGroup = False
             for reviewSuffix in reviewSuffixes:
                 if group.endswith(reviewSuffix):
-                    isOK = True
+                    realPMGroup = True
                     break
-            if not isOK:
+            if not realPMGroup:
                 continue
             #remove the suffix
             groupPrefix = '_'.join(group.split('_')[:-1])
@@ -816,7 +816,7 @@ class CustomMeetingConfig(MeetingConfig):
                 if "%s%s" % (foundGroup, reviewSuffix) in strgroups:
                     foundGroups[foundGroup] = reviewSuffix
                     break
-        #now we have in the dict foundGroups the group the user is in in the key and the highest level in the value
+        #now we have in the dict foundGroups the group the user is in, in the key and the highest level in the value
         res = []
         for foundGroup in foundGroups:
             params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
@@ -977,22 +977,14 @@ class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
     implements(IMeetingCollegeLalouviereWorkflowActions)
     security = ClassSecurityInfo()
 
-    security.declarePrivate('doClose')
-    def doClose(self, stateChange):
-        # Every item that is "presented" will be automatically set to "accepted"
+    def _adaptEveryItemsOnMeetingClosure(self):
+        """Helper method for accepting every items."""
+        # Every item that is not decided will be automatically set to "accepted"
         for item in self.context.getAllItems():
             if item.queryState() == 'presented':
                 self.context.portal_workflow.doActionFor(item, 'itemfreeze')
             if item.queryState() in ['itemfrozen', 'pre_accepted', ]:
                 self.context.portal_workflow.doActionFor(item, 'accept')
-        # For this meeting, what is the number of the first item ?
-        meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(
-            self.context)
-        self.context.setFirstItemNumber(meetingConfig.getLastItemNumber()+1)
-        # Update the item counter which is global to the meeting config
-        meetingConfig.setLastItemNumber(meetingConfig.getLastItemNumber() +\
-                                        len(self.context.getItems()) + \
-                                        len(self.context.getLateItems()))
 
     security.declarePrivate('doDecide')
     def doDecide(self, stateChange):
@@ -1320,9 +1312,9 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
             if item.queryState() == 'item_in_committee':
                 self.context.portal_workflow.doActionFor(item, 'setItemInCouncil')
 
-    security.declarePrivate('doClose')
-    def doClose(self, stateChange):
-        # Every item that is "presented" will be automatically set to "accepted"
+    def _adaptEveryItemsOnMeetingClosure(self):
+        """Helper method for accepting every items."""
+        # Every item that is not decided will be automatically set to "accepted"
         for item in self.context.getAllItems():
             if item.queryState() == 'presented':
                 self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')
@@ -1330,14 +1322,6 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
                 self.context.portal_workflow.doActionFor(item, 'setItemInCouncil')
             if item.queryState() == 'item_in_council':
                 self.context.portal_workflow.doActionFor(item, 'accept')
-        # For this meeting, what is the number of the first item ?
-        meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(
-            self.context)
-        self.context.setFirstItemNumber(meetingConfig.getLastItemNumber()+1)
-        # Update the item counter which is global to the meeting config
-        meetingConfig.setLastItemNumber(meetingConfig.getLastItemNumber() +\
-                                        len(self.context.getItems()) + \
-                                        len(self.context.getLateItems()))
 
     security.declarePrivate('doBackToCreated')
     def doBackToCreated(self, stateChange):
