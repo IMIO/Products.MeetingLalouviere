@@ -9,6 +9,10 @@
     padding-left: 5.5em !important;
 }
 
+#premeetings dd.collapsibleContent {
+    margin-left: 0;
+}
+
 /* Colors on states */
 /* Items */
 .state-itemcreated, .label-state-itemcreated {
