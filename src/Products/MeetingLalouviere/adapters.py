@@ -436,19 +436,7 @@ class CustomMeeting(Meeting):
     security.declarePrivate('validate_preMeetingDate')
     def validate_preMeetingDate(self, value):
         '''Checks that the preMeetingDate comes before the meeting date.'''
-        if not value:
-            return
-        # Get the meeting date from the request
-        try:
-            meetingDate = DateTime(self.REQUEST['date'])
-        except DateTime.DateError:
-            meetingDate = None
-        except DateTime.SyntaxError:
-            meetingDate = None
-        # Compare meeting and pre-meeting dates
-        if meetingDate and (DateTime(value) >= meetingDate):
-            label = 'pre_date_after_meeting_date'
-            return self.utranslate(label, domain='PloneMeeting')
+        pass
     Meeting.validate_preMeetingDate = validate_preMeetingDate
 
     security.declarePrivate('getDefaultPreMeetingAssembly')
