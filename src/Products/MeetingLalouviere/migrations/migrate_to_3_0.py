@@ -19,13 +19,7 @@ class Migrate_To_3_0(Migrator):
             source_users.addUser(userId, userId, 'unknown_password')
         # update mutable_properties
         mutable_properties = self.portal.acl_users.mutable_properties
-        source_groups = self.portal.acl_users.source_groups
-        # wipe out mutable_properties
-        for principal in mutable_properties._storage.items():
-            principalId = principal[0]
-            if not principalId in source_users.listUserIds() and \
-               not principalId in source_groups.listGroupIds():
-                mutable_properties.deleteUser(principalId)
+
         # update isGroup key
         for principal in mutable_properties._storage.items():
             if not 'isGroup' in principal[1]:
