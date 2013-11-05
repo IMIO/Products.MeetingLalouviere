@@ -372,20 +372,8 @@
        <span tal:replace="python: context.getSignatures().replace('\r\n', '<br/>').replace('\n', '<br/>')"/>
   </div>
 
-  <div class="discreet">
-  <tal:comment replace="nothing">Pre-meeting info</tal:comment>
-  <tal:pre condition="python: 'preMeetingDate' in usedAttrs">
-  <b i18n:translate="pre_meeting"></b>:&nbsp;&nbsp;
-  <b i18n:translate="PloneMeeting_label_preMeetingDate"></b>&nbsp;&nbsp;<span
-     tal:replace="python: toLocalizedTime(context.getPreMeetingDate(),long_format=1)"></span>
-  </tal:pre>
-  <tal:prePlace tal:condition="python: 'preMeetingPlace' in usedAttrs">
-    &nbsp;&nbsp;<b i18n:translate="PloneMeeting_label_preMeetingPlace"></b>&nbsp;&nbsp;
-    <span tal:replace="context/getPreMeetingPlace"></span>
-  </tal:prePlace>
-  </div>
-
   <tal:comment replace="nothing">XXX begin changes for MeetingLalouviere</tal:comment>
+
   <tal:comment replace="nothing">Pre-meeting info</tal:comment>
 
 <tal:premeetings condition="python: 'preMeetingDate' in usedAttrs">
@@ -395,10 +383,10 @@
             <br />
             <table class="listing nosort">
               <tr i18n:domain="PloneMeeting">
-                <th style="min-width: 300px;" i18n:translate="listingheader_premeeting_name"/>
-                <th style="min-width: 150px;" i18n:translate="listingheader_premeeting_date"/>
-                <th style="min-width: 200px;" i18n:translate="listingheader_premeeting_place"/>
-                <th style="min-width: 200px;" i18n:translate="listingheader_premeeting_assembly"/>
+                <th i18n:translate="listingheader_premeeting_name"/>
+                <th style="min-width: 115px;" i18n:translate="listingheader_premeeting_date"/>
+                <th i18n:translate="listingheader_premeeting_place"/>
+                <th i18n:translate="listingheader_premeeting_assembly"/>
               </tr>
               <tal:loop repeat="category categories">
               <tr tal:define="oddrow repeat/category/odd" valign="top" tal:attributes="class python: oddrow and 'odd' or 'even'">
