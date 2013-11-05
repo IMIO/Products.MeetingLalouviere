@@ -419,7 +419,7 @@
                </td>
                <td>
                  <tal:block define="assembly python: getattr(context, 'preMeetingAssembly_%d' %index, context.getPreMeetingAssembly)();">
-                   <span tal:condition="assembly" tal:replace="structure python: context.getStrikedField(assembly)">Premeeting assembly</span>
+                   <span tal:condition="assembly" tal:replace="structure python: tool.toHTMLStrikedContent(assembly)">Premeeting assembly</span>
                    <span tal:condition="not: assembly">-</span>
                  </tal:block>
                </td>
