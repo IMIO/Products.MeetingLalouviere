@@ -21,3 +21,4 @@ At the end :
 - update Delibération pod templates for council
 - update PV commissions for council (getStrikedField)
 - update PV for council
+- update PloneMeeting WF Policy, set wf plonemeeting_onestate_workflow for type 'MeetingItemCollege'
