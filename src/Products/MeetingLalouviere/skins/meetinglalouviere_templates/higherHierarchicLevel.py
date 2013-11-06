@@ -1,11 +1,11 @@
-## Script (Python) "previous_review_state"
+## Script (Python) "higherHierarchicLevel"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=member
-##title=Return the previous review_state.  Used for index "previous_review_state"
+##title=Return the highest hierarchic level of current user
 ##
 
 #get the groups of the current user and check the highest hierarchic level

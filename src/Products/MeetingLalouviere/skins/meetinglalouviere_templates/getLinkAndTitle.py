@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=
+##title=Return an escaped version of link and title to use in templates
 ##
 
 import cgi

@@ -1,3 +1,13 @@
+## Script (Python) "isAReviewer"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=Check if current user is a reviewer, aka able to validate one of the validation steps
+##
+
 member = context.portal_membership.getAuthenticatedMember()
 groups = context.portal_groups.getGroupsForPrincipal(member)
 
