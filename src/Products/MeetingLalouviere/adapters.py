@@ -121,6 +121,14 @@ class CustomMeeting(Meeting):
     implements(IMeetingCustom)
     security = ClassSecurityInfo()
 
+    # define same validator for every preMeetingDate_X than the one used for preMeetingDate
+    Meeting.validate_preMeetingDate_2 = Meeting.validate_preMeetingDate
+    Meeting.validate_preMeetingDate_3 = Meeting.validate_preMeetingDate
+    Meeting.validate_preMeetingDate_4 = Meeting.validate_preMeetingDate
+    Meeting.validate_preMeetingDate_5 = Meeting.validate_preMeetingDate
+    Meeting.validate_preMeetingDate_6 = Meeting.validate_preMeetingDate
+    Meeting.validate_preMeetingDate_7 = Meeting.validate_preMeetingDate
+
     def __init__(self, item):
         self.context = item
 
@@ -432,12 +440,6 @@ class CustomMeeting(Meeting):
         '''Monkeypatch for hiding the allItemsAtOnce field.'''
         return False
     Meeting.showAllItemsAtOnce = showAllItemsAtOnce
-
-    security.declarePrivate('validate_preMeetingDate')
-    def validate_preMeetingDate(self, value):
-        '''Checks that the preMeetingDate comes before the meeting date.'''
-        pass
-    Meeting.validate_preMeetingDate = validate_preMeetingDate
 
     security.declarePrivate('getDefaultPreMeetingAssembly')
     def getDefaultPreMeetingAssembly(self):
