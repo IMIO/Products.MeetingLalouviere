@@ -459,10 +459,6 @@ msgstr "Le point '${itemTitle}' vous a été renvoyé pour corrections par le Se
 msgid "reviewers"
 msgstr "échevins"
 
-#. Default: "Configure PloneMeeting"
-msgid "search_advanced"
-msgstr "Configurer PloneMeeting"
-
 #. Default: "Every decisions"
 msgid "searchalldecisions"
 msgstr "tous les PVs"

@@ -112,10 +112,6 @@ msgstr ""
 msgid "present_several_items"
 msgstr ""
 
-#. Default: "Configure PloneMeeting"
-msgid "search_advanced"
-msgstr ""
-
 #. Default: "Every decisions"
 msgid "searchalldecisions"
 msgstr ""
