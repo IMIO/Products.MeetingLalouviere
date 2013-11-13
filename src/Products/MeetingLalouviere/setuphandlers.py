@@ -62,7 +62,8 @@ def postInstall(context):
     showHomeTab(context, site)
     # Reinstall the skin
     reinstallPloneMeetingSkin(context, site)
-
+    # reorder skins so we are sure that the meetinglalouviere_xxx skins are just under custom
+    reorderSkinsLayers(context, site)
 
 
 ##code-section FOOT
@@ -390,6 +391,25 @@ def reinstallPloneMeetingSkin(context, site):
     try:
         site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
         site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
+    except KeyError:
+        # if the Products.plonemeetingskin profile is not available
+        # (not using plonemeetingskin or in testing?) we pass...
+        pass
+
+
+def reorderSkinsLayers(context, site):
+    """
+       Reinstall Products.plonemeetingskin and re-apply MeetingLalouviere skins.xml step
+       as the reinstallation of MeetingLalouviere and PloneMeeting changes the portal_skins layers order
+    """
+    if isNotMeetingLalouviereProfile(context):
+        return
+
+    logStep("reorderSkinsLayers", context)
+    try:
+        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
+        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
+        site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
     except KeyError:
         # if the Products.plonemeetingskin profile is not available
         # (not using plonemeetingskin or in testing?) we pass...
