@@ -31,8 +31,6 @@ from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
 def isNotMeetingLalouviereProfile(context):
     return context.readDataFile("MeetingLalouviere_marker.txt") is None
 
-
-
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
@@ -371,7 +369,7 @@ def reorderSkinsLayers(context, site):
        Reinstall Products.plonemeetingskin and re-apply MeetingLalouviere skins.xml step
        as the reinstallation of MeetingLalouviere and PloneMeeting changes the portal_skins layers order
     """
-    if isNotMeetingLalouviereProfile(context):
+    if isNotMeetingLalouviereProfile(context) and isNotMeetingLalouviereLalouviereProfile(context):
         return
 
     logStep("reorderSkinsLayers", context)
@@ -383,5 +381,13 @@ def reorderSkinsLayers(context, site):
         # if the Products.plonemeetingskin profile is not available
         # (not using plonemeetingskin or in testing?) we pass...
         pass
+
+
+def finalizeInstance(context):
+    """
+      Called at the very end of the installation process (after PloneMeeting).
+    """
+    reorderSkinsLayers(context, context.getSite())
+
 
 ##/code-section FOOT
