@@ -385,8 +385,10 @@ collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, 1er E
 collegeMeeting.categories = []
 collegeMeeting.shortName = 'College'
 collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeDecision]
-collegeMeeting.usedItemAttributes = ['budgetInfos', 'observations', 'toDiscuss', 'motivation', 'neededFollowUp', 'providedFollowUp', ]
-collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations', 'interventions', 'commissionTranscript')
+collegeMeeting.usedItemAttributes = ['budgetInfos', 'observations', 'toDiscuss',
+                                     'motivation', 'neededFollowUp', 'providedFollowUp', ]
+collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
+                                       'observations', 'interventions', 'commissionTranscript')
 collegeMeeting.xhtmlTransformTypes = ('removeBlanks',)
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
 collegeMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
@@ -394,7 +396,10 @@ collegeMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.
 collegeMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
-collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'proposedToOfficeManager', 'proposedToDivisionHead', 'proposedToDirector', 'proposedToAlderman', 'validated', 'presented', 'itemfrozen', 'accepted', 'refused', 'delayed', 'pre_accepted', 'removed', 'accepted_but_modified', )
+collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'proposedToOfficeManager',
+                                  'proposedToDivisionHead', 'proposedToDirector', 'proposedToAlderman',
+                                  'validated', 'presented', 'itemfrozen', 'accepted', 'refused', 'delayed',
+                                  'pre_accepted', 'removed', 'accepted_but_modified', )
 collegeMeeting.meetingTopicStates = ('created', 'frozen')
 collegeMeeting.decisionTopicStates = ('decided', 'closed')
 collegeMeeting.itemAdviceStates = ('validated',)
@@ -413,6 +418,10 @@ collegeMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'), gro
 collegeMeeting.podTemplates = collegeTemplates
 collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
 collegeMeeting.useGroupsAsCategories = True
+collegeMeeting.defaultMeetingItemMotivation = """<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de la décentralisation;</p>
+<p>Vu le décret du 27 mai 2004 portant confirmation dudit arrêté du gouvernement Wallon du 22 avril 2004;</p>
+<p>Vu la nouvelle Loi communale;</p> <p>Vu l'article 123 de la nouvelle Loi communale;</p>
+<p>Vu l'article L1123-23 du code de la Démocratie locale et de la Décentralisation;</p>"""
 collegeMeeting.recurringItems = []
 collegeMeeting.meetingUsers = []
 
@@ -466,15 +475,19 @@ J.GOBERT"""
 councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
 councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeRemarks, annexeDecision]
-councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations', 'interventions', 'commissionTranscript')
+councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
+                                       'observations', 'interventions', 'commissionTranscript')
 councilMeeting.xhtmlTransformTypes = ('removeBlanks',)
-councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations', 'privacy', 'itemAssembly', 'motivation',]
-councilMeeting.usedMeetingAttributes = ('place', 'observations', 'signatures', 'assembly', 'preMeetingDate', 'preMeetingPlace', 'preMeetingAssembly', \
-                                        'preMeetingDate_2', 'preMeetingPlace_2', 'preMeetingAssembly_2', 'preMeetingDate_3', 'preMeetingPlace_3', 'preMeetingAssembly_3', \
-                                        'preMeetingDate_4', 'preMeetingPlace_4', 'preMeetingAssembly_4', 'preMeetingDate_5', 'preMeetingPlace_5', 'preMeetingAssembly_5', \
-                                        'preMeetingDate_6', 'preMeetingPlace_6', 'preMeetingAssembly_6', 'preMeetingDate_7', 'preMeetingPlace_7', 'preMeetingAssembly_7',
-                                        'startDate', 'endDate',
-)
+councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations',
+                                     'privacy', 'itemAssembly', 'motivation',]
+councilMeeting.usedMeetingAttributes = ('place', 'observations', 'signatures', 'assembly', 'preMeetingDate',
+                                        'preMeetingPlace', 'preMeetingAssembly', 'preMeetingDate_2',
+                                        'preMeetingPlace_2', 'preMeetingAssembly_2', 'preMeetingDate_3',
+                                        'preMeetingPlace_3', 'preMeetingAssembly_3', 'preMeetingDate_4',
+                                        'preMeetingPlace_4', 'preMeetingAssembly_4', 'preMeetingDate_5',
+                                        'preMeetingPlace_5', 'preMeetingAssembly_5', 'preMeetingDate_6',
+                                        'preMeetingPlace_6', 'preMeetingAssembly_6', 'preMeetingDate_7',
+                                        'preMeetingPlace_7', 'preMeetingAssembly_7', 'startDate', 'endDate', )
 councilMeeting.recordMeetingHistoryStates = []
 councilMeeting.workflowAdaptations = ['return_to_proposing_group', ]
 councilMeeting.itemWorkflow = 'meetingitemcouncillalouviere_workflow'
@@ -484,9 +497,23 @@ councilMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMe
 councilMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions'
 councilMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions'
 #show every items states
-councilMeeting.itemTopicStates = ('itemcreated', 'proposed_to_officemanager', 'validated', 'presented', 'itemfrozen', 'item_in_committee', 'item_in_council', 'returned_to_service', 'accepted', 'accepted_but_modified', 'refused', 'delayed')
-councilMeeting.meetingTopicStates = ('created', 'frozen', 'in_committee')
-councilMeeting.decisionTopicStates = ('in_council', 'closed')
+councilMeeting.itemTopicStates = ('itemcreated',
+                                  'proposed_to_officemanager',
+                                  'validated',
+                                  'presented',
+                                  'itemfrozen',
+                                  'item_in_committee',
+                                  'item_in_council',
+                                  'returned_to_service',
+                                  'accepted',
+                                  'accepted_but_modified',
+                                  'refused',
+                                  'delayed')
+councilMeeting.meetingTopicStates = ('created',
+                                     'frozen',
+                                     'in_committee')
+councilMeeting.decisionTopicStates = ('in_council',
+                                      'closed')
 councilMeeting.itemAdviceStates = ('itemcreated',)
 councilMeeting.itemAdviceEditStates = ('itemcreated',)
 councilMeeting.recordItemHistoryStates = ['',]
@@ -499,11 +526,21 @@ councilMeeting.useAdvices = True
 councilMeeting.enforceAdviceMandatoriness = False
 councilMeeting.enableAdviceInvalidation = False
 councilMeeting.useCopies = True
-councilMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'), groups[1].getIdSuffixed('reviewers'), groups[2].getIdSuffixed('reviewers'), groups[4].getIdSuffixed('reviewers')]
+councilMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'),
+                                       groups[1].getIdSuffixed('reviewers'),
+                                       groups[2].getIdSuffixed('reviewers'),
+                                       groups[4].getIdSuffixed('reviewers')]
 councilMeeting.podTemplates = councilTemplates
 councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service',]
 councilMeeting.sortingMethodOnAddItem = 'on_privacy_then_categories'
 councilMeeting.useGroupsAsCategories = False
+councilMeeting.defaultMeetingItemMotivation = """<p>Le Conseil,</p>
+<p>&nbsp;</p>
+<p>Vu, d'une part, l'arrêté du Gouvernement  Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux et d'autre part, le décret du 27 mai 2004 portant  confirmation dudit arrêté;</p>
+<p>&nbsp;</p>
+<p>Vu l'article 117 de la nouvelle Loi Communale;</p>
+<p>&nbsp;</p>
+<p>Vu l'article L 1122-30 du Code de Démocratie Locale et de la Décentralisation;</p>"""
 councilMeeting.recurringItems = [
     RecurringItemDescriptor(
         id='recurrent-approuve-pv',
