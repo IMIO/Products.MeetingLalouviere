@@ -24,7 +24,6 @@
 #
 # ------------------------------------------------------------------------------
 from sets import Set
-from DateTime import DateTime
 from appy.gen import No
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
