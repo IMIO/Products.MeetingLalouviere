@@ -388,6 +388,30 @@ def finalizeInstance(context):
       Called at the very end of the installation process (after PloneMeeting).
     """
     reorderSkinsLayers(context, context.getSite())
+    reorderCss(context)
 
+
+def reorderCss(context):
+    """
+       Make sure CSS are correctly reordered in portal_css so things
+       work as expected...
+    """
+    if isNotMeetingLalouviereProfile(context) and isNotMeetingLalouviereLalouviereProfile(context):
+        return
+
+    site = context.getSite()
+
+    logStep("reorderCss", context)
+    portal_css = site.portal_css
+    css = ['plonemeeting.css',
+           'meeting.css',
+           'meetingitem.css',
+           'meetinglalouviere.css',
+           'imioapps.css',
+           'plonemeetingskin.css',
+           'imioapps_IEFixes.css',
+           'ploneCustom.css']
+    for resource in css:
+        portal_css.moveResourceToBottom(resource)
 
 ##/code-section FOOT
