@@ -176,7 +176,7 @@ collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
 collegeMeeting.useGroupsAsCategories = True
 collegeMeeting.meetingUsers = []
 collegeMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
-
+collegeMeeting.meetingConfigsToCloneTo = ['meeting-config-council']
 collegeMeeting.recurringItems = [
     RecurringItemDescriptor(
         id='recItem1',
