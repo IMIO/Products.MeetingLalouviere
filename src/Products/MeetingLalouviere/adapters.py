@@ -410,11 +410,13 @@ class CustomMeeting(Meeting):
     security.declarePublic('getCommissionCategories')
     def getCommissionCategories(self):
         '''Returns the list of categories used for Commissions.
-           Since 2013, some commission are aggregating several categories, in this case,
+           Since june 2013, some commission are aggregating several categories, in this case,
            a sublist of categories is returned...'''
         mc = self.portal_plonemeeting.getMeetingConfig(self)
         # creating a new Meeting or editing an existing meeting with date >= june 2013
-        if not self.getDate() or (self.getDate().year() >= 2013 and self.getDate().month() > 5):
+        if not self.getDate() or \
+           (self.getDate().year() >= 2013 and self.getDate().month() > 5) or \
+           (self.getDate().year() > 2013):
             # since 2013 commissions does NOT correspond to commission as MeetingItem.category
             # several MeetingItem.category are taken for one single commission...
             commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2013
