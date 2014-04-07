@@ -5,6 +5,7 @@ from AccessControl import Unauthorized
 from Products.CMFPlone.utils import normalizeString
 from DateTime import DateTime
 import os
+import transaction
 
 
 class TransformXmlToMeetingOrItem:
@@ -88,7 +89,6 @@ class TransformXmlToMeetingOrItem:
                         creationDate = item.created()
                         item = item.clone()
                         item.setCreationDate(creationDate)
-                        self.__portal__.portal_workflow.doActionFor(item, 'propose')
                         self.__portal__.portal_workflow.doActionFor(item, 'validate')
                     #présentation et insertion du point dans la séance
                     self.__portal__.portal_workflow.doActionFor(item, 'present')
@@ -113,9 +113,9 @@ class TransformXmlToMeetingOrItem:
         """
            Nous allons ajouter l'annexe et faire un lien dans le texte de l'observation
         """
-        #nous utiliserons le répertoire d'Anne-Sylvie Collard
-        Memberfolder = self.__portal__.Members.ascollard.mymeetings.get('meeting-config-college')
-        annexe = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/Marche/pdf-files')
+        #nous utiliserons le répertoire de Nathalie Dilillo 
+        Memberfolder = self.__portal__.Members.ndilillo.mymeetings.get('meeting-config-college')
+        annexe = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
         if not os.path.isfile(annexe):
             self.__out__.append("Le fichier %s n'a pas ete trouve." % annexe.decode('utf-8'))
             return
@@ -148,14 +148,14 @@ class TransformXmlToMeetingOrItem:
         _file.close()
 
     def addItemPDFPoint(self, item, node, Memberfolder):
-        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/Marche/pdf-files')
+        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
         self._addAnnexe(item, Memberfolder, _path, 'pdf-link', 'PDF-POINT')
 
     def addItemAnnexes(self, item, node, Memberfolder):
         i = 0
         for annexes in node.getElementsByTagName("annexLink"):
             try:
-                _path = self.getText(node.getElementsByTagName("annexLink")[i]).replace('file:///var/gru/annexe', '/home/anuyens/Documents/Projets/Reprises GRU/Marche/annexe')
+                _path = self.getText(node.getElementsByTagName("annexLink")[i]).replace('file:///var/gru/annexe', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/annexe')
                 title = 'Annexe-%d' % i
                 self._addAnnexe(item, Memberfolder, _path, 'annexe', title)
                 i = i + 1
@@ -166,7 +166,7 @@ class TransformXmlToMeetingOrItem:
         i = 0
         for annexes in node.getElementsByTagName("adviseLink"):
             try:
-                _path = self.getText(node.getElementsByTagName("adviseLink")[i]).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/Marche/pdf-files')
+                _path = self.getText(node.getElementsByTagName("adviseLink")[i]).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
                 title = 'Avis-%d' % i
                 self._addAnnexe(item, Memberfolder, _path, 'advise', title)
                 i = i + 1
@@ -174,7 +174,7 @@ class TransformXmlToMeetingOrItem:
                 self.__out__.append("Probleme avec l'avis %s." % _path)
 
     def addItemPDFDelibe(self, item, node, Memberfolder):
-        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/Marche/pdf-files')
+        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
         self._addAnnexe(item, Memberfolder, _path, 'deliberation', 'Deliberation')
 
     def getMeeting(self):
@@ -185,8 +185,8 @@ class TransformXmlToMeetingOrItem:
             return self.__meetingList__
 
         self.__meetingList__ = []
-        #nous utiliserons le répertoire d'Anne-Sylvie Collard
-        Memberfolder = self.__portal__.Members.ascollard.mymeetings.get('meeting-config-college')
+        #nous utiliserons le répertoire de Nathalie Dilillo
+        Memberfolder = self.__portal__.Members.ndilillo.mymeetings.get('meeting-config-college')
         #nous ajoutons les droits nécessaire sinon l'invoke factory va raler
         Memberfolder.manage_addLocalRoles('admin', ('MeetingManagerLocal', 'MeetingManager'))
         lat = list(Memberfolder.getLocallyAllowedTypes())
@@ -230,7 +230,7 @@ class TransformXmlToMeetingOrItem:
                                                             _heure, _endDate[10:12], _endDate[12:14])
                     tme = DateTime(date_str)
                     meeting.setEndDate(tme)
-                    #ajout d'une observation comprenant un lien vers le pdfSeanceLink (pour Marche il y en a toujours qu'un)
+                    #ajout d'une observation comprenant un lien vers le pdfSeanceLink (pour La Louvière il y en a toujours qu'un)
                     try:
                         self.addMeetingAnnexe(meeting, meetings.getElementsByTagName("pdfSeanceLink")[0])
                     except:
@@ -256,6 +256,7 @@ class TransformXmlToMeetingOrItem:
         self.__itemList__ = []
         useridLst = [ud['userid'] for ud in self.__portal__.acl_users.searchUsers()]
         mapping = createDicoMapping(self)
+        cpt = 0
         for items in self.getRootElement().getElementsByTagName("point"):
             if items.nodeType == items.ELEMENT_NODE:
                 try:
@@ -304,7 +305,8 @@ class TransformXmlToMeetingOrItem:
                     _heure = _createDate[8:10]
                     if _heure == '24':
                         _heure = '0'
-                    date_str = '%s/%s/%s %s:%s:%s GMT+1' % (_createDate[0:4], _createDate[4:6], _createDate[6:8], _heure, _createDate[10:12], _createDate[12:14])
+                    date_str = '%s/%s/%s %s:%s:%s GMT+1' % (_createDate[0:4], _createDate[4:6], _createDate[6:8],
+                                                            _heure, _createDate[10:12], _createDate[12:14])
                     tme = DateTime(date_str)
                     item.setCreationDate(tme)
                     item.setCreators(_creatorId)
@@ -330,6 +332,11 @@ class TransformXmlToMeetingOrItem:
                     item.portal_workflow.doActionFor(item, 'propose')
                     item.portal_workflow.doActionFor(item, 'validate')
                     self.__itemList__.append(item)
+                    cpt = cpt + 1
+                    # commit transaction si nous avons créé 250 points
+                    if cpt >= 250:
+                        transaction.commit()
+                        cpt = 0
                 except Exception, msg:
                     self.__out__.append("L'importation du point %s a echouee.%s." % (_id, msg.value))
         return self.__itemList__
@@ -360,7 +367,7 @@ def createDicoMapping(self):
        create dico with excel file with mapping GRU,PLONE
     """
     import csv
-    fname = "/home/anuyens/Documents/Projets/Reprises GRU/Marche/Mapping.csv"
+    fname = "/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/Mapping.csv"
     try:
         file = open(fname, "rb")
         reader = csv.DictReader(file)
