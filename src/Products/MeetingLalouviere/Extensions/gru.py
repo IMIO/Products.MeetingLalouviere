@@ -115,7 +115,7 @@ class TransformXmlToMeetingOrItem:
         """
         #nous utiliserons le répertoire de Nathalie Dilillo 
         Memberfolder = self.__portal__.Members.ndilillo.mymeetings.get('meeting-config-college')
-        annexe = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
+        annexe = self.getText(node).replace('file:///var/gru/pdf-files', '/media/Data/Documents/Projets/Reprises GRU/LaLouviere/gru/pdf-files')
         if not os.path.isfile(annexe):
             self.__out__.append("Le fichier %s n'a pas ete trouve." % annexe.decode('utf-8'))
             return
@@ -148,14 +148,14 @@ class TransformXmlToMeetingOrItem:
         _file.close()
 
     def addItemPDFPoint(self, item, node, Memberfolder):
-        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
+        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/media/Data/Documents/Projets/Reprises GRU/LaLouviere/gru/pdf-files')
         self._addAnnexe(item, Memberfolder, _path, 'pdf-link', 'PDF-POINT')
 
     def addItemAnnexes(self, item, node, Memberfolder):
         i = 0
         for annexes in node.getElementsByTagName("annexLink"):
             try:
-                _path = self.getText(node.getElementsByTagName("annexLink")[i]).replace('file:///var/gru/annexe', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/annexe')
+                _path = self.getText(node.getElementsByTagName("annexLink")[i]).replace('file:///var/gru/annexe', '/media/Data/Documents/Projets/Reprises GRU/LaLouviere/gru/annexe')
                 title = 'Annexe-%d' % i
                 self._addAnnexe(item, Memberfolder, _path, 'annexe', title)
                 i = i + 1
@@ -166,7 +166,7 @@ class TransformXmlToMeetingOrItem:
         i = 0
         for annexes in node.getElementsByTagName("adviseLink"):
             try:
-                _path = self.getText(node.getElementsByTagName("adviseLink")[i]).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
+                _path = self.getText(node.getElementsByTagName("adviseLink")[i]).replace('file:///var/gru/pdf-files', '/media/Data/Documents/Projets/Reprises GRU/LaLouviere/gru/pdf-files')
                 title = 'Avis-%d' % i
                 self._addAnnexe(item, Memberfolder, _path, 'advise', title)
                 i = i + 1
@@ -174,7 +174,7 @@ class TransformXmlToMeetingOrItem:
                 self.__out__.append("Probleme avec l'avis %s." % _path)
 
     def addItemPDFDelibe(self, item, node, Memberfolder):
-        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/pdf-files')
+        _path = self.getText(node).replace('file:///var/gru/pdf-files', '/media/Data/Documents/Projets/Reprises GRU/LaLouviere/gru/pdf-files')
         self._addAnnexe(item, Memberfolder, _path, 'deliberation', 'Deliberation')
 
     def getMeeting(self):
@@ -255,6 +255,14 @@ class TransformXmlToMeetingOrItem:
 
         self.__itemList__ = []
         useridLst = [ud['userid'] for ud in self.__portal__.acl_users.searchUsers()]
+        #for ll remove ghost
+        useridLst.remove('jbarnfather')
+        useridLst.remove('fdegueldre')
+        useridLst.remove('ygaritte')
+        useridLst.remove('ldenis')
+        useridLst.remove('jpdepoorter')
+        useridLst.remove('cvanus')
+        useridLst.remove('fcastagna')
         mapping = createDicoMapping(self)
         cpt = 0
         for items in self.getRootElement().getElementsByTagName("point"):
@@ -262,8 +270,8 @@ class TransformXmlToMeetingOrItem:
                 try:
                     #récuptération des données du point
                     _id = self.getText(items.getElementsByTagName("id")[0])
-                    #if _id == '103513':
-                    #    import pdb;pdb.set_trace()
+                    if _id == '':
+                        import pdb;pdb.set_trace()
                     _title = self.getText(items.getElementsByTagName("title")[0])
                     _description = self.getText(items.getElementsByTagName("description")[0])
                     ''' Attention,
@@ -295,13 +303,15 @@ class TransformXmlToMeetingOrItem:
                     else:
                         Memberfolder = self.__portal__.Members.get(_creatorId).mymeetings.get('meeting-config-college')
                     if getattr(Memberfolder, _id, None):
-                        self.__out__.append('Le point %s already exist.' % _title.decode('utf-8'))
+                        #self.__out__.append('Le point %s already exist.' % _title)
                         continue
-                    itemid = Memberfolder.invokeFactory(type_name="MeetingItemCollege", id=_id, title=_title, description=_description)
+                    itemid = Memberfolder.invokeFactory(type_name="MeetingItemCollege", id=_id, title=_title,
+                                                        description=_description)
                     item = getattr(Memberfolder, itemid)
                     item.setDecision(_decision)
                     item.setProposingGroup(_proposingGroup)
-                    item.setCategory('gru-import')
+                    item.setMotivation('')
+                    #item.setCategory('gru-import')
                     _heure = _createDate[8:10]
                     if _heure == '24':
                         _heure = '0'
@@ -329,15 +339,17 @@ class TransformXmlToMeetingOrItem:
                     except:
                         pass
                     #plaçons le point en état validé afin qu'il puisse être placé dans une séance
-                    item.portal_workflow.doActionFor(item, 'propose')
                     item.portal_workflow.doActionFor(item, 'validate')
                     self.__itemList__.append(item)
                     cpt = cpt + 1
-                    # commit transaction si nous avons créé 250 points
-                    if cpt >= 250:
+                    # commit transaction si nous avons créé 25 points
+                    if cpt >= 25:
                         transaction.commit()
                         cpt = 0
+                        #print '\n'.join(self.__out__)
+                        print 'commit'
                 except Exception, msg:
+                    import pdb;pdb.set_trace()
                     self.__out__.append("L'importation du point %s a echouee.%s." % (_id, msg.value))
         return self.__itemList__
 
@@ -367,7 +379,7 @@ def createDicoMapping(self):
        create dico with excel file with mapping GRU,PLONE
     """
     import csv
-    fname = "/home/anuyens/Documents/Projets/Reprises GRU/LaLouviere/Mapping.csv"
+    fname = "/media/Data/Documents/Projets/Reprises GRU/LaLouviere/Mapping.csv"
     try:
         file = open(fname, "rb")
         reader = csv.DictReader(file)
@@ -382,6 +394,6 @@ def createDicoMapping(self):
         plone = row['PLONE'].decode('UTF-8').strip()
         if not dic.has_key(gru):
             dic[gru] = plone
-        else:
-            self.__out__.append('key %s - %s already present' % (gru, plone))
+        #else:
+        #    self.__out__.append('key %s - %s already present' % (gru, plone))
     return dic
