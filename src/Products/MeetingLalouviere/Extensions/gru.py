@@ -256,8 +256,6 @@ class TransformXmlToMeetingOrItem:
         self.__itemList__ = []
         useridLst = [ud['userid'] for ud in self.__portal__.acl_users.searchUsers()]
         #for ll remove ghost
-        useridLst.remove('jbarnfather')
-        useridLst.remove('fdegueldre')
         useridLst.remove('ygaritte')
         useridLst.remove('ldenis')
         useridLst.remove('jpdepoorter')
