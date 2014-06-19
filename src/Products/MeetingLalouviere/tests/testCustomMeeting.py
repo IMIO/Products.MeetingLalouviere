@@ -31,7 +31,7 @@ class testCustomMeeting(MeetingLalouviereTestCase):
         Tests the Meeting adapted methods
     """
 
-    def test_mll_getCategories(self):
+    def test_getCategories(self):
         """
           Check what are returned while getting different types of categories
           This method is used in "meeting-config-council"
@@ -81,7 +81,7 @@ class testCustomMeeting(MeetingLalouviereTestCase):
         expectedThirdSuppl = ['points-conseillers-3eme-supplement']
         self.assertEquals(m.getThirdSupplCategories(), expectedThirdSuppl)
 
-    def test_mll_getAvailableItems(self):
+    def test_getAvailableItems(self):
         '''
           Already tested in MeetingLaouviere.tests.testMeeting.py
         '''

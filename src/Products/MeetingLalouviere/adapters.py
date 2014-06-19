@@ -24,7 +24,6 @@
 #
 # ------------------------------------------------------------------------------
 from sets import Set
-from DateTime import DateTime
 from appy.gen import No
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
@@ -411,11 +410,13 @@ class CustomMeeting(Meeting):
     security.declarePublic('getCommissionCategories')
     def getCommissionCategories(self):
         '''Returns the list of categories used for Commissions.
-           Since 2013, some commission are aggregating several categories, in this case,
+           Since june 2013, some commission are aggregating several categories, in this case,
            a sublist of categories is returned...'''
         mc = self.portal_plonemeeting.getMeetingConfig(self)
         # creating a new Meeting or editing an existing meeting with date >= june 2013
-        if not self.getDate() or (self.getDate().year() >= 2013 and self.getDate().month() > 5):
+        if not self.getDate() or \
+           (self.getDate().year() >= 2013 and self.getDate().month() > 5) or \
+           (self.getDate().year() > 2013):
             # since 2013 commissions does NOT correspond to commission as MeetingItem.category
             # several MeetingItem.category are taken for one single commission...
             commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2013
@@ -940,6 +941,39 @@ class CustomMeetingConfig(MeetingConfig):
         brains.sort(sortBrainsByProposingGroup)
         return brains
     MeetingConfig.searchItemsForDashboard = searchItemsForDashboard
+
+    security.declarePublic('searchItemsToValidate')
+    def searchItemsToValidate(self, sortKey, sortOrder, filterKey, filterValue, **kwargs):
+        '''See docstring in Products.PloneMeeting.MeetingConfig.
+           We override it here because relevant groupIds and wf state are no the same...'''
+        member = self.portal_membership.getAuthenticatedMember()
+        groupIds = self.portal_groups.getGroupsForPrincipal(member)
+        res = []
+        for groupId in groupIds:
+            # XXX change by MeetingLalouviere
+            # if groupId.endswith('_reviewers'):
+            if groupId.endswith('_directors'):
+                # append group name without suffix
+                res.append(groupId[:-10])
+        # if we use pre_validation, the state in which are items to validate is 'prevalidated'
+        # if not using the WFAdaptation 'pre_validation', the items are in state 'proposed'
+        usePreValidationWFAdaptation = 'pre_validation' in self.getWorkflowAdaptations()
+        params = {'portal_type': self.getItemTypeName(),
+                  'getProposingGroup': res,
+                  # XXX change by MeetingLalouviere
+                  # 'review_state': usePreValidationWFAdaptation and ('prevalidated', ) or ('proposed', ),
+                  'review_state': usePreValidationWFAdaptation and ('prevalidated', ) or ('proposed_to_director', ),
+                  'sort_on': sortKey,
+                  'sort_order': sortOrder
+                  }
+        # Manage filter
+        if filterKey:
+            params[filterKey] = prepareSearchValue(filterValue)
+        # update params with kwargs
+        params.update(kwargs)
+        # Perform the query in portal_catalog
+        return self.portal_catalog(**params)
+    MeetingConfig.searchItemsToValidate = searchItemsToValidate
 
 
 class CustomMeetingGroup(MeetingGroup):

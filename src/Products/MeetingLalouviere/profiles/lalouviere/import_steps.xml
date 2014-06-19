@@ -12,4 +12,10 @@
   <dependency step="installMeetingLalouviere"/>
   Initialize portal_plonemeeting folders for La Louviere.
  </import-step>
+ <import-step id="finalizeInstanceMeetingLalouviere" version="20131114-01"
+              handler="Products.MeetingLalouviere.setuphandlers.finalizeInstance"
+              title="Finalize instance.">
+  <dependency step="initializetool-MeetingCommunes"/>
+  Finalize instance.
+ </import-step>
 </import-steps>

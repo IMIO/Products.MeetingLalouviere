@@ -28,5 +28,3 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import \
 
 class testCustomMeetingCategory(MeetingLalouviereTestCase):
     '''Tests the MeetingGroup adapted methods.'''
-
-    pass

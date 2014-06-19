@@ -31,8 +31,6 @@ from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
 def isNotMeetingLalouviereProfile(context):
     return context.readDataFile("MeetingLalouviere_marker.txt") is None
 
-
-
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
@@ -54,15 +52,14 @@ def postInstall(context):
     addCommissionEditorGroups(context, site)
     # Add some more topics
     addSearches(context, site)
-    # Set a default value for each MeetingConfig.defaultMeetingItemDecision
-    setDefaultMeetingItemMotivation(context, site)
     # Set a default value for each MeetingConfig.preMeetingAssembly_default
     setDefaultPreMeetingsAssembly(context, site)
     # Make sure the 'home' tab is shown
     showHomeTab(context, site)
     # Reinstall the skin
     reinstallPloneMeetingSkin(context, site)
-
+    # reorder skins so we are sure that the meetinglalouviere_xxx skins are just under custom
+    reorderSkinsLayers(context, site)
 
 
 ##code-section FOOT
@@ -274,35 +271,6 @@ def addSearches(context, portal):
     ])
 
 
-def setDefaultMeetingItemMotivation(context, portal):
-    '''
-       Define the MeetingConfig.defaultItemMotivation for 'meeting-config-college'
-       and 'meeting-config-council
-    '''
-    if isNotMeetingLalouviereProfile(context):
-        return
-
-    logStep("setDefaultMeetingItemMotivation", context)
-
-    data = {'meeting-config-college': """<p>Vu l'arrÃªtÃ© du Gouvernement Wallon du 22 avril 2004 portant codification de la lÃ©gislation relative aux pouvoirs locaux; dit le code de la dÃ©mocratie locale et de la dÃ©centralisation;</p>
-<p>Vu le dÃ©cret du 27 mai 2004 portant confirmation dudit arrÃªtÃ© du gouvernement Wallon du 22 avril 2004;</p>
-<p>Vu la nouvelle Loi communale;</p>
-<p>Vu l'article 123 de la nouvelle Loi communale;</p>
-<p>Vu l'article L1123-23 du code de la DÃ©mocratie locale et de la DÃ©centralisation;</p>""",
-    'meeting-config-council': """<p>Vu, d'une part, l'arrÃªtÃ© du Gouvernement Wallon du 22 avril 2004 portant codification de la lÃ©gislation relative aux pouvoirs locaux et d'autre part, le dÃ©cret du 27 mai 2004 portant confirmation dudit arrÃªtÃ©;</p>
-<p>Vu l'article 117 de la nouvelle Loi Communale;</p>
-<p>Vu l'article L 1122-30 du Code de DÃ©mocratie Locale et de la DÃ©centralisation;</p>""",
-}
-
-    for mc in portal.portal_plonemeeting.objectValues("MeetingConfig"):
-        defaultMeetingItemMotivation = mc.getDefaultMeetingItemMotivation()
-        #only update values for 'college' and 'council' if the field is empty
-        if not mc.getId() in ['meeting-config-council', 'meeting-config-college', ] \
-           or defaultMeetingItemMotivation:
-            continue
-        mc.setDefaultMeetingItemMotivation(data[mc.getId()])
-
-
 def setDefaultPreMeetingsAssembly(context, portal):
     '''
        Define a default value for each MeetingConfig.preMeetingAssembly_default
@@ -316,45 +284,45 @@ def setDefaultPreMeetingsAssembly(context, portal):
     if not mc:
         return
     # Commission Travaux
-    data = """M.P.WATERLOT, PrÃ©sident,
-Mme T.ROTOLO, M.J.CHRISTIAENS, Vice-prÃ©sidents,
+    data = """M.P.WATERLOT, Président,
+Mme T.ROTOLO, M.J.CHRISTIAENS, Vice-présidents,
 MM.Y.DRUGMAND, G.MAGGIORDOMO, Mme O.ZRIHEN, M.R.ROMEO,Mme M.HANOT,
 M.J.KEIJZER, Mmes C.BOULANGIER, F.VERMEER, L.BACCARELLA, M.C.LICATA,
 Mme M.ROLAND, Conseillers communaux"""
     mc.setPreMeetingAssembly_default(data)
     # Commission Enseignement
-    data = """M.A.GAVA, PrÃ©sident,
-MM.L.WIMLOT, V.LIBOIS, Vice-prÃ©sidents,
+    data = """M.A.GAVA, Président,
+MM.L.WIMLOT, V.LIBOIS, Vice-présidents,
 MM.M.DUBOIS, M.DI MATTIA, J.KEIJZER, A.FAGBEMI, Mme F.RMILI,
 M.A.BUSCEMI, Mme A-M.MARIN, MM.A.GOREZ, J-P.MICHIELS, C.DELPLANCQ,
 Mme L.BACCARELLA, Conseillers communaux"""
     mc.setPreMeetingAssembly_2_default(data)
     # Commission Cadre de vie
-    data = """Mme I.VAN STEEN, PrÃ©sidente,
-M.F.ROMEO, Vice-prÃ©sident,
+    data = """Mme I.VAN STEEN, Présidente,
+M.F.ROMEO, Vice-président,
 MM.B.LIEBIN, M.DUBOIS, J.KEIJZER, A.FAGBEMI, A.GAVA, L.DUVAL,
 L.WIMLOT, V.LIBOIS, J-P.MICHIELS, Mme L.BACCARELLA, M.C.LICATA,
 Mme M.ROLAND, Conseillers communaux"""
     mc.setPreMeetingAssembly_3_default(data)
     # Commission AG
-    data = """M.M.DI MATTIA, PrÃ©sident,
-Mme C.BOULANGIER, Vice-prÃ©sidente,
+    data = """M.M.DI MATTIA, Président,
+Mme C.BOULANGIER, Vice-présidente,
 M.B.LIEBIN, Mme C.BURGEON, M.G.MAGGIORDOMO, Mmes T.ROTOLO, M.HANOT,
 MM.J.KEIJZER, J.CHRISTIAENS, M.VAN HOOLAND, Mme F.RMILI, MM.P.WATERLOT,
 A.BUSCEMI, Mme F.VERMEER, Conseillers communaux
 """
     mc.setPreMeetingAssembly_4_default(data)
     # Commission Finances
-    data = """M.J.CHRISTIAENS, PrÃ©sident,
-M.M.VAN HOOLAND, Mme F.RMILI, Vice-prÃ©sident,
+    data = """M.J.CHRISTIAENS, Président,
+M.M.VAN HOOLAND, Mme F.RMILI, Vice-président,
 MM.B.LIEBIN, Y.DRUGMAND, Mme T.ROTOLO, M.F.ROMEO, Mme M.HANOT,
 MM.J.KEIJZER, A.BUSCEMI, Mme C.BOULANGIER, MM.V.LIBOIS,
 C.DELPLANCQ, Mme M.ROLAND, Conseillers communaux
 """
     mc.setPreMeetingAssembly_5_default(data)
     # Commission Police
-    data = """M.A.FAGBEMI, PrÃ©sident,
-Mme A-M.MARIN, Vice-prÃ©sidente,
+    data = """M.A.FAGBEMI, Président,
+Mme A-M.MARIN, Vice-présidente,
 Mme C.BURGEON, M.M.DI MATTIA, Mme I.VAN STEEN, MM.J.KEIJZER,
 A.GAVA, L.DUVAL, P.WATERLOT, L.WIMLOT, A.GOREZ, J-P.MICHIELS
 Mme L.BACCARELLA, M.C.LICATA, Conseillers communaux
@@ -394,5 +362,56 @@ def reinstallPloneMeetingSkin(context, site):
         # if the Products.plonemeetingskin profile is not available
         # (not using plonemeetingskin or in testing?) we pass...
         pass
+
+
+def reorderSkinsLayers(context, site):
+    """
+       Reinstall Products.plonemeetingskin and re-apply MeetingLalouviere skins.xml step
+       as the reinstallation of MeetingLalouviere and PloneMeeting changes the portal_skins layers order
+    """
+    if isNotMeetingLalouviereProfile(context) and isNotMeetingLalouviereLalouviereProfile(context):
+        return
+
+    logStep("reorderSkinsLayers", context)
+    try:
+        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
+        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
+        site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
+    except KeyError:
+        # if the Products.plonemeetingskin profile is not available
+        # (not using plonemeetingskin or in testing?) we pass...
+        pass
+
+
+def finalizeInstance(context):
+    """
+      Called at the very end of the installation process (after PloneMeeting).
+    """
+    reorderSkinsLayers(context, context.getSite())
+    reorderCss(context)
+
+
+def reorderCss(context):
+    """
+       Make sure CSS are correctly reordered in portal_css so things
+       work as expected...
+    """
+    if isNotMeetingLalouviereProfile(context) and isNotMeetingLalouviereLalouviereProfile(context):
+        return
+
+    site = context.getSite()
+
+    logStep("reorderCss", context)
+    portal_css = site.portal_css
+    css = ['plonemeeting.css',
+           'meeting.css',
+           'meetingitem.css',
+           'meetinglalouviere.css',
+           'imioapps.css',
+           'plonemeetingskin.css',
+           'imioapps_IEFixes.css',
+           'ploneCustom.css']
+    for resource in css:
+        portal_css.moveResourceToBottom(resource)
 
 ##/code-section FOOT
