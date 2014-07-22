@@ -66,10 +66,10 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
                         'backToProposedToOfficeManager',
                         'backToProposedToServiceHead',
                         'backToItemCreated'),
-        'proposed': ('backToItemFrozen',
-                     'backToPresented',
-                     'backToValidated',
-                     'backToProposedToDirector', ),
+        'proposed_to_director': ('backToItemFrozen',
+                                 'backToPresented',
+                                 'backToValidated',
+                                 'backToProposedToDirector', ),
         'validated': ('backToItemFrozen',
                       'backToPresented',
                       'backToValidated', )}
@@ -79,16 +79,18 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
                         'backToValidated',
                         'backToProposedToDirector',
                         'backToItemCreated'),
-        'proposed': ('backToItemFrozen',
-                     'backToPresented',
-                     'backToValidated',
-                     'backToProposedToDirector', ),
+        'proposed_to_director': ('backToItemFrozen',
+                                 'backToPresented',
+                                 'backToValidated',
+                                 'backToProposedToDirector', ),
         'validated': ('backToItemFrozen',
                       'backToPresented',
                       'backToValidated', )}
 
-    WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed_to_director',
-                              'validated': 'validated'}
+    WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
+                              'proposed': 'proposed_to_director',
+                              'validated': 'validated',
+                              'presented': 'presented'}
 
     def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
         '''Create a meeting with a bunch of items.

@@ -28,7 +28,7 @@
 }
 
 .state-proposed_to_servicehead, .label-state-proposed_to_servicehead {
-    color: #FFA500 !important;
+    color: DarkOrange !important;
 }
 
 .state-item_in_committee {
@@ -40,15 +40,15 @@
 }
 
 .state-proposed_to_officemanager, .label-state-proposed_to_officemanager {
-    color: #FFA500 !important;
+    color: DarkOrange !important;
 }
 
 .state-proposed_to_divisionhead, .label-state-proposed_to_divisionhead {
-    color: #FFA500 !important;
+    color: DarkOrange !important;
 }
 
 .state-proposed_to_director, .label-state-proposed_to_director {
-    color: #FFA500 !important;
+    color: DarkOrange !important;
 }
 
 .state-validated, .label-state-validated {

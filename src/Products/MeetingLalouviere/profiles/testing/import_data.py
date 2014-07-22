@@ -16,14 +16,19 @@ annexe = MeetingFileTypeDescriptor('annexe', 'Annexe', 'attach.png', '')
 annexeBudget = MeetingFileTypeDescriptor('annexeBudget', 'Article Budgetaire', 'budget.png', '')
 annexeCahier = MeetingFileTypeDescriptor('annexeCahier', 'Cahier des Charges', 'cahier.gif', '')
 itemAnnex = MeetingFileTypeDescriptor('item-annex', 'Other annex(es)', 'attach.png', '')
-annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe a la decision', 'attach.png', '', True)
+annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe a la decision', 'attach.png', '', 'item_decision')
 # Some type of annexes taken from the default PloneMeeting test profile
 marketingAnalysis = MeetingFileTypeDescriptor(
-    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', True,
+    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', 'item_decision',
     active=False)
 overheadAnalysis = MeetingFileTypeDescriptor(
     'overhead-analysis', 'Administrative overhead analysis',
     'attach.png', '')
+# Advice annexes types
+adviceAnnex = MeetingFileTypeDescriptor(
+    'advice-annex', 'Advice annex(es)', 'attach.png', '', 'advice')
+adviceLegalAnalysis = MeetingFileTypeDescriptor(
+    'advice-legal-analysis', 'Advice legal analysis', 'attach.png', '', 'advice')
 
 # Pod templates ----------------------------------------------------------------
 agendaTemplate = PodTemplateDescriptor('agendaTemplate', 'Meeting agenda')
@@ -81,15 +86,18 @@ powerobserver2 = UserDescriptor('powerobserver2', [], fullname='M. Power Observe
 # Add a vintage group
 endUsers = GroupDescriptor('endUsers', 'End users', 'EndUsers', active=False)
 
-developers = GroupDescriptor('developers', 'Developers', 'Devel', givesMandatoryAdviceOn="python:False")
+developers = GroupDescriptor('developers', 'Developers', 'Devel')
 developers.creators.append(pmCreator1)
 developers.creators.append(pmCreator1b)
 developers.creators.append(pmManager)
 developers.creators.append(admin)
 developers.serviceheads.append(pmReviewer1)
 developers.serviceheads.append(pmServiceHead1)
+developers.serviceheads.append(pmManager)
 developers.officemanagers.append(pmOfficeManager1)
+developers.officemanagers.append(pmManager)
 developers.divisionheads.append(pmDivisionHead1)
+developers.divisionheads.append(pmManager)
 developers.directors.append(pmDirector1)
 developers.directors.append(pmReviewer1)
 developers.directors.append(pmManager)
@@ -106,7 +114,7 @@ setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
 
 #give an advice on recurring items
-vendors = GroupDescriptor('vendors', 'Vendors', 'Devil', givesMandatoryAdviceOn="python: item.id == 'recurringagenda1'")
+vendors = GroupDescriptor('vendors', 'Vendors', 'Devil')
 vendors.creators.append(pmCreator2)
 vendors.directors.append(pmReviewer2)
 vendors.directors.append(pmDirector2)
@@ -151,8 +159,9 @@ collegeMeeting.shortName = 'College'
 collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex,
                                    annexeDecision, overheadAnalysis, marketingAnalysis]
 collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned', 'motivation', )
-collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
-                                       'observations', 'interventions', 'commissionTranscript')
+collegeMeeting.xhtmlTransformFields = ('MeetingItem.description', 'MeetingItem.detailedDescription',
+                                       'MeetingItem.decision', 'MeetingItem.observations',
+                                       'MeetingItem.interventions', 'MeetingItem.commissionTranscript')
 collegeMeeting.xhtmlTransformTypes = ('removeBlanks',)
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
 collegeMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
@@ -166,7 +175,9 @@ collegeMeeting.itemTopicStates = ('itemcreated', 'proposed_to_servicehead', 'pro
                                   'delayed', 'pre_accepted', 'removed',)
 collegeMeeting.meetingTopicStates = ('created', 'frozen')
 collegeMeeting.decisionTopicStates = ('decided', 'closed')
-collegeMeeting.itemAdviceStates = ('validated',)
+collegeMeeting.itemAdviceStates = ['proposed_to_director', ]
+collegeMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
+collegeMeeting.itemAdviceViewStates = ['presented', ]
 collegeMeeting.recordItemHistoryStates = ['', ]
 collegeMeeting.useGroupsAsCategories = True
 collegeMeeting.maxShownMeetings = 5
@@ -174,7 +185,7 @@ collegeMeeting.maxDaysDecisions = 60
 collegeMeeting.meetingAppDefaultView = 'topic_searchmyitems'
 collegeMeeting.itemDocFormats = ('odt', 'pdf')
 collegeMeeting.meetingDocFormats = ('odt', 'pdf')
-collegeMeeting.useAdvices = True
+collegeMeeting.useAdvices = False
 collegeMeeting.enforceAdviceMandatoriness = False
 collegeMeeting.enableAdviceInvalidation = False
 collegeMeeting.useCopies = True
@@ -263,8 +274,9 @@ aux pouvoirs locaux et d'autre part, le décret du 27 mai 2004 portant  confirma
 councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
 councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex, annexeDecision]
-councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision', 'observations',
-                                       'interventions', 'commissionTranscript')
+councilMeeting.xhtmlTransformFields = ('MeetingItem.description', 'MeetingItem.detailedDescription',
+                                       'MeetingItem.decision', 'MeetingItem.observations',
+                                       'MeetingItem.interventions', 'MeetingItem.commissionTranscript')
 councilMeeting.xhtmlTransformTypes = ('removeBlanks',)
 councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations',
                                      'privacy', 'itemAssembly', 'itemIsSigned',
@@ -289,7 +301,10 @@ councilMeeting.itemTopicStates = ('itemcreated', 'proposed_to_director', 'valida
                                   'accepted_but_modified', 'refused', 'delayed')
 councilMeeting.meetingTopicStates = ('created', 'frozen', 'in_committee')
 councilMeeting.decisionTopicStates = ('in_council', 'closed')
-councilMeeting.itemAdviceStates = ('proposed_to_director', 'validated',)
+councilMeeting.itemAdviceStates = ['proposed_to_director', ]
+councilMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
+councilMeeting.itemAdviceViewStates = ['presented', ]
+councilMeeting.transitionReinitializingDelays = 'backToItemCreated'
 councilMeeting.recordItemHistoryStates = ['', ]
 councilMeeting.maxShownMeetings = 5
 councilMeeting.maxDaysDecisions = 60

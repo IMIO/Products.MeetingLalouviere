@@ -61,52 +61,57 @@ adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = RETURN_TO_PROPOSING_GRO
 RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     # view permissions
     'Access contents information':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'View':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+    'PloneMeeting: Read budget infos':
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'PloneMeeting: Read decision':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'PloneMeeting: Read optional advisers':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'PloneMeeting: Read decision annex':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'PloneMeeting: Read item observations':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'MeetingLalouviere: Read commission transcript':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     # edit permissions
     'Modify portal content':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+    'PloneMeeting: Write budget infos':
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', 'MeetingBudgetImpactEditor'],
     'PloneMeeting: Write decision':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'Review portal content':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'Add portal content':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Add annex':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Add MeetingFile':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Write decision annex':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Write optional advisers':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Write optional advisers':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     # MeetingManagers edit permissions
     'Delete objects':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingManager', ],
     'PloneMeeting: Write item observations':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'MeetingLalouviere: Write commission transcript':
-    ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ),
+    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
 }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
@@ -1254,16 +1259,18 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
     implements(IMeetingItemCollegeLalouviereWorkflowConditions)
     security = ClassSecurityInfo()
 
+    useHardcodedTransitionsForPresentingAnItem = True
+    transitionsForPresentingAnItem = ('proposeToServiceHead',
+                                      'proposeToOfficeManager',
+                                      'proposeToDivisionHead',
+                                      'proposeToDirector',
+                                      'validate',
+                                      'present')
+
     def __init__(self, item):
         self.context = item  # Implements IMeetingItem
         self.sm = getSecurityManager()
-        self.useHardcodedTransitionsForPresentingAnItem = True
-        self.transitionsForPresentingAnItem = ('proposeToServiceHead',
-                                               'proposeToOfficeManager',
-                                               'proposeToDivisionHead',
-                                               'proposeToDirector',
-                                               'validate',
-                                               'present')
+
 
     security.declarePublic('mayDecide')
 
@@ -1648,11 +1655,12 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
     implements(IMeetingItemCouncilLalouviereWorkflowConditions)
     security = ClassSecurityInfo()
 
+    useHardcodedTransitionsForPresentingAnItem = True
+    transitionsForPresentingAnItem = ('proposeToDirector', 'validate', 'present')
+
     def __init__(self, item):
         self.context = item  # Implements IMeetingItem
         self.sm = getSecurityManager()
-        self.useHardcodedTransitionsForPresentingAnItem = True
-        self.transitionsForPresentingAnItem = ('proposeToDirector', 'validate', 'present')
 
     security.declarePublic('mayProposeToDirector')
 

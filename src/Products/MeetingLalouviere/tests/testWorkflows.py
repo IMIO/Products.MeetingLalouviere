@@ -47,8 +47,14 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             creation of some items, and ends by closing a meeting.
             This call 2 sub tests for each process : college and council
         """
+        # remove recurring items
+        self.changeUser('admin')
+        self._removeRecurringItems(self.meetingConfig)
         self._testWholeDecisionProcessCollege()
         self.setMeetingConfig(self.meetingConfig2.getId())
+        # remove recurring items
+        self.changeUser('admin')
+        self._removeRecurringItems(self.meetingConfig2)
         self._testWholeDecisionProcessCouncil()
 
     def _testWholeDecisionProcessCollege(self):
@@ -363,12 +369,6 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEquals('accepted', wftool.getInfoFor(item6, 'review_state'))
         #presented change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
-
-    def test_subproduct_RecurringItemsCollege(self):
-        '''Call MeetingCommunes test, but give the pmManager the 'Manager' role
-           so he has got no problems to add recurring items (need to be able to trigger every transitions).'''
-        setRoles(self.portal, 'pmManager', ['MeetingManager', 'Manager', ])
-        mctw.test_subproduct_RecurringItemsCollege(self)
 
 
 def test_suite():

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from DateTime import DateTime
 from Products.PloneMeeting.profiles import CategoryDescriptor
 from Products.PloneMeeting.profiles import GroupDescriptor
 from Products.PloneMeeting.profiles import MeetingConfigDescriptor
@@ -9,6 +10,8 @@ from Products.PloneMeeting.profiles import PodTemplateDescriptor
 from Products.PloneMeeting.profiles import RecurringItemDescriptor
 from Products.PloneMeeting.profiles import UserDescriptor
 
+today = DateTime().strftime('%Y/%m/%d')
+
 # File types -------------------------------------------------------------------
 annexe = MeetingFileTypeDescriptor('annexe', 'Annexe', 'attach.png', '')
 annexeBudget = MeetingFileTypeDescriptor('annexeBudget', 'Article Budgétaire', 'budget.png', '')
@@ -16,8 +19,11 @@ annexeCahier = MeetingFileTypeDescriptor('annexeCahier', 'Cahier des Charges', '
 annexeRemarks = MeetingFileTypeDescriptor('annexeRemarks', 'Remarques secrétaires',
                                           'secretary_remarks.png', '')
 annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe à la décision',
-                                           'attach.png', '', True, active=False)
-
+                                           'attach.png', '', 'item_decision')
+annexeAvis = MeetingFileTypeDescriptor('annexeAvis', 'Annexe à un avis',
+                                       'attach.png', '', 'advice')
+annexeAvisLegal = MeetingFileTypeDescriptor('annexeAvisLegal', 'Extrait article de loi',
+                                            'legalAdvice.png', '', 'advice')
 # Pod templates ----------------------------------------------------------------
 # MeetingItem
 collegeDelibTemplate = PodTemplateDescriptor('college-deliberation', 'Délibération')
@@ -174,6 +180,8 @@ councilTemplates = [councilOJExplanatoryTemplate, councilFardesTemplate,
 
 
 # Users and groups -------------------------------------------------------------
+dgen = UserDescriptor('dgen', ['MeetingManager'], email="test@test.be", fullname="Henry Directeur")
+dfin = UserDescriptor('dfin', [], email="test@test.be", fullname="Directeur Financier")
 secretaire = UserDescriptor('secretaire', ['MeetingManager'], email="test@test.be")
 agentInfo = UserDescriptor('agentInfo', [], email="test@test.be")
 agentCompta = UserDescriptor('agentCompta', [], email="test@test.be")
@@ -334,12 +342,13 @@ groupeptb_mu = MeetingUserDescriptor('groupeptb', gender='', duty='', usages=['a
 groupefn_mu = MeetingUserDescriptor('groupefn', gender='', duty='', usages=['asker', ])
 groupeindependant_mu = MeetingUserDescriptor('groupeindependant', gender='', duty='', usages=['asker', ])
 
-groups = [GroupDescriptor('secretariat', 'Secretariat communal', 'Secr',
+groups = [GroupDescriptor('dirgen', 'Directeur Général', 'DG'),
+          GroupDescriptor('secretariat', 'Secretariat communal', 'Secr',
                           asCopyGroupOn="python: item.getProposingGroup()=='informatique' and ['reviewers',] or []"),
           GroupDescriptor('informatique', 'Service informatique', 'Info'),
           GroupDescriptor('personnel', 'Service du personnel', 'Pers'),
-          GroupDescriptor('comptabilite', 'Service comptabilité', 'Compt',
-                          givesMandatoryAdviceOn='python:True'),
+          GroupDescriptor('dirfin', 'Directeur Financier', 'DF'),
+          GroupDescriptor('comptabilite', 'Service comptabilité', 'Compt'),
           GroupDescriptor('travaux', 'Service travaux', 'Trav'),
           GroupDescriptor('conseillers', 'Conseillers', 'Conseillers'),
           GroupDescriptor('secretaire-communal', 'Secrétaire communal', 'SecrComm'),
@@ -350,11 +359,17 @@ groups[0].creators.append(secretaire)
 groups[0].officemanagers.append(secretaire)
 groups[0].observers.append(secretaire)
 groups[0].advisers.append(secretaire)
+groups[0].creators.append(dgen)
+groups[0].officemanagers.append(dgen)
+groups[0].observers.append(dgen)
+groups[0].advisers.append(dgen)
 
 groups[1].creators.append(agentInfo)
 groups[1].creators.append(secretaire)
+groups[1].creators.append(dgen)
 groups[1].officemanagers.append(agentInfo)
 groups[1].officemanagers.append(secretaire)
+groups[1].officemanagers.append(dgen)
 groups[1].observers.append(agentInfo)
 groups[1].advisers.append(agentInfo)
 
@@ -362,6 +377,8 @@ groups[2].creators.append(agentPers)
 groups[2].observers.append(agentPers)
 groups[2].creators.append(secretaire)
 groups[2].officemanagers.append(secretaire)
+groups[2].creators.append(dgen)
+groups[2].officemanagers.append(dgen)
 groups[2].creators.append(chefPers)
 groups[2].officemanagers.append(chefPers)
 groups[2].observers.append(chefPers)
@@ -372,17 +389,21 @@ groups[3].creators.append(agentCompta)
 groups[3].creators.append(chefCompta)
 groups[3].creators.append(chefBureauCompta)
 groups[3].creators.append(secretaire)
+groups[3].creators.append(dgen)
 groups[3].serviceheads.append(chefCompta)
 groups[3].officemanagers.append(chefBureauCompta)
 groups[3].officemanagers.append(secretaire)
+groups[3].officemanagers.append(dgen)
 groups[3].observers.append(agentCompta)
 groups[3].advisers.append(chefCompta)
 groups[3].advisers.append(chefBureauCompta)
 
 groups[4].creators.append(agentTrav)
 groups[4].creators.append(secretaire)
+groups[4].creators.append(dgen)
 groups[4].reviewers.append(agentTrav)
 groups[4].reviewers.append(secretaire)
+groups[4].reviewers.append(dgen)
 groups[4].observers.append(agentTrav)
 groups[4].advisers.append(agentTrav)
 
@@ -448,7 +469,8 @@ collegeMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
 collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, 1er Echevin'
 collegeMeeting.categories = []
 collegeMeeting.shortName = 'College'
-collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeDecision]
+collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier,
+                                   annexeDecision, annexeAvis, annexeAvisLegal]
 collegeMeeting.usedItemAttributes = ['budgetInfos', 'observations', 'toDiscuss',
                                      'motivation', 'neededFollowUp', 'providedFollowUp', ]
 collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
@@ -466,6 +488,7 @@ collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'propo
                                   'pre_accepted', 'removed', 'accepted_but_modified', )
 collegeMeeting.meetingTopicStates = ('created', 'frozen')
 collegeMeeting.decisionTopicStates = ('decided', 'closed')
+collegeMeeting.itemBudgetInfosStates = ('proposed_to_budgetimpact_reviewer', )
 collegeMeeting.itemAdviceStates = ('validated',)
 collegeMeeting.itemAdviceEditStates = ('validated',)
 collegeMeeting.recordItemHistoryStates = ['']
@@ -475,6 +498,29 @@ collegeMeeting.meetingAppDefaultView = 'topic_searchmyitems'
 collegeMeeting.itemDocFormats = ('odt', 'pdf')
 collegeMeeting.meetingDocFormats = ('odt', 'pdf')
 collegeMeeting.useAdvices = True
+collegeMeeting.customAdvisers = [
+    {'row_id': 'unique_id_001',
+     'group': 'comptabilite',
+     'gives_auto_advice_on': 'item/getBudgetRelated',
+     'for_item_created_from': today, },
+    {'row_id': 'unique_id_002',
+     'group': 'dirfin',
+     'for_item_created_from': today,
+     'delay': '5',
+     'delay_left_alert': '2',
+     'delay_label': 'Incidence financière >= 22.000€', },
+    {'row_id': 'unique_id_003',
+     'group': 'dirfin',
+     'for_item_created_from': today,
+     'delay': '10',
+     'delay_left_alert': '4',
+     'delay_label': 'Incidence financière >= 22.000€', },
+    {'row_id': 'unique_id_004',
+     'group': 'dirfin',
+     'for_item_created_from': today,
+     'delay': '20',
+     'delay_left_alert': '4',
+     'delay_label': 'Incidence financière >= 22.000€', }, ]
 collegeMeeting.enforceAdviceMandatoriness = False
 collegeMeeting.enableAdviceInvalidation = False
 collegeMeeting.useCopies = True
@@ -498,7 +544,8 @@ collegeMeeting.meetingUsers = []
 # Conseil communal
 # Categories -------------------------------------------------------------------
 categories = [CategoryDescriptor('recurrent', 'Point récurrent',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-travaux', 'Commission Travaux'),
               CategoryDescriptor('commission-enseignement-culture-sport-sante',
                                  'Commission Enseignement/Culture/Sport/Santé'),
@@ -508,30 +555,41 @@ categories = [CategoryDescriptor('recurrent', 'Point récurrent',
               CategoryDescriptor('commission-patrimoine', 'Commission Patrimoine'),
               CategoryDescriptor('commission-police', 'Commission Police'),
               CategoryDescriptor('commission-speciale', 'Commission Spéciale',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
 
               CategoryDescriptor('commission-travaux-1er-supplement', 'Commission Travaux (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-enseignement-culture-sport-sante-1er-supplement',
                                  'Commission Enseignement/Culture/Sport/Santé (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-cadre-de-vie-1er-supplement', 'Commission Cadre de Vie (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-ag-1er-supplement', 'Commission AG (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-finances-1er-supplement', 'Commission Finances (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-patrimoine-1er-supplement', 'Commission Patrimoine (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-police-1er-supplement', 'Commission Police (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('commission-speciale-1er-supplement', 'Commission Spéciale (1er supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
 
               CategoryDescriptor('points-conseillers-2eme-supplement', 'Points conseillers (2ème supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen')),
               CategoryDescriptor('points-conseillers-3eme-supplement', 'Points conseillers (3ème supplément)',
-                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', ))]
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj',
+                                              'secretariat', 'dirgen'))]
 
 councilMeeting = MeetingConfigDescriptor(
     'meeting-config-council', 'Conseil Communal',
@@ -556,7 +614,8 @@ Le Président,
 J.GOBERT"""
 councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
-councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeRemarks, annexeDecision]
+councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeRemarks,
+                                   annexeDecision, annexeAvis, annexeAvisLegal]
 councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
                                        'observations', 'interventions', 'commissionTranscript')
 councilMeeting.xhtmlTransformTypes = ('removeBlanks',)
