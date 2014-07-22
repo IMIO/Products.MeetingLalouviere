@@ -207,12 +207,13 @@ class CustomMeeting(Meeting):
         meeting = self.getSelf()
         if meeting.queryState() not in ('created', 'frozen', 'in_committee', 'in_council', 'decided'):
             return []
-        meetingConfig = meeting.portal_plonemeeting.getMeetingConfig(meeting)
+        tool = getToolByName(meeting, 'portal_plonemeeting')
+        meetingConfig = tool.getMeetingConfig(meeting)
         # First, get meetings accepting items for which the date is lower or
         # equal to the date of this meeting (self)
-        meetings = meeting.portal_catalog(
-            portal_type=meetingConfig.getMeetingTypeName(),
-            getDate={'query': meeting.getDate(), 'range': 'max'})
+        catalog = getToolByName(meeting, 'portal_catalog')
+        meetings = catalog(portal_type=meetingConfig.getMeetingTypeName(),
+                           getDate={'query': meeting.getDate(), 'range': 'max'})
         meetingUids = [b.getObject().UID() for b in meetings]
         # if the meeting is 'in_committee' or 'in_council'
         # we only accept items for wich the preferredMeeting is the current meeting
@@ -220,11 +221,10 @@ class CustomMeeting(Meeting):
             meetingUids.append(ITEM_NO_PREFERRED_MEETING_VALUE)
         # Then, get the items whose preferred meeting is None or is among
         # those meetings.
-        itemsUids = meeting.portal_catalog(
-            portal_type=meetingConfig.getItemTypeName(),
-            review_state='validated',
-            getPreferredMeeting=meetingUids,
-            sort_on="modified")
+        itemsUids = catalog(portal_type=meetingConfig.getItemTypeName(),
+                            review_state='validated',
+                            getPreferredMeeting=meetingUids,
+                            sort_on="modified")
         if meeting.queryState() in ('frozen', 'decided'):
             # Oups. I can only take items which are "late" items.
             res = []
@@ -240,7 +240,8 @@ class CustomMeeting(Meeting):
 
     def getNormalCategories(self):
         '''Returns the 'normal' categories'''
-        mc = self.portal_plonemeeting.getMeetingConfig(self)
+        tool = getToolByName(self, 'portal_plonemeeting')
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         firstSupplCatIds = self.getFirstSupplCategories()
@@ -259,7 +260,8 @@ class CustomMeeting(Meeting):
 
     def getFirstSupplCategories(self):
         '''Returns the '1er-supplement' categories'''
-        mc = self.portal_plonemeeting.getMeetingConfig(self)
+        tool = getToolByName(self, 'portal_plonemeeting')
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
@@ -273,7 +275,8 @@ class CustomMeeting(Meeting):
 
     def getSecondSupplCategories(self):
         '''Returns the '2eme-supplement' categories'''
-        mc = self.portal_plonemeeting.getMeetingConfig(self)
+        tool = getToolByName(self, 'portal_plonemeeting')
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
@@ -287,7 +290,8 @@ class CustomMeeting(Meeting):
 
     def getThirdSupplCategories(self):
         '''Returns the '3eme-supplement' categories'''
-        mc = self.portal_plonemeeting.getMeetingConfig(self)
+        tool = getToolByName(self, 'portal_plonemeeting')
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
@@ -423,7 +427,8 @@ class CustomMeeting(Meeting):
         '''Returns the list of categories used for Commissions.
            Since june 2013, some commission are aggregating several categories, in this case,
            a sublist of categories is returned...'''
-        mc = self.portal_plonemeeting.getMeetingConfig(self)
+        tool = getToolByName(self, 'portal_plonemeeting')
+        mc = tool.getMeetingConfig(self)
         # creating a new Meeting or editing an existing meeting with date >= june 2013
         if not self.getDate() or \
            (self.getDate().year() >= 2013 and self.getDate().month() > 5) or \
@@ -459,7 +464,8 @@ class CustomMeeting(Meeting):
     def getDefaultPreMeetingAssembly(self):
         '''Returns the default value for field 'preMeetingAssembly.'''
         if self.attributeIsUsed('preMeetingAssembly'):
-            return self.portal_plonemeeting.getMeetingConfig(self).getPreMeetingAssembly_default()
+            tool = getToolByName(self, 'portal_plonemeeting')
+            return tool.getMeetingConfig(self).getPreMeetingAssembly_default()
         return ''
     Meeting.getDefaultPreMeetingAssembly = getDefaultPreMeetingAssembly
 
@@ -468,7 +474,8 @@ class CustomMeeting(Meeting):
     def getDefaultPreMeetingAssembly_2(self):
         '''Returns the default value for field 'preMeetingAssembly.'''
         if self.attributeIsUsed('preMeetingAssembly'):
-            return self.portal_plonemeeting.getMeetingConfig(self).getPreMeetingAssembly_2_default()
+            tool = getToolByName(self, 'portal_plonemeeting')
+            return tool.getMeetingConfig(self).getPreMeetingAssembly_2_default()
         return ''
     Meeting.getDefaultPreMeetingAssembly_2 = getDefaultPreMeetingAssembly_2
 
@@ -477,7 +484,8 @@ class CustomMeeting(Meeting):
     def getDefaultPreMeetingAssembly_3(self):
         '''Returns the default value for field 'preMeetingAssembly.'''
         if self.attributeIsUsed('preMeetingAssembly'):
-            return self.portal_plonemeeting.getMeetingConfig(self).getPreMeetingAssembly_3_default()
+            tool = getToolByName(self, 'portal_plonemeeting')
+            return tool.getMeetingConfig(self).getPreMeetingAssembly_3_default()
         return ''
     Meeting.getDefaultPreMeetingAssembly_3 = getDefaultPreMeetingAssembly_3
 
@@ -486,7 +494,8 @@ class CustomMeeting(Meeting):
     def getDefaultPreMeetingAssembly_4(self):
         '''Returns the default value for field 'preMeetingAssembly.'''
         if self.attributeIsUsed('preMeetingAssembly'):
-            return self.portal_plonemeeting.getMeetingConfig(self).getPreMeetingAssembly_4_default()
+            tool = getToolByName(self, 'portal_plonemeeting')
+            return tool.getMeetingConfig(self).getPreMeetingAssembly_4_default()
         return ''
     Meeting.getDefaultPreMeetingAssembly_4 = getDefaultPreMeetingAssembly_4
 
@@ -495,7 +504,8 @@ class CustomMeeting(Meeting):
     def getDefaultPreMeetingAssembly_5(self):
         '''Returns the default value for field 'preMeetingAssembly.'''
         if self.attributeIsUsed('preMeetingAssembly'):
-            return self.portal_plonemeeting.getMeetingConfig(self).getPreMeetingAssembly_5_default()
+            tool = getToolByName(self, 'portal_plonemeeting')
+            return tool.getMeetingConfig(self).getPreMeetingAssembly_5_default()
         return ''
     Meeting.getDefaultPreMeetingAssembly_5 = getDefaultPreMeetingAssembly_5
 
@@ -504,7 +514,8 @@ class CustomMeeting(Meeting):
     def getDefaultPreMeetingAssembly_6(self):
         '''Returns the default value for field 'preMeetingAssembly.'''
         if self.attributeIsUsed('preMeetingAssembly'):
-            return self.portal_plonemeeting.getMeetingConfig(self).getPreMeetingAssembly_6_default()
+            tool = getToolByName(self, 'portal_plonemeeting')
+            return tool.getMeetingConfig(self).getPreMeetingAssembly_6_default()
         return ''
     Meeting.getDefaultPreMeetingAssembly_6 = getDefaultPreMeetingAssembly_6
 
@@ -513,7 +524,8 @@ class CustomMeeting(Meeting):
     def getDefaultPreMeetingAssembly_7(self):
         '''Returns the default value for field 'preMeetingAssembly.'''
         if self.attributeIsUsed('preMeetingAssembly'):
-            return self.portal_plonemeeting.getMeetingConfig(self).getPreMeetingAssembly_7_default()
+            tool = getToolByName(self, 'portal_plonemeeting')
+            return tool.getMeetingConfig(self).getPreMeetingAssembly_7_default()
         return ''
     Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
 
@@ -629,12 +641,14 @@ class CustomMeetingItem(MeetingItem):
         # to be set in council also.  By default they are just 'presented'
         if not self.context.portal_type == 'MeetingItemCouncil':
             return
+
         if usage == 'as_recurring_item' and self.context.getMeeting().queryState() == 'in_committee':
+            wfTool = getToolByName(self.context, 'portal_workflow')
             item = self.getSelf()
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')
+                wfTool.doActionFor(item, 'setItemInCommittee')
             if item.queryState() == 'item_in_committee':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCouncil')
+                wfTool.doActionFor(item, 'setItemInCouncil')
 
     security.declarePublic('onDuplicated')
 
@@ -667,7 +681,8 @@ class CustomMeetingItem(MeetingItem):
         #existing commission Plone groups
         commissionEditorsGroupIds = [(commissionId + COMMISSION_EDITORS_SUFFIX) for commissionId in
                                      set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))]
-        commissionPloneGroupIds = [groupId for groupId in self.context.portal_groups.getGroupIds()
+        groupsTool = getToolByName(self.context, 'portal_groups')
+        commissionPloneGroupIds = [groupId for groupId in groupsTool.getGroupIds()
                                    if groupId in commissionEditorsGroupIds]
         toRemove = []
         for principalId, localRoles in self.context.get_local_roles():
@@ -737,16 +752,15 @@ class CustomMeetingItem(MeetingItem):
     def getMeetingsAcceptingItems(self):
         '''Overrides the default method so we only display meetings that are
            in the 'created' or 'frozen' state.'''
-        pmtool = getToolByName(self.context, "portal_plonemeeting")
-        catalogtool = getToolByName(self.context, "portal_catalog")
-        meetingPortalType = pmtool.getMeetingConfig(self.context).getMeetingTypeName()
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        catalog = getToolByName(self.context, 'portal_catalog')
+        meetingPortalType = tool.getMeetingConfig(self.context).getMeetingTypeName()
         # If the current user is a meetingManager (or a Manager),
         # he is able to add a meetingitem to a 'decided' meeting.
         review_state = ['created', 'frozen', ]
-        member = self.context.portal_membership.getAuthenticatedMember()
-        if member.has_role('MeetingManager') or member.has_role('Manager'):
+        if tool.isManager():
             review_state.extend(('decided', 'in_committee', 'in_council', ))
-        res = catalogtool.unrestrictedSearchResults(
+        res = catalog.unrestrictedSearchResults(
             portal_type=meetingPortalType,
             review_state=review_state,
             sort_on='getDate')
@@ -760,7 +774,7 @@ class CustomMeetingItem(MeetingItem):
         item = self.getSelf()
         res = []
         itemState = item.queryState()
-        #add some icons specific for dashboard if we are actually on the dashboard...
+        # add some icons specific for dashboard if we are actually on the dashboard...
         if itemState in item.itemDecidedStates and \
            item.REQUEST.form.get('topicId', '') == 'searchitemsfollowupdashboard':
             itemFollowUp = item.getFollowUp()
@@ -806,7 +820,7 @@ class CustomMeetingConfig(MeetingConfig):
     def __init__(self, item):
         self.context = item
 
-    #we need to be able to give an advice in the initial_state for Council...
+    # we need to be able to give an advice in the initial_state for Council...
     from Products.PloneMeeting.MeetingConfig import MeetingConfig
     MeetingConfig.listItemStatesInitExcepted = MeetingConfig.listItemStates
 
@@ -814,12 +828,14 @@ class CustomMeetingConfig(MeetingConfig):
 
     def searchReviewableItems(self, sortKey, sortOrder, filterKey, filterValue, **kwargs):
         '''Returns a list of items that the user could review.'''
-        member = self.portal_membership.getAuthenticatedMember()
-        groups = self.portal_groups.getGroupsForPrincipal(member)
-        #the logic is :
-        #a user is reviewer for his level of hierarchy and every levels below in a group
-        #so find the different groups (a user could be divisionhead in groupA and director in groupB)
-        #and find the different states we have to search for this group (proposingGroup of the item)
+        membershipTool = getToolByName(self, 'portal_membership')
+        member = membershipTool.getAuthenticatedMember()
+        groupsTool = getToolByName(self, 'portal_groups')
+        groups = groupsTool.getGroupsForPrincipal(member)
+        # the logic is :
+        # a user is reviewer for his level of hierarchy and every levels below in a group
+        # so find the different groups (a user could be divisionhead in groupA and director in groupB)
+        # and find the different states we have to search for this group (proposingGroup of the item)
         reviewSuffixes = ('_reviewers', '_directors', '_divisionheads', '_officemanagers', '_serviceheads', )
         statesMapping = {'_reviewers': ('proposed_to_servicehead',
                                         'proposed_to_officemanager',
@@ -836,7 +852,7 @@ class CustomMeetingConfig(MeetingConfig):
                                              'proposed_to_officemanager'),
                          '_serviceheads': 'proposed_to_servicehead'}
         foundGroups = {}
-        #check that we have a real PM group, not "echevins", or "Administrators"
+        # check that we have a real PM group, not "echevins", or "Administrators"
         for group in groups:
             realPMGroup = False
             for reviewSuffix in reviewSuffixes:
@@ -845,18 +861,18 @@ class CustomMeetingConfig(MeetingConfig):
                     break
             if not realPMGroup:
                 continue
-            #remove the suffix
+            # remove the suffix
             groupPrefix = '_'.join(group.split('_')[:-1])
             if not groupPrefix in foundGroups:
                 foundGroups[groupPrefix] = ''
-        #now we have the differents services (equal to the MeetingGroup id) the user is in
+        # now we have the differents services (equal to the MeetingGroup id) the user is in
         strgroups = str(groups)
         for foundGroup in foundGroups:
             for reviewSuffix in reviewSuffixes:
                 if "%s%s" % (foundGroup, reviewSuffix) in strgroups:
                     foundGroups[foundGroup] = reviewSuffix
                     break
-        #now we have in the dict foundGroups the group the user is in, in the key and the highest level in the value
+        # now we have in the dict foundGroups the group the user is in, in the key and the highest level in the value
         res = []
         for foundGroup in foundGroups:
             params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
@@ -870,7 +886,8 @@ class CustomMeetingConfig(MeetingConfig):
             # update params with kwargs
             params.update(kwargs)
             # Perform the query in portal_catalog
-            brains = self.portal_catalog(**params)
+            catalog = getToolByName(self, 'portal_catalog')
+            brains = catalog(**params)
             res.extend(brains)
         return res
     MeetingConfig.searchReviewableItems = searchReviewableItems
@@ -890,7 +907,8 @@ class CustomMeetingConfig(MeetingConfig):
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
-        return self.portal_catalog(**params)
+        catalog = getToolByName(self, 'portal_catalog')
+        return catalog(**params)
     MeetingConfig.searchCorrectedItems = searchCorrectedItems
 
     security.declarePublic('searchItemsOfCommission')
@@ -902,7 +920,8 @@ class CustomMeetingConfig(MeetingConfig):
         commissionEditorsGroupIds = [(commissionId + COMMISSION_EDITORS_SUFFIX) for commissionId in
                                      set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))]
         res = []
-        member = self.portal_membership.getAuthenticatedMember()
+        membershipTool = getToolByName(self, 'portal_membership')
+        member = membershipTool.getAuthenticatedMember()
         for groupId in member.getGroups():
             if groupId in commissionEditorsGroupIds:
                 res.append(groupId)
@@ -921,7 +940,8 @@ class CustomMeetingConfig(MeetingConfig):
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
-        return self.portal_catalog(**params)
+        catalog = getToolByName(self, 'portal_catalog')
+        return catalog(**params)
     MeetingConfig.searchItemsOfMyCommissions = searchItemsOfMyCommissions
 
     security.declarePublic('searchItemsOfCommission')
@@ -934,7 +954,8 @@ class CustomMeetingConfig(MeetingConfig):
         commissionEditorsGroupIds = [(commissionId + COMMISSION_EDITORS_SUFFIX) for commissionId in
                                      set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))]
         res = []
-        member = self.portal_membership.getAuthenticatedMember()
+        membershipTool = getToolByName(self, 'portal_membership')
+        member = membershipTool.getAuthenticatedMember()
         for groupId in member.getGroups():
             if groupId in commissionEditorsGroupIds:
                 res.append(groupId)
@@ -954,7 +975,8 @@ class CustomMeetingConfig(MeetingConfig):
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
-        return self.portal_catalog(**params)
+        catalog = getToolByName(self, 'portal_catalog')
+        return catalog(**params)
     MeetingConfig.searchItemsOfMyCommissionsToEdit = searchItemsOfMyCommissionsToEdit
 
     security.declarePublic('searchItemsForDashboard')
@@ -973,9 +995,11 @@ class CustomMeetingConfig(MeetingConfig):
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
-        brains = self.portal_catalog(**params)
+        catalog = getToolByName(self, 'portal_catalog')
+        brains = catalog(**params)
         # sort elements by proposing-group keeping order from MeetingGroups
-        existingGroupIds = self.portal_plonemeeting.objectIds('MeetingGroup')
+        tool = getToolByName(self, 'portal_plonemeeting')
+        existingGroupIds = tool.objectIds('MeetingGroup')
 
         def sortBrainsByMeetingDate(x, y):
             '''First sort by meetingDate.'''
@@ -1001,8 +1025,10 @@ class CustomMeetingConfig(MeetingConfig):
     def searchItemsToValidate(self, sortKey, sortOrder, filterKey, filterValue, **kwargs):
         '''See docstring in Products.PloneMeeting.MeetingConfig.
            We override it here because relevant groupIds and wf state are no the same...'''
-        member = self.portal_membership.getAuthenticatedMember()
-        groupIds = self.portal_groups.getGroupsForPrincipal(member)
+        membershipTool = getToolByName(self, 'portal_membership')
+        member = membershipTool.getAuthenticatedMember()
+        groupsTool = getToolByName(self, 'portal_groups')
+        groupIds = groupsTool.getGroupsForPrincipal(member)
         res = []
         for groupId in groupIds:
             # XXX change by MeetingLalouviere
@@ -1027,7 +1053,8 @@ class CustomMeetingConfig(MeetingConfig):
         # update params with kwargs
         params.update(kwargs)
         # Perform the query in portal_catalog
-        return self.portal_catalog(**params)
+        catalog = getToolByName(self, 'portal_catalog')
+        return catalog(**params)
     MeetingConfig.searchItemsToValidate = searchItemsToValidate
 
 
@@ -1060,29 +1087,32 @@ class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
     def _adaptEveryItemsOnMeetingClosure(self):
         """Helper method for accepting every items."""
         # Every item that is not decided will be automatically set to "accepted"
+        wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems():
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'itemfreeze')
+                wfTool.doActionFor(item, 'itemfreeze')
             if item.queryState() in ['itemfrozen', 'pre_accepted', ]:
-                self.context.portal_workflow.doActionFor(item, 'accept')
+                wfTool.doActionFor(item, 'accept')
 
     security.declarePrivate('doDecide')
 
     def doDecide(self, stateChange):
         '''We pass every item that is 'presented' in the 'itemfrozen'
            state.  It is the case for late items.'''
+        wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems(ordered=False):
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'itemfreeze')
+                wfTool.doActionFor(item, 'itemfreeze')
 
     security.declarePrivate('doFreeze')
 
     def doFreeze(self, stateChange):
         '''When freezing the meeting, every items must be automatically set to
            "itemfrozen".'''
+        wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems(ordered=True):
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'itemfreeze')
+                wfTool.doActionFor(item, 'itemfreeze')
         #manage meeting number
         self.initSequenceNumber()
 
@@ -1260,9 +1290,8 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         if checkPermission(ReviewPortalContent, self.context):
             res = True
             #if the current item state is 'itemcreated', only the MeetingManager can validate
-            member = self.context.portal_membership.getAuthenticatedMember()
-            if self.context.queryState() in ('itemcreated',) and not \
-               (member.has_role('MeetingManager') or member.has_role('Manager')):
+            tool = getToolByName(self.context, 'portal_plonemeeting')
+            if self.context.queryState() in ('itemcreated',) and not tool.isManager():
                 res = False
         return res
 
@@ -1407,9 +1436,10 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
     def doSetInCommittee(self, stateChange):
         '''When setting the meeting in committee, every items must be automatically
            set to "item_in_committee".'''
+        wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems(ordered=True):
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')
+                wfTool.doActionFor(item, 'setItemInCommittee')
         #manage meeting number
         self.initSequenceNumber()
 
@@ -1418,22 +1448,24 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
     def doSetInCouncil(self, stateChange):
         '''When setting the meeting in council, every items must be automatically
            set to "item_in_council".'''
+        wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems(ordered=True):
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')
+                wfTool.doActionFor(item, 'setItemInCommittee')
             if item.queryState() == 'item_in_committee':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCouncil')
+                wfTool.doActionFor(item, 'setItemInCouncil')
 
     def _adaptEveryItemsOnMeetingClosure(self):
         """Helper method for accepting every items."""
         # Every item that is not decided will be automatically set to "accepted"
+        wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems():
             if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCommittee')
+                wfTool.doActionFor(item, 'setItemInCommittee')
             if item.queryState() == 'item_in_committee':
-                self.context.portal_workflow.doActionFor(item, 'setItemInCouncil')
+                wfTool.doActionFor(item, 'setItemInCouncil')
             if item.queryState() == 'item_in_council':
-                self.context.portal_workflow.doActionFor(item, 'accept')
+                wfTool.doActionFor(item, 'accept')
 
     security.declarePrivate('doBackToCreated')
 
@@ -1446,9 +1478,10 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
 
     def doBackToInCommittee(self, stateChange):
         '''When a meeting go back to the "in_committee" we set every items 'in_council' back to 'in_committee'.'''
+        wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems():
             if item.queryState() == 'item_in_council':
-                self.context.portal_workflow.doActionFor(item, 'backToItemInCommittee')
+                wfTool.doActionFor(item, 'backToItemInCommittee')
 
     security.declarePrivate('doBackToInCouncil')
 
@@ -1552,16 +1585,20 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
         '''Send an email to the creator and to the officemanagers'''
         recipients = []
         # Send to the creator
-        creator = self.context.portal_membership.getMemberById(self.context.Creator())
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        membershipTool = getToolByName(self.context, 'portal_membership')
+        groupsTool = getToolByName(self.context, 'portal_groups')
+        creator = membershipTool.getMemberById(self.context.Creator())
         recipients.append(creator.getProperty('email'))
         # and to the officemanagers
-        proposingMeetingGroup = getattr(self.context.portal_plonemeeting, self.context.getProposingGroup())
+        proposingMeetingGroup = getattr(tool, self.context.getProposingGroup())
         reviewerGroupId = proposingMeetingGroup.getPloneGroupId('officemanagers')
-        for userId in self.context.portal_groups.getGroupMembers(reviewerGroupId):
-            user = self.context.portal_membership.getMemberById(userId)
+        for userId in groupsTool.getGroupMembers(reviewerGroupId):
+            user = membershipTool.getMemberById(userId)
             recipients.append(user.getProperty('email'))
         lastEvent = getLastEvent(self.context, 'return_to_service')
-        enc = self.context.portal_properties.site_properties.getProperty('default_charset')
+        propertiesTool = getToolByName(self.context, 'portal_properties')
+        enc = propertiesTool.site_properties.getProperty('default_charset')
 
         sendMail(recipients, self.context, 'returnedToService',
                  mapping={'comments': lastEvent['comments'].decode(enc)})
