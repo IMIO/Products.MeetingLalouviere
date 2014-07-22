@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <import-steps>
 
+ 
 
 
-
- <import-step
-    id="MeetingLalouviere-Update-RoleMappings"
+ <import-step 
+    id="MeetingLalouviere-Update-RoleMappings" 
     handler="Products.MeetingLalouviere.setuphandlers.updateRoleMappings"
     title="Update Workflow role mappings for MeetingLalouviere"
-    version="2013-09-25T15:38:00.965778">
+    version="2014-07-22T11:08:07.847492">
    <dependency step="MeetingLalouviere-QI-dependencies"/>
    updates the workflow role mappings for MeetingLalouviere
  </import-step>
 
- <import-step
-    id="MeetingLalouviere-postInstall"
+ <import-step 
+    id="MeetingLalouviere-postInstall" 
     handler="Products.MeetingLalouviere.setuphandlers.postInstall"
     title="manual coded post-install for MeetingLalouviere"
-    version="2013-09-25T15:38:00.965778">
+    version="2014-07-22T11:08:07.847492">
    <dependency step="MeetingLalouviere-QI-dependencies"/>
    manual coded post-install for MeetingLalouviere
  </import-step>
@@ -34,3 +34,4 @@
 <!-- ##/code-section ADDITIONALSTEPS -->
 
 </import-steps>
+ 

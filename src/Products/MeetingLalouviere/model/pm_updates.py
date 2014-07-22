@@ -467,8 +467,6 @@ def update_item_schema(baseSchema):
 
     ),)
 
-    baseSchema['budgetInfos'].write_permission = "MeetingLalouviere: Write budget infos"
-    baseSchema['budgetInfos'].read_permission = "MeetingLalouviere: Read budget infos"
     baseSchema['description'].widget.label_method = "getLabelDescription"
     baseSchema['category'].widget.label_method = "getLabelCategory"
     baseSchema['privacy'].widget.condition = "python: here.attributeIsUsed('privacy') and " \

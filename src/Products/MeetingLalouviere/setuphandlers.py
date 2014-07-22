@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2013 by CommunesPlone
+# Copyright (c) 2014 by Imio.be
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -30,6 +30,8 @@ from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
 
 def isNotMeetingLalouviereProfile(context):
     return context.readDataFile("MeetingLalouviere_marker.txt") is None
+
+
 
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
@@ -60,6 +62,7 @@ def postInstall(context):
     reinstallPloneMeetingSkin(context, site)
     # reorder skins so we are sure that the meetinglalouviere_xxx skins are just under custom
     reorderSkinsLayers(context, site)
+
 
 
 ##code-section FOOT
