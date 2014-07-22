@@ -1,19 +1,29 @@
 # -*- coding: utf-8 -*-
-from Products.PloneMeeting.profiles import *
+from Products.PloneMeeting.profiles import CategoryDescriptor
+from Products.PloneMeeting.profiles import GroupDescriptor
+from Products.PloneMeeting.profiles import MeetingConfigDescriptor
+from Products.PloneMeeting.profiles import MeetingFileTypeDescriptor
+from Products.PloneMeeting.profiles import MeetingUserDescriptor
+from Products.PloneMeeting.profiles import PloneMeetingConfiguration
+from Products.PloneMeeting.profiles import PodTemplateDescriptor
+from Products.PloneMeeting.profiles import RecurringItemDescriptor
+from Products.PloneMeeting.profiles import UserDescriptor
 
 # File types -------------------------------------------------------------------
 annexe = MeetingFileTypeDescriptor('annexe', 'Annexe', 'attach.png', '')
 annexeBudget = MeetingFileTypeDescriptor('annexeBudget', 'Article Budgétaire', 'budget.png', '')
 annexeCahier = MeetingFileTypeDescriptor('annexeCahier', 'Cahier des Charges', 'cahier.gif', '')
-annexeRemarks = MeetingFileTypeDescriptor('annexeRemarks', 'Remarques secrétaires', 'secretary_remarks.png', '')
-annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe à la décision', 'attach.png', '', True, active=False)
+annexeRemarks = MeetingFileTypeDescriptor('annexeRemarks', 'Remarques secrétaires',
+                                          'secretary_remarks.png', '')
+annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe à la décision',
+                                           'attach.png', '', True, active=False)
 
 # Pod templates ----------------------------------------------------------------
 # MeetingItem
 collegeDelibTemplate = PodTemplateDescriptor('college-deliberation', 'Délibération')
 collegeDelibTemplate.podTemplate = 'college_deliberation.odt'
 collegeDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem") and ' \
-                              'here.queryState() in ["accepted", "refused", "delayed", "accepted_but_modified",]'
+                                    'here.queryState() in ["accepted", "refused", "delayed", "accepted_but_modified",]'
 collegeRapportTemplate = PodTemplateDescriptor('college-rapport', 'Rapport')
 collegeRapportTemplate.podTemplate = 'college_rapport.odt'
 collegeRapportTemplate.podCondition = ' python: here.meta_type == "MeetingItem" and ' \
@@ -21,22 +31,22 @@ collegeRapportTemplate.podCondition = ' python: here.meta_type == "MeetingItem" 
 collegeOJADiscTemplate = PodTemplateDescriptor('college-oj-a-discuter', 'OJ (à discuter)')
 collegeOJADiscTemplate.podTemplate = 'college_oj_a_discuter.odt'
 collegeOJADiscTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                      'here.portal_plonemeeting.isManager()'
 collegeOJPasADiscTemplate = PodTemplateDescriptor('college-oj-pas-a-discuter', 'OJ (pas à discuter)')
 collegeOJPasADiscTemplate.podTemplate = 'college_oj_pas_a_discuter.odt'
 collegeOJPasADiscTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                         'here.portal_plonemeeting.isManager()'
 collegePVTemplate = PodTemplateDescriptor('college-pv', 'PV')
 collegePVTemplate.podTemplate = 'college_pv.odt'
 collegePVTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                 'here.portal_plonemeeting.isManager()'
 collegeDashboardTemplate = PodTemplateDescriptor('college-dashboard', 'Tableau de bord')
 collegeDashboardTemplate.podTemplate = 'college_dashboard.odt'
 collegeDashboardTemplate.podCondition = 'python:False'
 councilDelibTemplate = PodTemplateDescriptor('conseil-deliberation', 'Délibération')
 councilDelibTemplate.podTemplate = 'conseil_deliberation.odt'
 councilDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem") and ' \
-                              'here.queryState() in ["accepted", "refused", "delayed", "accepted_but_modified",]'
+                                    'here.queryState() in ["accepted", "refused", "delayed", "accepted_but_modified",]'
 councilProjetDelibTemplate = PodTemplateDescriptor('conseil-projet-deliberation', 'Projet délibération')
 councilProjetDelibTemplate.podTemplate = 'conseil_projet_deliberation.odt'
 councilProjetDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem")'
@@ -49,106 +59,110 @@ councilNoteExplTemplate.podCondition = 'python:(here.meta_type=="MeetingItem")'
 councilOJExplanatoryTemplate = PodTemplateDescriptor('conseil-oj-notes-explicatives', 'OJ (notes explicatives)')
 councilOJExplanatoryTemplate.podTemplate = 'conseil_oj_notes_explicatives.odt'
 councilOJExplanatoryTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilFardesTemplate = PodTemplateDescriptor('conseil-fardes', 'Fardes')
 councilFardesTemplate.podTemplate = 'conseil_fardes.odt'
 councilFardesTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                     'here.portal_plonemeeting.isManager()'
 councilAvisTemplate = PodTemplateDescriptor('conseil-avis', 'Avis')
 councilAvisTemplate.podTemplate = 'conseil_avis_affiche_aux_valves.odt'
 councilAvisTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                   'here.portal_plonemeeting.isManager()'
 councilOJConvPresseTemplate = PodTemplateDescriptor('conseil-convocation-presse', 'Convocation presse')
 councilOJConvPresseTemplate.podTemplate = 'conseil_convocation_presse.odt'
 councilOJConvPresseTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                           'here.portal_plonemeeting.isManager()'
 councilOJConvConsTemplate = PodTemplateDescriptor('conseil-convocation-conseillers', 'Convocation conseillers')
 councilOJConvConsTemplate.podTemplate = 'conseil_convocation_conseillers.odt'
 councilOJConvConsTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
-councilOJConvConsPremSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-1er-supplement', 'Convocation conseillers (1er supplément)')
+                                         'here.portal_plonemeeting.isManager()'
+councilOJConvConsPremSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-1er-supplement',
+                                                           'Convocation conseillers (1er supplément)')
 councilOJConvConsPremSupplTemplate.podTemplate = 'conseil_convocation_conseillers_1er_supplement.odt'
 councilOJConvConsPremSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
-councilOJConvConsDeuxSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-2eme-supplement', 'Convocation conseillers (2ème supplément)')
+                                                  'here.portal_plonemeeting.isManager()'
+councilOJConvConsDeuxSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-2eme-supplement',
+                                                           'Convocation conseillers (2ème supplément)')
 councilOJConvConsDeuxSupplTemplate.podTemplate = 'conseil_convocation_conseillers_2eme_supplement.odt'
 councilOJConvConsDeuxSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
-councilOJConvConsTroisSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-3eme-supplement', 'Convocation conseillers (3ème supplément)')
+                                                  'here.portal_plonemeeting.isManager()'
+councilOJConvConsTroisSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-3eme-supplement',
+                                                            'Convocation conseillers (3ème supplément)')
 councilOJConvConsTroisSupplTemplate.podTemplate = 'conseil_convocation_conseillers_3eme_supplement.odt'
 councilOJConvConsTroisSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                                   'here.portal_plonemeeting.isManager()'
 councilOJConvCommTravTemplate = PodTemplateDescriptor('conseil-oj-commission-travaux', 'Comm. Trav.')
 councilOJConvCommTravTemplate.podTemplate = 'conseil_oj_commission_travaux.odt'
 councilOJConvCommTravTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                             'here.portal_plonemeeting.isManager()'
 councilOJConvCommEnsTemplate = PodTemplateDescriptor('conseil-oj-commission-enseignement', 'Comm. Ens.')
 councilOJConvCommEnsTemplate.podTemplate = 'conseil_oj_commission_enseignement.odt'
 councilOJConvCommEnsTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilOJConvCommLogTemplate = PodTemplateDescriptor('conseil-oj-commission-logement', 'Comm. Log.')
 councilOJConvCommLogTemplate.podTemplate = 'conseil_oj_commission_logement.odt'
 councilOJConvCommLogTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilOJConvCommAGTemplate = PodTemplateDescriptor('conseil-oj-commission-ag', 'Comm. AG.')
 councilOJConvCommAGTemplate.podTemplate = 'conseil_oj_commission_ag.odt'
 councilOJConvCommAGTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                           'here.portal_plonemeeting.isManager()'
 councilOJConvCommAGSupplTemplate = PodTemplateDescriptor('conseil-oj-commission-ag-suppl', 'Comm. AG. (Suppl.)')
 councilOJConvCommAGSupplTemplate.podTemplate = 'conseil_oj_commission_ag_supplement.odt'
 councilOJConvCommAGSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                                'here.portal_plonemeeting.isManager()'
 councilOJConvCommFinTemplate = PodTemplateDescriptor('conseil-oj-commission-finances', 'Comm. Fin.')
 councilOJConvCommFinTemplate.podTemplate = 'conseil_oj_commission_finances.odt'
 councilOJConvCommFinTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilOJConvCommPolTemplate = PodTemplateDescriptor('conseil-oj-commission-police', 'Comm. Pol.')
 councilOJConvCommPolTemplate.podTemplate = 'conseil_oj_commission_police.odt'
 councilOJConvCommPolTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilOJConvCommSpecTemplate = PodTemplateDescriptor('conseil-oj-commission-speciale', 'Comm. Spec.')
 councilOJConvCommSpecTemplate.podTemplate = 'conseil_oj_commission_speciale.odt'
 councilOJConvCommSpecTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                             'here.portal_plonemeeting.isManager()'
 councilPVConvCommTravTemplate = PodTemplateDescriptor('conseil-pv-commission-travaux', 'PV Comm. Trav.')
 councilPVConvCommTravTemplate.podTemplate = 'conseil_pv_commission_travaux.odt'
 councilPVConvCommTravTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                             'here.portal_plonemeeting.isManager()'
 councilPVConvCommEnsTemplate = PodTemplateDescriptor('conseil-pv-commission-enseignement', 'PV Comm. Ens.')
 councilPVConvCommEnsTemplate.podTemplate = 'conseil_pv_commission_enseignement.odt'
 councilPVConvCommEnsTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilPVConvCommLogTemplate = PodTemplateDescriptor('conseil-pv-commission-logement', 'PV Comm. Log.')
 councilPVConvCommLogTemplate.podTemplate = 'conseil_pv_commission_logement.odt'
 councilPVConvCommLogTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilPVConvCommAgTemplate = PodTemplateDescriptor('conseil-pv-commission-ag', 'PV Comm. AG.')
 councilPVConvCommAgTemplate.podTemplate = 'conseil_pv_commission_ag.odt'
 councilPVConvCommAgTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                           'here.portal_plonemeeting.isManager()'
 councilPVConvCommFinTemplate = PodTemplateDescriptor('conseil-pv-commission-fin', 'PV Comm. Fin.')
 councilPVConvCommFinTemplate.podTemplate = 'conseil_pv_commission_finances.odt'
 councilPVConvCommFinTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilPVConvCommPolTemplate = PodTemplateDescriptor('conseil-pv-commission-police', 'PV Comm. Pol.')
 councilPVConvCommPolTemplate.podTemplate = 'conseil_pv_commission_police.odt'
 councilPVConvCommPolTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                            'here.portal_plonemeeting.isManager()'
 councilPVConvCommSpecTemplate = PodTemplateDescriptor('conseil-pv-commission-speciale', 'PV Comm. Spec.')
 councilPVConvCommSpecTemplate.podTemplate = 'conseil_pv_commission_speciale.odt'
 councilPVConvCommSpecTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                             'here.portal_plonemeeting.isManager()'
 councilPVTemplate = PodTemplateDescriptor('conseil-pv', 'PV')
 councilPVTemplate.podTemplate = 'conseil_pv.odt'
 councilPVTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                              'here.portal_plonemeeting.isManager()'
+                                 'here.portal_plonemeeting.isManager()'
 
 collegeTemplates = [collegeDelibTemplate, collegeRapportTemplate, collegeOJADiscTemplate,
                     collegeOJPasADiscTemplate, collegePVTemplate]
 councilTemplates = [councilOJExplanatoryTemplate, councilFardesTemplate,
                     councilAvisTemplate, councilOJConvPresseTemplate,
                     councilOJConvConsTemplate, councilOJConvConsPremSupplTemplate,
-                    councilOJConvConsDeuxSupplTemplate, councilOJConvConsTroisSupplTemplate, councilOJConvCommTravTemplate,
+                    councilOJConvConsDeuxSupplTemplate, councilOJConvConsTroisSupplTemplate,
+                    councilOJConvCommTravTemplate,
                     councilOJConvCommEnsTemplate, councilOJConvCommLogTemplate,
                     councilOJConvCommAGTemplate, councilOJConvCommFinTemplate,
                     councilOJConvCommPolTemplate, councilOJConvCommSpecTemplate,
@@ -170,55 +184,104 @@ chefCompta = UserDescriptor('chefCompta', [], email="test@test.be")
 chefBureauCompta = UserDescriptor('chefBureauCompta', [], email="test@test.be")
 echevinPers = UserDescriptor('echevinPers', [], email="test@test.be")
 emetteuravisPers = UserDescriptor('emetteuravisPers', [], email="test@test.be")
-jgobert = UserDescriptor('jgobert',  ['MeetingPowerObserver'], fullname='Jaques Gobert', email="jgobert@lalouviere.be")
-asabbatini = UserDescriptor('asabbatini', ['MeetingPowerObserver'], fullname='Annie Sabbatini', email="asabbatini@lalouviere.be")
-jgodin = UserDescriptor('jgodin', ['MeetingPowerObserver'], fullname='Jean Godin', email="jgodin@lalouviere.be")
-odestrebecq = UserDescriptor('odestrebecq', ['MeetingPowerObserver'], fullname='Olivier Destrebecq', email="odestrebecq@lalouviere.be")
-ghaine = UserDescriptor('ghaine', ['MeetingPowerObserver'], fullname='Georges Haine', email="ghaine@lalouviere.be")
-adupont = UserDescriptor('adupont', ['MeetingPowerObserver'], fullname='Alexandra Dupont', email="adupont@lalouviere.be")
-fghiot = UserDescriptor('fghiot', ['MeetingPowerObserver'], fullname='Françoise Ghiot', email="fghiot@lalouviere.be")
-jcwargnie = UserDescriptor('jcwargnie', ['MeetingPowerObserver'], fullname='Jean-Claude Wargnie', email="jcwargnie@lalouviere.be")
-dstaquet = UserDescriptor('dstaquet', ['MeetingPowerObserver'], fullname='Danièle Staquet', email="dstaquet@lalouviere.be")
-bliebin = UserDescriptor('bliebin', ['MeetingPowerObserver'], fullname='Bernard Liebin', email="bliebin@lalouviere.be")
-cburgeon = UserDescriptor('cburgeon', ['MeetingPowerObserver'], fullname='Colette Burgeon', email="cburgeon@lalouviere.be")
-mdubois = UserDescriptor('mdubois', ['MeetingPowerObserver'], fullname='Michel Dubois', email="mdubois@lalouviere.be")
-ydrugmand = UserDescriptor('ydrugmand', ['MeetingPowerObserver'], fullname='Yves Drugmand', email="ydrugmand@lalouviere.be")
-gmaggiordomo = UserDescriptor('gmaggiordomo', ['MeetingPowerObserver'], fullname='Giuseppe Maggiordomo', email="gmaggiordomo@lalouviere.be")
-ozrihen = UserDescriptor('ozrihen', ['MeetingPowerObserver'], fullname='Olga Zrihen', email="ozrihen@lalouviere.be")
-mdimattia = UserDescriptor('mdimattia', ['MeetingPowerObserver'], fullname='Michele Di Mattia', email="mdimattia@lalouviere.be")
-trotolo = UserDescriptor('trotolo', ['MeetingPowerObserver'], fullname='Térèsa Rotolo', email="trotolo@lalouviere.be")
-fromeo = UserDescriptor('fromeo', ['MeetingPowerObserver'], fullname='Francesco Romeo', email="fromeo@lalouviere.be")
-mhanot = UserDescriptor('mhanot', ['MeetingPowerObserver'], fullname='Muriel Hanot', email="mhanot@lalouviere.be")
-ivansteen = UserDescriptor('ivansteen', ['MeetingPowerObserver'], fullname='Isabelle Van Steen', email="ivansteen@lalouviere.be")
-jkeijzer = UserDescriptor('jkeijzer', ['MeetingPowerObserver'], fullname='Jan Keijzer', email="jkeijzer@lalouviere.be")
-afagbemi = UserDescriptor('afagbemi', ['MeetingPowerObserver'], fullname='Affissou Fagbemi', email="afagbemi@lalouviere.be")
-agava = UserDescriptor('agava', ['MeetingPowerObserver'], fullname='Antonio Gava', email="agava@lalouviere.be")
-apourbaix = UserDescriptor('apourbaix', ['MeetingPowerObserver'], fullname='Alain Pourbaix', email="apourbaix@lalouviere.be")
-lduval = UserDescriptor('lduval', ['MeetingPowerObserver'], fullname='Lucien Duval', email="lduval@lalouviere.be")
-jchristiaens = UserDescriptor('jchristiaens', ['MeetingPowerObserver'], fullname='Jonathan Christiaens', email="jchristiaens@lalouviere.be")
-mvanhooland = UserDescriptor('mvanhooland', ['MeetingPowerObserver'], fullname='Michaël Van Hooland', email="mvanhooland@lalouviere.be")
-frmili = UserDescriptor('frmili', ['MeetingPowerObserver'], fullname='Fatima Rmili', email="frmili@lalouviere.be")
-pwaterlot = UserDescriptor('pwaterlot', ['MeetingPowerObserver'], fullname='Philippe Waterlot', email="pwaterlot@lalouviere.be")
-abuscemi = UserDescriptor('abuscemi', ['MeetingPowerObserver'], fullname='Antonio Buscemi', email="abuscemi@lalouviere.be")
-lwimlot = UserDescriptor('lwimlot', ['MeetingPowerObserver'], fullname='Laurent Wimlot', email="lwimlot@lalouviere.be")
-cboulangier = UserDescriptor('cboulangier', ['MeetingPowerObserver'], fullname='Cécile Boulangier', email="cboulangier@lalouviere.be")
-vlibois = UserDescriptor('vlibois', ['MeetingPowerObserver'], fullname='Vincent Libois', email="vlibois@lalouviere.be")
-ammarin = UserDescriptor('ammarin', ['MeetingPowerObserver'], fullname='Anne-Marie Marin', email="ammarin@lalouviere.be")
-agorez = UserDescriptor('agorez', ['MeetingPowerObserver'], fullname='André Gorez', email="agorez@lalouviere.be")
-jpmichiels = UserDescriptor('jpmichiels', ['MeetingPowerObserver'], fullname='Jean-Pierre Michiels', email="jpmichiels@lalouviere.be")
-cdelplancq = UserDescriptor('cdelplancq', ['MeetingPowerObserver'], fullname='Christophe Delplancq', email="cdelplancq@lalouviere.be")
-fvermeer = UserDescriptor('fvermeer', ['MeetingPowerObserver'], fullname='Fabienne Vermeer', email="fvermeer@lalouviere.be")
-lbaccareladurso = UserDescriptor('lbaccareladurso', ['MeetingPowerObserver'], fullname='Louisa Baccarela d\'Urso', email="lbaccareladurso@lalouviere.be")
-clicata = UserDescriptor('clicata', ['MeetingPowerObserver'], fullname='Cosimo Licata', email="clicata@lalouviere.be")
-mroland = UserDescriptor('mroland', ['MeetingPowerObserver'], fullname='Marie Roland', email="mroland@lalouviere.be")
-collegecommunal = UserDescriptor('collegecommunal', ['MeetingPowerObserver'], fullname='Collège communal', email="collegecommunal@lalouviere.be")
-groupeps = UserDescriptor('groupeps', ['MeetingPowerObserver'], fullname='Groupe PS', email="groupeps@lalouviere.be")
-groupemr = UserDescriptor('groupemr', ['MeetingPowerObserver'], fullname='Groupe MR', email="groupemr@lalouviere.be")
-groupecdh = UserDescriptor('groupecdh', ['MeetingPowerObserver'], fullname='Groupe cdH', email="groupecdh@lalouviere.be")
-groupeecolo = UserDescriptor('groupeecolo', ['MeetingPowerObserver'], fullname='Groupe Ecolo', email="groupeecolo@lalouviere.be")
-groupeptb = UserDescriptor('groupeptb', ['MeetingPowerObserver'], fullname='Groupe PTB+', email="groupeptb@lalouviere.be")
-groupefn = UserDescriptor('groupefn', ['MeetingPowerObserver'], fullname='Groupe FN', email="groupefn@lalouviere.be")
-groupeindependant = UserDescriptor('groupeindependant', ['MeetingPowerObserver'], fullname='Groupe Indépendant', email="groupeindependant@lalouviere.be")
+jgobert = UserDescriptor('jgobert',  ['MeetingPowerObserver'],
+                         fullname='Jaques Gobert', email="jgobert@lalouviere.be")
+asabbatini = UserDescriptor('asabbatini', ['MeetingPowerObserver'],
+                            fullname='Annie Sabbatini', email="asabbatini@lalouviere.be")
+jgodin = UserDescriptor('jgodin', ['MeetingPowerObserver'],
+                        fullname='Jean Godin', email="jgodin@lalouviere.be")
+odestrebecq = UserDescriptor('odestrebecq', ['MeetingPowerObserver'],
+                             fullname='Olivier Destrebecq', email="odestrebecq@lalouviere.be")
+ghaine = UserDescriptor('ghaine', ['MeetingPowerObserver'],
+                        fullname='Georges Haine', email="ghaine@lalouviere.be")
+adupont = UserDescriptor('adupont', ['MeetingPowerObserver'],
+                         fullname='Alexandra Dupont', email="adupont@lalouviere.be")
+fghiot = UserDescriptor('fghiot', ['MeetingPowerObserver'],
+                        fullname='Françoise Ghiot', email="fghiot@lalouviere.be")
+jcwargnie = UserDescriptor('jcwargnie', ['MeetingPowerObserver'],
+                           fullname='Jean-Claude Wargnie', email="jcwargnie@lalouviere.be")
+dstaquet = UserDescriptor('dstaquet', ['MeetingPowerObserver'],
+                          fullname='Danièle Staquet', email="dstaquet@lalouviere.be")
+bliebin = UserDescriptor('bliebin', ['MeetingPowerObserver'],
+                         fullname='Bernard Liebin', email="bliebin@lalouviere.be")
+cburgeon = UserDescriptor('cburgeon', ['MeetingPowerObserver'],
+                          fullname='Colette Burgeon', email="cburgeon@lalouviere.be")
+mdubois = UserDescriptor('mdubois', ['MeetingPowerObserver'],
+                         fullname='Michel Dubois', email="mdubois@lalouviere.be")
+ydrugmand = UserDescriptor('ydrugmand', ['MeetingPowerObserver'],
+                           fullname='Yves Drugmand', email="ydrugmand@lalouviere.be")
+gmaggiordomo = UserDescriptor('gmaggiordomo', ['MeetingPowerObserver'],
+                              fullname='Giuseppe Maggiordomo', email="gmaggiordomo@lalouviere.be")
+ozrihen = UserDescriptor('ozrihen', ['MeetingPowerObserver'],
+                         fullname='Olga Zrihen', email="ozrihen@lalouviere.be")
+mdimattia = UserDescriptor('mdimattia', ['MeetingPowerObserver'],
+                           fullname='Michele Di Mattia', email="mdimattia@lalouviere.be")
+trotolo = UserDescriptor('trotolo', ['MeetingPowerObserver'],
+                         fullname='Térèsa Rotolo', email="trotolo@lalouviere.be")
+fromeo = UserDescriptor('fromeo', ['MeetingPowerObserver'],
+                        fullname='Francesco Romeo', email="fromeo@lalouviere.be")
+mhanot = UserDescriptor('mhanot', ['MeetingPowerObserver'],
+                        fullname='Muriel Hanot', email="mhanot@lalouviere.be")
+ivansteen = UserDescriptor('ivansteen', ['MeetingPowerObserver'],
+                           fullname='Isabelle Van Steen', email="ivansteen@lalouviere.be")
+jkeijzer = UserDescriptor('jkeijzer', ['MeetingPowerObserver'],
+                          fullname='Jan Keijzer', email="jkeijzer@lalouviere.be")
+afagbemi = UserDescriptor('afagbemi', ['MeetingPowerObserver'],
+                          fullname='Affissou Fagbemi', email="afagbemi@lalouviere.be")
+agava = UserDescriptor('agava', ['MeetingPowerObserver'],
+                       fullname='Antonio Gava', email="agava@lalouviere.be")
+apourbaix = UserDescriptor('apourbaix', ['MeetingPowerObserver'],
+                           fullname='Alain Pourbaix', email="apourbaix@lalouviere.be")
+lduval = UserDescriptor('lduval', ['MeetingPowerObserver'],
+                        fullname='Lucien Duval', email="lduval@lalouviere.be")
+jchristiaens = UserDescriptor('jchristiaens', ['MeetingPowerObserver'],
+                              fullname='Jonathan Christiaens', email="jchristiaens@lalouviere.be")
+mvanhooland = UserDescriptor('mvanhooland', ['MeetingPowerObserver'],
+                             fullname='Michaël Van Hooland', email="mvanhooland@lalouviere.be")
+frmili = UserDescriptor('frmili', ['MeetingPowerObserver'],
+                        fullname='Fatima Rmili', email="frmili@lalouviere.be")
+pwaterlot = UserDescriptor('pwaterlot', ['MeetingPowerObserver'],
+                           fullname='Philippe Waterlot', email="pwaterlot@lalouviere.be")
+abuscemi = UserDescriptor('abuscemi', ['MeetingPowerObserver'],
+                          fullname='Antonio Buscemi', email="abuscemi@lalouviere.be")
+lwimlot = UserDescriptor('lwimlot', ['MeetingPowerObserver'],
+                         fullname='Laurent Wimlot', email="lwimlot@lalouviere.be")
+cboulangier = UserDescriptor('cboulangier', ['MeetingPowerObserver'],
+                             fullname='Cécile Boulangier', email="cboulangier@lalouviere.be")
+vlibois = UserDescriptor('vlibois', ['MeetingPowerObserver'],
+                         fullname='Vincent Libois', email="vlibois@lalouviere.be")
+ammarin = UserDescriptor('ammarin', ['MeetingPowerObserver'],
+                         fullname='Anne-Marie Marin', email="ammarin@lalouviere.be")
+agorez = UserDescriptor('agorez', ['MeetingPowerObserver'],
+                        fullname='André Gorez', email="agorez@lalouviere.be")
+jpmichiels = UserDescriptor('jpmichiels', ['MeetingPowerObserver'],
+                            fullname='Jean-Pierre Michiels', email="jpmichiels@lalouviere.be")
+cdelplancq = UserDescriptor('cdelplancq', ['MeetingPowerObserver'],
+                            fullname='Christophe Delplancq', email="cdelplancq@lalouviere.be")
+fvermeer = UserDescriptor('fvermeer', ['MeetingPowerObserver'],
+                          fullname='Fabienne Vermeer', email="fvermeer@lalouviere.be")
+lbaccareladurso = UserDescriptor('lbaccareladurso', ['MeetingPowerObserver'],
+                                 fullname='Louisa Baccarela d\'Urso', email="lbaccareladurso@lalouviere.be")
+clicata = UserDescriptor('clicata', ['MeetingPowerObserver'],
+                         fullname='Cosimo Licata', email="clicata@lalouviere.be")
+mroland = UserDescriptor('mroland', ['MeetingPowerObserver'],
+                         fullname='Marie Roland', email="mroland@lalouviere.be")
+collegecommunal = UserDescriptor('collegecommunal', ['MeetingPowerObserver'],
+                                 fullname='Collège communal', email="collegecommunal@lalouviere.be")
+groupeps = UserDescriptor('groupeps', ['MeetingPowerObserver'],
+                          fullname='Groupe PS', email="groupeps@lalouviere.be")
+groupemr = UserDescriptor('groupemr', ['MeetingPowerObserver'],
+                          fullname='Groupe MR', email="groupemr@lalouviere.be")
+groupecdh = UserDescriptor('groupecdh', ['MeetingPowerObserver'],
+                           fullname='Groupe cdH', email="groupecdh@lalouviere.be")
+groupeecolo = UserDescriptor('groupeecolo', ['MeetingPowerObserver'],
+                             fullname='Groupe Ecolo', email="groupeecolo@lalouviere.be")
+groupeptb = UserDescriptor('groupeptb', ['MeetingPowerObserver'],
+                           fullname='Groupe PTB+', email="groupeptb@lalouviere.be")
+groupefn = UserDescriptor('groupefn', ['MeetingPowerObserver'],
+                          fullname='Groupe FN', email="groupefn@lalouviere.be")
+groupeindependant = UserDescriptor('groupeindependant', ['MeetingPowerObserver'],
+                                   fullname='Groupe Indépendant', email="groupeindependant@lalouviere.be")
 
 jgobert_mu = MeetingUserDescriptor('jgobert', duty='Bourgmestre', usages=['asker', ], active=False)
 asabbatini_mu = MeetingUserDescriptor('asabbatini', gender='f', duty='1er Echevin', usages=['asker', ], active=False)
@@ -258,7 +321,8 @@ agorez_mu = MeetingUserDescriptor('agorez', duty='Conseiller communal', usages=[
 jpmichiels_mu = MeetingUserDescriptor('jpmichiels', duty='Conseiller communal', usages=['asker', ])
 cdelplancq_mu = MeetingUserDescriptor('cdelplancq', duty='Conseiller communal', usages=['asker', ])
 fvermeer_mu = MeetingUserDescriptor('fvermeer', gender='f', duty='Conseillère communale', usages=['asker', ])
-lbaccareladurso_mu = MeetingUserDescriptor('lbaccareladurso', gender='f', duty='Conseillère communale', usages=['asker', ])
+lbaccareladurso_mu = MeetingUserDescriptor('lbaccareladurso', gender='f',
+                                           duty='Conseillère communale', usages=['asker', ])
 clicata_mu = MeetingUserDescriptor('clicata', duty='Conseiller communal', usages=['asker', ])
 mroland_mu = MeetingUserDescriptor('mroland', gender='f', duty='Conseillère communale', usages=['asker', ])
 collegecommunal_mu = MeetingUserDescriptor('collegecommunal', gender='', duty='', usages=['asker', ])
@@ -270,16 +334,16 @@ groupeptb_mu = MeetingUserDescriptor('groupeptb', gender='', duty='', usages=['a
 groupefn_mu = MeetingUserDescriptor('groupefn', gender='', duty='', usages=['asker', ])
 groupeindependant_mu = MeetingUserDescriptor('groupeindependant', gender='', duty='', usages=['asker', ])
 
-groups = [
-           GroupDescriptor('secretariat', 'Secretariat communal', 'Secr', asCopyGroupOn="python: item.getProposingGroup()=='informatique' and ['reviewers',] or []"),
-           GroupDescriptor('informatique', 'Service informatique', 'Info'),
-           GroupDescriptor('personnel', 'Service du personnel', 'Pers'),
-           GroupDescriptor('comptabilite', 'Service comptabilité', 'Compt', givesMandatoryAdviceOn='python:True'),
-           GroupDescriptor('travaux', 'Service travaux', 'Trav'),
-           GroupDescriptor('conseillers', 'Conseillers', 'Conseillers'),
-           GroupDescriptor('secretaire-communal', 'Secrétaire communal', 'SecrComm'),
-           GroupDescriptor('secretaire-communal-adj', 'Secrétaire communal ADJ', 'SecrCommAdj'),
-         ]
+groups = [GroupDescriptor('secretariat', 'Secretariat communal', 'Secr',
+                          asCopyGroupOn="python: item.getProposingGroup()=='informatique' and ['reviewers',] or []"),
+          GroupDescriptor('informatique', 'Service informatique', 'Info'),
+          GroupDescriptor('personnel', 'Service du personnel', 'Pers'),
+          GroupDescriptor('comptabilite', 'Service comptabilité', 'Compt',
+                          givesMandatoryAdviceOn='python:True'),
+          GroupDescriptor('travaux', 'Service travaux', 'Trav'),
+          GroupDescriptor('conseillers', 'Conseillers', 'Conseillers'),
+          GroupDescriptor('secretaire-communal', 'Secrétaire communal', 'SecrComm'),
+          GroupDescriptor('secretaire-communal-adj', 'Secrétaire communal ADJ', 'SecrCommAdj')]
 
 # MeetingManager
 groups[0].creators.append(secretaire)
@@ -404,7 +468,7 @@ collegeMeeting.meetingTopicStates = ('created', 'frozen')
 collegeMeeting.decisionTopicStates = ('decided', 'closed')
 collegeMeeting.itemAdviceStates = ('validated',)
 collegeMeeting.itemAdviceEditStates = ('validated',)
-collegeMeeting.recordItemHistoryStates = ['',]
+collegeMeeting.recordItemHistoryStates = ['']
 collegeMeeting.maxShownMeetings = 5
 collegeMeeting.maxDaysDecisions = 60
 collegeMeeting.meetingAppDefaultView = 'topic_searchmyitems'
@@ -414,12 +478,17 @@ collegeMeeting.useAdvices = True
 collegeMeeting.enforceAdviceMandatoriness = False
 collegeMeeting.enableAdviceInvalidation = False
 collegeMeeting.useCopies = True
-collegeMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'), groups[1].getIdSuffixed('reviewers'), groups[2].getIdSuffixed('reviewers'), groups[4].getIdSuffixed('reviewers')]
+collegeMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'),
+                                       groups[1].getIdSuffixed('reviewers'),
+                                       groups[2].getIdSuffixed('reviewers'),
+                                       groups[4].getIdSuffixed('reviewers')]
 collegeMeeting.podTemplates = collegeTemplates
 collegeMeeting.meetingConfigsToCloneTo = ['meeting-config-council']
 collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
 collegeMeeting.useGroupsAsCategories = True
-collegeMeeting.defaultMeetingItemMotivation = """<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de la décentralisation;</p>
+collegeMeeting.defaultMeetingItemMotivation = """<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant
+codification de la législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de la
+décentralisation;</p>
 <p>Vu le décret du 27 mai 2004 portant confirmation dudit arrêté du gouvernement Wallon du 22 avril 2004;</p>
 <p>Vu la nouvelle Loi communale;</p> <p>Vu l'article 123 de la nouvelle Loi communale;</p>
 <p>Vu l'article L1123-23 du code de la Démocratie locale et de la Décentralisation;</p>"""
@@ -428,29 +497,41 @@ collegeMeeting.meetingUsers = []
 
 # Conseil communal
 # Categories -------------------------------------------------------------------
-categories = [
-              CategoryDescriptor('recurrent', 'Point récurrent', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+categories = [CategoryDescriptor('recurrent', 'Point récurrent',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
               CategoryDescriptor('commission-travaux', 'Commission Travaux'),
-              CategoryDescriptor('commission-enseignement-culture-sport-sante', 'Commission Enseignement/Culture/Sport/Santé'),
+              CategoryDescriptor('commission-enseignement-culture-sport-sante',
+                                 'Commission Enseignement/Culture/Sport/Santé'),
               CategoryDescriptor('commission-cadre-de-vie', 'Commission Cadre de Vie'),
               CategoryDescriptor('commission-ag', 'Commission AG'),
               CategoryDescriptor('commission-finances', 'Commission Finances'),
               CategoryDescriptor('commission-patrimoine', 'Commission Patrimoine'),
               CategoryDescriptor('commission-police', 'Commission Police'),
-              CategoryDescriptor('commission-speciale', 'Commission Spéciale', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-speciale', 'Commission Spéciale',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
 
-              CategoryDescriptor('commission-travaux-1er-supplement', 'Commission Travaux (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('commission-enseignement-culture-sport-sante-1er-supplement', 'Commission Enseignement/Culture/Sport/Santé (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('commission-cadre-de-vie-1er-supplement', 'Commission Cadre de Vie (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('commission-ag-1er-supplement', 'Commission AG (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('commission-finances-1er-supplement', 'Commission Finances (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('commission-patrimoine-1er-supplement', 'Commission Patrimoine (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('commission-police-1er-supplement', 'Commission Police (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('commission-speciale-1er-supplement', 'Commission Spéciale (1er supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-travaux-1er-supplement', 'Commission Travaux (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-enseignement-culture-sport-sante-1er-supplement',
+                                 'Commission Enseignement/Culture/Sport/Santé (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-cadre-de-vie-1er-supplement', 'Commission Cadre de Vie (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-ag-1er-supplement', 'Commission AG (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-finances-1er-supplement', 'Commission Finances (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-patrimoine-1er-supplement', 'Commission Patrimoine (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-police-1er-supplement', 'Commission Police (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('commission-speciale-1er-supplement', 'Commission Spéciale (1er supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
 
-              CategoryDescriptor('points-conseillers-2eme-supplement', 'Points conseillers (2ème supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-              CategoryDescriptor('points-conseillers-3eme-supplement', 'Points conseillers (3ème supplément)', usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
-             ]
+              CategoryDescriptor('points-conseillers-2eme-supplement', 'Points conseillers (2ème supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', )),
+              CategoryDescriptor('points-conseillers-3eme-supplement', 'Points conseillers (3ème supplément)',
+                                 usingGroups=('secretaire-communal', 'secretaire-communal-adj', 'secretariat', ))]
 
 councilMeeting = MeetingConfigDescriptor(
     'meeting-config-council', 'Conseil Communal',
@@ -480,7 +561,7 @@ councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'de
                                        'observations', 'interventions', 'commissionTranscript')
 councilMeeting.xhtmlTransformTypes = ('removeBlanks',)
 councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations',
-                                     'privacy', 'itemAssembly', 'motivation',]
+                                     'privacy', 'itemAssembly', 'motivation']
 councilMeeting.usedMeetingAttributes = ('place', 'observations', 'signatures', 'assembly', 'preMeetingDate',
                                         'preMeetingPlace', 'preMeetingAssembly', 'preMeetingDate_2',
                                         'preMeetingPlace_2', 'preMeetingAssembly_2', 'preMeetingDate_3',
@@ -517,7 +598,7 @@ councilMeeting.decisionTopicStates = ('in_council',
                                       'closed')
 councilMeeting.itemAdviceStates = ('itemcreated',)
 councilMeeting.itemAdviceEditStates = ('itemcreated',)
-councilMeeting.recordItemHistoryStates = ['',]
+councilMeeting.recordItemHistoryStates = ['']
 councilMeeting.maxShownMeetings = 5
 councilMeeting.maxDaysDecisions = 60
 councilMeeting.meetingAppDefaultView = 'topic_searchmyitems'
@@ -532,12 +613,13 @@ councilMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'),
                                        groups[2].getIdSuffixed('reviewers'),
                                        groups[4].getIdSuffixed('reviewers')]
 councilMeeting.podTemplates = councilTemplates
-councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service',]
+councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service']
 councilMeeting.sortingMethodOnAddItem = 'on_privacy_then_categories'
 councilMeeting.useGroupsAsCategories = False
 councilMeeting.defaultMeetingItemMotivation = """<p>Le Conseil,</p>
 <p>&nbsp;</p>
-<p>Vu, d'une part, l'arrêté du Gouvernement  Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux et d'autre part, le décret du 27 mai 2004 portant  confirmation dudit arrêté;</p>
+<p>Vu, d'une part, l'arrêté du Gouvernement  Wallon du 22 avril 2004 portant codification de la législation relative aux
+pouvoirs locaux et d'autre part, le décret du 27 mai 2004 portant  confirmation dudit arrêté;</p>
 <p>&nbsp;</p>
 <p>Vu l'article 117 de la nouvelle Loi Communale;</p>
 <p>&nbsp;</p>
@@ -565,14 +647,14 @@ councilMeeting.meetingUsers = [jgobert_mu, asabbatini_mu, jgodin_mu, odestrebecq
                                mdubois_mu, ydrugmand_mu, gmaggiordomo_mu, ozrihen_mu, mdimattia_mu, trotolo_mu,
                                fromeo_mu, mhanot_mu, ivansteen_mu, jkeijzer_mu, afagbemi_mu, agava_mu,
                                apourbaix_mu, lduval_mu, jchristiaens_mu, mvanhooland_mu, frmili_mu, pwaterlot_mu,
-                               abuscemi_mu, lwimlot_mu, cboulangier_mu, vlibois_mu, ammarin_mu, agorez_mu, jpmichiels_mu,
-                               cdelplancq_mu, fvermeer_mu, lbaccareladurso_mu, clicata_mu, mroland_mu, collegecommunal_mu,
-                               groupeps_mu, groupemr_mu, groupecdh_mu, groupeecolo_mu, groupeptb_mu, groupefn_mu, groupeindependant_mu, ]
+                               abuscemi_mu, lwimlot_mu, cboulangier_mu, vlibois_mu, ammarin_mu, agorez_mu,
+                               jpmichiels_mu, cdelplancq_mu, fvermeer_mu, lbaccareladurso_mu, clicata_mu, mroland_mu,
+                               collegecommunal_mu, groupeps_mu, groupemr_mu, groupecdh_mu, groupeecolo_mu,
+                               groupeptb_mu, groupefn_mu, groupeindependant_mu, ]
 
-data = PloneMeetingConfiguration(
-           meetingFolderTitle='Mes séances',
-           meetingConfigs=(collegeMeeting, councilMeeting),
-           groups=groups)
-data.unoEnabledPython='/usr/bin/python'
-data.usedColorSystem='state_color'
+data = PloneMeetingConfiguration(meetingFolderTitle='Mes séances',
+                                 meetingConfigs=(collegeMeeting, councilMeeting),
+                                 groups=groups)
+data.unoEnabledPython = '/usr/bin/python'
+data.usedColorSystem = 'state_color'
 # ------------------------------------------------------------------------------

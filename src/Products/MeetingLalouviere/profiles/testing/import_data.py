@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
-from Products.PloneMeeting.profiles import *
+from Products.PloneMeeting.profiles import CategoryDescriptor
+from Products.PloneMeeting.profiles import GroupDescriptor
+from Products.PloneMeeting.profiles import MeetingConfigDescriptor
+from Products.PloneMeeting.profiles import MeetingFileTypeDescriptor
+from Products.PloneMeeting.profiles import MeetingUserDescriptor
+from Products.PloneMeeting.profiles import PloneGroupDescriptor
+from Products.PloneMeeting.profiles import PloneMeetingConfiguration
+from Products.PloneMeeting.profiles import PodTemplateDescriptor
+from Products.PloneMeeting.profiles import RecurringItemDescriptor
+from Products.PloneMeeting.profiles import UserDescriptor
 
 # File types -------------------------------------------------------------------
 
@@ -174,7 +183,9 @@ collegeMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted
 collegeMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
 collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
 collegeMeeting.useGroupsAsCategories = True
-collegeMeeting.defaultMeetingItemMotivation = """<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de la décentralisation;</p>
+collegeMeeting.defaultMeetingItemMotivation = """<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant
+codification de la législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de la
+décentralisation;</p>
 <p>Vu le décret du 27 mai 2004 portant confirmation dudit arrêté du gouvernement Wallon du 22 avril 2004;</p>
 <p>Vu la nouvelle Loi communale;</p> <p>Vu l'article 123 de la nouvelle Loi communale;</p>
 <p>Vu l'article L1123-23 du code de la Démocratie locale et de la Décentralisation;</p>"""
@@ -243,7 +254,8 @@ Le Président,
 J.GOBERT"""
 councilMeeting.defaultMeetingItemMotivation = """<p>Le Conseil,</p>
 <p>&nbsp;</p>
-<p>Vu, d'une part, l'arrêté du Gouvernement  Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux et d'autre part, le décret du 27 mai 2004 portant  confirmation dudit arrêté;</p>
+<p>Vu, d'une part, l'arrêté du Gouvernement  Wallon du 22 avril 2004 portant codification de la législation relative
+aux pouvoirs locaux et d'autre part, le décret du 27 mai 2004 portant  confirmation dudit arrêté;</p>
 <p>&nbsp;</p>
 <p>Vu l'article 117 de la nouvelle Loi Communale;</p>
 <p>&nbsp;</p>
