@@ -1,8 +1,12 @@
 Products.MeetingLalouviere Changelog
 ====================================
 
-3.0.3dev (unreleased)
----------------------
+3.2.0.1 (unreleased)
+--------------------
+- Adapted code regarding changes in PloneMeeting : workflow, import_data, tests
+
+3.1.0 (2013-11-12)
+------------------
 - Adapted all tests to call PloneMeeting ones
 - Added specific search for user gdecoster (http://trac.imio.be/trac/ticket/6354)
 
