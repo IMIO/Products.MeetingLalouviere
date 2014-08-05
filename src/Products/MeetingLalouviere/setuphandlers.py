@@ -161,65 +161,65 @@ def addSearches(context, portal):
     logStep("addCouncilSearches", context)
     topicsInfo = {}
     topicsInfo['meeting-config-council'] = (
-    # Items in state 'proposed_to_officemanager'
-    ('searchproposeditems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), ('proposed_to_officemanager', ), '', 'python: not here.portal_plonemeeting.userIsAmong("officemanagers")',
-    ),
-    # Items in state 'proposed_to_director'
-    # Used in the "todo" portlet
-    ('searchitemstovalidate',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), ('proposed_to_director', ), '', 'python: here.portal_plonemeeting.userIsAmong("directors")',
-    ),
-    # Items in state 'validated'
-    ('searchvalidateditems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), ('validated', ), '', '',
-    ),
-    # Items in state 'returned_to_service
-    ('searchreturnedtoserviceitems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), ('returned_to_service', ), '', 'python: here.portal_plonemeeting.userIsAmong("officemanagers") or here.portal_plonemeeting.userIsAmong("creators")',
-    ),
-    # Items returned to secretary after corrections
-    ('searchcorrecteditems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), (), 'searchCorrectedItems', 'python: here.portal_plonemeeting.isManager()',
-    ),
-    # Items of my commissions
-    ('searchitemsofmycommissions',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), (), 'searchItemsOfMyCommissions', 'python: here.portal_plonemeeting.userIsAmong("commissioneditors")',
-    ),
-    # Items of my commissions I can edit
-    ('searchitemsofmycommissionstoedit',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), (), 'searchItemsOfMyCommissionsToEdit', 'python: here.portal_plonemeeting.userIsAmong("commissioneditors")',
-    ),
-    # All 'decided' items
-    ('searchdecideditems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
-    ), ('accepted', 'refused', 'delayed', 'accepted_but_modified'), '', '',
-    ),
+        # Items in state 'proposed_to_officemanager'
+        ('searchproposeditems',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        ('proposed_to_officemanager', ),
+        '',
+        'python: not here.portal_plonemeeting.userIsAmong("officemanagers")',),
+        # Items in state 'proposed_to_director'
+        # Used in the "todo" portlet
+        ('searchitemstovalidate',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        ('proposed_to_director', ),
+        '',
+        'python: here.portal_plonemeeting.userIsAmong("directors")',),
+        # Items in state 'validated'
+        ('searchvalidateditems',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        ('validated', ),
+        '',
+        '',),
+        # Items of my commissions
+        ('searchitemsofmycommissions',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        (),
+        'searchItemsOfMyCommissions',
+        'python: here.portal_plonemeeting.userIsAmong("commissioneditors")',),
+        # Items of my commissions I can edit
+        ('searchitemsofmycommissionstoedit',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        (),
+        'searchItemsOfMyCommissionsToEdit',
+        'python: here.portal_plonemeeting.userIsAmong("commissioneditors")',),
+        # All 'decided' items
+        ('searchdecideditems',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        ('accepted', 'refused', 'delayed', 'accepted_but_modified'),
+        '',
+        '',),
     )
 
     topicsInfo['meeting-config-college'] = (
-    # Items that need a follow-up (getFollowUp == follow_up_yes)
-    ('searchitemstofollow',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATSimpleStringCriterion', 'follow_up_yes'),
-    ), (), '', 'python: here.portal_plonemeeting.isManager()',
-    ),
-    # Items that needed a follow-up that has been provided (getFollowUp == follow_up_provided)
-    ('searchitemswithfollowupprovided',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATListCriterion', ['follow_up_provided', 'follow_up_provided_not_printed', ]),
-    ), (), '', 'python: here.portal_plonemeeting.isManager()',
-    ),
-    # The follow-up dashboard showing items with follow_up_needed and items with follow_up_confirmed to print
-    ('searchitemsfollowupdashboard',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATListCriterion', ['follow_up_yes', 'follow_up_provided', ]),
-    ), (), '', '',
-    ),
+        # Items that need a follow-up (getFollowUp == follow_up_yes)
+        ('searchitemstofollow',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATSimpleStringCriterion', 'follow_up_yes'),),
+        (),
+        '',
+        'python: here.portal_plonemeeting.isManager()',),
+        # Items that needed a follow-up that has been provided (getFollowUp == follow_up_provided)
+        ('searchitemswithfollowupprovided',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+         ('getFollowUp', 'ATListCriterion', ['follow_up_provided', 'follow_up_provided_not_printed', ]),),
+        (),
+        '', 'python: here.portal_plonemeeting.isManager()',),
+        # The follow-up dashboard showing items with follow_up_needed and items with follow_up_confirmed to print
+        ('searchitemsfollowupdashboard',
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+         ('getFollowUp', 'ATListCriterion', ['follow_up_yes', 'follow_up_provided', ]),),
+        (),
+        '',
+        '',),
     )
 
     mcs = portal.portal_plonemeeting.objectValues("MeetingConfig")

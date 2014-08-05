@@ -32,7 +32,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import DisplayList
 from Products.PloneMeeting.MeetingItem import MeetingItem, \
     MeetingItemWorkflowConditions, MeetingItemWorkflowActions
-from Products.PloneMeeting.utils import checkPermission, sendMail, getLastEvent, prepareSearchValue
+from Products.PloneMeeting.utils import checkPermission, prepareSearchValue
 from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions, \
     MeetingWorkflowConditions, Meeting
@@ -810,8 +810,6 @@ class CustomMeetingItem(MeetingItem):
             res.append(('proposeToBudgetImpactReviewer.png', 'proposed_to_budgetimpact_reviewer'))
         elif itemState == 'itemcreated_waiting_advices':
             res.append(('ask_advices_by_itemcreator.png', 'itemcreated_waiting_advices'))
-        elif itemState == 'returned_to_service':
-            res.append(('return_to_service.png', 'returned_to_service'))
         return res
 
 
@@ -824,10 +822,6 @@ class CustomMeetingConfig(MeetingConfig):
 
     def __init__(self, item):
         self.context = item
-
-    # we need to be able to give an advice in the initial_state for Council...
-    from Products.PloneMeeting.MeetingConfig import MeetingConfig
-    MeetingConfig.listItemStatesInitExcepted = MeetingConfig.listItemStates
 
     security.declarePublic('searchReviewableItems')
 
@@ -896,25 +890,6 @@ class CustomMeetingConfig(MeetingConfig):
             res.extend(brains)
         return res
     MeetingConfig.searchReviewableItems = searchReviewableItems
-
-    security.declarePublic('searchCorrectedItems')
-
-    def searchCorrectedItems(self, sortKey, sortOrder, filterKey, filterValue, **kwargs):
-        '''Returns a list of items freshly corrected.'''
-        params = {'Type': unicode(self.getItemTypeName(), 'utf-8'),
-                  'previous_review_state': 'returned_to_service',
-                  'sort_on': sortKey,
-                  'sort_order': sortOrder
-                  }
-        # Manage filter
-        if filterKey:
-            params[filterKey] = prepareSearchValue(filterValue)
-        # update params with kwargs
-        params.update(kwargs)
-        # Perform the query in portal_catalog
-        catalog = getToolByName(self, 'portal_catalog')
-        return catalog(**params)
-    MeetingConfig.searchCorrectedItems = searchCorrectedItems
 
     security.declarePublic('searchItemsOfCommission')
 
@@ -1534,10 +1509,6 @@ class MeetingCouncilLalouviereWorkflowConditions(MeetingWorkflowConditions):
         # object to close it.
         if checkPermission(ReviewPortalContent, self.context):
             res = True
-        # check that no item is returned to the service
-        #for item in self.context.getItems():
-        #    if item.queryState() == 'returned_to_service':
-        #        return No(self.context.utranslate('some_item_still_in_service'))
         return res
 
     security.declarePublic('mayChangeItemsOrder')
@@ -1586,44 +1557,12 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
     def doSetItemInCouncil(self, stateChange):
         pass
 
-    security.declarePrivate('doReturn_to_service')
+    security.declarePrivate('doReturn_to_proposing_group')
 
-    def doReturn_to_service(self, stateChange):
+    def doReturn_to_proposing_group(self, stateChange):
         '''Send an email to the creator and to the officemanagers'''
-        recipients = []
-        # Send to the creator
-        tool = getToolByName(self.context, 'portal_plonemeeting')
-        membershipTool = getToolByName(self.context, 'portal_membership')
-        groupsTool = getToolByName(self.context, 'portal_groups')
-        creator = membershipTool.getMemberById(self.context.Creator())
-        recipients.append(creator.getProperty('email'))
-        # and to the officemanagers
-        proposingMeetingGroup = getattr(tool, self.context.getProposingGroup())
-        reviewerGroupId = proposingMeetingGroup.getPloneGroupId('officemanagers')
-        for userId in groupsTool.getGroupMembers(reviewerGroupId):
-            user = membershipTool.getMemberById(userId)
-            recipients.append(user.getProperty('email'))
-        lastEvent = getLastEvent(self.context, 'return_to_service')
-        propertiesTool = getToolByName(self.context, 'portal_properties')
-        enc = propertiesTool.site_properties.getProperty('default_charset')
-
-        sendMail(recipients, self.context, 'returnedToService',
-                 mapping={'comments': lastEvent['comments'].decode(enc)})
-
-    security.declarePrivate('doReturn_to_secretary')
-
-    def doReturn_to_secretary(self, stateChange):
-        pass
-
-    security.declarePrivate('doReturn_to_secretary_in_committee')
-
-    def doReturn_to_secretary_in_committee(self, stateChange):
-        pass
-
-    security.declarePrivate('doReturn_to_secretary_in_council')
-
-    def doReturn_to_secretary_in_council(self, stateChange):
-        pass
+        self.context.sendMailIfRelevant('returnedToProposingGroup', 'MeetingMember', isRole=True)
+        self.context.sendMailIfRelevant('returnedToProposingGroup', 'MeetingOfficeManager', isRole=True)
 
     security.declarePrivate('doBackToItemInCommittee')
 
