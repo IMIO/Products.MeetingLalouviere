@@ -7,10 +7,10 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="PloneMeeting">
 
-  <body >
+  <body>
   <metal:title fill-slot="content-title"
                tal:define="itemNumber python: context.getItemNumber(relativeTo='meeting')">
-   <metal:header use-macro="here/hs_macros/macros/itemHeader"/>
+   <metal:header use-macro="here/@@pm-macros/itemHeader"/>
   </metal:title>
   <metal:description fill-slot="content-description">
    <tal:comment replace="nothing">Just hide the description as shown by default by Plone</tal:comment>
@@ -18,7 +18,7 @@
 
   <metal:fill fill-slot="content-core">
     <tal:comment replace="nothing">XXX added definition of 'isManager'</tal:comment>
-    <metal:main_macro define-macro="body"
+    <metal:body_macro define-macro="body"
                       tal:define="tool python: context.portal_plonemeeting;
                                   member tool/getUser;
                                   dummy context/checkPrivacyViewable;
@@ -109,7 +109,7 @@
                                class_if_highlighted python: redefinedItemAssembly and 'highlightRedefinedValue' or '';
                                class_to_use python: mayQuickEdit and (class_if_highlighted and class_if_highlighted + ' itemAssemblyEditable' or 'itemAssemblyEditable') or class_if_highlighted">
           <div tal:attributes="class class_to_use"><i>
-              <a tal:condition="mayQuickEdit" href="manage_item_assembly_form" class="link-overlay-pm manage-item-assembly-overlay">
+              <a tal:condition="mayQuickEdit" href="manage_item_assembly_form" class="link-overlay-pm">
               <span i18n:translate="item_assembly"></span>
               </a>
               <span tal:condition="not: mayQuickEdit"
@@ -153,7 +153,7 @@
           <i><span i18n:translate="PloneMeeting_label_itemIsSigned"></span></i>:&nbsp;&nbsp;
           <tal:defines define="meetingItem python: context;
                                ajaxEdit python: True;">
-           <metal:itemIsSigned use-macro="here/hs_macros/macros/itemIsSigned" />
+           <metal:itemIsSigned use-macro="here/@@pm-macros/itemIsSigned" />
           </tal:defines>
         </div>
         </td>
@@ -252,30 +252,30 @@
     </table>
 
     <tal:comment replace="nothing">People (item attendees, signers and votes)</tal:comment>
-    <metal:people use-macro="here/hs_macros/macros/itemPeople"/>
+    <metal:people use-macro="here/@@pm-macros/itemPeople"/>
 
     <tal:comment replace="nothing">Description</tal:comment>
     <tal:field define="fieldName python: 'description'; ajaxEdit python:True">
-       <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
     <tal:comment replace="nothing">Detailed description</tal:comment>
     <tal:field define="fieldName python: 'detailedDescription'; ajaxEdit python:True">
-       <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
     <tal:comment replace="nothing">Budgetary informations</tal:comment>
     <tal:field define="fieldName python: 'budgetInfos'; ajaxEdit python:True">
-       <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
     <tal:comment replace="nothing">Motivation</tal:comment>
     <tal:field define="fieldName python: 'motivation'; ajaxEdit python:True">
-       <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
     <tal:comment replace="nothing">Decision</tal:comment>
     <tal:field define="fieldName python: 'decision'; ajaxEdit python:True">
-       <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
     <tal:comment replace="nothing">XXX Interventions</tal:comment>
@@ -291,22 +291,24 @@
     </tal:field>
 
     <tal:comment replace="nothing">Annexes and advices</tal:comment>
+    <a name="adviceAndAnnexes"></a>
     <table width="100%" cellpadding="1" cellspacing="1"
-           tal:define="meetingItem python: here;
-                       hasAnnexes python: context.hasAnnexesWhere(decisionRelated=False);
-                       hasAnnexesDecision python: context.hasAnnexesWhere(decisionRelated=True);
-                       hasAdvices python: meetingConfig.getUseAdvices() and context.needsAdvices()"
+           tal:define="hasAnnexes python: context.hasAnnexesWhere(relatedTo='item');
+                       hasAnnexesDecision python: context.hasAnnexesWhere(relatedTo='item_decision');
+                       hasAdvices python: (meetingConfig.getUseAdvices() and context.displayAdvices())"
            tal:condition="python: hasAnnexes or hasAnnexesDecision or hasAdvices">
      <tr style="vertical-align: top;">
       <td class="itemAnnexesCell" width="50%" tal:condition="python: hasAnnexes or hasAnnexesDecision">
        <fieldset style="margin: 0;">
         <legend i18n:translate="existing_annexes">Annexes</legend>
         <table class="no-style-table" cellpadding="0" cellspacing="0">
-         <tr>
-           <td><metal:annexes use-macro="here/@@annexes-macros/annexesIcons"/></td>
-           <td tal:define="decisionRelated python:True"
+         <tr tal:define="obj python: context">
+           <td tal:define="relatedTo string:item">
+            <metal:annexes use-macro="obj/@@annexes-macros/annexesIcons"/>
+           </td>
+           <td tal:define="relatedTo string:item_decision"
                tal:condition="python: member.has_permission('PloneMeeting: Read decision annex', context) and hasAnnexesDecision">
-             <metal:annexes use-macro="here/@@annexes-macros/annexesIcons"/>
+             <metal:annexes use-macro="obj/@@annexes-macros/annexesIcons"/>
            </td>
          </tr>
         </table>
@@ -323,9 +325,9 @@
       </td>
       <tal:comment replace="nothing">Advices</tal:comment>
       <td class="itemAdvicesCell" width="50%" tal:condition="hasAdvices">
-       <fieldset style="margin: 0;" >
+       <fieldset style="margin: 0;" tal:define="meetingItem python: context">
         <legend i18n:translate="PloneMeeting_label_advices">Advices</legend>
-        <metal:advices use-macro="here/advices_macros/macros/advicesIcons"/>
+        <metal:advices use-macro="context/@@advices-macros/macros/advicesIcons"/>
        </fieldset>
       </td>
      </tr>
@@ -333,7 +335,7 @@
 
     <tal:comment replace="nothing">Observations</tal:comment>
     <tal:field define="fieldName python: 'observations'; ajaxEdit python:True">
-       <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
     <tal:comment replace="nothing">XXX follow-up</tal:comment>
@@ -391,12 +393,6 @@
          tal:attributes="href python: config.absolute_url() + '?pageName=data#recItems'" i18n:translate="back"></a>
     </tal:itemInConfig>
 
-    <tal:comment replace="nothing">Actions</tal:comment>
-    <div tal:define="object python: here">
-        <div metal:use-macro="here/plonemeeting_actions/macros/ploneMeetingActions" />
-    </div>
-    <p></p>
-
     <tal:comment replace="nothing">Tasks</tal:comment>
     <tal:tasks condition="meetingConfig/getTasksMacro">
     <span tal:define="tasksMacro python: path(meetingConfig.getTasksMacro() + '|nothing')"
@@ -410,7 +406,7 @@
     <span tal:define="dummy python: tool.rememberAccess(context.UID())"></span>
 
 
-       </metal:main_macro>
+       </metal:body_macro>
     </metal:fill>
   </body>
 </html>
