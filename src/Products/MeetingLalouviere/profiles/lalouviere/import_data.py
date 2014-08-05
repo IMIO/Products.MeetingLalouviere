@@ -473,8 +473,9 @@ collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier,
                                    annexeDecision, annexeAvis, annexeAvisLegal]
 collegeMeeting.usedItemAttributes = ['budgetInfos', 'observations', 'toDiscuss',
                                      'motivation', 'neededFollowUp', 'providedFollowUp', ]
-collegeMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
-                                       'observations', 'interventions', 'commissionTranscript')
+collegeMeeting.xhtmlTransformFields = ('MeetingItem.description', 'MeetingItem.detailedDescription',
+                                       'MeetingItem.decision', 'MeetingItem.observations',
+                                       'MeetingItem.interventions', 'MeetingItem.commissionTranscript')
 collegeMeeting.xhtmlTransformTypes = ('removeBlanks',)
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
 collegeMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
@@ -616,8 +617,9 @@ councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
 councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeRemarks,
                                    annexeDecision, annexeAvis, annexeAvisLegal]
-councilMeeting.xhtmlTransformFields = ('description', 'detailedDescription', 'decision',
-                                       'observations', 'interventions', 'commissionTranscript')
+councilMeeting.xhtmlTransformFields = ('MeetingItem.description', 'MeetingItem.detailedDescription',
+                                       'MeetingItem.decision', 'MeetingItem.observations',
+                                       'MeetingItem.interventions', 'MeetingItem.commissionTranscript')
 councilMeeting.xhtmlTransformTypes = ('removeBlanks',)
 councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations',
                                      'privacy', 'itemAssembly', 'motivation']
