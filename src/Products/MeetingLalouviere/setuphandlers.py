@@ -203,7 +203,8 @@ def addSearches(context, portal):
     topicsInfo['meeting-config-college'] = (
         # Items that need a follow-up (getFollowUp == follow_up_yes)
         ('searchitemstofollow',
-        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ('getFollowUp', 'ATSimpleStringCriterion', 'follow_up_yes'),),
+        (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),
+         ('getFollowUp', 'ATSimpleStringCriterion', 'follow_up_yes'),),
         (),
         '',
         'python: here.portal_plonemeeting.isManager()',),
