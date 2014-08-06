@@ -131,11 +131,11 @@
         </tal:field>
         <tal:comment replace="nothing">XXX Interventions</tal:comment>
         <tal:field define="fieldName python: 'interventions'">
-          <metal:f use-macro="context/hs_macros/macros/editContentField"/>
+          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
         </tal:field>
         <tal:comment replace="nothing">XXX Commission transcript</tal:comment>
         <tal:field define="fieldName python: 'commissionTranscript'">
-          <metal:f use-macro="context/hs_macros/macros/editContentField"/>
+          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
         </tal:field>
 
         <tal:comment replace="nothing">XXX followUp</tal:comment>
@@ -143,11 +143,11 @@
 
         <tal:comment replace="nothing">XXX neededFollowUp</tal:comment>
         <tal:field define="fieldName python: 'neededFollowUp'">
-          <metal:f use-macro="context/hs_macros/macros/editContentField"/>
+          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
         </tal:field>
         <tal:comment replace="nothing">XXX providedFollowUp</tal:comment>
         <tal:field define="fieldName python: 'providedFollowUp'">
-          <metal:f use-macro="context/hs_macros/macros/editContentField"/>
+          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
         </tal:field>
 
         <tal:field define="fieldName python: 'observations'"
