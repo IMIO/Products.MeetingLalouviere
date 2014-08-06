@@ -1655,53 +1655,6 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
                 res = True
         return res
 
-    security.declarePublic('mayReturnToService')
-
-    def mayReturnToService(self):
-        """
-          Check that the user has the 'Review portal content'
-        """
-        if checkPermission(ReviewPortalContent, self.context) and \
-           (not self.context.isDefinedInTool()):
-            return True
-        return False
-
-    security.declarePublic('mayReturnToSecretary')
-
-    def mayReturnToSecretary(self):
-        """
-          Check that the user has the 'Review portal content'
-          Check that an item send back to the service can be send back to the 'presented' state
-        """
-        if checkPermission(ReviewPortalContent, self.context) and \
-           (not self.context.isDefinedInTool()) and self.context.getMeeting().queryState() == 'created':
-            return True
-        return False
-
-    security.declarePublic('mayReturnToSecretaryInCommittee')
-
-    def mayReturnToSecretaryInCommittee(self):
-        """
-          Check that the user has the 'Review portal content'
-          Check that an item send back to the service can be send back to the 'item_in_committee' state
-        """
-        if checkPermission(ReviewPortalContent, self.context) and \
-           (not self.context.isDefinedInTool()) and self.context.getMeeting().queryState() == 'in_committee':
-            return True
-        return False
-
-    security.declarePublic('mayReturnToSecretaryInCouncil')
-
-    def mayReturnToSecretaryInCouncil(self):
-        """
-          Check that the user has the 'Review portal content'
-          Check that an item send back to the service can be send back to the 'item_in_council' state
-        """
-        if checkPermission(ReviewPortalContent, self.context) and \
-           (not self.context.isDefinedInTool()) and self.context.getMeeting().queryState() == 'in_council':
-            return True
-        return False
-
     security.declarePublic('mayDecide')
 
     def mayDecide(self):
