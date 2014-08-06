@@ -51,12 +51,16 @@
 
 .state-item_in_committee,
 .state-item_in_council,
+.state-in_committee,
+.state-in_council,
 .state-decided {
     color: black !important;
 }
 #plone-contentmenu-workflow .state-item_in_committee,
-#plone-contentmenu-workflow .state-decided,
-#plone-contentmenu-workflow .state-item_in_council {
+#plone-contentmenu-workflow .state-item_in_council,
+#plone-contentmenu-workflow .state-in_committee,
+#plone-contentmenu-workflow .state-in_council,
+#plone-contentmenu-workflow .state-decided {
     border-radius: 0.5em 0.5em 0.5em 0.5em;
     background-color: black;
     padding: 0 0.5em;
