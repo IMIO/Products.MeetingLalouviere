@@ -11,58 +11,6 @@ msgstr ""
 "Preferred-encodings: utf-8 latin1\n"
 "Domain: plone\n"
 
-# types
-#. Default: "MeetingCollege"
-msgid "MeetingCollege"
-msgstr ""
-
-#. Default: "MeetincCouncil"
-msgid "MeetingCouncil"
-msgstr ""
-
-#. Default: "MeetingItemCollege"
-msgid "MeetingItemCollege"
-msgstr ""
-
-#. Default: "MeetingItemCouncil"
-msgid "MeetingItemCouncil"
-msgstr ""
-
-# various
-# MeetingItem
-#. Default: "Decision"
-msgid "PloneMeeting_label_decision"
-msgstr ""
-
-#. Default: "In committee"
-msgid "in_committee"
-msgstr ""
-
-#. Default: "In council"
-msgid "in_council"
-msgstr ""
-
-#. Default: "In committee"
-msgid "item_in_committee"
-msgstr ""
-
-#. Default: "In council"
-msgid "item_in_council"
-msgstr ""
-
-#. Default: "accept but modify"
-msgid "accept_but_modify"
-msgstr ""
-
-#. Default: "Accepted but modified"
-msgid "accepted_but_modified"
-msgstr ""
-
-# Workflow transitions
-#. Default: "Ask advices"
-msgid "ask_advices_by_itemcreator"
-msgstr ""
-
 #. Default: "backToCreated_done_descr"
 msgid "backToCreated_done_descr"
 msgstr ""
@@ -127,62 +75,6 @@ msgstr ""
 msgid "backToFrozen_done_descr"
 msgstr ""
 
-msgid "backToProposedToDirector"
-msgstr ""
-
-msgid "backToProposedToDivisionHead"
-msgstr ""
-
-msgid "backToProposedToOfficeManager"
-msgstr ""
-
-msgid "backToProposedToServiceHead"
-msgstr ""
-
-msgid "setInCommittee"
-msgstr ""
-
-msgid "setItemInCommittee"
-msgstr ""
-
-msgid "setInCouncil"
-msgstr ""
-
-msgid "setItemInCouncil"
-msgstr ""
-
-msgid "return_to_service"
-msgstr ""
-
-msgid "return_to_secretary"
-msgstr ""
-
-msgid "return_to_secretary_in_committee"
-msgstr ""
-
-msgid "return_to_secretary_in_council"
-msgstr ""
-
-msgid "backToInCommittee"
-msgstr ""
-
-msgid "backToInCouncil"
-msgstr ""
-
-msgid "backToItemInCommittee"
-msgstr ""
-
-msgid "backToItemInCouncil"
-msgstr ""
-
-#. Default: "Decisions"
-msgid "decisions"
-msgstr ""
-
-#. Default: "Freeze"
-msgid "freeze"
-msgstr ""
-
 # transitions descriptions
 #. Default: "freeze_done_descr"
 msgid "freeze_done_descr"
@@ -204,29 +96,8 @@ msgstr ""
 msgid "setItemInCouncil_done_descr"
 msgstr ""
 
-#. Default: "Frozen"
-msgid "frozen"
-msgstr ""
-
-# Workflow states
-#. Default: "Waiting advices"
-msgid "itemcreated_waiting_advices"
-msgstr ""
-
-#. Default: "Frozen"
-msgid "itemfrozen"
-msgstr ""
-
 #. Default: "itemfreeze_done_descr"
 msgid "itemfreeze_done_descr"
-msgstr ""
-
-#. Default: "Description"
-msgid "meeting_item_description"
-msgstr ""
-
-#. Default: "pre accept"
-msgid "pre_accept"
 msgstr ""
 
 #. Default: "pre_accept_done_descr"
@@ -241,73 +112,8 @@ msgstr ""
 msgid "accept_done_descr"
 msgstr ""
 
-#. Default: "Pre accepted"
-msgid "pre_accepted"
-msgstr ""
-
-msgid "proposeToBudgetImpactReviewer"
-msgstr ""
-
-msgid "proposeToDirector"
-msgstr ""
-
-msgid "proposeToDivisionHead"
-msgstr ""
-
-msgid "proposeToOfficeManager"
-msgstr ""
-
-msgid "proposeToServiceHead"
-msgstr ""
-
-#. Default: "Proposed to budget impact reviewer"
-msgid "proposed_to_budgetimpact_reviewer"
-msgstr ""
-
-#. Default: "Proposed to director"
-msgid "proposed_to_director"
-msgstr ""
-
-#. Default: "Proposed to division head"
-msgid "proposed_to_divisionhead"
-msgstr ""
-
-#. Default: "Proposed to office manager"
-msgid "proposed_to_officemanager"
-msgstr ""
-
-#. Default: "Proposed to service head"
-msgid "proposed_to_servicehead"
-msgstr ""
-
-msgid "remove"
-msgstr ""
-
-#. Default: "Removed from meeting"
-msgid "removed"
-msgstr ""
-
-#. Default: "Validate"
-msgid "validate"
-msgstr ""
-
-msgid "validateByBudgetImpactReviewer"
-msgstr ""
-
-#. Default: "Validated"
-msgid "validated"
-msgstr ""
-
-#. Default: "send back"
-msgid "backToItemCreated"
-msgstr ""
-
 #. Default: "This item is back in its initial state. The person who created it (or another creator within the same group) can now modify it and will need to propose it again once finished."
 msgid "backToItemCreated_done_descr"
-msgstr ""
-
-#. Default: "send back"
-msgid "backToProposedToServiceHead"
 msgstr ""
 
 #. Default: "This item has been send back to the service head."
@@ -326,40 +132,20 @@ msgstr ""
 msgid "delay_done_descr"
 msgstr ""
 
-#. Default: "send back"
-msgid "backToProposedToOfficeManager"
-msgstr ""
-
 #. Default: "This item has been send back to the office manager."
 msgid "backToProposedToOfficeManager_done_descr"
-msgstr ""
-
-#. Default: "send back"
-msgid "backToProposedToDivisionHead"
 msgstr ""
 
 #. Default: "This item has been send back to the division head."
 msgid "backToProposedToDivisionHead_done_descr"
 msgstr ""
 
-#. Default: "send back"
-msgid "backToProposedToDirector"
-msgstr ""
-
 #. Default: "This item has been send back to the director."
 msgid "backToProposedToDirector_done_descr"
 msgstr ""
 
-#. Default: "bo to item frozen"
-msgid "backToItemFrozen"
-msgstr ""
-
 #. Default: "The decision taken on this item has been canceled."
 msgid "backToItemFrozen_done_descr"
-msgstr ""
-
-#. Default: "send back"
-msgid "backToPresented"
 msgstr ""
 
 #. Default: "send back to in council"
@@ -382,38 +168,6 @@ msgstr ""
 msgid "validate_done_descr"
 msgstr ""
 
-#. Default: "frozen"
-msgid "frozen"
-msgstr ""
-
-#. Default: "frozen"
-msgid "itemfrozen"
-msgstr ""
-
 #. Default: "The definitive decisions have been confirmed."
 msgid "close_done_descr"
-msgstr ""
-
-#. Default: "Create a plonmeeting item from a plonegov item"
-msgid "create_to_meeting-config-council_from_meeting-config-college"
-msgstr ""
-
-#. Default: "The meeting config you try to send the item to does not exist!"
-msgid "sendtocouncil_error_no_existing_meetingconfig"
-msgstr ""
-
-#. Default: "The creator of this item does not exist in the meeting config you try to send the item to!"
-msgid "sendtocouncil_error_no_corresponding_meetingconfigfolder"
-msgstr ""
-
-#. Default: "The item has been sent to the council."
-msgid "sendto_meeting-config-council_success"
-msgstr ""
-
-#. Default: "The item has been sent to the college."
-msgid "sendto_meeting-config-college_success"
-msgstr ""
-
-#. Default: "Some items are still under corrections in services"
-msgid "some_item_still_in_service"
 msgstr ""

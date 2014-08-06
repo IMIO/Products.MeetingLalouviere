@@ -228,10 +228,6 @@ msgstr "Lieu de la Commission"
 msgid "PloneMeeting_label_preObservations"
 msgstr "Observations pour les commissions"
 
-#. Default: "Linked items"
-msgid "PloneMeeting_label_predecessor"
-msgstr "Point(s) lié(s)"
-
 # object_buttons
 #. Default: "Send to council"
 msgid "Send to council"
@@ -240,10 +236,6 @@ msgstr "Envoyer au Conseil communal"
 #. Default: "Sent to council"
 msgid "Sent to council"
 msgstr "Envoyé au Conseil communal"
-
-#. Default: "PloneMeeting"
-msgid "app_name"
-msgstr "PloneMeeting"
 
 # Suffix
 #. Default: "budget impact reviewers"
@@ -261,14 +253,6 @@ msgstr "Attention, en général si vous sélectionnez une personne 'A l'initativ
 #. Default: "Item created from a college item"
 msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
 msgstr "Point créé depuis un point Collège"
-
-#. Default: "Decision"
-msgid "decision"
-msgstr "Décision"
-
-#. Default: "Decisions"
-msgid "decisions"
-msgstr "Procès-verbal"
 
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
@@ -305,13 +289,57 @@ msgstr "Un suivi est à apporter"
 msgid "followupwriters"
 msgstr "rédacteurs de suivi"
 
-#. Default: "Configure PloneMeeting"
-msgid "hs_configuration"
-msgstr "Configurer PloneMeeting"
-
 #. Default: "Welcome to HubSessions!"
 msgid "hs_welcome_title"
 msgstr "Bienvenue sur PloneMeeting!"
+
+#. Default: "Accepted but modified"
+msgid "icon_help_accepted_but_modified"
+msgstr "Accepté provisoirement"
+
+#. Default: "Follow-up needed"
+msgid "icon_help_follow_up_needed"
+msgstr "Un suivi est nécessaire"
+
+#. Default: "Follow-up provided but still printed in the dashboard"
+msgid "icon_help_follow_up_provided"
+msgstr "Un suivi a été apporté mais le point est encore imprimé dans le tableau de bord"
+
+#. Default: "Item in committee"
+msgid "icon_help_item_in_committee"
+msgstr "En commission"
+
+#. Default: "Item in council"
+msgid "icon_help_item_in_council"
+msgstr "En Conseil communal"
+
+#. Default: "Waiting advices"
+msgid "icon_help_itemcreated_waiting_advices"
+msgstr "En attente des avis"
+
+#. Default: "Pre accepted"
+msgid "icon_help_pre_accepted"
+msgstr "Accepté provisoirement"
+
+#. Default: "Proposed to budget impact reviewer"
+msgid "icon_help_proposed_to_budgetimpact_reviewer"
+msgstr "Proposé au correspondant financier"
+
+#. Default: "Proposed to director"
+msgid "icon_help_proposed_to_director"
+msgstr "Proposé au directeur"
+
+#. Default: "Proposed to division head"
+msgid "icon_help_proposed_to_divisionhead"
+msgstr "Proposé au chef de division"
+
+#. Default: "Proposed to office manager"
+msgid "icon_help_proposed_to_officemanager"
+msgstr "Proposé au chef de bureau"
+
+#. Default: "Proposed to service head"
+msgid "icon_help_proposed_to_servicehead"
+msgstr "Proposé au chef de service"
 
 #. Default: "Public meeting"
 msgid "ip_public"
@@ -342,10 +370,6 @@ msgstr "Commission"
 msgid "listingheader_premeeting_place"
 msgstr "Lieu"
 
-#. Default: "Description"
-msgid "meeting_item_description"
-msgstr "Description dans l'Ordre du jour"
-
 #. Default: "<span class='activate_follow_up'><a href='activateFollowUp'>Click here</a> if you want to define that a follow-up is needed.</span>"
 msgid "no_followup_needed_actions_itemview"
 msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activateFollowUp' title='Activer le suivi pour ce point.'><img src='follow_up_yes.png' /></a></span>"
@@ -358,22 +382,6 @@ msgstr "<span class='follow_up_no'>Aucun suivi nécessaire.</span>"
 #. Default: "office managers"
 msgid "officemanagers"
 msgstr "chefs de bureau"
-
-#. Default: "Choose advisers that will have to issue an optional advice for this item"
-msgid "optional_advisers_item_descr"
-msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
-
-#. Default: "Decision"
-msgid "portletdecisions_title"
-msgstr "Procès-verbaux"
-
-#. Default: "Meeting"
-msgid "portletmeetings_title"
-msgstr "Ordres du jour"
-
-#. Default: "PowerObservers"
-msgid "powerObserversGroupTitle"
-msgstr "Echevins"
 
 #. Default: "The preparatory meeting must occur before the meeting."
 msgid "pre_date_after_meeting_date"
@@ -423,10 +431,6 @@ msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exe
 msgid "premeeting_assembly_descr"
 msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exemple : [[Mr. Untel Didier]]"
 
-#. Default: "Present every selected items"
-msgid "present_several_items"
-msgstr "Présenter tous les points sélectionnés"
-
 #. Default: "<a href='activateFollowUp'>Click here</a> if you want to define that a follow-up is still needed or <a href='deactivateFollowUp'>click here</a> to deactivate needed follow-up."
 msgid "provided_followup_actions_itemview"
 msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activateFollowUp' title='Activer à nouveau le suivi.'><img src='follow_up_yes.png' ></a>&nbsp;<a href='deactivateFollowUp' title='Désactiver le suivi (aucun suivi n était nécessaire).'><img src='follow_up_no.png' /></a>&nbsp;<a href='followUpNotPrinted' title='A ne pas imprimer dans le tableau de bord.'><img src='not_printed_in_dashboard.gif' /></a></span>"
@@ -443,17 +447,6 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activ
 msgid "provided_followup_not_printed_itemview"
 msgstr "<span class='follow_up_provided_not_printed'>Le suivi nécessaire a été apporté sur ce point (<img src='not_printed_in_dashboard.gif' /> pas imprimé dans le tableau de bord).</span>"
 
-#. Default: "The comment was : ${comments}.\n\nMore information at ${objectUrl}."
-msgid "returnedToService_mail_body"
-msgstr ""
-"Commentaire laissé par le Secrétariat communal : ${comments}.\n"
-"\n"
-"Plus d'information ici: ${objectUrl}."
-
-#. Default: "The item '${itemTitle}' has been send back to you by the secretary"
-msgid "returnedToService_mail_subject"
-msgstr "Le point '${itemTitle}' vous a été renvoyé pour corrections par le Secrétariat communal"
-
 # Suffix
 #. Default: "reviewers"
 msgid "reviewers"
@@ -463,17 +456,9 @@ msgstr "échevins"
 msgid "searchalldecisions"
 msgstr "tous les PVs"
 
-#. Default: "corrected items"
-msgid "searchcorrecteditems"
-msgstr "points corrigés"
-
 #. Default: "decided items"
 msgid "searchdecideditems"
 msgstr "points décidés"
-
-#. Default: "Items of my group"
-msgid "searchgroupitems"
-msgstr "points de mon service"
 
 #. Default: "follow-up dashboard"
 msgid "searchitemsfollowupdashboard"
@@ -503,10 +488,6 @@ msgstr "points suivi apporté"
 #. Default: "proposed items"
 msgid "searchproposeditems"
 msgstr "points proposés"
-
-#. Default: "items to correct"
-msgid "searchreturnedtoserviceitems"
-msgstr "points à corriger"
 
 #. Default: "validated items"
 msgid "searchvalidateditems"

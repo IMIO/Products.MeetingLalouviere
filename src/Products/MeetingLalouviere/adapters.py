@@ -784,32 +784,32 @@ class CustomMeetingItem(MeetingItem):
            item.REQUEST.form.get('topicId', '') == 'searchitemsfollowupdashboard':
             itemFollowUp = item.getFollowUp()
             if itemFollowUp == 'follow_up_yes':
-                res.append(('follow_up_yes.png', 'follow_up_needed_icon_title'))
+                res.append(('follow_up_yes.png', 'icon_help_follow_up_needed'))
             elif itemFollowUp == 'follow_up_provided':
-                res.append(('follow_up_provided.png', 'follow_up_provided_icon_title'))
+                res.append(('follow_up_provided.png', 'icon_help_follow_up_provided'))
         # Default PM item icons
         res = res + MeetingItem.getIcons(item, inMeeting, meeting)
-        # Add our icons for accepted_but_modified and pre_accepted
+        # Add our icons for wf states
         if itemState == 'accepted_but_modified':
-            res.append(('accepted_but_modified.png', 'accepted_but_modified'))
+            res.append(('accepted_but_modified.png', 'icon_help_accepted_but_modified'))
         elif itemState == 'pre_accepted':
-            res.append(('pre_accepted.png', 'pre_accepted'))
+            res.append(('pre_accepted.png', 'icon_help_pre_accepted'))
         elif itemState == 'proposed_to_director':
-            res.append(('proposeToDirector.png', 'proposed_to_director'))
+            res.append(('proposeToDirector.png', 'icon_help_proposed_to_director'))
         elif itemState == 'proposed_to_divisionhead':
-            res.append(('proposeToDivisionHead.png', 'proposed_to_divisionhead'))
+            res.append(('proposeToDivisionHead.png', 'icon_help_proposed_to_divisionhead'))
         elif itemState == 'proposed_to_officemanager':
-            res.append(('proposeToOfficeManager.png', 'proposed_to_officemanager'))
+            res.append(('proposeToOfficeManager.png', 'icon_help_proposed_to_officemanager'))
         elif itemState == 'item_in_council':
-            res.append(('item_in_council.png', 'item_in_council'))
+            res.append(('item_in_council.png', 'icon_help_item_in_council'))
         elif itemState == 'item_in_committee':
-            res.append(('item_in_committee.png', 'item_in_committee'))
+            res.append(('item_in_committee.png', 'icon_help_item_in_committee'))
         elif itemState == 'proposed_to_servicehead':
-            res.append(('proposeToServiceHead.png', 'proposed_to_servicehead'))
+            res.append(('proposeToServiceHead.png', 'icon_help_proposed_to_servicehead'))
         elif itemState == 'proposed_to_budgetimpact_reviewer':
-            res.append(('proposeToBudgetImpactReviewer.png', 'proposed_to_budgetimpact_reviewer'))
+            res.append(('proposeToBudgetImpactReviewer.png', 'icon_help_proposed_to_budgetimpact_reviewer'))
         elif itemState == 'itemcreated_waiting_advices':
-            res.append(('ask_advices_by_itemcreator.png', 'itemcreated_waiting_advices'))
+            res.append(('ask_advices_by_itemcreator.png', 'icon_help_itemcreated_waiting_advices'))
         return res
 
 

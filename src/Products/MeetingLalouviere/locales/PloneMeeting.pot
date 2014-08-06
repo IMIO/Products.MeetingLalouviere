@@ -75,41 +75,9 @@ msgstr ""
 msgid "PloneMeeting_label_decision"
 msgstr ""
 
-#. Default: "PloneMeeting"
-msgid "app_name"
-msgstr ""
-
-#. Default: "Decision"
-msgid "decision"
-msgstr ""
-
-#. Default: "Decisions"
-msgid "decisions"
-msgstr ""
-
 # Other
 #. Default: "Late items"
 msgid "late_presented_items"
-msgstr ""
-
-#. Default: "Description"
-msgid "meeting_item_description"
-msgstr ""
-
-#. Default: "Decision"
-msgid "portletdecisions_title"
-msgstr ""
-
-#. Default: "Meeting"
-msgid "portletmeetings_title"
-msgstr ""
-
-#. Default: "PowerObservers"
-msgid "powerObserversGroupTitle"
-msgstr ""
-
-#. Default: "Present every selected items"
-msgid "present_several_items"
 msgstr ""
 
 #. Default: "Every decisions"
@@ -118,10 +86,6 @@ msgstr ""
 
 #. Default: "decided items"
 msgid "searchdecideditems"
-msgstr ""
-
-#. Default: "Items of my group"
-msgid "searchgroupitems"
 msgstr ""
 
 # searches
@@ -135,14 +99,6 @@ msgstr ""
 
 #. Default: "items to validate"
 msgid "searchitemstovalidate"
-msgstr ""
-
-#. Default: "items to correct"
-msgid "searchreturnedtoserviceitems"
-msgstr ""
-
-#. Default: "corrected items"
-msgid "searchcorrecteditems"
 msgstr ""
 
 #. Default: "items of my commissions"
@@ -167,10 +123,6 @@ msgstr ""
 
 #. Default: "Dashboard"
 msgid "Dashboard"
-msgstr ""
-
-#. Default: "Choose advisers that will have to issue an optional advice for this item"
-msgid "optional_advisers_item_descr"
 msgstr ""
 
 #portal_tabs
@@ -209,10 +161,6 @@ msgstr ""
 
 #. Default: "MeetingItemCouncil"
 msgid "predecessor_MeetingItemCouncil"
-msgstr ""
-
-#. Default: "Linked items"
-msgid "PloneMeeting_label_predecessor"
 msgstr ""
 
 #. Default: "Sent to council"
@@ -467,24 +415,12 @@ msgstr ""
 msgid "ip_secret"
 msgstr ""
 
-#. Default: "The comment was : ${comments}.\n\nMore information at ${objectUrl}."
-msgid "returnedToService_mail_body"
-msgstr ""
-
-#. Default: "The item '${itemTitle}' has been send back to you by the secretary"
-msgid "returnedToService_mail_subject"
-msgstr ""
-
 #. Default: "Please as you defined an item initiator, check if the linked category should not be 'Points conseillers'. If not, just ignore this message, it will not be displayed anymore when the item will be validated."
 msgid "check_intitiator_and_category"
 msgstr ""
 
 #. Default: "Please as this item comes from the college, you need to define the 'commission' for it before being able to propose it."
 msgid "check_category"
-msgstr ""
-
-#. Default: "Configure PloneMeeting"
-msgid "hs_configuration"
 msgstr ""
 
 #. Default: "Please enter 12 lines for signatures delegations"
@@ -521,4 +457,52 @@ msgstr ""
 
 #. Default: "<a href='activateFollowUp'>Click here</a> if you want to define that a follow-up is still needed or <a href='deactivateFollowUp'>click here</a> to deactivate needed follow-up."
 msgid "provided_followup_not_printed_actions_itemview"
+msgstr ""
+
+#. Default: "Follow-up needed"
+msgid "icon_help_follow_up_needed"
+msgstr ""
+
+#. Default: "Follow-up provided but still printed in the dashboard"
+msgid "icon_help_follow_up_provided"
+msgstr ""
+
+#. Default: "Accepted but modified"
+msgid "icon_help_accepted_but_modified"
+msgstr ""
+
+#. Default: "Pre accepted"
+msgid "icon_help_pre_accepted"
+msgstr ""
+
+#. Default: "Proposed to director"
+msgid "icon_help_proposed_to_director"
+msgstr ""
+
+#. Default: "Proposed to division head"
+msgid "icon_help_proposed_to_divisionhead"
+msgstr ""
+
+#. Default: "Proposed to office manager"
+msgid "icon_help_proposed_to_officemanager"
+msgstr ""
+
+#. Default: "Item in council"
+msgid "icon_help_item_in_council"
+msgstr ""
+
+#. Default: "Item in committee"
+msgid "icon_help_item_in_committee"
+msgstr ""
+
+#. Default: "Proposed to service head"
+msgid "icon_help_proposed_to_servicehead"
+msgstr ""
+
+#. Default: "Proposed to budget impact reviewer"
+msgid "icon_help_proposed_to_budgetimpact_reviewer"
+msgstr ""
+
+#. Default: "Waiting advices"
+msgid "icon_help_itemcreated_waiting_advices"
 msgstr ""
