@@ -35,12 +35,3 @@ class MeetingLalouviereTestCase(MeetingCommunesTestCase, MeetingLalouviereTestin
     """Base class for defining MeetingLalouviere test cases."""
 
     layer = MLL_TESTING_PROFILE_FUNCTIONAL
-
-
-# this is necessary to execute base test
-# test_tescasesubproduct_VerifyTestFiles from PloneMeeting
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(MeetingCommunesTestCase, prefix='test_testcasesubproduct_'))
-    return suite
