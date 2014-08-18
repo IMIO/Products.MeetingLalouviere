@@ -1238,7 +1238,6 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         self.context = item  # Implements IMeetingItem
         self.sm = getSecurityManager()
 
-
     security.declarePublic('mayDecide')
 
     def mayDecide(self):
