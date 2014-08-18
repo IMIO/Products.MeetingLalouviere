@@ -32,10 +32,20 @@ class migrate_to_3_2_0_1(Migrator):
             searchitemstocorrect = getattr(cfg.topics, 'searchitemstocorrect', None)
             if searchitemstocorrect and not searchitemstocorrect.getProperty('topic_tal_expression') == topicCondition:
                 searchitemstocorrect.manage_changeProperties(topic_tal_expression=topicCondition)
+        logger.info("Done.")
+
+    def _removeGetMeetingDateMetadata(self):
+        '''Before we used our own getMeetingDate portal_catalog metadata containing
+           the meetings date information, now the getDate metadata installed by PM contains this information.'''
+        logger.info("Removing 'getMeetingDate' from portal_catalog metadatas...")
+        if 'getMeetingDate' in self.portal.portal_catalog.schema():
+            self.portal.portal_catalog.delColumn('getMeetingDate')
+        logger.info("Done.")
 
     def run(self):
         logger.info('Migrating to MeetingLalouviere 3.2.0.1...')
         self._updateTopics()
+        self._removeGetMeetingDateMetadata()
         self.finish()
 
 

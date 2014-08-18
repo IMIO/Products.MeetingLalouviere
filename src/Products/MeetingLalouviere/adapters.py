@@ -591,14 +591,6 @@ class CustomMeetingItem(MeetingItem):
             res = True
         return res
 
-    def getMeetingDate(self):
-        '''Returns the meeting date if any (used for portal_catalog metadata getMeetingDate).'''
-        if not self.portal_type in ['MeetingItemCollege', 'MeetingItemCouncil', ]:
-            return ''
-        else:
-            return self.hasMeeting() and self.getMeeting().getDate() or ''
-    MeetingItem.getMeetingDate = getMeetingDate
-
     security.declarePublic('activateFollowUp')
 
     def activateFollowUp(self):
@@ -983,11 +975,11 @@ class CustomMeetingConfig(MeetingConfig):
 
         def sortBrainsByMeetingDate(x, y):
             '''First sort by meetingDate.'''
-            return cmp(y.getMeetingDate, x.getMeetingDate)
+            return cmp(y.getDate, x.getDate)
 
         def sortBrainsByProposingGroup(x, y):
             '''Second sort by proposing group (of the same meetingDate).'''
-            if not x.getMeetingDate == y.getMeetingDate:
+            if not x.getDate == y.getDate:
                 return 0
             else:
                 return cmp(existingGroupIds.index(x.getProposingGroup), existingGroupIds.index(y.getProposingGroup))

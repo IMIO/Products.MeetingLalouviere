@@ -129,9 +129,6 @@ def addAdditionalIndexes(context, portal):
     logStep("addAdditionalIndexes", context)
     # Create or update indexes
     updateIndexes(portal, indexInfo, logger)
-    # Manage metadatas
-    if not 'getMeetingDate' in portal.portal_catalog.schema():
-        portal.portal_catalog.addColumn('getMeetingDate')
 
 
 def addCommissionEditorGroups(context, portal):
