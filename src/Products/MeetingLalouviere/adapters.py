@@ -784,8 +784,6 @@ class CustomMeetingItem(MeetingItem):
         # Add our icons for wf states
         if itemState == 'accepted_but_modified':
             res.append(('accepted_but_modified.png', 'icon_help_accepted_but_modified'))
-        elif itemState == 'pre_accepted':
-            res.append(('pre_accepted.png', 'icon_help_pre_accepted'))
         elif itemState == 'proposed_to_director':
             res.append(('proposeToDirector.png', 'icon_help_proposed_to_director'))
         elif itemState == 'proposed_to_divisionhead':
@@ -1063,7 +1061,7 @@ class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
         for item in self.context.getAllItems():
             if item.queryState() == 'presented':
                 wfTool.doActionFor(item, 'itemfreeze')
-            if item.queryState() in ['itemfrozen', 'pre_accepted', ]:
+            if item.queryState() in ['itemfrozen', ]:
                 wfTool.doActionFor(item, 'accept')
 
     security.declarePrivate('doDecide')
@@ -1168,11 +1166,6 @@ class MeetingItemCollegeLalouviereWorkflowActions(MeetingItemWorkflowActions):
     def doAccept_but_modify(self, stateChange):
         pass
 
-    security.declarePrivate('doPreAccept')
-
-    def doPre_accept(self, stateChange):
-        pass
-
     security.declarePrivate('doRemove')
 
     def doRemove(self, stateChange):
@@ -1249,6 +1242,26 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
            meeting and (meeting.queryState() in ['decided', 'closed', 'decisions_published', ]):
             res = True
         return res
+
+    security.declarePublic('mayRefuse')
+
+    def mayRefuse(self):
+        '''Only 'Manager' may refuse an item, it is for history reasons because now this is not
+           used anymore but some old items were 'refused'...'''
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        if tool.isManager(realManagers=True):
+            return True
+        return False
+
+    security.declarePublic('mayDelay')
+
+    def mayDelay(self):
+        '''Only 'Manager' may delay an item, it is for history reasons because now this is not
+           used anymore but some old items were 'delayed'...'''
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        if tool.isManager(realManagers=True):
+            return True
+        return False
 
     security.declarePublic('mayValidate')
 

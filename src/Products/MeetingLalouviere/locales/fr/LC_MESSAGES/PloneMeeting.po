@@ -317,10 +317,6 @@ msgstr "En Conseil communal"
 msgid "icon_help_itemcreated_waiting_advices"
 msgstr "En attente des avis"
 
-#. Default: "Pre accepted"
-msgid "icon_help_pre_accepted"
-msgstr "Accepté provisoirement"
-
 #. Default: "Proposed to budget impact reviewer"
 msgid "icon_help_proposed_to_budgetimpact_reviewer"
 msgstr "Proposé au correspondant financier"

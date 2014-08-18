@@ -100,10 +100,6 @@ msgstr ""
 msgid "itemfreeze_done_descr"
 msgstr ""
 
-#. Default: "pre_accept_done_descr"
-msgid "pre_accept_done_descr"
-msgstr ""
-
 #. Default: "refuse_done_descr"
 msgid "refuse_done_descr"
 msgstr ""

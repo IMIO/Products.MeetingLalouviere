@@ -46,6 +46,8 @@ class migrate_to_3_2_0_1(Migrator):
         logger.info('Migrating to MeetingLalouviere 3.2.0.1...')
         self._updateTopics()
         self._removeGetMeetingDateMetadata()
+        # reapply Products.MeetingLalouviere workflows
+        self.portal.portal_setup.runImportStepFromProfile('profile-Products.MeetingLalouviere:default', 'workflow')
         self.finish()
 
 
@@ -53,7 +55,9 @@ class migrate_to_3_2_0_1(Migrator):
 def migrate(context):
     '''This migration function:
 
-       1) Update search items to correct topics.
+       1) Update search items to correct topics;
+       2) Remove 'getMeetingDate' metadata from portal_catalog;
+       3) Reinstall MeetingLalouviere workflows.
     '''
     migrate_to_3_2_0_1(context).run()
 # ------------------------------------------------------------------------------

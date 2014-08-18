@@ -108,10 +108,6 @@ msgstr "L'ordre du jour est maintenant gelé."
 msgid "itemfreeze_done_descr"
 msgstr "Le point a été gelé."
 
-#. Default: "pre_accept_done_descr"
-msgid "pre_accept_done_descr"
-msgstr "Le point a été accepté provisoirement."
-
 #. Default: "proposeToBudgetImpactReviewer_done_descr"
 msgid "proposeToBudgetImpactReviewer_done_descr"
 msgstr "Le point a été envoyé au correspondant financier."

@@ -471,10 +471,6 @@ msgstr ""
 msgid "icon_help_accepted_but_modified"
 msgstr ""
 
-#. Default: "Pre accepted"
-msgid "icon_help_pre_accepted"
-msgstr ""
-
 #. Default: "Proposed to director"
 msgid "icon_help_proposed_to_director"
 msgstr ""
