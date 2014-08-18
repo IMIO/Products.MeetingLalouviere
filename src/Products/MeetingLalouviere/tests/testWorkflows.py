@@ -138,11 +138,11 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.failUnless(len(meeting.getItems()) == 1)
         self.failUnless(len(meeting.getLateItems()) == 1)
         self.do(meeting, 'decide')
-        self.do(item1, 'refuse')
-        self.assertEquals(item1.queryState(), 'refused')
+        self.do(item1, 'accept')
+        self.assertEquals(item1.queryState(), 'accepted')
         self.assertEquals(item2.queryState(), 'itemfrozen')
         self.do(meeting, 'close')
-        self.assertEquals(item1.queryState(), 'refused')
+        self.assertEquals(item1.queryState(), 'accepted')
         # every items without a decision are automatically accepted
         self.assertEquals(item2.queryState(), 'accepted')
 
@@ -346,27 +346,26 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(meeting, 'decide')
         #change all items in all different state (except first who is in good state)
         self.do(item7, 'backToPresented')
-        self.do(item2, 'delay')
-        self.do(item3, 'pre_accept')
+        self.do(item2, 'accept')
+        self.do(item3, 'accept')
         self.do(item4, 'accept_but_modify')
-        self.do(item5, 'refuse')
-        self.do(item6, 'accept')
+        # only Managers may 'delay' and 'refuse' an item...
+        self.changeUser('admin')
+        self.do(item5, 'delay')
+        self.do(item6, 'refuse')
+        self.changeUser('pmManager')
         #we close the meeting
         self.do(meeting, 'close')
         #every items must be in the 'decided' state if we close the meeting
         wftool = self.portal.portal_workflow
         #itemfrozen change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item1, 'review_state'))
-        #delayed rest delayed (it's already a 'decide' state)
-        self.assertEquals('delayed', wftool.getInfoFor(item2, 'review_state'))
-        #pre_accepted change into accepted
+        self.assertEquals('accepted', wftool.getInfoFor(item2, 'review_state'))
         self.assertEquals('accepted', wftool.getInfoFor(item3, 'review_state'))
         #accepted_but_modified rest accepted_but_modified (it's already a 'decide' state)
         self.assertEquals('accepted_but_modified', wftool.getInfoFor(item4, 'review_state'))
-        #refused rest refused (it's already a 'decide' state)
-        self.assertEquals('refused', wftool.getInfoFor(item5, 'review_state'))
-        #accepted rest accepted (it's already a 'decide' state)
-        self.assertEquals('accepted', wftool.getInfoFor(item6, 'review_state'))
+        self.assertEquals('delayed', wftool.getInfoFor(item5, 'review_state'))
+        self.assertEquals('refused', wftool.getInfoFor(item6, 'review_state'))
         #presented change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
 
