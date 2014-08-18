@@ -122,7 +122,6 @@ def addAdditionalIndexes(context, portal):
         return
 
     indexInfo = {
-        'previous_review_state': 'FieldIndex',
         'getFollowUp': 'FieldIndex',
     }
 
