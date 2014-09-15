@@ -1378,14 +1378,13 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
     def mayRemove(self):
         """
           We may remove an item if the linked meeting is in the 'decided'
-          state.  For now, this is the same behaviour as 'mayDecide'
+          state.  It is kept for backward compatibility, but for now, only allow real
+          managers to do that so MeetingManagers are not bothered with the icon.
         """
-        res = False
-        meeting = self.context.getMeeting()
-        if checkPermission(ReviewPortalContent, self.context) and \
-           meeting and (meeting.queryState() in ['decided', 'closed']):
-            res = True
-        return res
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        if tool.isManager(realManagers=True):
+            return True
+        return False
 
     security.declarePublic('mayValidateByBudgetImpactReviewer')
 
