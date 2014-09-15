@@ -4,6 +4,12 @@ Products.MeetingLalouviere Changelog
 3.2.0.1 (unreleased)
 --------------------
 - Adapted code regarding changes in PloneMeeting : workflow, import_data, tests
+- Hide some no more used item decision : 'refuse', 'delay' and 'remove', kept
+  in the WF for history reasons and only available to real managers
+- Removed implementation of 'return to service', use buildin PM WF adaptation
+  'return to proposing group'
+- Use default PloneMeeting permissions 'PloneMeeting: Read/Write budget infos'
+  instead of 'MeetingLalouviere: Read/Write budget infos'
 
 3.1.0 (2013-11-12)
 ------------------
