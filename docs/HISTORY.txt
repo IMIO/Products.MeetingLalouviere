@@ -1,7 +1,7 @@
 Products.MeetingLalouviere Changelog
 ====================================
 
-3.2.0.1 (unreleased)
+3.2.0.1 (2014-09-15)
 --------------------
 - Adapted code regarding changes in PloneMeeting : workflow, import_data, tests
 - Hide some no more used item decision : 'refuse', 'delay' and 'remove', kept
