@@ -533,6 +533,53 @@ collegeMeeting.podTemplates = collegeTemplates
 collegeMeeting.meetingConfigsToCloneTo = ['meeting-config-council']
 collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
 collegeMeeting.useGroupsAsCategories = True
+collegeMeeting.budgetDefault = """<table border="1" cellpadding="1" cellspacing="1" style="width: 468px; height: 174px;">
+    <tbody>
+        <tr>
+            <td>
+                DEPENSES</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Prévu au budget</td>
+            <td>
+                &nbsp;OUI - NON</td>
+        </tr>
+        <tr>
+            <td>
+                A prévoir en modification budgétaire</td>
+            <td>
+                &nbsp;OUI - NON</td>
+        </tr>
+        <tr>
+            <td>
+                Article budgétaire</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Crédit inscrit (ou à inscrire) au budget</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Crédit disponible à la date du</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Estimation de la dépense totale, TVA comprise</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </tbody>
+</table>
+"""
 collegeMeeting.defaultMeetingItemMotivation = """<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant
 codification de la législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de la
 décentralisation;</p>
