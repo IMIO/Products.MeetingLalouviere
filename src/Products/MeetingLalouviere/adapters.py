@@ -33,7 +33,7 @@ from Products.Archetypes.atapi import DisplayList
 from Products.PloneMeeting.MeetingItem import MeetingItem, \
     MeetingItemWorkflowConditions, MeetingItemWorkflowActions
 from Products.PloneMeeting.utils import checkPermission, prepareSearchValue
-from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
+from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE, NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions, \
     MeetingWorkflowConditions, Meeting
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
@@ -535,6 +535,9 @@ class CustomMeeting(Meeting):
     Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
 
 
+old_getDeliberation = MeetingItem.getDeliberation
+
+
 class CustomMeetingItem(MeetingItem):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCustom.'''
@@ -801,6 +804,25 @@ class CustomMeetingItem(MeetingItem):
         elif itemState == 'itemcreated_waiting_advices':
             res.append(('ask_advices_by_itemcreator.png', 'icon_help_itemcreated_waiting_advices'))
         return res
+
+    def getDeliberation(self, withFinanceAdvice=False, **kwargs):
+        '''Override getDeliberation to be able to specify that we want to print the finance advice.'''
+        deliberation = old_getDeliberation(self, **kwargs)
+        # insert finance advice if necessary
+        if withFinanceAdvice:
+            if 'division-financiere-directeur-financier-1' in self.adviceIndex and \
+               self.adviceIndex['division-financiere-directeur-financier-1']['type'] != NOT_GIVEN_ADVICE_VALUE:
+                financeAdviceData = self.getAdviceDataFor('division-financiere-directeur-financier-1')
+                deliberation = deliberation + "<p>Considérant l'avis de la Direction Financière;</p>"
+                if financeAdviceData['comment'].strip():
+                    comment = financeAdviceData['comment'].strip()
+                    comment = comment.replace('<p>', '<p><em>')
+                    comment = comment.replace('</p>', '</em></p>')
+                    comment = comment.replace('<li>', '<li><em>')
+                    comment = comment.replace('</li>', '</em></li>')
+                    deliberation = deliberation + comment
+        return deliberation
+    MeetingItem.getDeliberation = getDeliberation
 
 
 class CustomMeetingConfig(MeetingConfig):
