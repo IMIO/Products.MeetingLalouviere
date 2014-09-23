@@ -805,9 +805,9 @@ class CustomMeetingItem(MeetingItem):
             res.append(('ask_advices_by_itemcreator.png', 'icon_help_itemcreated_waiting_advices'))
         return res
 
-    def getDeliberation(self, withFinanceAdvice=False, **kwargs):
+    def getDeliberation(self, withFinanceAdvice=True, **kwargs):
         '''Override getDeliberation to be able to specify that we want to print the finance advice.'''
-        deliberation = old_getDeliberation(self, **kwargs)
+        deliberation = self.getMotivation(**kwargs)
         # insert finance advice if necessary
         if withFinanceAdvice:
             if 'division-financiere-directeur-financier-1' in self.adviceIndex and \
@@ -821,6 +821,7 @@ class CustomMeetingItem(MeetingItem):
                     comment = comment.replace('<li>', '<li><em>')
                     comment = comment.replace('</li>', '</em></li>')
                     deliberation = deliberation + comment
+        deliberation = deliberation + self.getDecision(**kwargs)
         return deliberation
     MeetingItem.getDeliberation = getDeliberation
 
