@@ -5,3 +5,5 @@ Execute upgrade steps :
 1) MeetingLalouviere to 3.2.0.1 d'abord afin que les WFs soient corrects sans wfAdaptation
 2) PloneMeeting to 3.2.0.1 (la migration vers 3.2 réinstalle PM et donc réapplique les WF adaptations)
 3) Adapter le recherche "searchCorrectedItems" pour ne plus utiliser le script de recherche et ajouter l'index previous_review_state
+4) Ajouter le document "Avis DF"
+5) Configurer l'avis DF

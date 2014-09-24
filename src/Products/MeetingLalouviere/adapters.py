@@ -46,7 +46,8 @@ from Products.MeetingLalouviere.interfaces import \
     IMeetingItemCouncilLalouviereWorkflowConditions, IMeetingItemCouncilLalouviereWorkflowActions,\
     IMeetingCouncilLalouviereWorkflowConditions, IMeetingCouncilLalouviereWorkflowActions
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
-    COUNCIL_COMMISSION_IDS_2013, COUNCIL_MEETING_COMMISSION_IDS_2013, COMMISSION_EDITORS_SUFFIX
+    COUNCIL_COMMISSION_IDS_2013, COUNCIL_MEETING_COMMISSION_IDS_2013, \
+    COMMISSION_EDITORS_SUFFIX, FINANCE_GROUP_ID
 
 # disable most of wfAdaptations
 customWfAdaptations = ('archiving', 'local_meeting_managers', 'return_to_proposing_group', )
@@ -811,9 +812,9 @@ class CustomMeetingItem(MeetingItem):
         deliberation = self.getMotivation(**kwargs)
         # insert finance advice if necessary
         if withFinanceAdvice:
-            if 'division-financiere-directeur-financier-1' in self.adviceIndex and \
-               self.adviceIndex['division-financiere-directeur-financier-1']['type'] != NOT_GIVEN_ADVICE_VALUE:
-                financeAdviceData = self.getAdviceDataFor('division-financiere-directeur-financier-1')
+            if FINANCE_GROUP_ID in self.adviceIndex and \
+               self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
+                financeAdviceData = self.getAdviceDataFor(FINANCE_GROUP_ID)
                 deliberation = deliberation + "<p><em>Considérant l'avis de la Directrice financière " + \
                                               "formulé conformément à l'article L1124-40 §1, 3° du CDLD;</em></p>"
                 if financeAdviceData['comment'].strip():
@@ -832,11 +833,11 @@ class CustomMeetingItem(MeetingItem):
           Add 'advice_reference' info to returned data.
         '''
         data = old_getAdviceDataFor(self, adviserId)
-        if adviserId == 'division-financiere-directeur-financier-1':
-            if self.adviceIndex['division-financiere-directeur-financier-1']['type'] == NOT_GIVEN_ADVICE_VALUE:
+        if adviserId == FINANCE_GROUP_ID:
+            if self.adviceIndex[FINANCE_GROUP_ID]['type'] == NOT_GIVEN_ADVICE_VALUE:
                 data['reference'] = '-'
             else:
-                adviceObj = getattr(self, self.adviceIndex['division-financiere-directeur-financier-1']['advice_id'])
+                adviceObj = getattr(self, self.adviceIndex[FINANCE_GROUP_ID]['advice_id'])
                 data['reference'] = adviceObj.advice_reference
         return data
     MeetingItem.getAdviceDataFor = getAdviceDataFor
