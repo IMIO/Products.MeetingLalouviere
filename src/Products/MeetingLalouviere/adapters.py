@@ -536,6 +536,7 @@ class CustomMeeting(Meeting):
 
 
 old_getDeliberation = MeetingItem.getDeliberation
+old_getAdviceDataFor = MeetingItem.getAdviceDataFor
 
 
 class CustomMeetingItem(MeetingItem):
@@ -813,7 +814,8 @@ class CustomMeetingItem(MeetingItem):
             if 'division-financiere-directeur-financier-1' in self.adviceIndex and \
                self.adviceIndex['division-financiere-directeur-financier-1']['type'] != NOT_GIVEN_ADVICE_VALUE:
                 financeAdviceData = self.getAdviceDataFor('division-financiere-directeur-financier-1')
-                deliberation = deliberation + "<p>Considérant l'avis de la Direction Financière;</p>"
+                deliberation = deliberation + "<p><em>Considérant l'avis de la Directrice financière " + \
+                                              "formulé conformément à l'article L1124-40 §1, 3° du CDLD;</em></p>"
                 if financeAdviceData['comment'].strip():
                     comment = financeAdviceData['comment'].strip()
                     comment = comment.replace('<p>', '<p><em>')
@@ -824,6 +826,20 @@ class CustomMeetingItem(MeetingItem):
         deliberation = deliberation + self.getDecision(**kwargs)
         return deliberation
     MeetingItem.getDeliberation = getDeliberation
+
+    def getAdviceDataFor(self, adviserId=None):
+        '''
+          Add 'advice_reference' info to returned data.
+        '''
+        data = old_getAdviceDataFor(self, adviserId)
+        if adviserId == 'division-financiere-directeur-financier-1':
+            if self.adviceIndex['division-financiere-directeur-financier-1']['type'] == NOT_GIVEN_ADVICE_VALUE:
+                data['reference'] = '-'
+            else:
+                adviceObj = getattr(self, self.adviceIndex['division-financiere-directeur-financier-1']['advice_id'])
+                data['reference'] = adviceObj.advice_reference
+        return data
+    MeetingItem.getAdviceDataFor = getAdviceDataFor
 
 
 class CustomMeetingConfig(MeetingConfig):
