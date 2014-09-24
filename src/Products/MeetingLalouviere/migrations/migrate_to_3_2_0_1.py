@@ -1,6 +1,9 @@
 # ------------------------------------------------------------------------------
 import logging
 logger = logging.getLogger('MeetingLalouviere')
+
+from Products.CMFCore.permissions import AddPortalContent
+
 from Products.PloneMeeting.migrations import Migrator
 
 
@@ -42,10 +45,19 @@ class migrate_to_3_2_0_1(Migrator):
             self.portal.portal_catalog.delColumn('getMeetingDate')
         logger.info("Done.")
 
+    def _updateAddPortalContentPermissionOfItemTemplates(self):
+        '''Make sure the 'Add portal content' permission of item templates is acquired.'''
+        logger.info('Updating the \'Add portal content\' permission for every item templates...')
+        for cfg in self.portal.portal_plonemeeting.objectValues('MeetingConfig'):
+            for item in cfg.recurringitems.objectValues('MeetingItem'):
+                item.manage_permission(AddPortalContent, acquire=True)
+        logger.info('Done.')
+
     def run(self):
         logger.info('Migrating to MeetingLalouviere 3.2.0.1...')
         self._updateTopics()
         self._removeGetMeetingDateMetadata()
+        self._updateAddPortalContentPermissionOfItemTemplates()
         # reapply Products.MeetingLalouviere workflows
         self.portal.portal_setup.runImportStepFromProfile('profile-Products.MeetingLalouviere:default', 'workflow')
         self.finish()

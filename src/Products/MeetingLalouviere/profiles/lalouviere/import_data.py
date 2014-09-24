@@ -32,8 +32,12 @@ collegeDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem") and 
                                     'here.queryState() in ["accepted", "refused", "delayed", "accepted_but_modified",]'
 collegeRapportTemplate = PodTemplateDescriptor('college-rapport', 'Rapport')
 collegeRapportTemplate.podTemplate = 'college_rapport.odt'
-collegeRapportTemplate.podCondition = ' python: here.meta_type == "MeetingItem" and ' \
+collegeRapportTemplate.podCondition = 'python: here.meta_type == "MeetingItem" and ' \
                                       'not (here.portal_membership.getAuthenticatedMember().has_role("MeetingManager"))'
+collegeAvisDFTemplate = PodTemplateDescriptor('college-avis-df', 'Avis DF')
+collegeAvisDFTemplate.podTemplate = 'college_avis_df.odt'
+collegeAvisDFTemplate.podCondition = ' python: here.meta_type == "MeetingItem"'
+
 collegeOJADiscTemplate = PodTemplateDescriptor('college-oj-a-discuter', 'OJ (à discuter)')
 collegeOJADiscTemplate.podTemplate = 'college_oj_a_discuter.odt'
 collegeOJADiscTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
@@ -49,6 +53,7 @@ collegePVTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
 collegeDashboardTemplate = PodTemplateDescriptor('college-dashboard', 'Tableau de bord')
 collegeDashboardTemplate.podTemplate = 'college_dashboard.odt'
 collegeDashboardTemplate.podCondition = 'python:False'
+
 councilDelibTemplate = PodTemplateDescriptor('conseil-deliberation', 'Délibération')
 councilDelibTemplate.podTemplate = 'conseil_deliberation.odt'
 councilDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem") and ' \
@@ -162,8 +167,8 @@ councilPVTemplate.podTemplate = 'conseil_pv.odt'
 councilPVTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
                                  'here.portal_plonemeeting.isManager()'
 
-collegeTemplates = [collegeDelibTemplate, collegeRapportTemplate, collegeOJADiscTemplate,
-                    collegeOJPasADiscTemplate, collegePVTemplate]
+collegeTemplates = [collegeDelibTemplate, collegeRapportTemplate, collegeAvisDFTemplate,
+                    collegeOJADiscTemplate, collegeOJPasADiscTemplate, collegePVTemplate]
 councilTemplates = [councilOJExplanatoryTemplate, councilFardesTemplate,
                     councilAvisTemplate, councilOJConvPresseTemplate,
                     councilOJConvConsTemplate, councilOJConvConsPremSupplTemplate,

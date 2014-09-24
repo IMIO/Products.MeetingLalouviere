@@ -57,6 +57,14 @@ msgstr " "
 msgid "MeetingLalouviere_descr_signatures"
 msgstr "Si vous ne remplissez pas le champ, les signatures certifiées définies sur la configuration de séance seront utilisées.  Si vous utilisez ce champ, il est obligatoire de définir 12 lignes (les 6 premières pour le collège et les 6 dernières pour le conseil).  Si une signature ne doit pas être surchagée, utilisez des tirets '-'."
 
+#. Default: "Reference"
+msgid "MeetingLalouviere_label_advice_reference"
+msgstr "Référence"
+
+#. Default: "Enter a reference for this advice if necessary."
+msgid "MeetingLalouviere_label_advice_reference_descr"
+msgstr "Encodez une référence pour l'avis si nécessaire."
+
 #. Default: "Transcript of commission"
 msgid "MeetingLalouviere_label_commissionTranscript"
 msgstr "Procès-verbal de la commission"
@@ -505,4 +513,3 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='confi
 #. Default: "<span class='follow_up_yes'>A follow-up is needed.</span>"
 msgid "yes_followup_needed_itemview"
 msgstr "<span class='follow_up_yes'>Un suivi est nécessaire.</span>"
-

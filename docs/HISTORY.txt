@@ -10,6 +10,9 @@ Products.MeetingLalouviere Changelog
   'return to proposing group'
 - Use default PloneMeeting permissions 'PloneMeeting: Read/Write budget infos'
   instead of 'MeetingLalouviere: Read/Write budget infos'
+- Added field meetingadvice.advice_reference to be able to define finance advice
+  reference number.  To be removed when going to PloneMeeting 3.3 where this field
+  already exists...
 
 3.1.0 (2013-11-12)
 ------------------

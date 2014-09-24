@@ -502,3 +502,11 @@ msgstr ""
 #. Default: "Waiting advices"
 msgid "icon_help_itemcreated_waiting_advices"
 msgstr ""
+
+#. Default: "Reference"
+msgid "MeetingLalouviere_label_advice_reference"
+msgstr ""
+
+#. Default: "Enter a reference for this advice if necessary."
+msgid "MeetingLalouviere_label_advice_reference_descr"
+msgstr ""
