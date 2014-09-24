@@ -815,9 +815,7 @@ class CustomMeetingItem(MeetingItem):
             if FINANCE_GROUP_ID in self.adviceIndex and \
                self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
                 financeAdviceData = self.getAdviceDataFor(FINANCE_GROUP_ID)
-                deliberation = deliberation + "<p><em>Considérant l'avis de la Directrice financière " + \
-                                              "formulé conformément à l'article L1124-40 §1, 3° du CDLD;</em></p>"
-                if financeAdviceData['comment'].strip():
+                if financeAdviceData['comment'] and financeAdviceData['comment'].strip():
                     comment = financeAdviceData['comment'].strip()
                     comment = comment.replace('<p>', '<p><em>')
                     comment = comment.replace('</p>', '</em></p>')
