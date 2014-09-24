@@ -91,6 +91,9 @@ COUNCIL_MEETING_COMMISSION_IDS_2013 = ('commission-travaux',
 
 # suffix of specific groups containing commission transcript editors
 COMMISSION_EDITORS_SUFFIX = '_commissioneditors'
+
+# id of finance advice group
+FINANCE_GROUP_ID = 'avis-directeur-financier-2200020ac'
 ##/code-section config-bottom
 
 
