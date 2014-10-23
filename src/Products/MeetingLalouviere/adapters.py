@@ -816,7 +816,8 @@ class CustomMeetingItem(MeetingItem):
                self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
                 financeAdviceData = self.getAdviceDataFor(FINANCE_GROUP_ID)
                 if financeAdviceData['comment'] and financeAdviceData['comment'].strip():
-                    comment = financeAdviceData['comment'].strip()
+                    comment = "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p>"
+                    comment = comment + financeAdviceData['comment'].strip()
                     comment = comment.replace('<p>', '<p><em>')
                     comment = comment.replace('</p>', '</em></p>')
                     comment = comment.replace('<li>', '<li><em>')
