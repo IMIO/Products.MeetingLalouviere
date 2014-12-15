@@ -827,6 +827,16 @@ class CustomMeetingItem(MeetingItem):
         return deliberation
     MeetingItem.getDeliberation = getDeliberation
 
+    def mayGenerateFinanceAdvice(self):
+        '''
+          Condition used in the 'Avis DF' PodTemplate.
+        '''
+        if FINANCE_GROUP_ID in self.adviceIndex and \
+           self.adviceIndex[FINANCE_GROUP_ID]['delay'] and \
+           self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
+            return True
+        return False
+
     def getAdviceDataFor(self, adviserId=None):
         '''
           Add 'advice_reference' info to returned data.
