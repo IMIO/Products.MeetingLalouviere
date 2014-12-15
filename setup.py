@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.0dev'
+version = '3.3dev'
 
 setup(name='Products.MeetingLalouviere',
       version=version,
