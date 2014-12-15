@@ -151,7 +151,7 @@ def addSearches(context, portal):
     '''
        Add additional searches
     '''
-    if isNotMeetingLalouviereProfile(context):
+    if isNotMeetingLalouviereLalouviereProfile(context):
         return
 
     logStep("addCouncilSearches", context)
