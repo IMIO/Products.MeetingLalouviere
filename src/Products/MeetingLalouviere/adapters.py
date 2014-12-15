@@ -815,18 +815,23 @@ class CustomMeetingItem(MeetingItem):
             if FINANCE_GROUP_ID in self.adviceIndex and \
                self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
                 financeAdviceData = self.getAdviceDataFor(FINANCE_GROUP_ID)
-                deliberation = deliberation + "<p><em>Considérant l'avis de la Directrice financière " + \
-                                              "formulé conformément à l'article L1124-40 §1, 3° du CDLD;</em></p>"
-                if financeAdviceData['comment'].strip():
-                    comment = financeAdviceData['comment'].strip()
-                    comment = comment.replace('<p>', '<p><em>')
-                    comment = comment.replace('</p>', '</em></p>')
-                    comment = comment.replace('<li>', '<li><em>')
-                    comment = comment.replace('</li>', '</em></li>')
+                if financeAdviceData['comment'] and financeAdviceData['comment'].strip():
+                    comment = "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p>"
+                    comment = comment + financeAdviceData['comment'].strip()
                     deliberation = deliberation + comment
         deliberation = deliberation + self.getDecision(**kwargs)
         return deliberation
     MeetingItem.getDeliberation = getDeliberation
+
+    def mayGenerateFinanceAdvice(self):
+        '''
+          Condition used in the 'Avis DF' PodTemplate.
+        '''
+        if FINANCE_GROUP_ID in self.context.adviceIndex and \
+           self.context.adviceIndex[FINANCE_GROUP_ID]['delay'] and \
+           self.context.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
+            return True
+        return False
 
     def getAdviceDataFor(self, adviserId=None):
         '''
