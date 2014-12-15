@@ -818,10 +818,6 @@ class CustomMeetingItem(MeetingItem):
                 if financeAdviceData['comment'] and financeAdviceData['comment'].strip():
                     comment = "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p>"
                     comment = comment + financeAdviceData['comment'].strip()
-                    comment = comment.replace('<p>', '<p><em>')
-                    comment = comment.replace('</p>', '</em></p>')
-                    comment = comment.replace('<li>', '<li><em>')
-                    comment = comment.replace('</li>', '</em></li>')
                     deliberation = deliberation + comment
         deliberation = deliberation + self.getDecision(**kwargs)
         return deliberation
