@@ -831,9 +831,9 @@ class CustomMeetingItem(MeetingItem):
         '''
           Condition used in the 'Avis DF' PodTemplate.
         '''
-        if FINANCE_GROUP_ID in self.adviceIndex and \
-           self.adviceIndex[FINANCE_GROUP_ID]['delay'] and \
-           self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
+        if FINANCE_GROUP_ID in self.context.adviceIndex and \
+           self.context.adviceIndex[FINANCE_GROUP_ID]['delay'] and \
+           self.context.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
             return True
         return False
 
