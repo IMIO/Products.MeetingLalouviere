@@ -263,7 +263,7 @@ def addSearches(context, portal):
     mc_council.setToDoListTopics([
         getattr(mc_council.topics, 'searchdecideditems'),
         getattr(mc_council.topics, 'searchitemstovalidate'),
-        getattr(mc_council.topics, 'searchreturnedtoserviceitems'),
+        getattr(mc_council.topics, 'searchitemstocorrect'),
         getattr(mc_council.topics, 'searchcorrecteditems'),
         getattr(mc_council.topics, 'searchitemsofmycommissionstoedit'),
         getattr(mc_council.topics, 'searchallitemstoadvice'),
