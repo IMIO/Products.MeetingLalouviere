@@ -16,7 +16,7 @@ Products.MeetingLalouviere Changelog
   instead of 'MeetingLalouviere: Read/Write budget infos'
 - Added field meetingadvice.advice_reference to be able to define finance advice
   reference number.  To be removed when going to PloneMeeting 3.3 where this field
-  already exists... 
+  already exists...
 
 3.1.0 (2013-11-12)
 ------------------
