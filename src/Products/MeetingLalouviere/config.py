@@ -47,7 +47,7 @@ PRODUCT_DEPENDENCIES = []
 ##code-section config-bottom #fill in your manual code here
 from Products.PloneMeeting import config as PMconfig
 LALOUVIEREROLES = {}
-LALOUVIEREROLES['budgetimpactreviewers'] = 'MeetingBudgetImpactEditor'
+LALOUVIEREROLES['budgetimpactreviewers'] = 'MeetingBudgetImpactReviewer'
 LALOUVIEREROLES['serviceheads'] = 'MeetingServiceHead'
 LALOUVIEREROLES['officemanagers'] = 'MeetingOfficeManager'
 LALOUVIEREROLES['divisionheads'] = 'MeetingDivisionHead'
