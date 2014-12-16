@@ -58,6 +58,10 @@ msgstr ""
 msgid "directors"
 msgstr ""
 
+#. Default: "budget impact reviewers"
+msgid "budgetimpactreviewers"
+msgstr ""
+
 # Suffix
 #. Default: "follow-up writers"
 msgid "followupwriters"

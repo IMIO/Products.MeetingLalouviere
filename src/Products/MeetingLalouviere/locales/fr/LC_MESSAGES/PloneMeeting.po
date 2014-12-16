@@ -245,6 +245,10 @@ msgstr "Envoyer au Conseil communal"
 msgid "Sent to council"
 msgstr "Envoyé au Conseil communal"
 
+#. Default: "budget impact reviewers"
+msgid "budgetimpactreviewers"
+msgstr "correspondants financier"
+
 #. Default: "Please as this item comes from the college, you need to define the 'commission' for it before being able to propose it."
 msgid "check_category"
 msgstr "Attention, comme ce point provient du Collège communal, vous devez définir la commission à laquelle il doit passer en passant par l'onglet 'Modifier' avant de pouvoir le proposer au chef de bureau."
@@ -508,4 +512,3 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='confi
 #. Default: "<span class='follow_up_yes'>A follow-up is needed.</span>"
 msgid "yes_followup_needed_itemview"
 msgstr "<span class='follow_up_yes'>Un suivi est nécessaire.</span>"
-
