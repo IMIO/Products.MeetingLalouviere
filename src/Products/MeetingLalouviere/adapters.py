@@ -27,8 +27,9 @@ from appy.gen import No
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
 from zope.interface import implements
-from Products.CMFCore.permissions import ReviewPortalContent, ModifyPortalContent
+from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import getToolByName
+from imio.helpers.xhtml import xhtmlContentIsEmpty
 from Products.Archetypes.atapi import DisplayList
 from Products.PloneMeeting.MeetingItem import MeetingItem, \
     MeetingItemWorkflowConditions, MeetingItemWorkflowActions
@@ -48,6 +49,8 @@ from Products.MeetingLalouviere.interfaces import \
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
     COUNCIL_COMMISSION_IDS_2013, COUNCIL_MEETING_COMMISSION_IDS_2013, \
     COMMISSION_EDITORS_SUFFIX, FINANCE_GROUP_ID
+from DateTime import DateTime
+from Products.PloneMeeting.interfaces import IAnnexable
 
 # disable most of wfAdaptations
 customWfAdaptations = ('archiving', 'local_meeting_managers', 'return_to_proposing_group', )
@@ -104,8 +107,6 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Write optional advisers':
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Write optional advisers':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     # MeetingManagers edit permissions
     'Delete objects':
     ['Manager', 'MeetingManager', ],
@@ -116,6 +117,45 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
 }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
+
+
+def formatedAssembly(assembly, focus):
+    is_finish = False
+    absentFind = False
+    excuseFind = False
+    res = []
+    res.append('<p class="mltAssembly">')
+    for ass in assembly:
+        if is_finish:
+            break
+        lines = ass.split(',')
+        cpt = 1
+        my_line = ''
+        for line in lines:
+            if((line.find('Excus') >= 0 or line.find('Absent') >= 0) and focus == 'present') or \
+                    (line.find('Absent') >= 0 and focus == 'excuse'):
+                is_finish = True
+                break
+            if line.find('Excus') >= 0:
+                excuseFind = True
+                continue
+            if line.find('Absent') >= 0:
+                absentFind = True
+                continue
+            if (focus == 'absent' and not absentFind) or (focus == 'excuse' and not excuseFind):
+                continue
+            if cpt == len(lines):
+                my_line = "%s%s<br />" % (my_line, line)
+                res.append(my_line)
+            else:
+                my_line = "%s%s," % (my_line, line)
+            cpt = cpt + 1
+    if len(res) > 1:
+        res[-1] = res[-1].replace('<br />', '')
+    else:
+        return ''
+    res.append('</p>')
+    return ('\n'.join(res))
 
 
 class CustomMeeting(Meeting):
@@ -458,13 +498,6 @@ class CustomMeeting(Meeting):
         return tuple(res)
     Meeting.getCommissionCategories = getCommissionCategories
 
-    security.declarePublic('showAllItemsAtOnce')
-
-    def showAllItemsAtOnce(self):
-        '''Monkeypatch for hiding the allItemsAtOnce field.'''
-        return False
-    Meeting.showAllItemsAtOnce = showAllItemsAtOnce
-
     security.declarePrivate('getDefaultPreMeetingAssembly')
 
     def getDefaultPreMeetingAssembly(self):
@@ -535,6 +568,18 @@ class CustomMeeting(Meeting):
         return ''
     Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
 
+    security.declarePublic('printFormatedMeetingAssembly ')
+
+    def printFormatedMeetingAssembly(self, focus=''):
+        ''' Printing Method use in templates :
+            return formated assembly with 'absent', 'excused', ... '''
+        if focus not in ('present', 'excuse', 'absent'):
+            return ''
+        #ass is, ie: Pierre Helson, Bourgmestre, Président
+        #focus is present, excuse or absent
+        assembly = self.context.getAssembly().replace('<p>', '').replace('</p>', '').split('<br />')
+        return formatedAssembly(assembly, focus)
+
 
 old_getDeliberation = MeetingItem.getDeliberation
 old_getAdviceDataFor = MeetingItem.getAdviceDataFor
@@ -546,8 +591,6 @@ class CustomMeetingItem(MeetingItem):
     implements(IMeetingItemCustom)
     security = ClassSecurityInfo()
 
-    customItemPositiveDecidedStates = ('accepted', 'accepted_but_modified', )
-    MeetingItem.itemPositiveDecidedStates = customItemPositiveDecidedStates
     customItemDecidedStates = ('accepted', 'refused', 'delayed', 'accepted_but_modified', 'removed', )
     MeetingItem.itemDecidedStates = customItemDecidedStates
     customBeforePublicationStates = ('itemcreated',
@@ -585,16 +628,6 @@ class CustomMeetingItem(MeetingItem):
         ))
         return res
     MeetingItem.listFollowUps = listFollowUps
-
-    security.declarePublic('mayBeLinkedToTasks')
-
-    def mayBeLinkedToTasks(self):
-        '''See doc in interfaces.py.'''
-        item = self.getSelf()
-        res = False
-        if (item.queryState() in ('accepted', 'refused', 'delayed', 'accepted_but_modified', )):
-            res = True
-        return res
 
     security.declarePublic('activateFollowUp')
 
@@ -696,6 +729,12 @@ class CustomMeetingItem(MeetingItem):
             if self.context.getCategory().startswith(groupId[:-len(COMMISSION_EDITORS_SUFFIX)]):
                 #we found the relevant group
                 self.context.manage_addLocalRoles(groupId, ('MeetingCommissionEditor',))
+
+    security.declarePublic('itemPositiveDecidedStates')
+
+    def itemPositiveDecidedStates(self):
+        '''See doc in interfaces.py.'''
+        return ('accepted', 'accepted_but_modified', )
 
     security.declarePublic('getCertifiedSignatures')
 
@@ -806,6 +845,64 @@ class CustomMeetingItem(MeetingItem):
         elif itemState == 'itemcreated_waiting_advices':
             res.append(('ask_advices_by_itemcreator.png', 'icon_help_itemcreated_waiting_advices'))
         return res
+
+    def _initDecisionFieldIfEmpty(self):
+        '''
+          If decision field is empty, it will be initialized
+          with data coming from title and description.
+        '''
+        # set keepWithNext to False as it will add a 'class' and so
+        # xhtmlContentIsEmpty will never consider it empty...
+        if xhtmlContentIsEmpty(self.getDeliberation(keepWithNext=False)):
+            self.setDecision("<p>%s</p>%s" % (self.Title(),
+                                              self.Description()))
+            self.reindexObject()
+    MeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
+
+    security.declarePublic('getAllAnnexes')
+
+    def printAllAnnexes(self):
+        ''' Printing Method use in templates :
+            return all viewable annexes for item '''
+        res = []
+        annexesByType = IAnnexable(self.context).getAnnexesByType('item')
+        for annexes in annexesByType:
+            for annex in annexes:
+                title = annex['Title'].replace('&', '&amp;')
+                url = getattr(self.context, annex['id']).absolute_url()
+                res.append('<a href="%s">%s</a><br/>' % (url, title))
+        return ('\n'.join(res))
+
+    security.declarePublic('getFormatedAdvice ')
+
+    def printFormatedAdvice(self):
+        ''' Printing Method use in templates :
+            return formated advice'''
+        res = []
+        meetingItem = self.context
+        keys = meetingItem.getAdvicesByType().keys()
+        for key in keys:
+            for advice in meetingItem.getAdvicesByType()[key]:
+                if advice['type'] == 'not_given':
+                    continue
+                comment = ''
+                if advice['comment']:
+                    comment = advice['comment']
+                res.append({'type': meetingItem.i18n(key).encode('utf-8'), 'name': advice['name'].encode('utf-8'),
+                            'comment': comment})
+        return res
+
+    security.declarePublic('printFormatedItemAssembly ')
+
+    def printFormatedItemAssembly(self, focus=''):
+        ''' Printing Method use in templates :
+            return formated assembly with 'absent', 'excused', ... '''
+        if focus not in ('present', 'excuse', 'absent'):
+            return ''
+        #ass is, ie: Pierre Helson, Bourgmestre, Président
+        #focus is present, excuse or absent
+        assembly = self.context.getItemAssembly().replace('<p>', '').replace('</p>', '').split('<br />')
+        return formatedAssembly(assembly, focus)
 
     def getDeliberation(self, withFinanceAdvice=True, **kwargs):
         '''Override getDeliberation to be able to specify that we want to print the finance advice.'''
@@ -1084,12 +1181,169 @@ class CustomMeetingGroup(MeetingGroup):
         self.context = item
 
     security.declarePrivate('validate_signatures')
-
     def validate_signatures(self, value):
         '''Validate the MeetingGroup.signatures field.'''
         if value.strip() and not len(value.split('\n')) == 12:
             return self.utranslate('signatures_length_error', domain='PloneMeeting')
     MeetingGroup.validate_signatures = validate_signatures
+
+    security.declarePublic('listCdldProposingGroup')
+
+    def listCdldProposingGroup(self):
+        '''Returns a list of groups that can be selected for cdld synthesis field
+        '''
+        tool = getToolByName(self, 'portal_plonemeeting')
+        res = []
+        # add delay-aware optionalAdvisers
+        customAdvisers = self.getSelf().getCustomAdvisers()
+        for customAdviser in customAdvisers:
+            groupId = customAdviser['group']
+            groupDelay = customAdviser['delay']
+            groupDelayLabel = customAdviser['delay_label']
+            group = getattr(tool, groupId, None)
+            groupKey = '%s__%s__(%s)' % (groupId, groupDelay, groupDelayLabel)
+            groupValue = '%s - %s (%s)' % (group.Title(), groupDelay, groupDelayLabel)
+            if group:
+                res.append((groupKey, groupValue))
+        # only let select groups for which there is at least one user in
+        nonEmptyMeetingGroups = tool.getMeetingGroups(notEmptySuffix='advisers')
+        if nonEmptyMeetingGroups:
+            for mGroup in nonEmptyMeetingGroups:
+                res.append(('%s____' % mGroup.getId(), mGroup.getName()))
+        res = DisplayList(res)
+        return res
+    MeetingConfig.listCdldProposingGroup = listCdldProposingGroup
+
+    security.declarePublic('searchCDLDItems2014')
+
+    def searchCDLDItems2014(self, sortKey='', sortOrder='', filterKey='', filterValue='', **kwargs):
+        '''Queries all items for cdld synthesis'''
+        groups = []
+        cdldProposingGroups = self.getSelf().getCdldProposingGroup()
+        for cdldProposingGroup in cdldProposingGroups:
+            groupId = cdldProposingGroup.split('__')[0]
+            delay = ''
+            if cdldProposingGroup.split('__')[1]:
+                delay = 'delay__'
+            groups.append('%s%s' % (delay, groupId))
+        # advised items are items that has an advice in a particular review_state
+        # just append every available meetingadvice state: we want "given" advices.
+        # this search will only return 'delay-aware' advices
+        wfTool = getToolByName(self, 'portal_workflow')
+        adviceWF = wfTool.getWorkflowsFor('meetingadvice')[0]
+        adviceStates = adviceWF.states.keys()
+        groupIds = []
+        advice_index__suffixs = ('advice_delay_exceeded', 'advice_not_given', 'advice_not_giveable')
+        # advice given
+        for adviceState in adviceStates:
+            groupIds += [g + '_%s' % adviceState for g in groups]
+        #advice not given
+        for advice_index__suffix in advice_index__suffixs:
+            groupIds += [g + '_%s' % advice_index__suffix for g in groups]
+        # Create query parameters
+        fromDate = DateTime(2013, 01, 01)
+        toDate = DateTime(2014, 12, 31, 23, 59)
+        params = {'portal_type': self.getItemTypeName(),
+                  # KeywordIndex 'indexAdvisers' use 'OR' by default
+                  'indexAdvisers': groupIds,
+                  'created': {'query': [fromDate, toDate], 'range': 'minmax'},
+                  'sort_on': sortKey,
+                  'sort_order': sortOrder, }
+        # Manage filter
+        if filterKey:
+            params[filterKey] = prepareSearchValue(filterValue)
+        # update params with kwargs
+        params.update(kwargs)
+        # Perform the query in portal_catalog
+        brains = self.portal_catalog(**params)
+        res = []
+        fromDate = DateTime(2014, 01, 01)  # redefine date to get advice in 2014
+        for brain in brains:
+            obj = brain.getObject()
+            if obj.getMeeting() and obj.getMeeting().getDate() >= fromDate and obj.getMeeting().getDate() <= toDate:
+                res.append(brain)
+        return res
+    MeetingConfig.searchCDLDItems = searchCDLDItems2014
+
+    def searchCDLDItems(self, sortKey='', sortOrder='', filterKey='', filterValue='', **kwargs):
+        '''Queries all items for cdld synthesis'''
+        groups = []
+        cdldProposingGroups = self.getSelf().getCdldProposingGroup()
+        for cdldProposingGroup in cdldProposingGroups:
+            groupId = cdldProposingGroup.split('__')[0]
+            delay = ''
+            if cdldProposingGroup.split('__')[1]:
+                delay = 'delay__'
+            groups.append('%s%s' % (delay, groupId))
+        # advised items are items that has an advice in a particular review_state
+        # just append every available meetingadvice state: we want "given" advices.
+        # this search will only return 'delay-aware' advices
+        wfTool = getToolByName(self, 'portal_workflow')
+        adviceWF = wfTool.getWorkflowsFor('meetingadvice')[0]
+        adviceStates = adviceWF.states.keys()
+        groupIds = []
+        advice_index__suffixs = ('advice_delay_exceeded', 'advice_not_given', 'advice_not_giveable')
+        # advice given
+        for adviceState in adviceStates:
+            groupIds += [g + '_%s' % adviceState for g in groups]
+        #advice not given
+        for advice_index__suffix in advice_index__suffixs:
+            groupIds += [g + '_%s' % advice_index__suffix for g in groups]
+        # Create query parameters
+        fromDate = DateTime(2014, 06, 01)
+        toDate = DateTime(2015, 12, 31, 23, 59)
+        params = {'portal_type': self.getItemTypeName(),
+                  # KeywordIndex 'indexAdvisers' use 'OR' by default
+                  'indexAdvisers': groupIds,
+                  'created': {'query': [fromDate, toDate], 'range': 'minmax'},
+                  'sort_on': sortKey,
+                  'sort_order': sortOrder, }
+        # Manage filter
+        if filterKey:
+            params[filterKey] = prepareSearchValue(filterValue)
+        # update params with kwargs
+        params.update(kwargs)
+        # Perform the query in portal_catalog
+        brains = self.portal_catalog(**params)
+        res = []
+        fromDate = DateTime(2015, 01, 01)  # redefine date to get advice in 2015
+        for brain in brains:
+            obj = brain.getObject()
+            if obj.getMeeting() and obj.getMeeting().getDate() >= fromDate and obj.getMeeting().getDate() <= toDate:
+                res.append(brain)
+        return res
+
+    MeetingConfig.searchCDLDItems = searchCDLDItems
+
+    security.declarePublic('printCDLDItems')
+
+    def printCDLDItems(self, sortKey='', sortOrder=''):
+        '''
+        Returns a list of advice for synthesis document (CDLD)
+        '''
+        meetingConfig = self.getSelf()
+        brains = meetingConfig.context.searchCDLDItems(sortKey=sortKey, sortOrder=sortOrder)
+        res = []
+        groups = []
+        cdldProposingGroups = meetingConfig.getCdldProposingGroup()
+        for cdldProposingGroup in cdldProposingGroups:
+            groupId = cdldProposingGroup.split('__')[0]
+            delay = False
+            if cdldProposingGroup.split('__')[1]:
+                delay = True
+            if not (groupId, delay) in groups:
+                groups.append((groupId, delay))
+        for brain in brains:
+            item = brain.getObject()
+            advicesIndex = item.adviceIndex
+            for groupId, delay in groups:
+                if groupId in advicesIndex:
+                    advice = advicesIndex[groupId]
+                    if advice['delay'] and not delay:
+                        continue
+                    if not (advice, item) in res:
+                        res.append((advice, item))
+        return res
 
 
 class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
@@ -1099,25 +1353,22 @@ class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
     implements(IMeetingCollegeLalouviereWorkflowActions)
     security = ClassSecurityInfo()
 
-    def _adaptEveryItemsOnMeetingClosure(self):
-        """Helper method for accepting every items."""
-        # Every item that is not decided will be automatically set to "accepted"
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems():
-            if item.queryState() == 'presented':
-                wfTool.doActionFor(item, 'itemfreeze')
-            if item.queryState() in ['itemfrozen', ]:
-                wfTool.doActionFor(item, 'accept')
-
     security.declarePrivate('doDecide')
 
     def doDecide(self, stateChange):
         '''We pass every item that is 'presented' in the 'itemfrozen'
-           state.  It is the case for late items.'''
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems(ordered=False):
-            if item.queryState() == 'presented':
-                wfTool.doActionFor(item, 'itemfreeze')
+           state.  It is the case for late items. Moreover, if
+           MeetingConfig.initItemDecisionIfEmptyOnDecide is True, we
+           initialize the decision field with content of Title+Description
+           if decision field is empty.'''
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        cfg = tool.getMeetingConfig(self.context)
+        initializeDecision = cfg.getInitItemDecisionIfEmptyOnDecide()
+        for item in self.context.getAllItems(ordered=True):
+            if initializeDecision:
+                # If deliberation (motivation+decision) is empty,
+                # initialize it the decision field
+                item._initDecisionFieldIfEmpty()
 
     security.declarePrivate('doFreeze')
 
@@ -1130,13 +1381,6 @@ class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
                 wfTool.doActionFor(item, 'itemfreeze')
         #manage meeting number
         self.initSequenceNumber()
-
-    security.declarePrivate('doBackToCreated')
-
-    def doBackToCreated(self, stateChange):
-        '''When a meeting go back to the "created" state, for example the
-           meeting manager wants to add an item, we do not do anything.'''
-        pass
 
 
 class MeetingCollegeLalouviereWorkflowConditions(MeetingWorkflowConditions):
@@ -1170,8 +1414,7 @@ class MeetingCollegeLalouviereWorkflowConditions(MeetingWorkflowConditions):
 
     def mayDecide(self):
         res = False
-        if checkPermission(ReviewPortalContent, self.context) and \
-           (not self._allItemsAreDelayed()):
+        if checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
 
@@ -1284,7 +1527,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         res = False
         meeting = self.context.getMeeting()
         if checkPermission(ReviewPortalContent, self.context) and \
-           meeting and (meeting.queryState() in ['decided', 'closed', 'decisions_published', ]):
+           meeting and meeting.adapted().isDecided():
             res = True
         return res
 
@@ -1485,18 +1728,6 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
             if item.queryState() == 'item_in_committee':
                 wfTool.doActionFor(item, 'setItemInCouncil')
 
-    def _adaptEveryItemsOnMeetingClosure(self):
-        """Helper method for accepting every items."""
-        # Every item that is not decided will be automatically set to "accepted"
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems():
-            if item.queryState() == 'presented':
-                wfTool.doActionFor(item, 'setItemInCommittee')
-            if item.queryState() == 'item_in_committee':
-                wfTool.doActionFor(item, 'setItemInCouncil')
-            if item.queryState() == 'item_in_council':
-                wfTool.doActionFor(item, 'accept')
-
     security.declarePrivate('doBackToCreated')
 
     def doBackToCreated(self, stateChange):
@@ -1580,6 +1811,12 @@ class MeetingCouncilLalouviereWorkflowConditions(MeetingWorkflowConditions):
             # back to created.
             if checkPermission(ReviewPortalContent, self.context):
                 return True
+        return res
+
+    def mayDecide(self):
+        res = False
+        if checkPermission(ReviewPortalContent, self.context):
+            res = True
         return res
 
 
@@ -1714,34 +1951,6 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
            meeting and (meeting.queryState() in ['in_council', 'closed']):
             res = True
         return res
-
-    security.declarePublic('mayCorrect')
-
-    def mayCorrect(self):
-        # Check with the default PloneMeeting method and our test if res is
-        # False. The diffence here is when we correct an item from itemfrozen to
-        # presented, we have to check if the Meeting is in the "created" state
-        # and not "published".
-        res = MeetingItemWorkflowConditions.mayCorrect(self)
-        # Manage our own behaviour now when the item is linked to a meeting,
-        # a MeetingManager can correct anything except if the meeting is closed
-        if res is not True:
-            if checkPermission(ReviewPortalContent, self.context):
-                # Get the meeting
-                meeting = self.context.getMeeting()
-                if meeting:
-                    # Meeting can be None if there was a wf problem leading
-                    # an item to be in a "presented" state with no linked
-                    # meeting.
-                    meetingState = meeting.queryState()
-                    # A user having ReviewPortalContent permission can correct
-                    # an item in any case except if the meeting is closed.
-                    if meetingState != 'closed':
-                        res = True
-                else:
-                    res = True
-        return res
-
 
 # ------------------------------------------------------------------------------
 InitializeClass(CustomMeetingItem)
