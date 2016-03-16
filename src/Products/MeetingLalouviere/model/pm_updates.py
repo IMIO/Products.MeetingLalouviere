@@ -5,6 +5,9 @@ from Products.Archetypes.atapi import TextField
 from Products.Archetypes.atapi import TextAreaWidget
 from Products.Archetypes.atapi import RichWidget
 from Products.Archetypes.atapi import SelectionWidget
+from Products.Archetypes.atapi import BooleanField
+from Products.Archetypes.atapi import Schema
+from Products.PloneMeeting.config import WriteRiskyConfig
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingGroup import MeetingGroup
@@ -91,7 +94,17 @@ def update_config_schema(baseSchema):
                 i18n_domain='PloneMeeting',
             ),
         ),
-
+        BooleanField(
+            name='initItemDecisionIfEmptyOnDecide',
+            default=True,
+            widget=BooleanField._properties['widget'](
+                description="InitItemDecisionIfEmptyOnDecide",
+                description_msgid="init_item_decision_if_empty_on_decide",
+                label='Inititemdecisionifemptyondecide',
+                label_msgid='MeetingLaLouviere_label_initItemDecisionIfEmptyOnDecide',
+                i18n_domain='PloneMeeting'),
+            write_permission=WriteRiskyConfig,
+        ),
     ),)
 
     completeConfigSchema = baseSchema + specificSchema.copy()
@@ -100,20 +113,7 @@ MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
 
 
 def update_group_schema(baseSchema):
-    specificSchema = Schema((
-
-        # field used to define specific signatures for a MeetingGroup
-        TextField(
-            name='signatures',
-            widget=TextAreaWidget(
-                label='Signatures',
-                label_msgid='MeetingLalouviere_label_signatures',
-                description='Leave empty to use the signatures defined on the meeting',
-                description_msgid='MeetingLalouviere_descr_signatures',
-                i18n_domain='PloneMeeting',
-            ),
-        ),
-    ),)
+    specificSchema = Schema()
 
     completeGroupSchema = baseSchema + specificSchema.copy()
 

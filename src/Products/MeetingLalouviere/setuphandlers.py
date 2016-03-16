@@ -373,14 +373,7 @@ def reorderSkinsLayers(context, site):
         return
 
     logStep("reorderSkinsLayers", context)
-    try:
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
-        site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
-    except KeyError:
-        # if the Products.plonemeetingskin profile is not available
-        # (not using plonemeetingskin or in testing?) we pass...
-        pass
+    site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
 
 
 def finalizeInstance(context):
