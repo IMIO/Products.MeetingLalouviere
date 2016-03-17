@@ -43,8 +43,8 @@
       description=""
       source="3.2.0.1"
       destination="3.3"
-      handler="Products.MeetingLaLouviere.migrations.migrate_to_3_3.migrate"
-      profile="Products.MeetingLaLouviere:default" />
+      handler="Products.MeetingLalouviere.migrations.migrate_to_3_3.migrate"
+      profile="Products.MeetingLalouviere:default" />
 
   <!-- ##/code-section profiles.zcml-bottom -->
 
