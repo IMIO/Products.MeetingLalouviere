@@ -25,10 +25,6 @@ msgid "MeetingLalouviere_label_itemAssembly"
 msgstr ""
 
 # MeetingGroup
-#. Default: "Leave empty to use the signatures defined on the meeting"
-msgid "MeetingLalouviere_descr_signatures"
-msgstr ""
-
 #. Default: "If you don't fill this field, meeting assembly will be used for this item."
 msgid "MeetingLalouviere_descr_assembly"
 msgstr ""
@@ -71,18 +67,6 @@ msgid "PloneMeeting_label_decision"
 msgstr ""
 
 # Other
-#. Default: "Late items"
-msgid "late_presented_items"
-msgstr ""
-
-#. Default: "Every decisions"
-msgid "searchalldecisions"
-msgstr ""
-
-#. Default: "decided items"
-msgid "searchdecideditems"
-msgstr ""
-
 # searches
 #. Default: "proposed items"
 msgid "searchproposeditems"
@@ -160,10 +144,6 @@ msgstr ""
 
 #. Default: "Sent to council"
 msgid "Sent to council"
-msgstr ""
-
-#. Default: "Item created from a college item"
-msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
 msgstr ""
 
 #. Default: "Explanatory note"
@@ -402,14 +382,6 @@ msgstr ""
 msgid "listingheader_premeeting_assembly"
 msgstr ""
 
-#. Default: "Public meeting"
-msgid "ip_public"
-msgstr ""
-
-#. Default: "Closed session"
-msgid "ip_secret"
-msgstr ""
-
 #. Default: "Please as you defined an item initiator, check if the linked category should not be 'Points conseillers'. If not, just ignore this message, it will not be displayed anymore when the item will be validated."
 msgid "check_intitiator_and_category"
 msgstr ""
@@ -504,4 +476,12 @@ msgstr ""
 
 #. Default: "Enter a reference for this advice if necessary."
 msgid "MeetingLalouviere_label_advice_reference_descr"
+msgstr ""
+
+#. Default: "Initialize the item decision when deciding meeting"
+msgid "MeetingLalouviere_label_initItemDecisionIfEmptyOnDecide"
+msgstr ""
+
+#. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item"
+msgid "init_item_decision_if_empty_on_decide"
 msgstr ""
