@@ -30,6 +30,7 @@ from zope.interface import implements
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import getToolByName
 from imio.helpers.xhtml import xhtmlContentIsEmpty
+from Products.PloneMeeting.model import adaptations
 from Products.Archetypes.atapi import DisplayList
 from Products.PloneMeeting.MeetingItem import MeetingItem, \
     MeetingItemWorkflowConditions, MeetingItemWorkflowActions
@@ -58,7 +59,11 @@ MeetingConfig.wfAdaptations = customWfAdaptations
 
 # configure parameters for the returned_to_proposing_group wfAdaptation
 # we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
-from Products.PloneMeeting.model import adaptations
+
+RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_item_in_committee_from_returned_to_proposing_group': ['in_committee', ],
+                                      'backTo_item_in_council_from_returned_to_proposing_group': ['in_council', ],
+                                      }
+adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen', 'itempublished',
                                               'item_in_committee', 'item_in_council', )
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES
