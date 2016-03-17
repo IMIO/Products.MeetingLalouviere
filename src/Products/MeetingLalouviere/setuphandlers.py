@@ -21,7 +21,7 @@ import os
 from Products.CMFCore.utils import getToolByName
 import transaction
 ##code-section HEAD
-from Products.PloneMeeting.utils import updateIndexes
+from imio.helpers.catalog import addOrUpdateIndexes
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.config import TOPIC_TYPE, TOPIC_SEARCH_SCRIPT, TOPIC_TAL_EXPRESSION
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
@@ -127,7 +127,7 @@ def addAdditionalIndexes(context, portal):
 
     logStep("addAdditionalIndexes", context)
     # Create or update indexes
-    updateIndexes(portal, indexInfo, logger)
+    addOrUpdateIndexes(portal, indexInfo)
 
 
 def addCommissionEditorGroups(context, portal):
