@@ -24,6 +24,7 @@ __docformat__ = 'plaintext'
 
 from Products.CMFCore.permissions import setDefaultRoles
 ##code-section config-head #fill in your manual code here
+from collections import OrderedDict
 import os
 ##/code-section config-head
 
@@ -54,6 +55,12 @@ LALOUVIEREROLES['directors'] = 'MeetingDirector'
 LALOUVIEREROLES['followupwriters'] = 'MeetingFollowUpWriter'
 PMconfig.MEETINGROLES.update(LALOUVIEREROLES)
 PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
+
+LALOUVIEREMEETINGREVIEWERS = OrderedDict([('directors', 'proposed_to_director'),
+                                          ('divisionheads', 'proposed_to_divisionhead'),
+                                          ('officemanagers', 'proposed_to_officemanager'),
+                                          ('serviceheads', 'proposed_to_servicehead'), ])
+PMconfig.MEETINGREVIEWERS = LALOUVIEREMEETINGREVIEWERS
 
 # url of the DEF application
 DEFURL = os.environ.get('DEFURL', 'http://192.168.1.106/def')

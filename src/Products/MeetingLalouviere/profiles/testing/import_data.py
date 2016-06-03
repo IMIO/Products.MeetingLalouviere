@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from Products.PloneMeeting.config import MEETINGREVIEWERS
 from Products.PloneMeeting.profiles import CategoryDescriptor
 from Products.PloneMeeting.profiles import GroupDescriptor
+from Products.PloneMeeting.profiles import ItemTemplateDescriptor
 from Products.PloneMeeting.profiles import MeetingConfigDescriptor
 from Products.PloneMeeting.profiles import MeetingFileTypeDescriptor
 from Products.PloneMeeting.profiles import MeetingUserDescriptor
@@ -214,8 +216,8 @@ muser_voter2 = MeetingUserDescriptor('voter2', duty='Voter2',
 # Meeting configurations -------------------------------------------------------
 # college
 collegeMeeting = MeetingConfigDescriptor(
-    'meeting-config-college', 'Collège Communal',
-    'Collège communal', isDefault=True)
+    'meeting-config-college', 'College Communal',
+    'College communal', isDefault=True)
 collegeMeeting.meetingManagers = ['pmManager',]
 collegeMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
                           'Charles Exemple - 1er Echevin,\n' \
@@ -225,7 +227,8 @@ collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, 1er E
 collegeMeeting.categories = categories
 collegeMeeting.shortName = 'College'
 collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex,
-                                   annexeDecision, overheadAnalysis, marketingAnalysis]
+                                   annexeDecision, overheadAnalysis, marketingAnalysis,
+                                   adviceAnnex, adviceLegalAnalysis]
 collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned', 'motivation', )
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
 collegeMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
@@ -233,7 +236,8 @@ collegeMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.
 collegeMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
-collegeMeeting.transitionsForPresentingAnItem = ['propose', 'validate', 'present', ]
+collegeMeeting.transitionsForPresentingAnItem = ['proposeToServiceHead', 'proposeToOfficeManager', 'proposeToDivisionHead',
+                                                 'proposeToDirector', 'validate', 'present', ]
 collegeMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
                                                               'item_transition': 'itemfreeze'},
 
@@ -377,9 +381,11 @@ councilMeeting.useCopies = True
 councilMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
 councilMeeting.itemPowerObserversStates = collegeMeeting.itemPowerObserversStates
 councilMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified']
+councilMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
+                                             'reverse': '0'}, )
 councilMeeting.podTemplates = []
 councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service', ]
-councilMeeting.transitionsForPresentingAnItem = ['propose', 'validate', 'present', ]
+councilMeeting.transitionsForPresentingAnItem =['proposeToDirector', 'validate', 'present', ]
 councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
                                                               'item_transition': 'itemfreeze'},
 
@@ -393,12 +399,17 @@ councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transitio
                                                              {'meeting_transition': 'decide',
                                                               'item_transition': 'itempublish'},
 
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'accept'},
+
                                                              {'meeting_transition': 'publish_decisions',
                                                               'item_transition': 'itemfreeze'},
                                                              {'meeting_transition': 'publish_decisions',
                                                               'item_transition': 'itempublish'},
                                                              {'meeting_transition': 'publish_decisions',
-                                                              'item_transition': 'accept'},
+                                                              'item_transition': 'accept'},)
 
 councilMeeting.sortingMethodOnAddItem = 'on_categories'
 councilMeeting.useGroupsAsCategories = False

@@ -17,8 +17,10 @@ import logging
 logger = logging.getLogger('MeetingLalouviere: setuphandlers')
 from Products.MeetingLalouviere.config import PROJECTNAME
 from Products.MeetingLalouviere.config import DEPENDENCIES
+from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 import os
 from Products.CMFCore.utils import getToolByName
+from plone import api
 import transaction
 ##code-section HEAD
 from imio.helpers.catalog import addOrUpdateIndexes
@@ -122,7 +124,7 @@ def addAdditionalIndexes(context, portal):
         return
 
     indexInfo = {
-        'getFollowUp': 'FieldIndex',
+        'getFollowUp': ('FieldIndex', {}),
     }
 
     logStep("addAdditionalIndexes", context)
@@ -406,5 +408,70 @@ def reorderCss(context):
            'ploneCustom.css']
     for resource in css:
         portal_css.moveResourceToBottom(resource)
+
+
+def _configureCollegeCustomAdvisers(site):
+    '''
+    '''
+    college = getattr(site.portal_plonemeeting, 'meeting-config-college')
+    college.setCustomAdvisers((
+        {'delay_label': 'Incidence financi\xc3\xa8re',
+         'for_item_created_until': '',
+         'group': FINANCE_GROUP_ID,
+         'available_on': '',
+         'delay': '10',
+         'gives_auto_advice_on_help_message': '',
+         'gives_auto_advice_on': '',
+         'delay_left_alert': '3',
+         'is_linked_to_previous_row': '0',
+         'for_item_created_from': '2016/05/01',
+         'row_id': '2016-05-01.0'},
+        {'delay_label': 'Incidence financi\xc3\xa8re (urgence)',
+         'for_item_created_until': '',
+         'group': FINANCE_GROUP_ID,
+         'available_on': '',
+         'delay': '5',
+         'gives_auto_advice_on_help_message': '',
+         'gives_auto_advice_on': '',
+         'delay_left_alert': '3',
+         'is_linked_to_previous_row': '1',
+         'for_item_created_from': '2016/05/01',
+         'row_id': '2016-05-01.1'},
+        {'delay_label': 'Incidence financi\xc3\xa8re (prolongation)',
+         'for_item_created_until': '',
+         'group': FINANCE_GROUP_ID,
+         'available_on': '',
+         'delay': '20',
+         'gives_auto_advice_on_help_message': '',
+         'gives_auto_advice_on': '',
+         'delay_left_alert': '3',
+         'is_linked_to_previous_row': '1',
+         'for_item_created_from': '2016/05/01',
+         'row_id': '2016-05-01.2'},))
+
+
+def _createFinancesGroup(site):
+    """
+       Create the finances group.
+    """
+    financeGroupsData = ({'id': FINANCE_GROUP_ID,
+                          'title': 'Directeur financier',
+                          'acronym': 'DF', },
+                         )
+
+    tool = api.portal.get_tool('portal_plonemeeting')
+    for financeGroup in financeGroupsData:
+        if not hasattr(tool, financeGroup['id']):
+            newGroupId = tool.invokeFactory(
+                'MeetingGroup',
+                id=financeGroup['id'],
+                title=financeGroup['title'],
+                acronym=financeGroup['acronym'],
+                itemAdviceStates=('proposed_to_director',),
+                itemAdviceEditStates=('proposed_to_director', 'validated',),
+                itemAdviceViewStates=('presented'))
+            newGroup = getattr(tool, newGroupId)
+            newGroup.processForm(values={'dummy': None})
+
 
 ##/code-section FOOT

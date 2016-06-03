@@ -25,8 +25,12 @@
 from DateTime import DateTime
 
 from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
+from Products.PloneMeeting.profiles import GroupDescriptor
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
+from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from plone import api
+from plone.app.textfield.value import RichTextValue
 
 
 class testMeetingItem(MeetingLalouviereTestCase, mctmi):
@@ -89,6 +93,44 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         self.changeUser('powerobserver1')
         self.failUnless(secretItem.isPrivacyViewable())
         self.failUnless(publicItem.isPrivacyViewable())
+
+    def test_subproduct_call_GetDeliberation(self):
+        '''Test the custom getDeliberation from MeetingLalouviere.'''
+        self.changeUser('admin')
+        cfg = self.meetingConfig
+        self._configureFinancesAdvice(cfg)
+        groupsTool = api.portal.get_tool('portal_groups')
+        groupsTool.addPrincipalToGroup('pmReviewer2', '%s_advisers' % FINANCE_GROUP_ID)
+        finances = getattr(self.tool, FINANCE_GROUP_ID)
+        finances.setItemAdviceStates(("%s__state__%s" % (cfg.getId(),
+                                                        self.WF_STATE_NAME_MAPPINGS['proposed'])))
+        finances.setItemAdviceEditStates(("%s__state__%s" % (cfg.getId(),
+                                                        self.WF_STATE_NAME_MAPPINGS['proposed'])))
+        finances.setItemAdviceViewStates(("%s__state__%s" % (cfg.getId(),
+                                                        self.WF_STATE_NAME_MAPPINGS['proposed'])))
+
+        self.changeUser('pmManager')
+        item = self.create('MeetingItem')
+        item.setMotivation('<p>My motivation</p>')
+        item.setDecision('<p>My decision</p>')
+        self.assertTrue(item.getDeliberation() == item.getMotivation() + item.getDecision())
+        # if p_withFinanceAdvice is True, we add some legal bullshit + the advice's comment.
+        item.at_post_edit_script()
+        self.changeUser('pmReviewer2')
+        item.setOptionalAdvisers((FINANCE_GROUP_ID,))
+        item.at_post_edit_script()
+        self.proposeItem(item)
+        form = item.restrictedTraverse('++add++meetingadvice').form_instance
+        form.update()
+        form.request.set('form.widgets.advice_type', u'positive')
+        form.request.set('form.widgets.advice_group', FINANCE_GROUP_ID)
+        form.request.form['advice_group'] = FINANCE_GROUP_ID
+        form.request.form['advice_comment'] = RichTextValue('<p>My comment</p>')
+        form.createAndAdd(form.request.form)
+        expected = item.getMotivation() +\
+                   "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p><p>My comment</p>" +\
+                   item.getDecision()
+        self.assertEqual(expected, item.getDeliberation(withFinanceAdvice=True))
 
 
 def test_suite():

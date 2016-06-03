@@ -27,7 +27,8 @@ from appy.gen import No
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
 from zope.interface import implements
-from Products.CMFCore.permissions import ReviewPortalContent
+from zope.i18n import translate
+from Products.CMFCore.permissions import ModifyPortalContent ,ReviewPortalContent
 from Products.CMFCore.utils import getToolByName
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from Products.PloneMeeting.model import adaptations
@@ -741,37 +742,6 @@ class CustomMeetingItem(MeetingItem):
         '''See doc in interfaces.py.'''
         return ('accepted', 'accepted_but_modified', )
 
-    security.declarePublic('getCertifiedSignatures')
-
-    def getCertifiedSignatures(self):
-        '''Returns certified signatures taking delegations into account.'''
-        tool = getToolByName(self, 'portal_plonemeeting')
-        mc = tool.getMeetingConfig(self)
-        globalCertifiedSignatures = mc.getCertifiedSignatures().split('\n')
-        # we need to return 6 values but by default, certifiedSignatures contains 4 values...
-        if len(globalCertifiedSignatures) == 4:
-            globalCertifiedSignatures = globalCertifiedSignatures[0:1] + [''] + globalCertifiedSignatures[1:3] + \
-                [''] + globalCertifiedSignatures[3:4]
-        specificSignatures = self.getProposingGroup(theObject=True).getSignatures().split('\n')
-        specificSignaturesLength = len(specificSignatures)
-        # just take specific/delegation signatures into account if there are 3 (just redefined the first signatory) or
-        # 6 (redefined at least second signatory) available values
-        if not specificSignaturesLength == 12:
-            return globalCertifiedSignatures
-        else:
-            res = []
-            for elt in enumerate(specificSignatures):
-                index = elt[0]
-                line = elt[1]
-                if not line.strip() == '-':
-                    res.append(line)
-                else:
-                    if index > 5:
-                        index = index - 6
-                    res.append(globalCertifiedSignatures[index])
-            return res
-    MeetingItem.getCertifiedSignatures = getCertifiedSignatures
-
     security.declarePublic('getCollegeItem')
 
     def getCollegeItem(self):
@@ -804,7 +774,7 @@ class CustomMeetingItem(MeetingItem):
         # If the current user is a meetingManager (or a Manager),
         # he is able to add a meetingitem to a 'decided' meeting.
         review_state = ['created', 'frozen', ]
-        if tool.isManager():
+        if tool.isManager(self.context):
             review_state.extend(('decided', 'in_committee', 'in_council', ))
         res = catalog.unrestrictedSearchResults(
             portal_type=meetingPortalType,
@@ -939,7 +909,7 @@ class CustomMeetingItem(MeetingItem):
         '''
           Add 'advice_reference' info to returned data.
         '''
-        data = old_getAdviceDataFor(self, adviserId)
+        data = old_getAdviceDataFor(self, item = self, adviserId = adviserId)
         if adviserId == FINANCE_GROUP_ID:
             if self.adviceIndex[FINANCE_GROUP_ID]['type'] == NOT_GIVEN_ADVICE_VALUE:
                 data['reference'] = '-'
@@ -948,6 +918,15 @@ class CustomMeetingItem(MeetingItem):
                 data['reference'] = adviceObj.advice_reference
         return data
     MeetingItem.getAdviceDataFor = getAdviceDataFor
+
+    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
+        '''
+          Keep some new fields when item is cloned (to another mc or from itemtemplate).
+        '''
+        res = ['interventions', 'commissionTranscript','followUp', 'neededFollowUp', 'providedFollowUp']
+        if cloned_to_same_mc:
+            res = res + []
+        return res
 
 
 class CustomMeetingConfig(MeetingConfig):
@@ -1217,18 +1196,6 @@ class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
                 # initialize it the decision field
                 item._initDecisionFieldIfEmpty()
 
-    security.declarePrivate('doFreeze')
-
-    def doFreeze(self, stateChange):
-        '''When freezing the meeting, every items must be automatically set to
-           "itemfrozen".'''
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems(ordered=True):
-            if item.queryState() == 'presented':
-                wfTool.doActionFor(item, 'itemfreeze')
-        #manage meeting number
-        self.initSequenceNumber()
-
 
 class MeetingCollegeLalouviereWorkflowConditions(MeetingWorkflowConditions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1384,7 +1351,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         '''Only 'Manager' may refuse an item, it is for history reasons because now this is not
            used anymore but some old items were 'refused'...'''
         tool = getToolByName(self.context, 'portal_plonemeeting')
-        if tool.isManager(realManagers=True):
+        if tool.isManager(self.context, realManagers=True):
             return True
         return False
 
@@ -1394,7 +1361,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         '''Only 'Manager' may delay an item, it is for history reasons because now this is not
            used anymore but some old items were 'delayed'...'''
         tool = getToolByName(self.context, 'portal_plonemeeting')
-        if tool.isManager(realManagers=True):
+        if tool.isManager(self.context, realManagers=True):
             return True
         return False
 
@@ -1412,7 +1379,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
             res = True
             #if the current item state is 'itemcreated', only the MeetingManager can validate
             tool = getToolByName(self.context, 'portal_plonemeeting')
-            if self.context.queryState() in ('itemcreated',) and not tool.isManager():
+            if self.context.queryState() in ('itemcreated',) and not tool.isManager(self.context):
                 res = False
         return res
 
@@ -1460,6 +1427,10 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
           Check that the user has the 'Review portal content'
         """
         res = False
+        if not self.context.getCategory():
+            return No(translate('required_category_ko',
+                                domain="PloneMeeting",
+                                context=self.context.REQUEST))
         if checkPermission(ReviewPortalContent, self.context):
                 res = True
         return res
@@ -1471,6 +1442,10 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
           Check that the user has the 'Review portal content'
         """
         res = False
+        if not self.context.getCategory():
+            return No(translate('required_category_ko',
+                                domain="PloneMeeting",
+                                context=self.context.REQUEST))
         if checkPermission(ReviewPortalContent, self.context):
                 res = True
         return res
@@ -1517,7 +1492,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
           managers to do that so MeetingManagers are not bothered with the icon.
         """
         tool = getToolByName(self.context, 'portal_plonemeeting')
-        if tool.isManager(realManagers=True):
+        if tool.isManager(self.context, realManagers=True):
             return True
         return False
 
@@ -1539,6 +1514,10 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
           Check that the user has the 'Review portal content'
         """
         res = False
+        if not self.context.getCategory():
+            return No(translate('required_category_ko',
+                                domain="PloneMeeting",
+                                context=self.context.REQUEST))
         if checkPermission(ReviewPortalContent, self.context):
                 res = True
         return res

@@ -49,12 +49,12 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         """
         # remove recurring items
         self.changeUser('admin')
-        self._removeRecurringItems(self.meetingConfig)
+        self._removeConfigObjectsFor(self.meetingConfig, folders=['recurringitems'])
         self._testWholeDecisionProcessCollege()
         self.setMeetingConfig(self.meetingConfig2.getId())
         # remove recurring items
         self.changeUser('admin')
-        self._removeRecurringItems(self.meetingConfig2)
+        self._removeConfigObjectsFor(self.meetingConfig2, folders=['recurringitems'])
         self._testWholeDecisionProcessCouncil()
 
     def _testWholeDecisionProcessCollege(self):
@@ -64,43 +64,43 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
         annex1 = self.addAnnex(item1)
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'proposeToServiceHead')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the ServiceHead validation level
         self.changeUser('pmServiceHead1')
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'proposeToOfficeManager')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the OfficeManager validation level
         self.changeUser('pmOfficeManager1')
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'proposeToDivisionHead')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the DivisionHead validation level
         self.changeUser('pmDivisionHead1')
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'proposeToDirector')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the Director validation level
         self.changeUser('pmDirector1')
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'validate')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # pmManager creates a meeting
         self.changeUser('pmManager')
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         # pmCreator2 creates and proposes an item
         self.changeUser('pmCreator2')
         item2 = self.create('MeetingItem', title='The second item',
@@ -162,26 +162,26 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         item1 = self.create('MeetingItem', title='The first item', autoAddCategory=False)
         self.addAnnex(item1)
         # The creator can add a decision annex on created item
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         # the item is not proposable until it has a category
         self.failIf(self.transitions(item1))  # He may trigger no more action
         item1.setCategory('deployment')
         self.do(item1, 'proposeToDirector')
         self.failIf(self.hasPermission('Modify portal content', item1))
         # The creator cannot add a decision annex on proposed item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.changeUser('pmDirector1')
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'validate')
         self.failIf(self.hasPermission('Modify portal content', item1))
         # The reviewer cannot add a decision annex on validated item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         # pmManager creates a meeting
         self.changeUser('pmManager')
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         # The meetingManager can add a decision annex
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         # pmCreator2 creates and proposes an item
         self.changeUser('pmCreator2')
         item2 = self.create('MeetingItem', title='The second item',
@@ -195,7 +195,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(item1, 'present')
         self.changeUser('pmCreator1')
         # The creator cannot add any kind of annex on presented item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.assertRaises(Unauthorized, self.addAnnex, item1)
         self.changeUser('pmManager')
         self.do(meeting, 'setInCommittee')
@@ -289,7 +289,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser('pmManager')
         #create a meeting
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        #create 2 items and present them to the meeting
+        #create 2 items and present it to the meeting
         item1 = self.create('MeetingItem', title='The first item')
         item2 = self.create('MeetingItem', title='The second item')
         for item in (item1, item2,):
@@ -299,14 +299,13 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
         #every items must be in the 'itemfrozen' state if we freeze the meeting
-        self.do(meeting, 'freeze')
+        self.freezeMeeting(meeting)
         self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
-        #when correcting the meeting back to created, the items must be corrected
-        #back to "presented"
-        self.do(meeting, 'backToCreated')
-        #when a point is in 'itemfrozen' it's must rest in this state
-        #because normally we backToCreated for add new point
+        # when an item is 'itemfrozen' it will stay itemfrozen if nothing is
+        # defined in the meetingConfig.onMeetingTransitionItemTransitionToTrigger
+        self.meetingConfig.setOnMeetingTransitionItemTransitionToTrigger([])
+        self.backToState(meeting, 'created')
         self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
 

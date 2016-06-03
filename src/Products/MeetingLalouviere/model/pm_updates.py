@@ -113,7 +113,7 @@ MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
 
 
 def update_group_schema(baseSchema):
-    specificSchema = Schema()
+    specificSchema = Schema(())
 
     completeGroupSchema = baseSchema + specificSchema.copy()
 

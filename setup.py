@@ -28,7 +28,7 @@ setup(name='Products.MeetingLalouviere',
                   'plone.app.testing',
                   'plone.app.robotframework',
                   'Products.CMFPlacefulWorkflow',
-                  'Products.PloneTestCase'
+                  'Products.PloneTestCase',
                   'zope.testing',
                   'Products.MeetingCommunes'],
             templates=['Genshi',
