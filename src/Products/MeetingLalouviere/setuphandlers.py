@@ -17,11 +17,13 @@ import logging
 logger = logging.getLogger('MeetingLalouviere: setuphandlers')
 from Products.MeetingLalouviere.config import PROJECTNAME
 from Products.MeetingLalouviere.config import DEPENDENCIES
+from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 import os
 from Products.CMFCore.utils import getToolByName
+from plone import api
 import transaction
 ##code-section HEAD
-from Products.PloneMeeting.utils import updateIndexes
+from imio.helpers.catalog import addOrUpdateIndexes
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.config import TOPIC_TYPE, TOPIC_SEARCH_SCRIPT, TOPIC_TAL_EXPRESSION
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
@@ -122,12 +124,12 @@ def addAdditionalIndexes(context, portal):
         return
 
     indexInfo = {
-        'getFollowUp': 'FieldIndex',
+        'getFollowUp': ('FieldIndex', {}),
     }
 
     logStep("addAdditionalIndexes", context)
     # Create or update indexes
-    updateIndexes(portal, indexInfo, logger)
+    addOrUpdateIndexes(portal, indexInfo)
 
 
 def addCommissionEditorGroups(context, portal):
@@ -373,14 +375,7 @@ def reorderSkinsLayers(context, site):
         return
 
     logStep("reorderSkinsLayers", context)
-    try:
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
-        site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
-    except KeyError:
-        # if the Products.plonemeetingskin profile is not available
-        # (not using plonemeetingskin or in testing?) we pass...
-        pass
+    site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
 
 
 def finalizeInstance(context):
@@ -413,5 +408,70 @@ def reorderCss(context):
            'ploneCustom.css']
     for resource in css:
         portal_css.moveResourceToBottom(resource)
+
+
+def _configureCollegeCustomAdvisers(site):
+    '''
+    '''
+    college = getattr(site.portal_plonemeeting, 'meeting-config-college')
+    college.setCustomAdvisers((
+        {'delay_label': 'Incidence financi\xc3\xa8re',
+         'for_item_created_until': '',
+         'group': FINANCE_GROUP_ID,
+         'available_on': '',
+         'delay': '10',
+         'gives_auto_advice_on_help_message': '',
+         'gives_auto_advice_on': '',
+         'delay_left_alert': '3',
+         'is_linked_to_previous_row': '0',
+         'for_item_created_from': '2016/05/01',
+         'row_id': '2016-05-01.0'},
+        {'delay_label': 'Incidence financi\xc3\xa8re (urgence)',
+         'for_item_created_until': '',
+         'group': FINANCE_GROUP_ID,
+         'available_on': '',
+         'delay': '5',
+         'gives_auto_advice_on_help_message': '',
+         'gives_auto_advice_on': '',
+         'delay_left_alert': '3',
+         'is_linked_to_previous_row': '1',
+         'for_item_created_from': '2016/05/01',
+         'row_id': '2016-05-01.1'},
+        {'delay_label': 'Incidence financi\xc3\xa8re (prolongation)',
+         'for_item_created_until': '',
+         'group': FINANCE_GROUP_ID,
+         'available_on': '',
+         'delay': '20',
+         'gives_auto_advice_on_help_message': '',
+         'gives_auto_advice_on': '',
+         'delay_left_alert': '3',
+         'is_linked_to_previous_row': '1',
+         'for_item_created_from': '2016/05/01',
+         'row_id': '2016-05-01.2'},))
+
+
+def _createFinancesGroup(site):
+    """
+       Create the finances group.
+    """
+    financeGroupsData = ({'id': FINANCE_GROUP_ID,
+                          'title': 'Directeur financier',
+                          'acronym': 'DF', },
+                         )
+
+    tool = api.portal.get_tool('portal_plonemeeting')
+    for financeGroup in financeGroupsData:
+        if not hasattr(tool, financeGroup['id']):
+            newGroupId = tool.invokeFactory(
+                'MeetingGroup',
+                id=financeGroup['id'],
+                title=financeGroup['title'],
+                acronym=financeGroup['acronym'],
+                itemAdviceStates=('proposed_to_director',),
+                itemAdviceEditStates=('proposed_to_director', 'validated',),
+                itemAdviceViewStates=('presented'))
+            newGroup = getattr(tool, newGroupId)
+            newGroup.processForm(values={'dummy': None})
+
 
 ##/code-section FOOT

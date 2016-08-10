@@ -41,7 +41,7 @@ class testCustomMeetingItem(MeetingLalouviereTestCase):
         """
         # by default, college items are sendable to council
         destMeetingConfigId = self.meetingConfig2.getId()
-        self.assertTrue(destMeetingConfigId in self.meetingConfig.getMeetingConfigsToCloneTo())
+        self.assertTrue(destMeetingConfigId in [config['meeting_config'] for config in self.meetingConfig.getMeetingConfigsToCloneTo()])
         # create an item in college, set a motivation, send it to council and check
         self.changeUser('pmManager')
         item = self.create('MeetingItem')
@@ -52,7 +52,7 @@ class testCustomMeetingItem(MeetingLalouviereTestCase):
         self.presentItem(item)
         # now close the meeting so the item is automatically accepted and sent to meetingConfig2
         self.closeMeeting(meeting)
-        self.assertTrue(item.queryState() in MeetingItem.itemPositiveDecidedStates)
+        self.assertTrue(item.queryState() in item.itemPositiveDecidedStates())
         self.assertTrue(item._checkAlreadyClonedToOtherMC(destMeetingConfigId))
         # get the item that was sent to meetingConfig2 and check his motivation field
         annotation_key = item._getSentToOtherMCAnnotationKey(destMeetingConfigId)

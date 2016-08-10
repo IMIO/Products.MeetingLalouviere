@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>3.2.0.1</version>
+  <version>3.3</version>
   <!-- ##code-section METADATA -->
   <dependencies>
-    <dependency>profile-plonetheme.imioapps:plonemeetingskin</dependency>
-    <dependency>profile-communesplone.iconified_document_actions:default</dependency>
   </dependencies>
   <!-- ##/code-section METADATA -->
 </metadata>

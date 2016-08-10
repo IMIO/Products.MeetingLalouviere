@@ -25,7 +25,6 @@
 from AccessControl import Unauthorized
 from zope.schema.interfaces import RequiredMissing
 
-from plone.app.testing import login
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.utils import createContentInContainer
 
@@ -43,7 +42,7 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
         '''This is a copy/paste from test in PloneMeeting, just look the XXX MeetingLalouviere,
            this is for PM 3.2 and is fixed in PM 3.3...'''
         # creator for group 'developers'
-        login(self.portal, 'pmCreator1')
+        self.changeUser('pmCreator1')
         # create an item and ask the advice of group 'vendors'
         data = {
             'title': 'Item to advice',
@@ -56,9 +55,9 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
         self.assertEquals(item1.displayAdvices(), True)
         # 'pmCreator1' has no addable nor editable advice to give
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
-        login(self.portal, 'pmReviewer2')
+        self.changeUser('pmReviewer2')
         self.failIf(self.hasPermission(View, item1))
-        login(self.portal, 'pmCreator1')
+        self.changeUser('pmCreator1')
         self.proposeItem(item1)
         # a user able to View the item can not add an advice, even if he tries...
         self.assertRaises(Unauthorized,
@@ -66,7 +65,7 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
                           item1,
                           'meetingadvice')
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
-        login(self.portal, 'pmReviewer2')
+        self.changeUser('pmReviewer2')
         # 'pmReviewer2' has one advice to give for 'vendors' and no advice to edit
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([('vendors', u'Vendors')], []))
         self.assertEquals(item1.hasAdvices(), False)
@@ -102,8 +101,10 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
                         'advice_type' in data and
                         'advice_comment' in data and
                         'advice_reference' in data and
-                        'advice_row_id' in data)
-        self.assertTrue(len(data) == 5)
+                        'advice_row_id' in data and
+                        'advice_observations' in data and
+                        'advice_hide_during_redaction' in data)
+        self.assertTrue(len(data) == 7)
         # XXX end change by MeetingLalouviere, we added field 'advice_comment'
         form.request.form['advice_group'] = u'vendors'
         form.request.form['advice_type'] = u'positive'
@@ -115,11 +116,11 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
         # given advice is correctly stored
         self.assertEquals(item1.adviceIndex['vendors']['type'], 'positive')
         self.assertEquals(item1.adviceIndex['vendors']['comment'], u'My comment')
-        login(self.portal, 'pmReviewer1')
+        self.changeUser('pmReviewer1')
         self.validateItem(item1)
         # now 'pmReviewer2' can't add (already given) an advice
         # but he can still edit the advice he just gave
-        login(self.portal, 'pmReviewer2')
+        self.changeUser('pmReviewer2')
         self.failUnless(self.hasPermission(View, item1))
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], ['vendors', ]))
         given_advice = getattr(item1, item1.adviceIndex['vendors']['advice_id'])
@@ -132,18 +133,22 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
         self.changeUser('pmReviewer1')
         self.assertRaises(Unauthorized, item1.restrictedTraverse('@@delete_givenuid'), item1.meetingadvice.UID())
         # put the item back in a state where 'pmReviewer2' can remove the advice
-        login(self.portal, 'pmManager')
+        self.changeUser('pmManager')
         self.backToState(item1, self.WF_STATE_NAME_MAPPINGS['proposed'])
-        login(self.portal, 'pmReviewer2')
+        self.changeUser('pmReviewer2')
         # remove the advice
         item1.restrictedTraverse('@@delete_givenuid')(item1.meetingadvice.UID())
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([('vendors', u'Vendors')], []))
         # remove the fact that we asked the advice
-        login(self.portal, 'pmManager')
+        self.changeUser('pmManager')
         item1.setOptionalAdvisers([])
         item1.at_post_edit_script()
-        login(self.portal, 'pmReviewer2')
+        self.changeUser('pmReviewer2')
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
+
+    def test_subproduct_call_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self):
+        """test"""
+        mcta.test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self)
 
 
 def test_suite():

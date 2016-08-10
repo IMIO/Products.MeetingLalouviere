@@ -52,11 +52,6 @@ msgstr " "
 msgid "MeetingLalouviere_descr_providedFollowUp"
 msgstr " "
 
-# MeetingGroup
-#. Default: "Leave empty to use the signatures defined on the meeting"
-msgid "MeetingLalouviere_descr_signatures"
-msgstr "Si vous ne remplissez pas le champ, les signatures certifiées définies sur la configuration de séance seront utilisées.  Si vous utilisez ce champ, il est obligatoire de définir 12 lignes (les 6 premières pour le collège et les 6 dernières pour le conseil).  Si une signature ne doit pas être surchagée, utilisez des tirets '-'."
-
 #. Default: "Reference"
 msgid "MeetingLalouviere_label_advice_reference"
 msgstr "Référence"
@@ -84,6 +79,10 @@ msgstr "Note explicative"
 #. Default: "Follow-up"
 msgid "MeetingLalouviere_label_followUp"
 msgstr "Suivi"
+
+#. Default: "Initialize the item decision when deciding meeting"
+msgid "MeetingLalouviere_label_initItemDecisionIfEmptyOnDecide"
+msgstr "Initialiser le champ décision des points lorsque la séance passe 'En rédaction du PV'?"
 
 #. Default: "Interventions"
 msgid "MeetingLalouviere_label_interventions"
@@ -253,10 +252,6 @@ msgstr "Attention, comme ce point provient du Collège communal, vous devez déf
 msgid "check_intitiator_and_category"
 msgstr "Attention, en général si vous sélectionnez une personne 'A l'initative de ce point', la catégorie 'Points conseillers' doit être également sélectionnée.  Vérifiez vos données, si elles sont justes, ignorez cet avertissement, il disparaîtra une fois le point 'validé'."
 
-#. Default: "Item created from a college item"
-msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
-msgstr "Point créé depuis un point Collège"
-
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
 msgstr "Définissez ici le texte prédéfini qui sera présent dans le champ 'Délibération/Extrait du Procès-verbal' chaque fois qu'un utilisateur crée un nouveau point."
@@ -340,18 +335,9 @@ msgstr "Proposé au chef de bureau"
 msgid "icon_help_proposed_to_servicehead"
 msgstr "Proposé au chef de service"
 
-#. Default: "Public meeting"
-msgid "ip_public"
-msgstr "Séance publique"
-
-#. Default: "Closed session"
-msgid "ip_secret"
-msgstr "Huis clos"
-
-# Other
-#. Default: "Late items"
-msgid "late_presented_items"
-msgstr "Points ajoutés à la séance après gel de celle-ci"
+#. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item"
+msgid "init_item_decision_if_empty_on_decide"
+msgstr "Si cette case est cochée, lorsqu'une séance passera 'En rédaction du PV', pour tous les points dont le champ 'Décision' est vide, ce champ sera automatiquement rempli avec une concaténation de ce qui est défini dans le titre et la description du point"
 
 #. Default: "Assembly"
 msgid "listingheader_premeeting_assembly"
@@ -450,14 +436,6 @@ msgstr "<span class='follow_up_provided_not_printed'>Le suivi nécessaire a ét�
 #. Default: "reviewers"
 msgid "reviewers"
 msgstr "échevins"
-
-#. Default: "Every decisions"
-msgid "searchalldecisions"
-msgstr "tous les PVs"
-
-#. Default: "decided items"
-msgid "searchdecideditems"
-msgstr "points décidés"
 
 #. Default: "follow-up dashboard"
 msgid "searchitemsfollowupdashboard"
