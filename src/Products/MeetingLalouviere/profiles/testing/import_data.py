@@ -175,6 +175,7 @@ developers.observers.append(pmManager)
 developers.observers.append(admin)
 developers.advisers.append(pmAdviser1)
 developers.advisers.append(pmManager)
+developers.followupwriters.append(pmManager)
 setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
 # put pmReviewerLevel1 in first level of reviewers from what is in MEETINGREVIEWERS

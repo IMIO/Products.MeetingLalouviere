@@ -28,7 +28,7 @@ from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
 from zope.interface import implements
 from zope.i18n import translate
-from Products.CMFCore.permissions import ModifyPortalContent ,ReviewPortalContent
+from Products.CMFCore.permissions import ModifyPortalContent, ReviewPortalContent
 from Products.CMFCore.utils import getToolByName
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from Products.PloneMeeting.model import adaptations
@@ -51,7 +51,6 @@ from Products.MeetingLalouviere.interfaces import \
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
     COUNCIL_COMMISSION_IDS_2013, COUNCIL_MEETING_COMMISSION_IDS_2013, \
     COMMISSION_EDITORS_SUFFIX, FINANCE_GROUP_ID
-from DateTime import DateTime
 from Products.PloneMeeting.interfaces import IAnnexable
 
 # disable most of wfAdaptations
@@ -588,7 +587,6 @@ class CustomMeeting(Meeting):
 
 
 old_getDeliberation = MeetingItem.getDeliberation
-old_getAdviceDataFor = MeetingItem.getAdviceDataFor
 
 
 class CustomMeetingItem(MeetingItem):
@@ -886,7 +884,7 @@ class CustomMeetingItem(MeetingItem):
         if withFinanceAdvice:
             if FINANCE_GROUP_ID in self.adviceIndex and \
                self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
-                financeAdviceData = self.getAdviceDataFor(FINANCE_GROUP_ID)
+                financeAdviceData = self.getAdviceDataFor(self.getSelf(), FINANCE_GROUP_ID)
                 if financeAdviceData['comment'] and financeAdviceData['comment'].strip():
                     comment = "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p>"
                     comment = comment + financeAdviceData['comment'].strip()
@@ -905,25 +903,11 @@ class CustomMeetingItem(MeetingItem):
             return True
         return False
 
-    def getAdviceDataFor(self, adviserId=None):
-        '''
-          Add 'advice_reference' info to returned data.
-        '''
-        data = old_getAdviceDataFor(self, item = self, adviserId = adviserId)
-        if adviserId == FINANCE_GROUP_ID:
-            if self.adviceIndex[FINANCE_GROUP_ID]['type'] == NOT_GIVEN_ADVICE_VALUE:
-                data['reference'] = '-'
-            else:
-                adviceObj = getattr(self, self.adviceIndex[FINANCE_GROUP_ID]['advice_id'])
-                data['reference'] = adviceObj.advice_reference
-        return data
-    MeetingItem.getAdviceDataFor = getAdviceDataFor
-
     def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
         '''
           Keep some new fields when item is cloned (to another mc or from itemtemplate).
         '''
-        res = ['interventions', 'commissionTranscript','followUp', 'neededFollowUp', 'providedFollowUp']
+        res = ['interventions', 'commissionTranscript', 'followUp', 'neededFollowUp', 'providedFollowUp']
         if cloned_to_same_mc:
             res = res + []
         return res
@@ -1165,6 +1149,7 @@ class CustomMeetingGroup(MeetingGroup):
         self.context = item
 
     security.declarePrivate('validate_signatures')
+
     def validate_signatures(self, value):
         '''Validate the MeetingGroup.signatures field.'''
         if value.strip() and not len(value.split('\n')) == 12:

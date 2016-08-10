@@ -368,6 +368,36 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         #presented change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
 
+    def test_subproduct_call_RecurringItemsBypassSecutiry(self):
+        '''Tests that recurring items are addable by a MeetingManager even if by default,
+           one of the transition to trigger for the item to be presented should not be triggerable
+           by the MeetingManager inserting the recurring item.
+           For example here, we will add a recurring item for group 'developers' and
+           we create a 'pmManagerRestricted' that will not be able to propose the item.'''
+        self.changeUser('pmManager')
+        self._removeConfigObjectsFor(self.meetingConfig)
+        # just one recurring item added for 'developers'
+        self.changeUser('admin')
+        self.create('RecurringMeetingItem', title='Rec item developers',
+                    proposingGroup='developers',
+                    meetingTransitionInsertingMe='_init_')
+        self.createUser('pmManagerRestricted', ('MeetingManager', ))
+        self.portal.portal_groups.addPrincipalToGroup('pmManagerRestricted', 'developers_creators')
+        self.changeUser('pmManagerRestricted')
+        # first check that current 'pmManager' may not 'propose'
+        # an item created with proposing group 'vendors'
+        item = self.create('MeetingItem')
+        # 'pmManager' may propose the item and he will be able to validate it
+        self.proposeItem(item)
+        self.assertTrue(item.queryState() == self.WF_STATE_NAME_MAPPINGS['proposed'])
+        # we have no avaialble transition, or just two
+        availableTransitions = self.wfTool.getTransitionsFor(item)
+        if availableTransitions:
+            self.assertTrue(len(availableTransitions) == 2)
+        # now, create a meeting, the item is correctly
+        meeting = self.create('Meeting', date=DateTime('2013/01/01'))
+        self.assertTrue(len(meeting.getAllItems()) == 1)
+        self.assertTrue(meeting.getAllItems()[0].getProposingGroup() == 'developers')
 
 def test_suite():
     from unittest import TestSuite, makeSuite

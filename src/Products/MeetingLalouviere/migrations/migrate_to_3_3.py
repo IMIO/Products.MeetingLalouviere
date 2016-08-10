@@ -5,7 +5,6 @@ logger = logging.getLogger('PloneMeeting')
 
 from Products.CMFCore.utils import getToolByName
 from Products.PloneMeeting.migrations import Migrator
-from Products.PloneMeeting.profiles import PodTemplateDescriptor
 
 
 # The migration class ----------------------------------------------------------

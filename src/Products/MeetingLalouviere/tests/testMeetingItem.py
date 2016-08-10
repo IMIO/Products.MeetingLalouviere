@@ -24,11 +24,13 @@
 
 from DateTime import DateTime
 
-from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
-from Products.PloneMeeting.profiles import GroupDescriptor
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
+from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
+from Products.statusmessages.interfaces import IStatusMessage
+from Products.CMFCore.permissions import View
 from plone import api
 from plone.app.textfield.value import RichTextValue
 
@@ -37,6 +39,129 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
     """
         Tests the MeetingItem class methods.
     """
+
+    def test_subproduct_call_PowerObserversLocalRoles(self):
+        '''Check that powerobservers local roles are set correctly...
+           Test alternatively item or meeting that is accessible to and not...'''
+        # we will check that (restricted) power observers local roles are set correctly.
+        # - powerobservers may access itemcreated, validated and presented items (and created meetings),
+        #   not restricted power observers;
+        # - frozen items/meetings are accessible by both;
+        # - only restricted power observers may access 'refused' items.
+        self.meetingConfig.setItemPowerObserversStates(('itemcreated', 'validated', 'presented',
+                                                       'itemfrozen', 'accepted', 'delayed'))
+        self.meetingConfig.setMeetingPowerObserversStates(('created', 'frozen', 'decided', 'closed'))
+        self.meetingConfig.setItemRestrictedPowerObserversStates(('itemfrozen', 'accepted', 'refused'))
+        self.meetingConfig.setMeetingRestrictedPowerObserversStates(('frozen', 'decided', 'closed'))
+        self.changeUser('pmManager')
+        item = self.create('MeetingItem')
+        item.setDecision("<p>Decision</p>")
+        # itemcreated item is accessible by powerob, not restrictedpowerob
+        self.changeUser('restrictedpowerobserver1')
+        self.assertFalse(self.hasPermission(View, item))
+        self.changeUser('powerobserver1')
+        self.assertTrue(self.hasPermission(View, item))
+        # propose the item, it is no more visible to any powerob
+        self.proposeItem(item)
+        self.changeUser('restrictedpowerobserver1')
+        self.assertFalse(self.hasPermission(View, item))
+        self.changeUser('powerobserver1')
+        self.assertFalse(self.hasPermission(View, item))
+        # validate the item, only accessible to powerob
+        self.validateItem(item)
+        self.changeUser('restrictedpowerobserver1')
+        self.assertFalse(self.hasPermission(View, item))
+        self.changeUser('powerobserver1')
+        self.assertTrue(self.hasPermission(View, item))
+        # present the item, only viewable to powerob, including created meeting
+        self.changeUser('pmManager')
+        meeting = self.create('Meeting', date='2015/01/01')
+        self.presentItem(item)
+        self.changeUser('restrictedpowerobserver1')
+        self.assertFalse(self.hasPermission(View, item))
+        self.assertFalse(self.hasPermission(View, meeting))
+        self.changeUser('powerobserver1')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertTrue(self.hasPermission(View, meeting))
+        # frozen items/meetings are accessible by both powerobs
+        self.freezeMeeting(meeting)
+        self.assertTrue(item.queryState() == 'itemfrozen')
+        self.changeUser('restrictedpowerobserver1')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertTrue(self.hasPermission(View, meeting))
+        self.changeUser('powerobserver1')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertTrue(self.hasPermission(View, meeting))
+        # decide the meeting and refuse the item, meeting accessible to both
+        # but refused item only accessible to restricted powerob
+        self.decideMeeting(meeting)
+        self.changeUser('admin')  # only admin can refuse item
+        self.do(item, 'refuse')
+        self.changeUser('restrictedpowerobserver1')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertTrue(self.hasPermission(View, meeting))
+        self.changeUser('powerobserver1')
+        self.assertFalse(self.hasPermission(View, item))
+        self.assertTrue(self.hasPermission(View, meeting))
+
+    def test_subproduct_call_OnTransitionFieldTransforms(self):
+        '''On transition triggered, some transforms can be applied to item or meeting
+           rich text field depending on what is defined in MeetingConfig.onTransitionFieldTransforms.
+           This is used for example to adapt the text of the decision when an item is delayed or refused.
+           '''
+        self.changeUser('pmManager')
+        meeting = self._createMeetingWithItems()
+        self.decideMeeting(meeting)
+        # we will adapt item decision when the item is delayed
+        item1 = meeting.getItems()[0]
+        originalDecision = '<p>Current item decision.</p>'
+        item1.setDecision(originalDecision)
+        # for now, as nothing is defined, nothing happens when item is delayed
+        self.changeUser('admin')  # for ll, only real manager can delay an item
+        self.do(item1, 'delay')
+        self.assertTrue(item1.getDecision(keepWithNext=False) == originalDecision)
+        # configure onTransitionFieldTransforms and delay another item
+        delayedItemDecision = '<p>This item has been delayed.</p>'
+        self.meetingConfig.setOnTransitionFieldTransforms(
+            ({'transition': 'delay',
+              'field_name': 'MeetingItem.decision',
+              'tal_expression': 'string:%s' % delayedItemDecision},))
+        item2 = meeting.getItems()[1]
+        item2.setDecision(originalDecision)
+        self.do(item2, 'delay')
+        self.assertTrue(item2.getDecision(keepWithNext=False) == delayedItemDecision)
+        # if the item was duplicated (often the case when delaying an item), the duplicated
+        # item keep the original decision
+        duplicatedItem = item2.getBRefs('ItemPredecessor')[0]
+        # right duplicated item
+        self.assertTrue(duplicatedItem.getPredecessor() == item2)
+        self.assertTrue(duplicatedItem.getDecision(keepWithNext=False) == originalDecision)
+        # this work also when triggering any other item or meeting transition with every rich fields
+        item3 = meeting.getItems()[2]
+        self.meetingConfig.setOnTransitionFieldTransforms(
+            ({'transition': 'accept',
+              'field_name': 'MeetingItem.description',
+              'tal_expression': 'string:<p>My new description.</p>'},))
+        item3.setDescription('<p>My original description.</p>')
+        self.do(item3, 'accept')
+        self.assertTrue(item3.Description() == '<p>My new description.</p>')
+        # if ever an error occurs with the TAL expression, the transition
+        # is made but the rich text is not changed and a portal_message is displayed
+        self.meetingConfig.setOnTransitionFieldTransforms(
+            ({'transition': 'accept',
+              'field_name': 'MeetingItem.decision',
+              'tal_expression': 'some_wrong_tal_expression'},))
+        item4 = meeting.getItems()[3]
+        item4.setDecision('<p>My decision that will not be touched.</p>')
+        self.do(item4, 'accept')
+        # transition was triggered
+        self.assertTrue(item4.queryState() == 'accepted')
+        # original decision was not touched
+        self.assertTrue(item4.getDecision(keepWithNext=False) == '<p>My decision that will not be touched.</p>')
+        # a portal_message is displayed to the user that triggered the transition
+        messages = IStatusMessage(self.request).show()
+        self.assertTrue(messages[0].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % ('decision',
+                                                                                         "'some_wrong_tal_expression'"))
 
     def test_subproduct_call_IsPrivacyViewable(self):
         '''
@@ -103,11 +228,11 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         groupsTool.addPrincipalToGroup('pmReviewer2', '%s_advisers' % FINANCE_GROUP_ID)
         finances = getattr(self.tool, FINANCE_GROUP_ID)
         finances.setItemAdviceStates(("%s__state__%s" % (cfg.getId(),
-                                                        self.WF_STATE_NAME_MAPPINGS['proposed'])))
+                                                         self.WF_STATE_NAME_MAPPINGS['proposed'])))
         finances.setItemAdviceEditStates(("%s__state__%s" % (cfg.getId(),
-                                                        self.WF_STATE_NAME_MAPPINGS['proposed'])))
+                                                             self.WF_STATE_NAME_MAPPINGS['proposed'])))
         finances.setItemAdviceViewStates(("%s__state__%s" % (cfg.getId(),
-                                                        self.WF_STATE_NAME_MAPPINGS['proposed'])))
+                                                             self.WF_STATE_NAME_MAPPINGS['proposed'])))
 
         self.changeUser('pmManager')
         item = self.create('MeetingItem')
@@ -128,8 +253,8 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         form.request.form['advice_comment'] = RichTextValue('<p>My comment</p>')
         form.createAndAdd(form.request.form)
         expected = item.getMotivation() +\
-                   "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p><p>My comment</p>" +\
-                   item.getDecision()
+            "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p><p>My comment</p>" +\
+            item.getDecision()
         self.assertEqual(expected, item.getDeliberation(withFinanceAdvice=True))
 
 
