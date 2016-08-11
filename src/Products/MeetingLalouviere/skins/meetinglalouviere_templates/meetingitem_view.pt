@@ -28,7 +28,7 @@
                                   usedAttrs meetingConfig/getUsedItemAttributes;
                                   usedMeetingAttributes meetingConfig/getUsedMeetingAttributes;
                                   bilingual python: 'secondLanguage' in tool.getModelAdaptations();
-                                  isManager python: tool.isManager();
+                                  isManager python: tool.isManager(context);
                                   portal context/plone_portal_state/portal;">
 
   <script language="javascript"
