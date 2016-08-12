@@ -162,8 +162,9 @@
             <td width="50%"><metal:field use-macro="python:here.widget('deadlineFreeze', mode='edit')"/></td>
           </tr>
         </table>
-        <metal:field use-macro="python:here.widget('signatures', mode='edit')"/>
         <metal:field use-macro="python:here.widget('assembly', mode='edit')"/>
+        <metal:field use-macro="python:here.widget('assemblyExcused', mode='edit')"/>
+        <metal:field use-macro="python:here.widget('assemblyAbsents', mode='edit')"/>
         <tal:comment replace="nothing">User table: attendees, lateAttendees, absents, signatories, replacements</tal:comment>
         <tal:users condition="python: 'attendees' in usedAttrs">
         <table id="meeting_users" name="meeting_users" class="vertical listing" i18n:domain="PloneMeeting"
@@ -259,6 +260,9 @@
           </tbody>
         </table>
         </tal:users>
+
+        <metal:field use-macro="python:here.widget('signatures', mode='edit')"/>
+
         <tal:comment replace="nothing">Information for the pre-meeting</tal:comment>
         <tal:comment replace="nothing">XXX begin changes by MeetingLalouviere</tal:comment>
           <tal:premeetings condition="python: 'preMeetingDate' in usedAttrs">
@@ -291,6 +295,7 @@
         </fieldset>
         </tal:comment>
         <tal:comment replace="nothing">XXX end changes by MeetingLalouviere</tal:comment>
+
         <tal:field define="fieldName python: 'observations'"
                    condition="python: context.showObs('observations')">
           <metal:f use-macro="context/@@pm-macros/editContentField"/>
@@ -299,7 +304,6 @@
                    condition="python: context.showObs('preObservations')">
           <metal:f use-macro="context/@@pm-macros/editContentField"/>
         </tal:field>
-        <metal:field use-macro="python:here.widget('allItemsAtOnce', mode='edit')"/>
 
         <tal:comment replace="nothing">For the admin only</tal:comment>
         <fieldset tal:condition="python: member.has_role('Manager')">

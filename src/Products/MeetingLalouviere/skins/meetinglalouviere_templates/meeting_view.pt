@@ -9,7 +9,7 @@
   <metal:title fill-slot="content-title">
   <tal:comment replace="nothing">Title, with number of items</tal:comment>
   <h1 class="documentFirstHeading">
-    <span tal:content="python: context.portal_plonemeeting.formatDate(context.getDate(), prefixed=True)"
+    <span tal:content="python: context.portal_plonemeeting.formatMeetingDate(context, prefixed=True)"
           tal:omit-tag="">Meeting title</span>&nbsp;-
     <span tal:condition="python:not here.adapted().isDecided()"
           tal:content="python: here.translate('agenda', domain='PloneMeeting')"></span>
@@ -33,8 +33,8 @@
                   bilingual python: 'secondLanguage' in tool.getModelAdaptations();
                   iStartNumber python: context.getBatchStartNumber(late=False);
                   lStartNumber python: context.getBatchStartNumber(late=True);
-                  showColors context/portal_plonemeeting/showColorsForUser;
-                  showPage context/portal_plonemeeting/showMeetingView;
+                  showColors tool/showColorsForUser;
+                  showPage tool/showMeetingView;
                   showLateItems python: context.mustShowLateItems(iStartNumber, meetingConfig.getMaxShownMeetingItems());
                   usedAttrs meetingConfig/getUsedMeetingAttributes;
                   useUserReplacements meetingConfig/getUseUserReplacements;
@@ -87,6 +87,34 @@
         selectForm.submit();
     }
   }
+
+    // Function that allows to generate a meeting document containing selected items.
+    function removeSelectedItems() {
+        var atLeastOneSelected = false;
+        var uidList = '';
+        for (var uid in itemUids) {
+            if ((typeof itemUids[uid] == 'boolean') && itemUids[uid]) {
+                atLeastOneSelected = true;
+                uidList += uid + ',';
+            }
+        }
+        if (! atLeastOneSelected) {
+            alert(no_selected_items);
+        }
+        else {
+            // Ask confirmation then update the form and submit it if confirmed.
+            var msg = window.eval('sure_to_remove_selected_items');
+
+            if (confirm(msg)) {
+            var selectForm = document.forms['removeItemsForm'];
+            selectForm.uids.value = uidList;
+            selectForm.iStartNumber.value = iStartNumber;
+            selectForm.lStartNumber.value = lStartNumber;
+            selectForm.submit();
+            }
+        }
+    }
+
   function onImageButtonFocus(itemNumber) {
     var imageButtons = document.getElementsByName('moveImageButton');
     for (var i=0; i<imageButtons.length; i++) {
@@ -100,8 +128,8 @@
         }
     }
   }
-  function toggleCheckboxes() {
-    var checkBoxes = document.getElementsByName('itemCbToDump');
+  function toggleCheckboxes(checkBoxId) {
+    var checkBoxes = document.getElementsByName(checkBoxId);
     if (checkBoxesChecked) newCheckValue = false;
     else newCheckValue = true;
     for (var i=0; i<checkBoxes.length; i++) {
@@ -302,11 +330,54 @@
   </tal:date>
   </div>
 
-  <tal:comment replace="nothing">Assembly.  Backward compatibility for people that used the 'assembly' field before and the 'attendees' now, if the field is not empty, we display it</tal:comment>
-  <div class="discreet" tal:condition="python: ('assembly' in usedAttrs) or context.getAssembly()">
-    <b i18n:translate="meeting_assembly"></b>&nbsp;&nbsp;
-       <span tal:replace="structure context/getStrikedAssembly"/>
-  </div>
+  <tal:comment replace="nothing">Assembly and signatures.  Backward compatibility for people that used the 'assembly' or 'signatures'
+   field before and the 'attendees' now, if the field is not empty, we display it</tal:comment>
+  <tal:assemblyFields condition="python: 'assembly' in usedAttrs or 'signatures' in usedAttrs">
+  <table class="no-style-table discreet"
+         style="width: auto;"
+         tal:define="usedAssemblyFields python: ((context.getAssembly() and True) or 'assembly' in usedAttrs,
+                                                 (context.getAssemblyExcused() and True) or 'assemblyExcused' in usedAttrs,
+                                                 (context.getAssemblyAbsents() and True) or 'assemblyAbsents' in usedAttrs,
+                                                 (context.getSignatures() and True) or 'signatures' in usedAttrs).count(True);
+                     colWidthPercentage python: int(100/usedAssemblyFields);">
+    <tr>
+        <td width="25%"
+            style="padding-right: 0.3em !important;"
+            tal:attributes="width string:${colWidthPercentage}%">
+            <fieldset tal:condition="python: 'assembly' in usedAttrs or context.getAssembly()">
+                <legend tal:content="context/getLabelAssembly">Assembly</legend>
+                <span tal:replace="structure context/getStrikedAssembly"/>
+            </fieldset>
+        </td>
+        <td width="25%"
+            style="padding-right: 0.3em !important;"
+            tal:condition="python: 'assemblyExcused' in usedAttrs or context.getAssemblyExcused()"
+            tal:attributes="width string:${colWidthPercentage}%">
+            <fieldset>
+                <legend i18n:translate="PloneMeeting_label_assemblyExcused">Assembly</legend>
+                <span tal:replace="structure python: context.getAssemblyExcused() or '-'"/>
+            </fieldset>
+        </td>
+        <td width="25%"
+            tal:condition="python: 'assemblyAbsents' in usedAttrs or context.getAssemblyAbsents()"
+            style="padding-right: 0.3em !important;"
+            tal:attributes="width string:${colWidthPercentage}%">
+            <fieldset>
+                <legend i18n:translate="PloneMeeting_label_assemblyAbsents">Assembly</legend>
+                <span tal:replace="structure python: context.getAssemblyAbsents() or '-'"/>
+            </fieldset>
+        </td>
+        <td width="25%"
+            tal:condition="python: 'signatures' in usedAttrs or context.getSignatures()"
+            tal:attributes="width string:${colWidthPercentage}%">
+            <fieldset>
+                <legend i18n:translate="meeting_signatures">Signatures</legend>
+                <span tal:replace="structure python: context.getSignatures(mimetype='text/x-html-safe') or '-'"/>
+            </fieldset>
+        </td>
+    </tr>
+  </table>
+  </tal:assemblyFields>
 
   <tal:comment replace="nothing">Attendees, excused, absents, replacements</tal:comment>
   <table id="meeting_users" class="listing discreet" cellspacing="0" cellpadding="0"
@@ -365,12 +436,6 @@
     </tr>
     </tbody>
   </table>
-
-  <tal:comment replace="nothing">Signatures. Backward compatibility for people that used the 'signatures' field</tal:comment>
-  <div class="discreet" tal:condition="python: ('signatures' in usedAttrs) or context.getSignatures()">
-    <b i18n:translate="meeting_signatures"></b>&nbsp;&nbsp;
-       <span tal:replace="structure python: context.getSignatures().replace('\r\n', '<br/>').replace('\n', '<br/>')"/>
-  </div>
 
   <tal:comment replace="nothing">XXX begin changes for MeetingLalouviere</tal:comment>
 
