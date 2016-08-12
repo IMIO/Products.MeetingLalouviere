@@ -6,7 +6,6 @@ from Products.Archetypes.atapi import TextAreaWidget
 from Products.Archetypes.atapi import RichWidget
 from Products.Archetypes.atapi import SelectionWidget
 from Products.Archetypes.atapi import BooleanField
-from Products.Archetypes.atapi import Schema
 from Products.PloneMeeting.config import WriteRiskyConfig
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
@@ -403,8 +402,8 @@ def update_item_schema(baseSchema):
             searchable=True,
             allowable_content_types=('text/html',),
             default_output_type="text/html",
-            write_permission = "MeetingLalouviere: Write commission transcript",
-            read_permission = "MeetingLalouviere: Read commission transcript",
+            write_permission="MeetingLalouviere: Write commission transcript",
+            read_permission="MeetingLalouviere: Read commission transcript",
         ),
         #here above are 3 specific fields for managing item follow-up
         StringField(
@@ -420,8 +419,8 @@ def update_item_schema(baseSchema):
                 i18n_domain='PloneMeeting',
             ),
             vocabulary='listFollowUps',
-            write_permission = "MeetingLalouviere: Write followUp",
-            read_permission = "MeetingLalouviere: Read followUp",
+            write_permission="MeetingLalouviere: Write followUp",
+            read_permission="MeetingLalouviere: Read followUp",
         ),
         TextField(
             name='neededFollowUp',
