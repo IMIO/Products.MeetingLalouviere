@@ -1630,16 +1630,6 @@ class MeetingCouncilLalouviereWorkflowConditions(MeetingWorkflowConditions):
             res = True
         return res
 
-    security.declarePublic('mayRefuse')
-
-    def mayRefuse(self):
-        '''Only 'Manager' may refuse an item, it is for history reasons because now this is not
-           used anymore but some old items were 'refused'...'''
-        tool = getToolByName(self.context, 'portal_plonemeeting')
-        if tool.isManager(self.context, realManagers=True):
-            return True
-        return False
-
 class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCouncilWorkflowActions'''
@@ -1771,6 +1761,16 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
            meeting and (meeting.queryState() in ['in_council', 'closed']):
             res = True
         return res
+
+    security.declarePublic('mayRefuse')
+
+    def mayRefuse(self):
+        '''Only 'Manager' may refuse an item, it is for history reasons because now this is not
+           used anymore but some old items were 'refused'...'''
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        if tool.isManager(self.context, realManagers=True):
+            return True
+        return False
 
 # ------------------------------------------------------------------------------
 InitializeClass(CustomMeetingItem)
