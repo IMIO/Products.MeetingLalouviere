@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: config.py
+# File: MeetingLalouviere.py
 #
-# Copyright (c) 2014 by Imio.be
+# Copyright (c) 2016 by Imio.be
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -48,6 +48,7 @@ PRODUCT_DEPENDENCIES = []
 ##code-section config-bottom #fill in your manual code here
 from Products.PloneMeeting import config as PMconfig
 LALOUVIEREROLES = {}
+LALOUVIEREROLES['budgetimpactreviewers'] = 'MeetingBudgetImpactReviewer'
 LALOUVIEREROLES['serviceheads'] = 'MeetingServiceHead'
 LALOUVIEREROLES['officemanagers'] = 'MeetingOfficeManager'
 LALOUVIEREROLES['divisionheads'] = 'MeetingDivisionHead'

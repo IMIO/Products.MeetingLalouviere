@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2014 by Imio.be
+# Copyright (c) 2016 by Imio.be
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -17,10 +17,8 @@ import logging
 logger = logging.getLogger('MeetingLalouviere: setuphandlers')
 from Products.MeetingLalouviere.config import PROJECTNAME
 from Products.MeetingLalouviere.config import DEPENDENCIES
-from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 import os
 from Products.CMFCore.utils import getToolByName
-from plone import api
 import transaction
 ##code-section HEAD
 from imio.helpers.catalog import addOrUpdateIndexes
@@ -28,6 +26,8 @@ from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.config import TOPIC_TYPE, TOPIC_SEARCH_SCRIPT, TOPIC_TAL_EXPRESSION
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
     COUNCIL_COMMISSION_IDS_2013, COMMISSION_EDITORS_SUFFIX
+from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from plone import api
 ##/code-section HEAD
 
 def isNotMeetingLalouviereProfile(context):

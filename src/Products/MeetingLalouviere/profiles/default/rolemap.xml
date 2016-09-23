@@ -2,6 +2,7 @@
 <rolemap>
   <roles>
     <role name="MeetingBudgetImpactEditor"/>
+    <role name="MeetingBudgetImpactReviewer"/>
     <role name="MeetingCommissionEditor"/>
     <role name="MeetingDirector"/>
     <role name="MeetingDivisionHead"/>
