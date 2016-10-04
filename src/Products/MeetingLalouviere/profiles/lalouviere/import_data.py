@@ -489,6 +489,8 @@ collegeMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.
 collegeMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
+collegeMeeting.transitionsForPresentingAnItem = ['proposeToServiceHead', 'proposeToOfficeManager', 'proposeToDivisionHead',
+                                                 'proposeToDirector', 'validate', 'present', ]
 collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'proposedToOfficeManager',
                                   'proposedToDivisionHead', 'proposedToDirector', 'proposedToAlderman',
                                   'validated', 'presented', 'itemfrozen', 'accepted', 'refused', 'delayed',
@@ -602,8 +604,14 @@ categories = [CategoryDescriptor('recurrent', 'Point récurrent',
                                  usingGroups=('secretaire-communal', 'secretaire-communal-adj',
                                               'secretariat', 'dirgen')),
               CategoryDescriptor('commission-travaux', 'Commission Travaux'),
-              CategoryDescriptor('commission-enseignement-culture-sport-sante',
+              CategoryDescriptor('commission-enseignement',
                                  'Commission Enseignement/Culture/Sport/Santé'),
+              CategoryDescriptor('commission-culture',
+                                 'Commission Culture'),
+              CategoryDescriptor('commission-sport',
+                                 'Commission Sport'),
+              CategoryDescriptor('commission-sante',
+                                 'Commission Santé'),
               CategoryDescriptor('commission-cadre-de-vie', 'Commission Cadre de Vie'),
               CategoryDescriptor('commission-ag', 'Commission AG'),
               CategoryDescriptor('commission-finances', 'Commission Finances'),
@@ -694,6 +702,7 @@ councilMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.
 councilMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions'
 councilMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions'
 councilMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions'
+councilMeeting.transitionsForPresentingAnItem = ['proposeToDirector', 'validate', 'present', ]
 #show every items states
 councilMeeting.itemTopicStates = ('itemcreated',
                                   'proposed_to_officemanager',

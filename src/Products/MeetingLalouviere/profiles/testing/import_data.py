@@ -387,7 +387,7 @@ councilMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
                                              'reverse': '0'}, )
 councilMeeting.podTemplates = []
 councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service', ]
-councilMeeting.transitionsForPresentingAnItem =['proposeToDirector', 'validate', 'present', ]
+councilMeeting.transitionsForPresentingAnItem = ['proposeToDirector', 'validate', 'present', ]
 councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
                                                               'item_transition': 'itemfreeze'},
 

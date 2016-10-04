@@ -25,6 +25,7 @@
 # ------------------------------------------------------------------------------
 from appy.gen import No
 from AccessControl import getSecurityManager, ClassSecurityInfo
+from DateTime import DateTime
 from Globals import InitializeClass
 from zope.interface import implements
 from zope.i18n import translate
@@ -761,26 +762,6 @@ class CustomMeetingItem(MeetingItem):
         return True
     MeetingItem.isPrivacyViewable = isPrivacyViewable
 
-    security.declarePublic('getMeetingsAcceptingItems')
-
-    def getMeetingsAcceptingItems(self):
-        '''Overrides the default method so we only display meetings that are
-           in the 'created' or 'frozen' state.'''
-        tool = getToolByName(self.context, 'portal_plonemeeting')
-        catalog = getToolByName(self.context, 'portal_catalog')
-        meetingPortalType = tool.getMeetingConfig(self.context).getMeetingTypeName()
-        # If the current user is a meetingManager (or a Manager),
-        # he is able to add a meetingitem to a 'decided' meeting.
-        review_state = ['created', 'frozen', ]
-        if tool.isManager(self.context):
-            review_state.extend(('decided', 'in_committee', 'in_council', ))
-        res = catalog.unrestrictedSearchResults(
-            portal_type=meetingPortalType,
-            review_state=review_state,
-            sort_on='getDate')
-        # Frozen meetings may still accept "late" items.
-        return res
-
     security.declarePublic('getIcons')
 
     def getIcons(self, inMeeting, meeting):
@@ -1136,6 +1117,30 @@ class CustomMeetingConfig(MeetingConfig):
         catalog = getToolByName(self, 'portal_catalog')
         return catalog(**params)
     MeetingConfig.searchItemsToValidate = searchItemsToValidate
+
+    security.declarePublic('getMeetingsAcceptingItems')
+
+    def getMeetingsAcceptingItems(self, review_states=('created', 'frozen'), inTheFuture=False):
+        '''This returns meetings that are still accepting items.'''
+        cfg = self.getSelf()
+        tool = getToolByName(cfg, 'portal_plonemeeting')
+        catalog = getToolByName(cfg, 'portal_catalog')
+        # If the current user is a meetingManager (or a Manager),
+        # he is able to add a meetingitem to a 'decided' meeting.
+        # except if we specifically restricted given p_review_states.
+        if review_states == ('created', 'frozen') and tool.isManager(cfg):
+            # XXX begin change by MeetingLalouviere
+            review_states += ('decided', 'in_committee', 'in_council', )
+            # XXX end change by MeetingLalouviere
+
+        query = {'portal_type': cfg.getMeetingTypeName(),
+                 'review_state': review_states,
+                 'sort_on': 'getDate'}
+
+        if inTheFuture:
+            query['getDate'] = {'query': DateTime(), 'range': 'min'}
+
+        return catalog.unrestrictedSearchResults(**query)
 
 
 class CustomMeetingGroup(MeetingGroup):
@@ -1630,6 +1635,7 @@ class MeetingCouncilLalouviereWorkflowConditions(MeetingWorkflowConditions):
             res = True
         return res
 
+
 class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCouncilWorkflowActions'''
@@ -1731,7 +1737,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         if checkPermission(ReviewPortalContent, self.context):
             if self.context.hasMeeting() and \
                (self.context.getMeeting().queryState() in
-               ('in_committee', 'in_council', 'closed')):
+                    ('in_committee', 'in_council', 'closed')):
                 res = True
         return res
 
@@ -1746,7 +1752,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         if checkPermission(ReviewPortalContent, self.context):
             if self.context.hasMeeting() and \
                (self.context.getMeeting().queryState() in
-               ('in_council', 'closed')):
+                    ('in_council', 'closed')):
                 res = True
         return res
 
