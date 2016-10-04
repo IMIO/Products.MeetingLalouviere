@@ -489,6 +489,8 @@ collegeMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.
 collegeMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
+collegeMeeting.transitionsForPresentingAnItem = ['proposeToServiceHead', 'proposeToOfficeManager', 'proposeToDivisionHead',
+                                                 'proposeToDirector', 'validate', 'present', ]
 collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'proposedToOfficeManager',
                                   'proposedToDivisionHead', 'proposedToDirector', 'proposedToAlderman',
                                   'validated', 'presented', 'itemfrozen', 'accepted', 'refused', 'delayed',
@@ -694,6 +696,7 @@ councilMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.
 councilMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions'
 councilMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions'
 councilMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions'
+councilMeeting.transitionsForPresentingAnItem = ['proposeToDirector', 'validate', 'present', ]
 #show every items states
 councilMeeting.itemTopicStates = ('itemcreated',
                                   'proposed_to_officemanager',
