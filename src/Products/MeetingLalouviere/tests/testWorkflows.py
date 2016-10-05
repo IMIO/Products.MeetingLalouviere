@@ -237,7 +237,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEquals(item2.queryState(), 'presented')
         self.do(meeting, 'backToInCommittee')
         self.assertEquals(item1.queryState(), 'item_in_committee')
-        self.assertEquals(item1.queryState(), 'item_in_committee')
+        self.assertEquals(item2.queryState(), 'presented')
         self.do(meeting, 'setInCouncil')
         self.assertEquals(item1.queryState(), 'item_in_council')
         self.assertEquals(item2.queryState(), 'item_in_council')
@@ -398,6 +398,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         meeting = self.create('Meeting', date=DateTime('2013/01/01'))
         self.assertTrue(len(meeting.getAllItems()) == 1)
         self.assertTrue(meeting.getAllItems()[0].getProposingGroup() == 'developers')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

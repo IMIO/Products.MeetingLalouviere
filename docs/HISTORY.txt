@@ -3,7 +3,8 @@ Products.MeetingLalouviere Changelog
 
 3.3 (unreleased)
 ----------------
-- Nothing yet
+- Override MeetingConfig.getMeetingsAcceptingItems
+- Moved to MeetingConfig.onMeetingTransitionItemTransitionToTrigger
 
 3.2.0.1 (2014-09-15)
 --------------------

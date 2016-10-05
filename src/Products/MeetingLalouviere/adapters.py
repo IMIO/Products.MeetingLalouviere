@@ -1523,26 +1523,19 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
     security.declarePrivate('doSetInCommittee')
 
     def doSetInCommittee(self, stateChange):
-        '''When setting the meeting in committee, every items must be automatically
-           set to "item_in_committee".'''
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems(ordered=True):
-            if item.queryState() == 'presented':
-                wfTool.doActionFor(item, 'setItemInCommittee')
-        #manage meeting number
+        '''When setting the meeting in committee, every items must be
+           automatically set to "item_in_committee", it is done using
+           Meetingconfig.onMeetingTransitionItemTransitionToTrigger.'''
+        # manage meeting number
         self.initSequenceNumber()
 
     security.declarePrivate('doSetInCouncil')
 
     def doSetInCouncil(self, stateChange):
         '''When setting the meeting in council, every items must be automatically
-           set to "item_in_council".'''
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems(ordered=True):
-            if item.queryState() == 'presented':
-                wfTool.doActionFor(item, 'setItemInCommittee')
-            if item.queryState() == 'item_in_committee':
-                wfTool.doActionFor(item, 'setItemInCouncil')
+           set to "item_in_council", it is done using
+           Meetingconfig.onMeetingTransitionItemTransitionToTrigger.'''
+        pass
 
     security.declarePrivate('doBackToCreated')
 
@@ -1554,11 +1547,10 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingWorkflowActions):
     security.declarePrivate('doBackToInCommittee')
 
     def doBackToInCommittee(self, stateChange):
-        '''When a meeting go back to the "in_committee" we set every items 'in_council' back to 'in_committee'.'''
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems():
-            if item.queryState() == 'item_in_council':
-                wfTool.doActionFor(item, 'backToItemInCommittee')
+        '''When a meeting go back to the "in_committee" we set every items
+        'in_council' back to 'in_committee', it is done using
+           Meetingconfig.onMeetingTransitionItemTransitionToTrigger.'''
+        pass
 
     security.declarePrivate('doBackToInCouncil')
 
