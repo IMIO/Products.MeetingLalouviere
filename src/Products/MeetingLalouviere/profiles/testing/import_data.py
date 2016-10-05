@@ -388,30 +388,16 @@ councilMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
 councilMeeting.podTemplates = []
 councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service', ]
 councilMeeting.transitionsForPresentingAnItem = ['proposeToDirector', 'validate', 'present', ]
-councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
-                                                              'item_transition': 'itemfreeze'},
-
-                                                             {'meeting_transition': 'publish',
-                                                              'item_transition': 'itemfreeze'},
-                                                             {'meeting_transition': 'publish',
-                                                              'item_transition': 'itempublish'},
-
-                                                             {'meeting_transition': 'decide',
-                                                              'item_transition': 'itemfreeze'},
-                                                             {'meeting_transition': 'decide',
-                                                              'item_transition': 'itempublish'},
-
+councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'setInCommittee',
+                                                              'item_transition': 'setItemInCommittee'},
+                                                             {'meeting_transition': 'backToInCommittee',
+                                                              'item_transition': 'backToItemInCommittee'},
+                                                             {'meeting_transition': 'setInCouncil',
+                                                              'item_transition': 'setItemInCommittee'},
+                                                             {'meeting_transition': 'setInCouncil',
+                                                              'item_transition': 'setItemInCouncil'},
                                                              {'meeting_transition': 'close',
-                                                              'item_transition': 'itemfreeze'},
-                                                             {'meeting_transition': 'close',
-                                                              'item_transition': 'accept'},
-
-                                                             {'meeting_transition': 'publish_decisions',
-                                                              'item_transition': 'itemfreeze'},
-                                                             {'meeting_transition': 'publish_decisions',
-                                                              'item_transition': 'itempublish'},
-                                                             {'meeting_transition': 'publish_decisions',
-                                                              'item_transition': 'accept'},)
+                                                              'item_transition': 'accept'})
 
 councilMeeting.sortingMethodOnAddItem = 'on_categories'
 councilMeeting.useGroupsAsCategories = False
