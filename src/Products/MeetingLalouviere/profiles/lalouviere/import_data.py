@@ -491,6 +491,14 @@ collegeMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfac
 collegeMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
 collegeMeeting.transitionsForPresentingAnItem = ['proposeToServiceHead', 'proposeToOfficeManager', 'proposeToDivisionHead',
                                                  'proposeToDirector', 'validate', 'present', ]
+collegeMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'decide',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'accept'})
 collegeMeeting.itemTopicStates = ('itemcreated', 'proposedToServiceHead', 'proposedToOfficeManager',
                                   'proposedToDivisionHead', 'proposedToDirector', 'proposedToAlderman',
                                   'validated', 'presented', 'itemfrozen', 'accepted', 'refused', 'delayed',
@@ -703,6 +711,17 @@ councilMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMe
 councilMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions'
 councilMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions'
 councilMeeting.transitionsForPresentingAnItem = ['proposeToDirector', 'validate', 'present', ]
+councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'setInCommittee',
+                                                              'item_transition': 'setItemInCommittee'},
+                                                             {'meeting_transition': 'backToInCommittee',
+                                                              'item_transition': 'backToItemInCommittee'},
+                                                             {'meeting_transition': 'setInCouncil',
+                                                              'item_transition': 'setItemInCommittee'},
+                                                             {'meeting_transition': 'setInCouncil',
+                                                              'item_transition': 'setItemInCouncil'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'accept'})
+
 #show every items states
 councilMeeting.itemTopicStates = ('itemcreated',
                                   'proposed_to_officemanager',
