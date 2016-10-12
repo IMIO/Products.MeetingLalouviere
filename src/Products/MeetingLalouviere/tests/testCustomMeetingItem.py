@@ -24,7 +24,6 @@
 
 from DateTime import DateTime
 from zope.annotation import IAnnotations
-from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
@@ -39,24 +38,28 @@ class testCustomMeetingItem(MeetingLalouviereTestCase):
           Default value for motivation field of the new item + value of motivation that was
           defined on original item (college item)
         """
+        cfg = self.meetingConfig
+        cfg.setItemAutoSentToOtherMCStates(('accepted', ))
+        cfg2 = self.meetingConfig2
         # by default, college items are sendable to council
-        destMeetingConfigId = self.meetingConfig2.getId()
-        self.assertTrue(destMeetingConfigId in [config['meeting_config'] for config in self.meetingConfig.getMeetingConfigsToCloneTo()])
+        destMeetingConfigId = cfg2.getId()
+        self.assertTrue(destMeetingConfigId in [config['meeting_config']
+                                                for config in cfg.getMeetingConfigsToCloneTo()])
         # create an item in college, set a motivation, send it to council and check
         self.changeUser('pmManager')
         item = self.create('MeetingItem')
         item.setDecision('<p>A decision</p>')
         item.setOtherMeetingConfigsClonableTo((destMeetingConfigId,))
-        self.assertTrue(item.getMotivation() == self.meetingConfig.getDefaultMeetingItemMotivation())
+        self.assertTrue(item.getMotivation() == cfg.getDefaultMeetingItemMotivation())
         meeting = self.create('Meeting', date=DateTime('2013/05/05'))
         self.presentItem(item)
         # now close the meeting so the item is automatically accepted and sent to meetingConfig2
         self.closeMeeting(meeting)
-        self.assertTrue(item.queryState() in item.itemPositiveDecidedStates())
+        self.assertTrue(item.queryState() in cfg.getItemAutoSentToOtherMCStates())
         self.assertTrue(item._checkAlreadyClonedToOtherMC(destMeetingConfigId))
         # get the item that was sent to meetingConfig2 and check his motivation field
         annotation_key = item._getSentToOtherMCAnnotationKey(destMeetingConfigId)
         newItem = self.portal.uid_catalog(UID=IAnnotations(item)[annotation_key])[0].getObject()
-        expectedNewItemMotivation = self.meetingConfig2.getDefaultMeetingItemMotivation() + \
+        expectedNewItemMotivation = cfg2.getDefaultMeetingItemMotivation() + \
             '<p>&nbsp;</p><p>&nbsp;</p>' + item.getMotivation()
         self.assertTrue(newItem.getMotivation() == expectedNewItemMotivation)
