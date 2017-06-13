@@ -171,4 +171,3 @@ msgstr "Les informations budgétaires ont été validées."
 #. Default: "The item has been validated."
 msgid "validate_done_descr"
 msgstr "Le point a été validé: il est maintenant visible par le gestionnaire de séance, qui peut décider de le présenter à l'ordre du jour d'une séance."
-

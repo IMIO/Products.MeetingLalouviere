@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: MeetingLalouviere.py
+# File: config.py
 #
 # Copyright (c) 2016 by Imio.be
 # Generator: ArchGenXML Version 2.7
@@ -23,11 +23,8 @@ __docformat__ = 'plaintext'
 # will be included (by importing) in this file if found.
 
 from Products.CMFCore.permissions import setDefaultRoles
-##code-section config-head #fill in your manual code here
 from collections import OrderedDict
 import os
-##/code-section config-head
-
 
 PROJECTNAME = "MeetingLalouviere"
 
@@ -44,6 +41,9 @@ DEPENDENCIES = []
 # Dependend products - not quick-installed - used in testcase
 # override in custom configuration
 PRODUCT_DEPENDENCIES = []
+
+# the id of the collection querying finance advices
+FINANCE_ADVICES_COLLECTION_ID = 'searchitemswithfinanceadvice'
 
 ##code-section config-bottom #fill in your manual code here
 from Products.PloneMeeting import config as PMconfig
@@ -88,17 +88,8 @@ COUNCIL_MEETING_COMMISSION_IDS_2013 = ('commission-travaux',
                                        'commission-police',
                                        'commission-speciale',)
 
-
 # suffix of specific groups containing commission transcript editors
 COMMISSION_EDITORS_SUFFIX = '_commissioneditors'
 
 # id of finance advice group
 FINANCE_GROUP_ID = 'avis-directeur-financier-2200020ac'
-##/code-section config-bottom
-
-
-# Load custom configuration not managed by archgenxml
-try:
-    from Products.MeetingLalouviere.AppConfig import *
-except ImportError:
-    pass

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.3'
+version = '4.0 dev0'
 
 setup(name='Products.MeetingLalouviere',
       version=version,
@@ -29,8 +29,7 @@ setup(name='Products.MeetingLalouviere',
                   'plone.app.robotframework',
                   'Products.CMFPlacefulWorkflow',
                   'Products.PloneTestCase',
-                  'zope.testing',
-                  'Products.MeetingCommunes'],
+                  'zope.testing', ],
             templates=['Genshi',
                   ]),
       install_requires=[

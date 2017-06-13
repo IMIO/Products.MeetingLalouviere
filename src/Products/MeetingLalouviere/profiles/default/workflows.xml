@@ -5,6 +5,11 @@
  <object name="meetingcouncillalouviere_workflow" meta_type="Workflow" remove="True"/>
  <object name="meetingitemcollegelalouviere_workflow" meta_type="Workflow" remove="True"/>
  <object name="meetingitemcouncillalouviere_workflow" meta_type="Workflow" remove="True"/>
+ <!-- first remove then re-apply so workflows are correct regarding workflow adaptations... -->
+ <object name="meetingcollegelalouviere_workflow" meta_type="Workflow" remove="True"/>
+ <object name="meetingcouncillalouviere_workflow" meta_type="Workflow" remove="True"/>
+ <object name="meetingitemcollegelalouviere_workflow" meta_type="Workflow" remove="True"/>
+ <object name="meetingitemcouncillalouviere_workflow" meta_type="Workflow" remove="True"/>
  <object name="meetingcollegelalouviere_workflow" meta_type="Workflow"/>
  <object name="meetingcouncillalouviere_workflow" meta_type="Workflow"/>
  <object name="meetingitemcollegelalouviere_workflow" meta_type="Workflow"/>

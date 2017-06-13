@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeetingFileType.py
+# File: testAnnexes.py
 #
-# Copyright (c) 2007-2013 by Imio.be
+# Copyright (c) 2007-2015 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -22,16 +22,16 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testMeetingFileType import testMeetingFileType as mctmft
+from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.PloneMeeting.tests.testAnnexes import testAnnexes as pmta
 
 
-class testMeetingFileType(MeetingLalouviereTestCase, mctmft):
-    '''Tests the MeetingFileType class methods.'''
+class testAnnexes(MeetingCommunesTestCase, pmta):
+    ''' '''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeetingFileType, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testAnnexes, prefix='test_pm_'))
     return suite

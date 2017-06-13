@@ -1,5 +1,6 @@
 from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import DateTimeField
+from Products.Archetypes.atapi import LinesField
 from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import TextField
 from Products.Archetypes.atapi import TextAreaWidget
@@ -113,6 +114,23 @@ MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
 
 def update_group_schema(baseSchema):
     specificSchema = Schema(())
+
+    # field used to define list of services for echevin for a MeetingGroup
+    LinesField(
+        name='echevinServices',
+        widget=MultiSelectionWidget(
+            size=10,
+            label='EchevinServices',
+            label_msgid='MeetingCommunes_label_echevinServices',
+            description='Leave empty if he is not an echevin',
+            description_msgid='MeetingCommunes_descr_echevinServices',
+            format="checkbox",
+            i18n_domain='PloneMeeting',
+        ),
+        enforceVocabulary=True,
+        multiValued=1,
+        vocabulary='listEchevinServices',
+    ),
 
     completeGroupSchema = baseSchema + specificSchema.copy()
 

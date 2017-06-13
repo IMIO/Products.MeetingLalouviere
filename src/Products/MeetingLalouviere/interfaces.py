@@ -62,10 +62,6 @@ class IMeetingItemCollegeLalouviereWorkflowConditions(IMeetingItemWorkflowCondit
         """
           Guard for the 'freeze' transition
         """
-    def mayCorrect():
-        """
-          Guard for the 'backToXXX' transitions
-        """
 
 
 class IMeetingCollegeLalouviereWorkflowActions(IMeetingWorkflowActions):
@@ -108,10 +104,6 @@ class IMeetingCollegeLalouviereWorkflowConditions(IMeetingWorkflowConditions):
         """
           Check if the user may or not changes the order of the items on the meeting
         """
-    def mayCorrect():
-        """
-          Guard for the 'backToXXX' transitions
-        """
 
 
 class IMeetingCouncilLalouviereWorkflowActions(IMeetingWorkflowActions):
@@ -153,10 +145,6 @@ class IMeetingCouncilLalouviereWorkflowConditions(IMeetingWorkflowConditions):
     def mayChangeItemsOrder():
         """
           Check if the user may or not changes the order of the items on the meeting
-        """
-    def mayCorrect():
-        """
-          Guard for the 'backToXXX' transitions
         """
 
 

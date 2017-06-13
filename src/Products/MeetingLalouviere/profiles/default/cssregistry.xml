@@ -13,9 +13,9 @@
              rendering="import"/>
  -->
 
- <!-- ##code-section cssregistry.xml -->
- <stylesheet title="MeetingLalouviere CSS styles" cacheable="True" compression="safe"
-             cookable="True" enabled="1" media="all" rel="stylesheet"
-             rendering="import" expression="" id="meetinglalouviere.css"/>
+  <!-- ##code-section cssregistry.xml -->
+ <stylesheet title="MeetingLalouviere CSS styles" cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="meetinglalouviere.css" media="screen"
+    rel="stylesheet" rendering="import" insert-after="plonemeeting.css"/>
  <!-- ##/code-section cssregistry.xml -->
 </object>

@@ -28,6 +28,14 @@
       permission="zope2.View"
       />
 
+  <!-- the meetingadvice workflow conditions view -->
+  <browser:view
+      for="Products.PloneMeeting.content.advice.IMeetingAdvice"
+      name="advice-wf-conditions"
+      class=".views.AdviceWFConditionsView"
+      layer="Products.PloneMeeting.interfaces.IPloneMeetingLayer"
+      permission="zope2.View" />
+
   <browser:viewlet
       name="plone.belowcontenttitle.messages"
       manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"

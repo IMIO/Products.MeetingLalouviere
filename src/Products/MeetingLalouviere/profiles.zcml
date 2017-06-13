@@ -30,12 +30,26 @@
    description="MeetingLalouviere unit testing profile"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+  <genericsetup:registerProfile
+   name="zbourgmestre"
+   title="PloneMeeting / Bourgmestre"
+   description="PloneMeeting for Bourgmestre (Belgium)"
+   provides="Products.GenericSetup.interfaces.EXTENSION"
+   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+  <genericsetup:registerProfile
+   name="zcodir"
+   title="PloneMeeting / CoDir"
+   description="PloneMeeting for CoDir (Belgium)"
+   provides="Products.GenericSetup.interfaces.EXTENSION"
+   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
   <genericsetup:upgradeStep
-      title="Go to MeetingLaLouviere 3.3"
+      title="Go to MeetingLaLouviere 4.0"
       description=""
-      source="3.2.0.1"
-      destination="3.3"
-      handler="Products.MeetingLalouviere.migrations.migrate_to_3_3.migrate"
+      source="3.3"
+      destination="4.0"
+      handler="Products.MeetingLalouviere.migrations.migrate_to_4_0.migrate"
       profile="Products.MeetingLalouviere:default" />
 
   <!-- ##/code-section profiles.zcml-bottom -->

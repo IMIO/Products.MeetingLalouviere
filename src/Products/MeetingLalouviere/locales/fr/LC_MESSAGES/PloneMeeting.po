@@ -244,6 +244,14 @@ msgstr "Envoyer au Conseil communal"
 msgid "Sent to council"
 msgstr "Envoyé au Conseil communal"
 
+#. Default: "Add a finances advice"
+msgid "add_new_meetingadvicefinances"
+msgstr "Ajouter un avis finances"
+
+#. Default: "Cautious opinion"
+msgid "cautious_finance"
+msgstr "Avis finances réservé"
+
 #. Default: "Please as this item comes from the college, you need to define the 'commission' for it before being able to propose it."
 msgid "check_category"
 msgstr "Attention, comme ce point provient du Collège communal, vous devez définir la commission à laquelle il doit passer en passant par l'onglet 'Modifier' avant de pouvoir le proposer au chef de bureau."
@@ -265,6 +273,22 @@ msgstr "directeurs"
 #. Default: "division heads"
 msgid "divisionheads"
 msgstr "chefs de division"
+
+#. Default: "Financial controllers"
+msgid "financialcontrollers"
+msgstr "Contrôleurs financiers"
+
+#. Default: "Financial editors"
+msgid "financialeditors"
+msgstr "Rédacteurs financiers"
+
+#. Default: "Financial managers"
+msgid "financialmanagers"
+msgstr "Directeurs financiers"
+
+#. Default: "Financial reviewers"
+msgid "financialreviewers"
+msgstr "Validateurs financiers"
 
 #. Default: "No follow up is needed"
 msgid "follow_up_no"
@@ -290,10 +314,6 @@ msgstr "rédacteurs de suivi"
 #. Default: "Welcome to HubSessions!"
 msgid "hs_welcome_title"
 msgstr "Bienvenue sur PloneMeeting!"
-
-#. Default: "Accepted but modified"
-msgid "icon_help_accepted_but_modified"
-msgstr "Accepté provisoirement"
 
 #. Default: "Follow-up needed"
 msgid "icon_help_follow_up_needed"
@@ -355,6 +375,10 @@ msgstr "Commission"
 msgid "listingheader_premeeting_place"
 msgstr "Lieu"
 
+#. Default: "Unfavorable opinion"
+msgid "negative_finance"
+msgstr "Avis finances défavorable"
+
 #. Default: "<span class='activate_follow_up'><a href='activateFollowUp'>Click here</a> if you want to define that a follow-up is needed.</span>"
 msgid "no_followup_needed_actions_itemview"
 msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activateFollowUp' title='Activer le suivi pour ce point.'><img src='follow_up_yes.png' /></a></span>"
@@ -363,10 +387,26 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activ
 msgid "no_followup_needed_itemview"
 msgstr "<span class='follow_up_no'>Aucun suivi nécessaire.</span>"
 
+#. Default: "Not given opinion"
+msgid "not_given_finance"
+msgstr "Avis finances non remis"
+
+#. Default: "Not required opinion"
+msgid "not_required_finance"
+msgstr "Avis finances non requis"
+
 # Suffix
 #. Default: "office managers"
 msgid "officemanagers"
 msgstr "chefs de bureau"
+
+#. Default: "Favorable opinion"
+msgid "positive_finance"
+msgstr "Avis finances favorable"
+
+#. Default: "Favorable opinion with remarks"
+msgid "positive_with_remarks_finance"
+msgstr "Avis finances favorable avec remarques"
 
 #. Default: "The preparatory meeting must occur before the meeting."
 msgid "pre_date_after_meeting_date"
@@ -437,6 +477,22 @@ msgstr "<span class='follow_up_provided_not_printed'>Le suivi nécessaire a ét�
 msgid "reviewers"
 msgstr "échevins"
 
+#. Default: "Advices proposed to financial controller"
+msgid "searchadviceproposedtocontroller"
+msgstr "Avis proposés au contrôleur financier"
+
+#. Default: "Advices proposed to financial editor"
+msgid "searchadviceproposedtoeditor"
+msgstr "Avis proposés au rédacteur financier"
+
+#. Default: "Advices proposed to financial manager"
+msgid "searchadviceproposedtomanager"
+msgstr "Avis proposés au Directeur financier"
+
+#. Default: "Advices proposed to financial reviewer"
+msgid "searchadviceproposedtoreviewer"
+msgstr "Avis proposés au validateur financier"
+
 #. Default: "follow-up dashboard"
 msgid "searchitemsfollowupdashboard"
 msgstr "tableau de bord"
@@ -449,6 +505,10 @@ msgstr "points de mes commissions"
 msgid "searchitemsofmycommissionstoedit"
 msgstr "points de mes commissions éditables"
 
+#. Default: "Items to control completeness of"
+msgid "searchitemstocontrolcompletenessof"
+msgstr "Complétude à contrôler"
+
 #. Default: "items to follow"
 msgid "searchitemstofollow"
 msgstr "points à suivre"
@@ -456,6 +516,10 @@ msgstr "points à suivre"
 #. Default: "items to validate"
 msgid "searchitemstovalidate"
 msgstr "points à valider"
+
+#. Default: "Synthesis finance advices"
+msgid "searchitemswithfinanceadvice"
+msgstr "Synthèse Avis DF"
 
 #. Default: "items with follow-up provided"
 msgid "searchitemswithfollowupprovided"
@@ -486,4 +550,3 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='confi
 #. Default: "<span class='follow_up_yes'>A follow-up is needed.</span>"
 msgid "yes_followup_needed_itemview"
 msgstr "<span class='follow_up_yes'>Un suivi est nécessaire.</span>"
-

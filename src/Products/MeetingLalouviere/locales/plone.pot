@@ -50,14 +50,6 @@ msgstr ""
 msgid "item_in_council"
 msgstr ""
 
-#. Default: "accept but modify"
-msgid "accept_but_modify"
-msgstr ""
-
-#. Default: "Accepted but modified"
-msgid "accepted_but_modified"
-msgstr ""
-
 # Workflow transitions
 #. Default: "Ask advices"
 msgid "ask_advices_by_itemcreator"
@@ -190,10 +182,6 @@ msgid "validated"
 msgstr ""
 
 #. Default: "send back"
-msgid "backToItemCreated"
-msgstr ""
-
-#. Default: "send back"
 msgid "backToProposedToServiceHead"
 msgstr ""
 
@@ -207,14 +195,6 @@ msgstr ""
 
 #. Default: "send back"
 msgid "backToProposedToDirector"
-msgstr ""
-
-#. Default: "bo to item frozen"
-msgid "backToItemFrozen"
-msgstr ""
-
-#. Default: "send back"
-msgid "backToPresented"
 msgstr ""
 
 #. Default: "frozen"
@@ -247,4 +227,120 @@ msgstr ""
 
 #. Default: "Some items are still under corrections in services"
 msgid "some_item_still_in_service"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCollege"
+msgid "MeetingItemTemplateCollege"
+msgstr ""
+
+#. Default: "MeetingItemRecurringCollege"
+msgid "MeetingItemRecurringCollege"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCouncil"
+msgid "MeetingItemTemplateCouncil"
+msgstr ""
+
+#. Default: "MeetingItemRecurringCouncil"
+msgid "MeetingItemRecurringCouncil"
+msgstr ""
+
+#. Default: "MeetingCoDir"
+msgid "MeetingCoDir"
+msgstr ""
+
+#. Default: "MeetingItemCoDir"
+msgid "MeetingItemCoDir"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCoDir"
+msgid "MeetingItemTemplateCoDir"
+msgstr ""
+
+#. Default: "MeetingItemRecurringCoDir"
+msgid "MeetingItemRecurringCoDir"
+msgstr ""
+
+#. Default: "MeetingBourgmestre"
+msgid "MeetingBourgmestre"
+msgstr ""
+
+#. Default: "MeetingItemBourgmestre"
+msgid "MeetingItemBourgmestre"
+msgstr ""
+
+#. Default: "MeetingItemRecurringBourgmestre"
+msgid "MeetingItemRecurringBourgmestre"
+msgstr ""
+
+#. Default: "MeetingItemTemplateBourgmestre"
+msgid "MeetingItemTemplateBourgmestre"
+msgstr ""
+
+#. Default: "Create an item council from an item college"
+msgid "create_to_meeting-config-council_from_meeting-config-college"
+msgstr ""
+
+#. Default: "Create an item college from an item council"
+msgid "create_to_meeting-config-college_from_meeting-config-council"
+msgstr ""
+
+#. Default: "Create an item college from an item CoDir"
+msgid "create_to_meeting-config-college_from_codir"
+msgstr ""
+
+#. Default: "Propose to financial controller"
+msgid "proposeToFinancialController"
+msgstr ""
+
+#. Default: "Proposed to financial controller"
+msgid "proposed_to_financial_controller"
+msgstr ""
+
+#. Default: "Propose to financial editor"
+msgid "proposeToFinancialEditor"
+msgstr ""
+
+#. Default: "Proposed to financial editor"
+msgid "proposed_to_financial_editor"
+msgstr ""
+
+#. Default: "Propose to financial reviewer"
+msgid "proposeToFinancialReviewer"
+msgstr ""
+
+#. Default: "Proposed to financial reviewer"
+msgid "proposed_to_financial_reviewer"
+msgstr ""
+
+#. Default: "Propose to financial manager"
+msgid "proposeToFinancialManager"
+msgstr ""
+
+#. Default: "Proposed to financial manager"
+msgid "proposed_to_financial_manager"
+msgstr ""
+
+#. Default: "Sign financial advice"
+msgid "signFinancialAdvice"
+msgstr ""
+
+#. Default: "Financial advice signed"
+msgid "financial_advice_signed"
+msgstr ""
+
+#. Default: "Send back to 'financial controller'"
+msgid "backToProposedToFinancialController"
+msgstr ""
+
+#. Default: "Send back to 'financial editor'"
+msgid "backToProposedToFinancialEditor"
+msgstr ""
+
+#. Default: "Send back to 'financial reviewer'"
+msgid "backToProposedToFinancialReviewer"
+msgstr ""
+
+#. Default: "Send back to 'financial manager'"
+msgid "backToProposedToFinancialManager"
 msgstr ""
