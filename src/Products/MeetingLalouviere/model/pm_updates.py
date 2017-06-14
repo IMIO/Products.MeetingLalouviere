@@ -1,6 +1,7 @@
 from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import DateTimeField
 from Products.Archetypes.atapi import LinesField
+from Products.Archetypes.atapi import MultiSelectionWidget
 from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import TextField
 from Products.Archetypes.atapi import TextAreaWidget

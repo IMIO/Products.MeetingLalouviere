@@ -27,24 +27,7 @@ categories = [CategoryDescriptor('category1', 'Catégorie 1'),
               CategoryDescriptor('category5', 'Catégorie 5')]
 
 # Pod templates ----------------------------------------------------------------
-agendaTemplate = PodTemplateDescriptor('oj', 'Ordre du jour')
-agendaTemplate.odt_file = '../../examples_fr/templates/oj.odt'
-agendaTemplate.pod_formats = ['odt', 'pdf', ]
-agendaTemplate.pod_portal_types = ['MeetingBourgmestre']
-agendaTemplate.tal_condition = 'python:tool.isManager(here)'
-
-decisionsTemplate = PodTemplateDescriptor('pv', 'Procès-verbal')
-decisionsTemplate.odt_file = '../../examples_fr/templates/pv.odt'
-decisionsTemplate.pod_formats = ['odt', 'pdf', ]
-decisionsTemplate.pod_portal_types = ['MeetingBourgmestre']
-decisionsTemplate.tal_condition = 'python:tool.isManager(here)'
-
-itemTemplate = PodTemplateDescriptor('deliberation', 'Délibération')
-itemTemplate.odt_file = '../../examples_fr/templates/deliberation.odt'
-itemTemplate.pod_formats = ['odt', 'pdf', ]
-itemTemplate.pod_portal_types = ['MeetingItemBourgmestre']
-
-bourgmestreTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
+bourgmestreTemplates = []
 
 # Users and groups -------------------------------------------------------------
 groups = [GroupDescriptor('groupe_bourgmestre', 'Groupe BOURGMESTRE', 'ordopol')]
@@ -89,13 +72,13 @@ bourgmestreMeeting.usedMeetingAttributes = ['startDate', 'endDate', 'signatures'
 bourgmestreMeeting.recordMeetingHistoryStates = []
 bourgmestreMeeting.xhtmlTransformFields = ()
 bourgmestreMeeting.xhtmlTransformTypes = ()
-bourgmestreMeeting.itemWorkflow = 'meetingitemcommunes_workflow'
-bourgmestreMeeting.meetingWorkflow = 'meetingcommunes_workflow'
-bourgmestreMeeting.itemConditionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingItemCollegeWorkflowConditions'
-bourgmestreMeeting.itemActionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingItemCollegeWorkflowActions'
-bourgmestreMeeting.meetingConditionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingCollegeWorkflowConditions'
-bourgmestreMeeting.meetingActionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingCollegeWorkflowActions'
-bourgmestreMeeting.transitionsToConfirm = ['MeetingItem.delay', ]
+bourgmestreMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
+bourgmestreMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
+bourgmestreMeeting.maxShownListings = '100'
+bourgmestreMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions'
+bourgmestreMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
+bourgmestreMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
+bourgmestreMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
 bourgmestreMeeting.meetingTopicStates = ('created', 'frozen')
 bourgmestreMeeting.decisionTopicStates = ('decided', 'closed')
 bourgmestreMeeting.enforceAdviceMandatoriness = False

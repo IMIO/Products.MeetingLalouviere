@@ -27,10 +27,10 @@ from DateTime import DateTime
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
+from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as pmtwfa
 
 
-class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
+class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
     '''Tests various aspects of votes management.'''
 
     def test_subproduct_call_WFA_availableWFAdaptations(self):
@@ -147,11 +147,11 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         '''Only launch the test for meetingConfig not for meetingConfig2 as no
            'decided' state exists in meetingConfig2 for the 'Meeting'.'''
         self.meetingConfig2.setMeetingWorkflow(self.meetingConfig.getMeetingWorkflow())
-        mctwfa.test_pm_WFA_hide_decisions_when_under_writing(self)
+        pmtwfa.test_pm_WFA_hide_decisions_when_under_writing(self)
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testWFAdaptations, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testWFAdaptations, prefix='test_pm_'))
     return suite

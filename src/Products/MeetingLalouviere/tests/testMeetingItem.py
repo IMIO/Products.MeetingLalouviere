@@ -25,7 +25,7 @@
 from DateTime import DateTime
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
+from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
@@ -35,7 +35,7 @@ from plone import api
 from plone.app.textfield.value import RichTextValue
 
 
-class testMeetingItem(MeetingLalouviereTestCase, mctmi):
+class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
     """
         Tests the MeetingItem class methods.
     """
@@ -262,5 +262,5 @@ def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     # launch only tests prefixed by 'test_mc_' to avoid launching the tests coming from pmtmi
-    suite.addTest(makeSuite(testMeetingItem, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testMeetingItem, prefix='test_pm_'))
     return suite

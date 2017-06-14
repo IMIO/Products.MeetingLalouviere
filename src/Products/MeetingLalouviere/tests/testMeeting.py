@@ -24,11 +24,11 @@
 
 from DateTime import DateTime
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.PloneMeeting.tests.testMeeting import testMeeting as pmtm
 from Products.PloneMeeting.config import MEETING_STATES_ACCEPTING_ITEMS
 
 
-class testMeeting(MeetingLalouviereTestCase, mctm):
+class testMeeting(MeetingLalouviereTestCase, pmtm):
     """Tests the Meeting class methods."""
 
     def test_subproduct_call_AvailableItems(self):

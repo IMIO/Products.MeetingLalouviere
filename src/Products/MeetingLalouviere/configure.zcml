@@ -5,7 +5,7 @@
            i18n_domain="MeetingLalouviere">
 
   <!-- registerTranslations before including package Products.PloneMeeting
-       so Products.MeetingCommunes can overrides Products.PloneMeeting translations -->
+       so Products.MeetingLalouviere can overrides Products.PloneMeeting translations -->
   <i18n:registerTranslations directory="locales" />
   <include file="profiles.zcml" />
   <include package=".browser" />

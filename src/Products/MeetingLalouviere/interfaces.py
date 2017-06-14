@@ -32,7 +32,7 @@ from Products.PloneMeeting.interfaces import \
 # ------------------------------------------------------------------------------
 class IMeetingItemCollegeLalouviereWorkflowActions(IMeetingItemWorkflowActions):
     '''This interface represents a meeting item as viewed by the specific
-       item workflow that is defined in this MeetingCommunes product.'''
+       item workflow that is defined in this MeetingLalouviere product.'''
     def doPresent():
         """
           Triggered while doing the 'present' transition
@@ -49,7 +49,7 @@ class IMeetingItemCollegeLalouviereWorkflowActions(IMeetingItemWorkflowActions):
 
 class IMeetingItemCollegeLalouviereWorkflowConditions(IMeetingItemWorkflowConditions):
     '''This interface represents a meeting item as viewed by the specific
-       item workflow that is defined in this MeetingCommunes product.'''
+       item workflow that is defined in this MeetingLalouviere product.'''
     def mayDecide():
         """
           Guard for the 'decide' transition
@@ -66,7 +66,7 @@ class IMeetingItemCollegeLalouviereWorkflowConditions(IMeetingItemWorkflowCondit
 
 class IMeetingCollegeLalouviereWorkflowActions(IMeetingWorkflowActions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingLalouviere product.'''
     def doClose():
         """
           Triggered while doing the 'close' transition
@@ -87,7 +87,7 @@ class IMeetingCollegeLalouviereWorkflowActions(IMeetingWorkflowActions):
 
 class IMeetingCollegeLalouviereWorkflowConditions(IMeetingWorkflowConditions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingLalouviere product.'''
     def mayFreeze():
         """
           Guard for the 'freeze' transition
@@ -108,7 +108,7 @@ class IMeetingCollegeLalouviereWorkflowConditions(IMeetingWorkflowConditions):
 
 class IMeetingCouncilLalouviereWorkflowActions(IMeetingWorkflowActions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingLalouviere product.'''
     def doClose():
         """
           Triggered while doing the 'close' transition
@@ -129,7 +129,7 @@ class IMeetingCouncilLalouviereWorkflowActions(IMeetingWorkflowActions):
 
 class IMeetingCouncilLalouviereWorkflowConditions(IMeetingWorkflowConditions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingLalouviere product.'''
     def mayFreeze():
         """
           Guard for the 'freeze' transition
@@ -150,7 +150,7 @@ class IMeetingCouncilLalouviereWorkflowConditions(IMeetingWorkflowConditions):
 
 class IMeetingItemCouncilLalouviereWorkflowActions(IMeetingItemWorkflowActions):
     '''This interface represents a meeting item as viewed by the specific
-       item workflow that is defined in this MeetingCommunes product.'''
+       item workflow that is defined in this MeetingLalouviere product.'''
     def doPresent():
         """
           Triggered while doing the 'present' transition
@@ -159,7 +159,7 @@ class IMeetingItemCouncilLalouviereWorkflowActions(IMeetingItemWorkflowActions):
 
 class IMeetingItemCouncilLalouviereWorkflowConditions(IMeetingItemWorkflowConditions):
     '''This interface represents a meeting item as viewed by the specific
-       item workflow that is defined in this MeetingCommunes product.'''
+       item workflow that is defined in this MeetingLalouviere product.'''
     def mayDecide():
         """
           Guard for the 'decide' transition

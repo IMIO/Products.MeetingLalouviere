@@ -28,24 +28,7 @@ categories = [CategoryDescriptor('category1', 'Catégorie 1'),
               CategoryDescriptor('category5', 'Catégorie 5')]
 
 # Pod templates ----------------------------------------------------------------
-agendaTemplate = PodTemplateDescriptor('oj', 'Ordre du jour')
-agendaTemplate.odt_file = '../../examples_fr/templates/oj.odt'
-agendaTemplate.pod_formats = ['odt', 'pdf', ]
-agendaTemplate.pod_portal_types = ['MeetingCoDir']
-agendaTemplate.tal_condition = 'python:tool.isManager(here)'
-
-decisionsTemplate = PodTemplateDescriptor('pv', 'Procès-verbal')
-decisionsTemplate.odt_file = '../../examples_fr/templates/pv.odt'
-decisionsTemplate.pod_formats = ['odt', 'pdf', ]
-decisionsTemplate.pod_portal_types = ['MeetingCoDir']
-decisionsTemplate.tal_condition = 'python:tool.isManager(here)'
-
-itemTemplate = PodTemplateDescriptor('deliberation', 'Délibération')
-itemTemplate.odt_file = '../../examples_fr/templates/deliberation.odt'
-itemTemplate.pod_formats = ['odt', 'pdf', ]
-itemTemplate.pod_portal_types = ['MeetingItemCoDir']
-
-codirTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
+codirTemplates = []
 
 # Users and groups -------------------------------------------------------------
 dgen = UserDescriptor('dgen', [], email="test@test.be", fullname="Henry Directeur")
@@ -145,12 +128,13 @@ codirMeeting.usedMeetingAttributes = ['startDate', 'endDate', 'signatures', 'ass
 codirMeeting.recordMeetingHistoryStates = []
 codirMeeting.xhtmlTransformFields = ()
 codirMeeting.xhtmlTransformTypes = ()
-codirMeeting.itemWorkflow = 'meetingitemcommunes_workflow'
-codirMeeting.meetingWorkflow = 'meetingcommunes_workflow'
-codirMeeting.itemConditionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingItemCollegeWorkflowConditions'
-codirMeeting.itemActionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingItemCollegeWorkflowActions'
-codirMeeting.meetingConditionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingCollegeWorkflowConditions'
-codirMeeting.meetingActionsInterface = 'Products.MeetingCommunes.interfaces.IMeetingCollegeWorkflowActions'
+codirMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
+codirMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
+codirMeeting.maxShownListings = '100'
+codirMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions'
+codirMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
+codirMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
+codirMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
 codirMeeting.transitionsToConfirm = ['MeetingItem.delay', ]
 codirMeeting.meetingTopicStates = ('created', 'frozen')
 codirMeeting.decisionTopicStates = ('decided', 'closed')

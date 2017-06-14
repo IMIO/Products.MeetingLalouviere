@@ -23,10 +23,10 @@
 #
 
 from Products.PloneMeeting.tests.testSetup import testSetup as pmts
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
-class testSetup(MeetingCommunesTestCase, pmts):
+class testSetup(MeetingLalouviereTestCase, pmts):
     '''Tests the setup, especially registered profiles.'''
 
 

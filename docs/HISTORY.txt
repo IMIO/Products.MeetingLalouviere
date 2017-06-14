@@ -15,7 +15,7 @@ Products.MeetingLalouviere Changelog
 - Adapted tests, keep test... original PM files to overrides original PM tests and
   use testCustom... for every other tests, added a testCustomWorkflow.py
 - Now that the same WF may be used in several MeetingConfig in PloneMeeting, removed the
-  2 WFs meetingcollege and meetingcouncil and use only one meetingcommunes where wfAdaptations
+  2 WFs meetingcollege and meetingcouncil and use only one MeetingLalouviere where wfAdaptations
   'no_publication' and 'no_global_observation' are enabled
 - Added profile 'financesadvice' to manage advanced finances advice using a particular
   workflow and a specific meetingadvicefinances portal_type

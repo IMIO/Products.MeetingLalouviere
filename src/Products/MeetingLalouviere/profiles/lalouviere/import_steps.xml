@@ -15,7 +15,7 @@
  <import-step id="finalizeInstanceMeetingLalouviere" version="20131114-01"
               handler="Products.MeetingLalouviere.setuphandlers.finalizeInstance"
               title="Finalize instance.">
-  <dependency step="initializetool-MeetingCommunes"/>
+  <dependency step="installMeetingLalouviere"/>
   Finalize instance.
  </import-step>
 </import-steps>

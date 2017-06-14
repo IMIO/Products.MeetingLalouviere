@@ -13,33 +13,28 @@ __author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulet
 __docformat__ = 'plaintext'
 
 
+import os
 import logging
 logger = logging.getLogger('MeetingLalouviere: setuphandlers')
-from Products.MeetingLalouviere.config import PROJECTNAME
-from Products.MeetingLalouviere.config import DEPENDENCIES
-import os
-from Products.CMFCore.utils import getToolByName
-import transaction
-##code-section HEAD
 from imio.helpers.catalog import addOrUpdateIndexes
-from Products.PloneMeeting.exportimport.content import ToolInitializer
-from Products.PloneMeeting.config import TOPIC_TYPE, TOPIC_SEARCH_SCRIPT, TOPIC_TAL_EXPRESSION
-from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS, \
-    COUNCIL_COMMISSION_IDS_2013, COMMISSION_EDITORS_SUFFIX
-from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from plone import api
-##/code-section HEAD
+from Products.PloneMeeting.exportimport.content import ToolInitializer
+from Products.MeetingLalouviere.config import PROJECTNAME
+from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
+from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS_2013
+from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
+
 
 def isNotMeetingLalouviereProfile(context):
     return context.readDataFile("MeetingLalouviere_marker.txt") is None
 
-
-
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingLalouviereProfile(context): return
-    wft = getToolByName(context.getSite(), 'portal_workflow')
+    if isNotMeetingLalouviereProfile(context):
+        return
+    wft = api.portal.get_tool('portal_workflow')
     wft.updateRoleMappings()
 
 def postInstall(context):
@@ -350,7 +345,7 @@ def showHomeTab(context, site):
 
 def reinstallPloneMeetingSkin(context, site):
     """
-       Reinstall Products.plonemeetingskin as the reinstallation of MeetingCommunes
+       Reinstall Products.plonemeetingskin as the reinstallation of MeetingLalouviere
        change the portal_skins layers order
     """
     if isNotMeetingLalouviereProfile(context):

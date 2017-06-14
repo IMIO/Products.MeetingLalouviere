@@ -23,15 +23,15 @@
 #
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testChangeItemOrderView import testChangeItemOrderView as mctciov
+from Products.PloneMeeting.tests.testChangeItemOrderView import testChangeItemOrderView as pmtciov
 
 
-class testChangeItemOrderView(MeetingLalouviereTestCase, mctciov):
+class testChangeItemOrderView(MeetingLalouviereTestCase, pmtciov):
     '''Tests the ChangeItemOrderView class methods.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testChangeItemOrderView, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testChangeItemOrderView, prefix='test_pm_'))
     return suite

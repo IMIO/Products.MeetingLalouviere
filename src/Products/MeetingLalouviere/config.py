@@ -93,3 +93,7 @@ COMMISSION_EDITORS_SUFFIX = '_commissioneditors'
 
 # id of finance advice group
 FINANCE_GROUP_ID = 'avis-directeur-financier-2200020ac'
+
+# if True, a positive finances advice may be signed by a finances reviewer
+# if not, only the finances manager may sign advices
+POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER = False

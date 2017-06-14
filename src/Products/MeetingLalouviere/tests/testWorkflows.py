@@ -26,10 +26,10 @@ from AccessControl import Unauthorized
 from DateTime import DateTime
 from plone.app.testing.helpers import setRoles
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
+from Products.PloneMeeting.tests.testWorkflows import testWorkflows as pmtw
 
 
-class testWorkflows(MeetingLalouviereTestCase, mctw):
+class testWorkflows(MeetingLalouviereTestCase, pmtw):
     """Tests the default workflows implemented in MeetingLalouviere.
 
        WARNING:
@@ -251,8 +251,8 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         """
             Tests the recurring items system.
         """
-        # call MeetingCommunes test and add our own
-        mctw.test_subproduct_call_RecurringItems(self)
+        # call PloneMeeting test and add our own
+        pmtw.test_subproduct_call_RecurringItems(self)
         # we do the test for the council config
         self.meetingConfig = getattr(self.tool, 'meeting-config-council')
         self._testRecurringItemsCouncil()
@@ -403,5 +403,5 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testWorkflows, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testWorkflows, prefix='test_pm_'))
     return suite

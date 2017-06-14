@@ -23,10 +23,10 @@
 #
 import logging
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
+from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as pmtmc
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 
-class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
+class testMeetingConfig(MeetingLalouviereTestCase, pmtmc):
     '''Call testMeetingConfig tests.'''
 
     def test_subproduct_call_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):
@@ -71,5 +71,5 @@ class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeetingConfig, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testMeetingConfig, prefix='test_pm_'))
     return suite

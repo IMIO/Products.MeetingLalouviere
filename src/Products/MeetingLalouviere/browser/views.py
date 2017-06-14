@@ -25,7 +25,7 @@ from App.class_init import InitializeClass
 from Products.Five import BrowserView
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
-from Products.MeetingCommunes.config import POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER
+from Products.MeetingLalouviere.config import POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER
 
 
 class AdviceWFConditionsView(BrowserView):

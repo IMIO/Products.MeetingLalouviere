@@ -21,12 +21,12 @@
 #
 
 from DateTime import DateTime
-from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
+from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
 from Products.MeetingLalouviere.setuphandlers import _configureCollegeCustomAdvisers
 from Products.MeetingLalouviere.setuphandlers import _createFinancesGroup
 
 
-class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
+class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
     '''Override some values of PloneMeetingTestingHelpers.'''
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToServiceHead',
@@ -92,7 +92,8 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
                               'proposed': 'proposed_to_director',
                               'validated': 'validated',
-                              'presented': 'presented'}
+                              'presented': 'presented',
+                              'itemfrozen': 'itemfrozen'}
 
     def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
         '''Create a meeting with a bunch of items.
@@ -102,7 +103,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         currentMember = self.portal.portal_membership.getAuthenticatedMember()
         currentMemberRoles = currentMember.getRoles()
         setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
-        meeting = MeetingCommunesTestingHelpers._createMeetingWithItems(self,
+        meeting = PloneMeetingTestingHelpers._createMeetingWithItems(self,
                                                                         withItems=withItems,
                                                                         meetingDate=meetingDate)
         setRoles(self.portal, currentMember.getId(), currentMemberRoles)

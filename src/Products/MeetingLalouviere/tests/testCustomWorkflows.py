@@ -23,15 +23,18 @@
 #
 
 from DateTime import DateTime
+import logging
+
 from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import View
-from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
-class testCustomWorkflows(MeetingCommunesTestCase):
-    """Tests the default workflows implemented in MeetingCommunes."""
+logger = logging.getLogger('MeetingSeraing: testing')
+
+class testCustomWorkflows(MeetingLalouviereTestCase):
+    """Tests the default workflows implemented in PloneMeeting."""
 
     def test_FreezeMeeting(self):
         """
@@ -142,7 +145,7 @@ class testCustomWorkflows(MeetingCommunesTestCase):
         # enable prevalidation
         cfg = self.meetingConfig
         cfg.setWorkflowAdaptations(('pre_validation', ))
-        performWorkflowAdaptations(cfg, logger=pm_logger)
+        performWorkflowAdaptations(cfg, logger=logger)
         self.changeUser('pmManager')
         self._turnUserIntoPrereviewer(self.member)
         item = self.create('MeetingItem')

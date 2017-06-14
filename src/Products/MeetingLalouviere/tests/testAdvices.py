@@ -31,10 +31,10 @@ from plone.dexterity.utils import createContentInContainer
 from Products.CMFCore.permissions import View
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
+from Products.PloneMeeting.tests.testAdvices import testAdvices as pmta
 
 
-class testAdvices(MeetingLalouviereTestCase, mcta):
+class testAdvices(MeetingLalouviereTestCase, pmta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
@@ -148,11 +148,11 @@ class testAdvices(MeetingLalouviereTestCase, mcta):
 
     def test_subproduct_call_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self):
         """test"""
-        mcta.test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self)
+        pmta.test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self)
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testAdvices, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testAdvices, prefix='test_pm_'))
     return suite
