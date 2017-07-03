@@ -591,20 +591,6 @@ class CustomMeetingItem(MeetingItem):
         return self.REQUEST.RESPONSE.redirect(self.absolute_url() + '#followup')
     MeetingItem.followUpNotPrinted = followUpNotPrinted
 
-    security.declarePublic('onDuplicated')
-
-    def onDuplicated(self, original):
-        '''Hook when a item is duplicated (called by MeetingItem.clone).'''
-        # while an item is cloned to the meeting-config-council,
-        # add the council specific 'motivation' at the top of existing 'motivation'
-        item = self.getSelf()
-        # only apply if we are actually creating a MeetingItemCouncil from another MeetingConfig
-        if not (item.portal_type == 'MeetingItemCouncil' and original.portal_type != 'MeetingItemCouncil'):
-            return
-        existingMotivation = item.getMotivation()
-        defaultCouncilMotivation = item.Schema()['motivation'].getDefault(item)
-        item.setMotivation(defaultCouncilMotivation + '<p>&nbsp;</p><p>&nbsp;</p>' + existingMotivation)
-
     security.declareProtected('Modify portal content', 'onEdit')
 
     def onEdit(self, isCreated):
@@ -886,7 +872,7 @@ class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
         tool = getToolByName(self.context, 'portal_plonemeeting')
         cfg = tool.getMeetingConfig(self.context)
         initializeDecision = cfg.getInitItemDecisionIfEmptyOnDecide()
-        for item in self.context.getAllItems(ordered=True):
+        for item in self.context.getItems(ordered=True):
             if initializeDecision:
                 # If deliberation (motivation+decision) is empty,
                 # initialize it the decision field

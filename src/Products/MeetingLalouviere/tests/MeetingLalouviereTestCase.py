@@ -35,3 +35,8 @@ class MeetingLalouviereTestCase(PloneMeetingTestCase, MeetingLalouviereTestingHe
     """Base class for defining MeetingLalouviere test cases."""
 
     layer = MLL_TESTING_PROFILE_FUNCTIONAL
+
+    def setUp(self):
+        PloneMeetingTestCase.setUp(self)
+        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
+        self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')

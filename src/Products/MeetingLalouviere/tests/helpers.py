@@ -95,19 +95,12 @@ class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
                               'presented': 'presented',
                               'itemfrozen': 'itemfrozen'}
 
-    def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
-        '''Create a meeting with a bunch of items.
-           Overrided to do it as 'Manager' to be able
-           to add recurring items.'''
-        from plone.app.testing.helpers import setRoles
-        currentMember = self.portal.portal_membership.getAuthenticatedMember()
-        currentMemberRoles = currentMember.getRoles()
-        setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
-        meeting = PloneMeetingTestingHelpers._createMeetingWithItems(self,
-                                                                        withItems=withItems,
-                                                                        meetingDate=meetingDate)
-        setRoles(self.portal, currentMember.getId(), currentMemberRoles)
-        return meeting
+    # in which state an item must be after an particular meeting transition?
+    ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
+                                              'close': 'accepted'}
+
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = ('freeze', 'decide', )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('setInCommittee', 'setInCouncil', )
 
     def _configureFinancesAdvice(self, cfg):
         """ """

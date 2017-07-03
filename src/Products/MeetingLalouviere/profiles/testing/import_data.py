@@ -153,7 +153,6 @@ classifier2 = CategoryDescriptor('classifier2', 'Classifier 2')
 classifier3 = CategoryDescriptor('classifier3', 'Classifier 3')
 
 # Users and groups -------------------------------------------------------------
-admin = UserDescriptor('admin', ['Manager', 'MeetingManager'])
 pmManager = UserDescriptor('pmManager', [], email="pmmanager@plonemeeting.org", fullname='M. PMManager')
 pmCreator1 = UserDescriptor('pmCreator1', [], email="pmcreator1@plonemeeting.org", fullname='M. PMCreator One')
 pmCreator1b = UserDescriptor('pmCreator1b', [], email="pmcreator1b@plonemeeting.org", fullname='M. PMCreator One bee')
@@ -210,7 +209,6 @@ developers = GroupDescriptor('developers', 'Developers', 'Devel')
 developers.creators.append(pmCreator1)
 developers.creators.append(pmCreator1b)
 developers.creators.append(pmManager)
-developers.creators.append(admin)
 developers.serviceheads.append(pmReviewer1)
 developers.serviceheads.append(pmServiceHead1)
 developers.serviceheads.append(pmManager)
@@ -221,14 +219,11 @@ developers.divisionheads.append(pmManager)
 developers.directors.append(pmDirector1)
 developers.directors.append(pmReviewer1)
 developers.directors.append(pmManager)
-developers.directors.append(admin)
 developers.reviewers.append(pmReviewer1)
 developers.reviewers.append(pmManager)
 developers.observers.append(pmObserver1)
-developers.reviewers.append(admin)
 developers.observers.append(pmReviewer1)
 developers.observers.append(pmManager)
-developers.observers.append(admin)
 developers.advisers.append(pmAdviser1)
 developers.advisers.append(pmManager)
 developers.followupwriters.append(pmManager)
@@ -256,6 +251,9 @@ developers.observers.append(voter1)
 developers.observers.append(voter2)
 vendors.observers.append(voter1)
 vendors.observers.append(voter2)
+
+# Add a vintage group
+endUsers = GroupDescriptor('endUsers', 'End users', 'EndUsers', active=False)
 
 pmManager_observer = MeetingUserDescriptor('pmManager',
                                            duty='Secretaire de la Chancellerie',
@@ -291,23 +289,25 @@ collegeMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
                           'Charles Exemple - 1er Echevin,\n' \
                           'Echevin Un, Echevin Deux, Echevin Trois - Echevins,\n' \
                           'Jacqueline Exemple, Responsable du CPAS'
-collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, 1er Echevin'
+collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, Secrétaire communal'
+collegeMeeting.certifiedSignatures = []
 collegeMeeting.categories = [development, research]
 collegeMeeting.classifiers = [classifier1, classifier2, classifier3]
 collegeMeeting.shortName = 'College'
 collegeMeeting.annexTypes = [financialAnalysis, budgetAnalysisCfg1, overheadAnalysis,
                              itemAnnex, decisionAnnex, marketingAnalysis,
                              adviceAnnex, adviceLegalAnalysis, meetingAnnex]
-collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned', 'motivation', )
+collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned', )
+collegeMeeting.maxShownListings = '100'
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
 collegeMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
-collegeMeeting.maxShownListings = '100'
 collegeMeeting.itemConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions'
 collegeMeeting.itemActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions'
 collegeMeeting.transitionsForPresentingAnItem = ['proposeToServiceHead', 'proposeToOfficeManager', 'proposeToDivisionHead',
                                                  'proposeToDirector', 'validate', 'present', ]
+collegeMeeting.transitionsToConfirm = []
 collegeMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
                                                               'item_transition': 'itemfreeze'},
 
@@ -333,6 +333,7 @@ collegeMeeting.itemTopicStates = ('itemcreated', 'proposed_to_servicehead', 'pro
                                   'delayed', 'pre_accepted', 'removed',)
 collegeMeeting.meetingTopicStates = ('created', 'frozen')
 collegeMeeting.decisionTopicStates = ('decided', 'closed')
+collegeMeeting.recordItemHistoryStates = []
 collegeMeeting.itemAdviceStates = ['proposed_to_director', ]
 collegeMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
 collegeMeeting.itemAdviceViewStates = ['presented', ]
@@ -340,8 +341,13 @@ collegeMeeting.recordItemHistoryStates = ['', ]
 collegeMeeting.maxShownMeetings = 5
 collegeMeeting.maxDaysDecisions = 60
 collegeMeeting.meetingAppDefaultView = 'searchallitems'
+collegeMeeting.itemDocFormats = ('odt', 'pdf')
+collegeMeeting.meetingDocFormats = ('odt', 'pdf')
 collegeMeeting.useAdvices = True
 collegeMeeting.selectableAdvisers = ['developers', 'vendors']
+collegeMeeting.itemAdviceStates = ['proposed_to_director', ]
+collegeMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
+collegeMeeting.itemAdviceViewStates = ['presented', ]
 collegeMeeting.transitionsReinitializingDelays = ('backToItemCreated', )
 collegeMeeting.enforceAdviceMandatoriness = False
 collegeMeeting.enableAdviceInvalidation = False
@@ -354,12 +360,6 @@ collegeMeeting.workflowAdaptations = []
 collegeMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups',
                                              'reverse': '0'}, )
 collegeMeeting.useGroupsAsCategories = True
-collegeMeeting.defaultMeetingItemMotivation = """<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant
-codification de la législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de la
-décentralisation;</p>
-<p>Vu le décret du 27 mai 2004 portant confirmation dudit arrêté du gouvernement Wallon du 22 avril 2004;</p>
-<p>Vu la nouvelle Loi communale;</p> <p>Vu l'article 123 de la nouvelle Loi communale;</p>
-<p>Vu l'article L1123-23 du code de la Démocratie locale et de la Décentralisation;</p>"""
 collegeMeeting.meetingUsers = []
 collegeMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
 collegeMeeting.meetingConfigsToCloneTo = [{'meeting_config': 'meeting-config-council',
@@ -405,14 +405,6 @@ councilMeeting.signatures = """Le Secrétaire,
 R.ANKAERT
 Le Président,
 J.GOBERT"""
-councilMeeting.defaultMeetingItemMotivation = """<p>Le Conseil,</p>
-<p>&nbsp;</p>
-<p>Vu, d'une part, l'arrêté du Gouvernement  Wallon du 22 avril 2004 portant codification de la législation relative
-aux pouvoirs locaux et d'autre part, le décret du 27 mai 2004 portant  confirmation dudit arrêté;</p>
-<p>&nbsp;</p>
-<p>Vu l'article 117 de la nouvelle Loi Communale;</p>
-<p>&nbsp;</p>
-<p>Vu l'article L 1122-30 du Code de Démocratie Locale et de la Décentralisation;</p>"""
 councilMeeting.categories = [deployment, maintenance, development, events,
                              research, projects, marketing, subproducts]
 councilMeeting.classifiers = [classifier1, classifier2, classifier3]
