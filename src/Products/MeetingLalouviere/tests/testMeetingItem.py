@@ -40,7 +40,7 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         Tests the MeetingItem class methods.
     """
 
-    def test_subproduct_call_PowerObserversLocalRoles(self):
+    def test_pm_PowerObserversLocalRoles(self):
         '''Check that powerobservers local roles are set correctly...
            Test alternatively item or meeting that is accessible to and not...'''
         # we will check that (restricted) power observers local roles are set correctly.
@@ -104,7 +104,7 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         self.assertFalse(self.hasPermission(View, item))
         self.assertTrue(self.hasPermission(View, meeting))
 
-    def test_subproduct_call_OnTransitionFieldTransforms(self):
+    def test_pm_OnTransitionFieldTransforms(self):
         '''On transition triggered, some transforms can be applied to item or meeting
            rich text field depending on what is defined in MeetingConfig.onTransitionFieldTransforms.
            This is used for example to adapt the text of the decision when an item is delayed or refused.
@@ -163,7 +163,7 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         self.assertTrue(messages[0].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % ('decision',
                                                                                          "'some_wrong_tal_expression'"))
 
-    def test_subproduct_call_IsPrivacyViewable(self):
+    def test_pm_IsPrivacyViewable(self):
         '''
           Original test, see doc string in PloneMeeting.
           Here, as soon as a user can access an item, the item isPrivacyViewable.
@@ -219,7 +219,7 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         self.failUnless(secretItem.isPrivacyViewable())
         self.failUnless(publicItem.isPrivacyViewable())
 
-    def test_subproduct_call_GetDeliberation(self):
+    def test_pm_GetDeliberation(self):
         '''Test the custom getDeliberation from MeetingLalouviere.'''
         self.changeUser('admin')
         cfg = self.meetingConfig

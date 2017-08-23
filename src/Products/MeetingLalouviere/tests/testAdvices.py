@@ -38,7 +38,7 @@ class testAdvices(MeetingLalouviereTestCase, pmta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
-    def test_subproduct_call_AddEditDeleteAdvices(self):
+    def test_pm_AddEditDeleteAdvices(self):
         '''This is a copy/paste from test in PloneMeeting, just look the XXX MeetingLalouviere,
            this is for PM 3.2 and is fixed in PM 3.3...'''
         # creator for group 'developers'
@@ -146,7 +146,7 @@ class testAdvices(MeetingLalouviereTestCase, pmta):
         self.changeUser('pmReviewer2')
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
 
-    def test_subproduct_call_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self):
+    def test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self):
         """test"""
         pmta.test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self)
 

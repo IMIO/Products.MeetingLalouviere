@@ -33,40 +33,40 @@ from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as p
 class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
     '''Tests various aspects of votes management.'''
 
-    def test_subproduct_call_WFA_availableWFAdaptations(self):
+    def test_pm_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
                           set(('archiving', 'local_meeting_managers', 'return_to_proposing_group', )))
 
-    def test_subproduct_call_WFA_no_publication(self):
+    def test_pm_WFA_no_publication(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_no_proposal(self):
+    def test_pm_WFA_no_proposal(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_pre_validation(self):
+    def test_pm_WFA_pre_validation(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_items_come_validated(self):
+    def test_pm_WFA_items_come_validated(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_only_creator_may_delete(self):
+    def test_pm_WFA_only_creator_may_delete(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_no_global_observation(self):
+    def test_pm_WFA_no_global_observation(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_everyone_reads_all(self):
+    def test_pm_WFA_everyone_reads_all(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_creator_edits_unless_closed(self):
+    def test_pm_WFA_creator_edits_unless_closed(self):
         '''No sense...'''
         pass
 
@@ -143,7 +143,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
         self.do(item, 'backTo_item_in_committee_from_returned_to_proposing_group')
         self.assertEquals(item.queryState(), 'item_in_committee')
 
-    def test_subproduct_call_WFA_hide_decisions_when_under_writing(self):
+    def test_pm_WFA_hide_decisions_when_under_writing(self):
         '''Only launch the test for meetingConfig not for meetingConfig2 as no
            'decided' state exists in meetingConfig2 for the 'Meeting'.'''
         self.meetingConfig2.setMeetingWorkflow(self.meetingConfig.getMeetingWorkflow())

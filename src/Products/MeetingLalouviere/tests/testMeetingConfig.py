@@ -29,7 +29,7 @@ from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 class testMeetingConfig(MeetingLalouviereTestCase, pmtmc):
     '''Call testMeetingConfig tests.'''
 
-    def test_subproduct_call_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):
+    def test_pm_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):
         '''Test the searchItemsToValidateOfEveryReviewerLevelsAndLowerLevels method.
            This will return items to validate of his highest hierarchic level and every levels
            under, even if user is not in the corresponding Plone reviewer groups.'''

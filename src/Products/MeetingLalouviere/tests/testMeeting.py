@@ -31,7 +31,7 @@ from Products.PloneMeeting.config import MEETING_STATES_ACCEPTING_ITEMS
 class testMeeting(MeetingLalouviereTestCase, pmtm):
     """Tests the Meeting class methods."""
 
-    def test_subproduct_call_AvailableItems(self):
+    def test_pm_AvailableItems(self):
         """
           By default, available items should be :
           - validated items

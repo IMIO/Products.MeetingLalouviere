@@ -54,6 +54,7 @@ from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
 from Products.PloneMeeting.model import adaptations
+from Products.PloneMeeting.utils import getCurrentMeetingObject
 
 from Products.MeetingLalouviere import logger
 from Products.MeetingLalouviere.config import FINANCE_ADVICES_COLLECTION_ID
@@ -85,9 +86,9 @@ adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_
 RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen', 'itempublished',
                                               'item_in_committee', 'item_in_council', )
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES
-RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
+RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemcollegelalouviere_workflow':
     # view permissions
-    'Access contents information':
+    {'Access contents information':
     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'View':
@@ -97,12 +98,6 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'PloneMeeting: Read decision':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'PloneMeeting: Read optional advisers':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'PloneMeeting: Read decision annex':
     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
     'PloneMeeting: Read item observations':
@@ -124,24 +119,26 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Add annex':
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Add MeetingFile':
+    'PloneMeeting: Add annexDecision':
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'PloneMeeting: Write decision annex':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Write optional advisers':
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     # MeetingManagers edit permissions
     'Delete objects':
     ['Manager', 'MeetingManager', ],
-    'PloneMeeting: Write item observations':
+    'PloneMeeting: Write item MeetingManager reserved fields':
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
     'MeetingLalouviere: Write commission transcript':
     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+    'PloneMeeting: Write marginal notes':
+    ['Manager', 'MeetingManager', ], }
 }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
-RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {'meetingitemcollegelalouviere_workflow': 'meetingitemcollegelalouviere_workflow.itemcreated'}
+RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = \
+    {'meetingitemcollegelalouviere_workflow': 'meetingitemcollegelalouviere_workflow.itemcreated',
+     'meetingitemcouncillalouviere_workflow': 'meetingitemcouncillalouviere_workflow.itemcreated'}
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 class CustomMeeting(Meeting):
@@ -1318,6 +1315,32 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
         '''When an item is delayed, by default it is duplicated but we do not
            duplicate it here'''
         pass
+
+    security.declarePrivate('doPresent')
+
+    def doPresent(self, stateChange):
+        '''Presents an item into a meeting. If p_forceNormal is True, and the
+           item should be inserted as a late item, it is nevertheless inserted
+           as a normal item.'''
+        meeting = getCurrentMeetingObject(self.context)
+        # if we were not on a meeting view, we will present
+        # the item in the next available meeting
+        if not meeting:
+            # find meetings accepting items in the future
+            meeting = self.context.getMeetingToInsertIntoWhenNoCurrentMeetingObject(
+                self.context.getPreferredMeeting())
+        self.context.REQUEST.set('currentlyInsertedItem', self.context)
+        meeting.insertItem(self.context, forceNormal=self._forceInsertNormal())
+        # If the meeting is already frozen and this item is a "late" item,
+        # I must set automatically the item to "itemfrozen".
+        meetingState = meeting.queryState()
+        if meetingState in ('in_committee', 'in_council'):
+            wTool = api.portal.get_tool('portal_workflow')
+            wTool.doActionFor(self.context, 'setItemInCommittee')
+            if meetingState in ('in_council'):
+                wTool.doActionFor(self.context, 'setItemInCouncil')
+        # We may have to send a mail.
+        self.context.sendMailIfRelevant('itemPresented', 'Owner', isRole=True)
 
 
 class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditions):
