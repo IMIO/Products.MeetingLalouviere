@@ -1310,7 +1310,6 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
         """Presents an item into a meeting. If p_forceNormal is True, and the
            item should be inserted as a late item, it is nevertheless inserted
            as a normal item."""
-        import ipdb; ipdb.set_trace()
         meeting = getCurrentMeetingObject(self.context)
         # if we were not on a meeting view, we will present
         # the item in the next available meeting

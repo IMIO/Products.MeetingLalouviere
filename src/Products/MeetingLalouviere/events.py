@@ -12,7 +12,8 @@ def onItemDuplicated(original, event):
         return
     existingMotivation = newItem.getMotivation()
     defaultCouncilMotivation = newItem.Schema()['motivation'].getDefault(newItem)
-    newItem.setMotivation(defaultCouncilMotivation + '<p>&nbsp;</p><p>&nbsp;</p>' + existingMotivation)
+    if defaultCouncilMotivation:
+        newItem.setMotivation(defaultCouncilMotivation + '<p>&nbsp;</p><p>&nbsp;</p>' + existingMotivation)
     # Make sure we have 'text/html' for every Rich fields
     forceHTMLContentTypeForEmptyRichFields(newItem)
 
