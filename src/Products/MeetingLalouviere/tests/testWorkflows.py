@@ -25,6 +25,9 @@
 from AccessControl import Unauthorized
 from DateTime import DateTime
 from plone.app.testing.helpers import setRoles
+from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
+
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.tests.testWorkflows import testWorkflows as pmtw
 
@@ -153,6 +156,9 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         """
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
         self.changeUser('admin')
+        self.meetingConfig = self.meetingConfig2
+        self.meetingConfig.setWorkflowAdaptations('return_to_proposing_group')
+        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
         self.create('MeetingItemRecurring', title='Rec item 1',
                     proposingGroup='developers',
                     category='deployment',

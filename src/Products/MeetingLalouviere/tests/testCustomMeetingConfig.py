@@ -22,6 +22,8 @@
 # 02110-1301, USA.
 #
 
+from imio.helpers.cache import cleanRamCacheFor
+
 from DateTime import DateTime
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
@@ -43,38 +45,40 @@ class testCustomMeetingConfig(MeetingLalouviereTestCase):
 
         # created, available for everyone
         self.assertEqual(meeting.queryState(), 'created')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [meeting.UID()])
         self.changeUser('pmCreator1')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [meeting.UID()])
-
         # in_committee
         self.changeUser('pmManager')
         self.do(meeting, 'setInCommittee')
         self.assertEqual(meeting.queryState(), 'in_committee')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [meeting.UID()])
+        cleanRamCacheFor('Products.PloneMeeting.MeetingConfig.getMeetingsAcceptingItems')
         self.changeUser('pmCreator1')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [])
-
         # in_council
         self.changeUser('pmManager')
         self.do(meeting, 'setInCouncil')
         self.assertEqual(meeting.queryState(), 'in_council')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        cleanRamCacheFor('Products.PloneMeeting.MeetingConfig.getMeetingsAcceptingItems')
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [meeting.UID()])
+        cleanRamCacheFor('Products.PloneMeeting.MeetingConfig.getMeetingsAcceptingItems')
         self.changeUser('pmCreator1')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [])
-
+        cleanRamCacheFor('Products.PloneMeeting.MeetingConfig.getMeetingsAcceptingItems')
         # closed
         self.changeUser('pmManager')
         self.do(meeting, 'close')
         self.assertEqual(meeting.queryState(), 'closed')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [])
+        cleanRamCacheFor('Products.PloneMeeting.MeetingConfig.getMeetingsAcceptingItems')
         self.changeUser('pmCreator1')
-        self.assertEqual([brain.UID for brain in cfg2.adapted().getMeetingsAcceptingItems()],
+        self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()],
                          [])

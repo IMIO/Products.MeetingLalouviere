@@ -24,7 +24,9 @@
 
 from DateTime import DateTime
 
+from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as pmtwfa
@@ -36,7 +38,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
     def test_pm_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
-                          set(('archiving', 'local_meeting_managers', 'return_to_proposing_group', )))
+                          set(('return_to_proposing_group', )))
 
     def test_pm_WFA_no_publication(self):
         '''No sense...'''
@@ -90,16 +92,19 @@ class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
            RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS defined value.
            In our use case, just test that permissions of 'returned_to_proposing_group' state
            are the one defined in RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
-        itemWF = getattr(self.wfTool, self.meetingConfig.getItemWorkflow())
+        itemWF = self.wfTool.getWorkflowsFor(self.meetingConfig.getItemTypeName())[0]
         returned_to_proposing_group_state_permissions = itemWF.states['returned_to_proposing_group'].permission_roles
         for permission in returned_to_proposing_group_state_permissions:
             self.assertEquals(returned_to_proposing_group_state_permissions[permission],
-                              RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[permission])
+                              RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[self.meetingConfig.getItemWorkflow()][permission])
 
     def _return_to_proposing_group_active_wf_functionality(self):
         '''Tests the workflow functionality of using the 'return_to_proposing_group' wfAdaptation.
            Same as default test until the XXX here under.'''
         # while it is active, the creators of the item can edit the item as well as the MeetingManagers
+        self.meetingConfig = self.meetingConfig2
+        self.meetingConfig.setWorkflowAdaptations('return_to_proposing_group')
+        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')
         self.proposeItem(item)

@@ -27,7 +27,12 @@ from Products.PloneMeeting.tests.testVotes import testVotes as pmtv
 
 
 class testVotes(MeetingLalouviereTestCase, pmtv):
-    '''Tests various aspects of votes management.'''
+    """Tests various aspects of votes management."""
+    def setUp(self):
+        """ """
+        super(testVotes, self).setUp()
+        # use meetingConfig2
+        self.setMeetingConfig(self.meetingConfig2.getId())
 
 
 def test_suite():

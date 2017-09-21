@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
+from Products.PloneMeeting.profiles import AnnexTypeDescriptor
 from Products.PloneMeeting.profiles import CategoryDescriptor
 from Products.PloneMeeting.profiles import GroupDescriptor
+from Products.PloneMeeting.profiles import ItemAnnexSubTypeDescriptor
+from Products.PloneMeeting.profiles import ItemAnnexTypeDescriptor
 from Products.PloneMeeting.profiles import MeetingConfigDescriptor
-from Products.PloneMeeting.profiles import MeetingFileTypeDescriptor
 from Products.PloneMeeting.profiles import MeetingUserDescriptor
 from Products.PloneMeeting.profiles import PloneMeetingConfiguration
 from Products.PloneMeeting.profiles import PodTemplateDescriptor
@@ -12,177 +14,87 @@ from Products.PloneMeeting.profiles import UserDescriptor
 
 today = DateTime().strftime('%Y/%m/%d')
 
-# File types -------------------------------------------------------------------
-annexe = MeetingFileTypeDescriptor('annexe', 'Annexe', 'attach.png', '')
-annexeBudget = MeetingFileTypeDescriptor('annexeBudget', 'Article Budgétaire', 'budget.png', '')
-annexeCahier = MeetingFileTypeDescriptor('annexeCahier', 'Cahier des Charges', 'cahier.gif', '')
-annexeRemarks = MeetingFileTypeDescriptor('annexeRemarks', 'Remarques secrétaires',
-                                          'secretary_remarks.png', '')
-annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe à la décision',
-                                           'attach.png', '', 'item_decision')
-annexeAvis = MeetingFileTypeDescriptor('annexeAvis', 'Annexe à un avis',
-                                       'attach.png', '', 'advice')
-annexeAvisLegal = MeetingFileTypeDescriptor('annexeAvisLegal', 'Extrait article de loi',
-                                            'legalAdvice.png', '', 'advice')
+# Annex types
+overheadAnalysisSubtype = ItemAnnexSubTypeDescriptor(
+    'overhead-analysis-sub-annex',
+    'Overhead analysis sub annex',
+    other_mc_correspondences=(
+        'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis', ))
+
+overheadAnalysis = ItemAnnexTypeDescriptor(
+    'overhead-analysis', 'Administrative overhead analysis',
+    u'overheadAnalysis.png',
+    subTypes=[overheadAnalysisSubtype],
+    other_mc_correspondences=(
+        'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex', ))
+
+financialAnalysisSubAnnex = ItemAnnexSubTypeDescriptor(
+    'financial-analysis-sub-annex',
+    'Financial analysis sub annex')
+
+financialAnalysis = ItemAnnexTypeDescriptor(
+    'financial-analysis', 'Financial analysis', u'financialAnalysis.png',
+    u'Predefined title for financial analysis', subTypes=[financialAnalysisSubAnnex])
+
+legalAnalysis = ItemAnnexTypeDescriptor(
+    'legal-analysis', 'Legal analysis', u'legalAnalysis.png')
+
+budgetAnalysisCfg2Subtype = ItemAnnexSubTypeDescriptor(
+    'budget-analysis-sub-annex',
+    'Budget analysis sub annex')
+
+budgetAnalysisCfg2 = ItemAnnexTypeDescriptor(
+    'budget-analysis', 'Budget analysis', u'budgetAnalysis.png',
+    subTypes=[budgetAnalysisCfg2Subtype])
+
+budgetAnalysisCfg1Subtype = ItemAnnexSubTypeDescriptor(
+    'budget-analysis-sub-annex',
+    'Budget analysis sub annex',
+    other_mc_correspondences=(
+        'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex', ))
+
+budgetAnalysisCfg1 = ItemAnnexTypeDescriptor(
+    'budget-analysis', 'Budget analysis', u'budgetAnalysis.png',
+    subTypes=[budgetAnalysisCfg1Subtype],
+    other_mc_correspondences=('meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis', ))
+
+itemAnnex = ItemAnnexTypeDescriptor(
+    'item-annex', 'Other annex(es)', u'itemAnnex.png')
+# Could be used once we
+# will digitally sign decisions ? Indeed, once signed, we will need to
+# store them (together with the signature) as separate files.
+decision = ItemAnnexTypeDescriptor(
+    'decision', 'Decision', u'decision.png', relatedTo='item_decision')
+decisionAnnex = ItemAnnexTypeDescriptor(
+    'decision-annex', 'Decision annex(es)', u'decisionAnnex.png', relatedTo='item_decision')
+# A vintage annex type
+marketingAnalysis = ItemAnnexTypeDescriptor(
+    'marketing-annex', 'Marketing annex(es)', u'legalAnalysis.png', relatedTo='item_decision',
+    enabled=False)
+# Advice annex types
+adviceAnnex = AnnexTypeDescriptor(
+    'advice-annex', 'Advice annex(es)', u'itemAnnex.png', relatedTo='advice')
+adviceLegalAnalysis = AnnexTypeDescriptor(
+    'advice-legal-analysis', 'Advice legal analysis', u'legalAnalysis.png', relatedTo='advice')
+# Meeting annex types
+meetingAnnex = AnnexTypeDescriptor(
+    'meeting-annex', 'Meeting annex(es)', u'itemAnnex.png', relatedTo='meeting')
 # Pod templates ----------------------------------------------------------------
-# MeetingItem
-collegeDelibTemplate = PodTemplateDescriptor('college-deliberation', 'Délibération')
-collegeDelibTemplate.podTemplate = 'college_deliberation.odt'
-collegeDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem") and ' \
-                                    'here.queryState() in ["accepted", "refused", "delayed", "accepted_but_modified",]'
-collegeRapportTemplate = PodTemplateDescriptor('college-rapport', 'Rapport')
-collegeRapportTemplate.podTemplate = 'college_rapport.odt'
-collegeRapportTemplate.podCondition = 'python: here.meta_type == "MeetingItem" and ' \
-                                      'not (here.portal_membership.getAuthenticatedMember().has_role("MeetingManager"))'
-collegeAvisDFTemplate = PodTemplateDescriptor('college-avis-df', 'Avis DF')
-collegeAvisDFTemplate.podTemplate = 'college_avis_df.odt'
-collegeAvisDFTemplate.podCondition = ' python: here.meta_type == "MeetingItem"'
+agendaTemplate = PodTemplateDescriptor('agendaTemplate', 'Meeting agenda')
+agendaTemplate.odt_file = 'Agenda.odt'
+agendaTemplate.pod_portal_types = ['MeetingCollege']
+agendaTemplate.tal_condition = ''
 
-collegeOJADiscTemplate = PodTemplateDescriptor('college-oj-a-discuter', 'OJ (à discuter)')
-collegeOJADiscTemplate.podTemplate = 'college_oj_a_discuter.odt'
-collegeOJADiscTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                      'here.portal_plonemeeting.isManager(here)'
-collegeOJPasADiscTemplate = PodTemplateDescriptor('college-oj-pas-a-discuter', 'OJ (pas à discuter)')
-collegeOJPasADiscTemplate.podTemplate = 'college_oj_pas_a_discuter.odt'
-collegeOJPasADiscTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                         'here.portal_plonemeeting.isManager(here)'
-collegePVTemplate = PodTemplateDescriptor('college-pv', 'PV')
-collegePVTemplate.podTemplate = 'college_pv.odt'
-collegePVTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                 'here.portal_plonemeeting.isManager(here)'
-collegeDashboardTemplate = PodTemplateDescriptor('college-dashboard', 'Tableau de bord')
-collegeDashboardTemplate.podTemplate = 'college_dashboard.odt'
-collegeDashboardTemplate.podCondition = 'python:False'
+decisionsTemplate = PodTemplateDescriptor('decisionsTemplate',
+                                          'Meeting decisions')
+decisionsTemplate.odt_file = 'Decisions.odt'
+decisionsTemplate.pod_portal_types = ['MeetingCollege']
+decisionsTemplate.tal_condition = 'python:here.adapted().isDecided()'
 
-councilDelibTemplate = PodTemplateDescriptor('conseil-deliberation', 'Délibération')
-councilDelibTemplate.podTemplate = 'conseil_deliberation.odt'
-councilDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem") and ' \
-                                    'here.queryState() in ["accepted", "refused", "delayed", "accepted_but_modified",]'
-councilProjetDelibTemplate = PodTemplateDescriptor('conseil-projet-deliberation', 'Projet délibération')
-councilProjetDelibTemplate.podTemplate = 'conseil_projet_deliberation.odt'
-councilProjetDelibTemplate.podCondition = 'python:(here.meta_type=="MeetingItem")'
-
-councilNoteExplTemplate = PodTemplateDescriptor('conseil-note-explicative', 'Note explicative')
-councilNoteExplTemplate.podTemplate = 'conseil_note_explicative.odt'
-councilNoteExplTemplate.podCondition = 'python:(here.meta_type=="MeetingItem")'
-
-# Meeting
-councilOJExplanatoryTemplate = PodTemplateDescriptor('conseil-oj-notes-explicatives', 'OJ (notes explicatives)')
-councilOJExplanatoryTemplate.podTemplate = 'conseil_oj_notes_explicatives.odt'
-councilOJExplanatoryTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilFardesTemplate = PodTemplateDescriptor('conseil-fardes', 'Fardes')
-councilFardesTemplate.podTemplate = 'conseil_fardes.odt'
-councilFardesTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                     'here.portal_plonemeeting.isManager(here)'
-councilAvisTemplate = PodTemplateDescriptor('conseil-avis', 'Avis')
-councilAvisTemplate.podTemplate = 'conseil_avis_affiche_aux_valves.odt'
-councilAvisTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                   'here.portal_plonemeeting.isManager(here)'
-councilOJConvPresseTemplate = PodTemplateDescriptor('conseil-convocation-presse', 'Convocation presse')
-councilOJConvPresseTemplate.podTemplate = 'conseil_convocation_presse.odt'
-councilOJConvPresseTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                           'here.portal_plonemeeting.isManager(here)'
-councilOJConvConsTemplate = PodTemplateDescriptor('conseil-convocation-conseillers', 'Convocation conseillers')
-councilOJConvConsTemplate.podTemplate = 'conseil_convocation_conseillers.odt'
-councilOJConvConsTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                         'here.portal_plonemeeting.isManager(here)'
-councilOJConvConsPremSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-1er-supplement',
-                                                           'Convocation conseillers (1er supplément)')
-councilOJConvConsPremSupplTemplate.podTemplate = 'conseil_convocation_conseillers_1er_supplement.odt'
-councilOJConvConsPremSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                                  'here.portal_plonemeeting.isManager(here)'
-councilOJConvConsDeuxSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-2eme-supplement',
-                                                           'Convocation conseillers (2ème supplément)')
-councilOJConvConsDeuxSupplTemplate.podTemplate = 'conseil_convocation_conseillers_2eme_supplement.odt'
-councilOJConvConsDeuxSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                                  'here.portal_plonemeeting.isManager(here)'
-councilOJConvConsTroisSupplTemplate = PodTemplateDescriptor('conseil-convocation-conseillers-3eme-supplement',
-                                                            'Convocation conseillers (3ème supplément)')
-councilOJConvConsTroisSupplTemplate.podTemplate = 'conseil_convocation_conseillers_3eme_supplement.odt'
-councilOJConvConsTroisSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                                   'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommTravTemplate = PodTemplateDescriptor('conseil-oj-commission-travaux', 'Comm. Trav.')
-councilOJConvCommTravTemplate.podTemplate = 'conseil_oj_commission_travaux.odt'
-councilOJConvCommTravTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                             'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommEnsTemplate = PodTemplateDescriptor('conseil-oj-commission-enseignement', 'Comm. Ens.')
-councilOJConvCommEnsTemplate.podTemplate = 'conseil_oj_commission_enseignement.odt'
-councilOJConvCommEnsTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommLogTemplate = PodTemplateDescriptor('conseil-oj-commission-logement', 'Comm. Log.')
-councilOJConvCommLogTemplate.podTemplate = 'conseil_oj_commission_logement.odt'
-councilOJConvCommLogTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommAGTemplate = PodTemplateDescriptor('conseil-oj-commission-ag', 'Comm. AG.')
-councilOJConvCommAGTemplate.podTemplate = 'conseil_oj_commission_ag.odt'
-councilOJConvCommAGTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                           'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommAGSupplTemplate = PodTemplateDescriptor('conseil-oj-commission-ag-suppl', 'Comm. AG. (Suppl.)')
-councilOJConvCommAGSupplTemplate.podTemplate = 'conseil_oj_commission_ag_supplement.odt'
-councilOJConvCommAGSupplTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                                'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommFinTemplate = PodTemplateDescriptor('conseil-oj-commission-finances', 'Comm. Fin.')
-councilOJConvCommFinTemplate.podTemplate = 'conseil_oj_commission_finances.odt'
-councilOJConvCommFinTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommPolTemplate = PodTemplateDescriptor('conseil-oj-commission-police', 'Comm. Pol.')
-councilOJConvCommPolTemplate.podTemplate = 'conseil_oj_commission_police.odt'
-councilOJConvCommPolTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilOJConvCommSpecTemplate = PodTemplateDescriptor('conseil-oj-commission-speciale', 'Comm. Spec.')
-councilOJConvCommSpecTemplate.podTemplate = 'conseil_oj_commission_speciale.odt'
-councilOJConvCommSpecTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                             'here.portal_plonemeeting.isManager(here)'
-councilPVConvCommTravTemplate = PodTemplateDescriptor('conseil-pv-commission-travaux', 'PV Comm. Trav.')
-councilPVConvCommTravTemplate.podTemplate = 'conseil_pv_commission_travaux.odt'
-councilPVConvCommTravTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                             'here.portal_plonemeeting.isManager(here)'
-councilPVConvCommEnsTemplate = PodTemplateDescriptor('conseil-pv-commission-enseignement', 'PV Comm. Ens.')
-councilPVConvCommEnsTemplate.podTemplate = 'conseil_pv_commission_enseignement.odt'
-councilPVConvCommEnsTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilPVConvCommLogTemplate = PodTemplateDescriptor('conseil-pv-commission-logement', 'PV Comm. Log.')
-councilPVConvCommLogTemplate.podTemplate = 'conseil_pv_commission_logement.odt'
-councilPVConvCommLogTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilPVConvCommAgTemplate = PodTemplateDescriptor('conseil-pv-commission-ag', 'PV Comm. AG.')
-councilPVConvCommAgTemplate.podTemplate = 'conseil_pv_commission_ag.odt'
-councilPVConvCommAgTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                           'here.portal_plonemeeting.isManager(here)'
-councilPVConvCommFinTemplate = PodTemplateDescriptor('conseil-pv-commission-fin', 'PV Comm. Fin.')
-councilPVConvCommFinTemplate.podTemplate = 'conseil_pv_commission_finances.odt'
-councilPVConvCommFinTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilPVConvCommPolTemplate = PodTemplateDescriptor('conseil-pv-commission-police', 'PV Comm. Pol.')
-councilPVConvCommPolTemplate.podTemplate = 'conseil_pv_commission_police.odt'
-councilPVConvCommPolTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                            'here.portal_plonemeeting.isManager(here)'
-councilPVConvCommSpecTemplate = PodTemplateDescriptor('conseil-pv-commission-speciale', 'PV Comm. Spec.')
-councilPVConvCommSpecTemplate.podTemplate = 'conseil_pv_commission_speciale.odt'
-councilPVConvCommSpecTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                             'here.portal_plonemeeting.isManager(here)'
-councilPVTemplate = PodTemplateDescriptor('conseil-pv', 'PV')
-councilPVTemplate.podTemplate = 'conseil_pv.odt'
-councilPVTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
-                                 'here.portal_plonemeeting.isManager(here)'
-
-collegeTemplates = [collegeDelibTemplate, collegeRapportTemplate, collegeAvisDFTemplate,
-                    collegeOJADiscTemplate, collegeOJPasADiscTemplate, collegePVTemplate]
-councilTemplates = [councilOJExplanatoryTemplate, councilFardesTemplate,
-                    councilAvisTemplate, councilOJConvPresseTemplate,
-                    councilOJConvConsTemplate, councilOJConvConsPremSupplTemplate,
-                    councilOJConvConsDeuxSupplTemplate, councilOJConvConsTroisSupplTemplate,
-                    councilOJConvCommTravTemplate,
-                    councilOJConvCommEnsTemplate, councilOJConvCommLogTemplate,
-                    councilOJConvCommAGTemplate, councilOJConvCommFinTemplate,
-                    councilOJConvCommPolTemplate, councilOJConvCommSpecTemplate,
-                    councilPVConvCommTravTemplate, councilPVConvCommEnsTemplate,
-                    councilPVConvCommLogTemplate, councilPVConvCommAgTemplate,
-                    councilPVConvCommFinTemplate, councilPVConvCommPolTemplate,
-                    councilPVConvCommSpecTemplate, councilPVTemplate,
-                    councilNoteExplTemplate, councilProjetDelibTemplate, councilDelibTemplate]
-
+itemTemplate = PodTemplateDescriptor('itemTemplate', 'Meeting item')
+itemTemplate.odt_file = 'Item.odt'
+itemTemplate.pod_portal_types = ['MeetingItemCollege']
+itemTemplate.tal_condition = ''
 
 # Users and groups -------------------------------------------------------------
 dgen = UserDescriptor('dgen', [], email="test@test.be", fullname="Henry Directeur")
@@ -475,8 +387,9 @@ collegeMeeting.meetingManagers = ['dgen', ]
 collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, 1er Echevin'
 collegeMeeting.categories = []
 collegeMeeting.shortName = 'College'
-collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier,
-                                   annexeDecision, annexeAvis, annexeAvisLegal]
+collegeMeeting.annexTypes = [financialAnalysis, budgetAnalysisCfg1, overheadAnalysis,
+                             itemAnnex, decisionAnnex, marketingAnalysis,
+                             adviceAnnex, adviceLegalAnalysis, meetingAnnex]
 collegeMeeting.usedItemAttributes = ['budgetInfos', 'observations', 'toDiscuss',
                                      'motivation', 'neededFollowUp', 'providedFollowUp', ]
 collegeMeeting.xhtmlTransformFields = ('MeetingItem.description', 'MeetingItem.detailedDescription',
@@ -511,39 +424,15 @@ collegeMeeting.itemAdviceEditStates = ('validated',)
 collegeMeeting.recordItemHistoryStates = ['']
 collegeMeeting.maxShownMeetings = 5
 collegeMeeting.maxDaysDecisions = 60
-collegeMeeting.meetingAppDefaultView = 'topic_searchmyitems'
+collegeMeeting.meetingAppDefaultView = 'searchallitems'
 collegeMeeting.useAdvices = True
-collegeMeeting.customAdvisers = [
-    {'row_id': 'unique_id_001',
-     'group': 'comptabilite',
-     'gives_auto_advice_on': 'item/getBudgetRelated',
-     'for_item_created_from': today, },
-    {'row_id': 'unique_id_002',
-     'group': 'dirfin',
-     'for_item_created_from': today,
-     'delay': '5',
-     'delay_left_alert': '2',
-     'delay_label': 'Incidence financière >= 22.000€', },
-    {'row_id': 'unique_id_003',
-     'group': 'dirfin',
-     'for_item_created_from': today,
-     'delay': '10',
-     'delay_left_alert': '4',
-     'delay_label': 'Incidence financière >= 22.000€', },
-    {'row_id': 'unique_id_004',
-     'group': 'dirfin',
-     'for_item_created_from': today,
-     'delay': '20',
-     'delay_left_alert': '4',
-     'delay_label': 'Incidence financière >= 22.000€', }, ]
+collegeMeeting.selectableAdvisers = []
 collegeMeeting.enforceAdviceMandatoriness = False
 collegeMeeting.enableAdviceInvalidation = False
 collegeMeeting.useCopies = True
-collegeMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'),
-                                       groups[1].getIdSuffixed('reviewers'),
-                                       groups[2].getIdSuffixed('reviewers'),
-                                       groups[4].getIdSuffixed('reviewers')]
-collegeMeeting.podTemplates = collegeTemplates
+collegeMeeting.selectableCopyGroups = []
+collegeMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
+collegeMeeting.meetingPowerObserversStates = []
 collegeMeeting.meetingConfigsToCloneTo = [{'meeting_config': 'meeting-config-council',
                                            'trigger_workflow_transitions_until': '__nothing__'}, ]
 collegeMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
@@ -605,6 +494,7 @@ décentralisation;</p>
 <p>Vu l'article L1123-23 du code de la Démocratie locale et de la Décentralisation;</p>"""
 collegeMeeting.recurringItems = []
 collegeMeeting.meetingUsers = []
+collegeMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
 
 # Conseil communal
 # Categories -------------------------------------------------------------------
@@ -686,8 +576,9 @@ Le Président,
 J.GOBERT"""
 councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
-councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, annexeRemarks,
-                                   annexeDecision, annexeAvis, annexeAvisLegal]
+councilMeeting.annexTypes = [financialAnalysis, legalAnalysis,
+                             budgetAnalysisCfg2, itemAnnex, decisionAnnex,
+                             adviceAnnex, adviceLegalAnalysis, meetingAnnex]
 councilMeeting.xhtmlTransformFields = ('MeetingItem.description', 'MeetingItem.detailedDescription',
                                        'MeetingItem.decision', 'MeetingItem.observations',
                                        'MeetingItem.interventions', 'MeetingItem.commissionTranscript')
@@ -745,17 +636,16 @@ councilMeeting.itemAdviceEditStates = ('itemcreated',)
 councilMeeting.recordItemHistoryStates = ['']
 councilMeeting.maxShownMeetings = 5
 councilMeeting.maxDaysDecisions = 60
-councilMeeting.meetingAppDefaultView = 'topic_searchmyitems'
+councilMeeting.meetingAppDefaultView = 'searchallitems'
 councilMeeting.useAdvices = True
+councilMeeting.selectableAdvisers = []
 councilMeeting.enforceAdviceMandatoriness = False
 councilMeeting.enableAdviceInvalidation = False
 councilMeeting.useCopies = True
-councilMeeting.selectableCopyGroups = [groups[0].getIdSuffixed('reviewers'),
-                                       groups[1].getIdSuffixed('reviewers'),
-                                       groups[2].getIdSuffixed('reviewers'),
-                                       groups[4].getIdSuffixed('reviewers')]
-councilMeeting.podTemplates = councilTemplates
-councilMeeting.transitionsToConfirm = ['MeetingItem.return_to_service']
+councilMeeting.selectableCopyGroups = []
+councilMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
+councilMeeting.meetingPowerObserversStates = []
+councilMeeting.transitionsToConfirm = []
 councilMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups',
                                              'reverse': '0'}, )
 councilMeeting.useGroupsAsCategories = False
@@ -794,10 +684,9 @@ councilMeeting.meetingUsers = [jgobert_mu, asabbatini_mu, jgodin_mu, odestrebecq
                                jpmichiels_mu, cdelplancq_mu, fvermeer_mu, lbaccareladurso_mu, clicata_mu, mroland_mu,
                                collegecommunal_mu, groupeps_mu, groupemr_mu, groupecdh_mu, groupeecolo_mu,
                                groupeptb_mu, groupefn_mu, groupeindependant_mu, ]
+councilMeeting.podTemplates = []
 
 data = PloneMeetingConfiguration(meetingFolderTitle='Mes séances',
                                  meetingConfigs=(collegeMeeting, councilMeeting),
                                  groups=groups)
-data.unoEnabledPython = '/usr/bin/python'
-data.usedColorSystem = 'state_color'
 # ------------------------------------------------------------------------------

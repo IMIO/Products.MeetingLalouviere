@@ -93,11 +93,17 @@ class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
                               'proposed': 'proposed_to_director',
                               'validated': 'validated',
                               'presented': 'presented',
-                              'itemfrozen': 'itemfrozen'}
+                              'itemfrozen': 'itemfrozen',
+                              }
+
+    WF_STATE_NAME_MAPPINGS_2 = {'frozen': 'in_committee'}
 
     # in which state an item must be after an particular meeting transition?
     ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
                                               'close': 'accepted'}
+
+    TRANSITIONS_FOR_FREEZING_MEETING_1 = ('freeze',)
+    TRANSITIONS_FOR_FREEZING_MEETING_2 = ('setInCommittee',)
 
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = ('freeze', 'decide', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('setInCommittee', 'setInCouncil', )
