@@ -89,14 +89,21 @@ class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
                       'backToPresented',
                       'backToValidated', )}
 
-    WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
-                              'proposed': 'proposed_to_director',
-                              'validated': 'validated',
-                              'presented': 'presented',
-                              'itemfrozen': 'itemfrozen',
-                              }
+    WF_ITEM_STATE_NAME_MAPPINGS_1 = {'itemcreated': 'itemcreated',
+                                     'proposed': 'proposed_to_director',
+                                     'validated': 'validated',
+                                     'presented': 'presented',
+                                     'itemfrozen': 'itemfrozen',
+                                    }
 
-    WF_STATE_NAME_MAPPINGS_2 = {'frozen': 'in_committee'}
+    WF_ITEM_STATE_NAME_MAPPINGS_1 = {'itemcreated': 'itemcreated',
+                                     'proposed': 'proposed_to_director',
+                                     'validated': 'validated',
+                                     'presented': 'presented',
+                                     'itemfrozen': 'item_in_committee',
+                                    }
+
+    WF_MEETING_TRANSITION_NAME_MAPPINGS_2 = {'frozen': 'in_committee'}
 
     # in which state an item must be after an particular meeting transition?
     ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
