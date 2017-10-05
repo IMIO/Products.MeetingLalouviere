@@ -41,42 +41,6 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             cfg.setItemPositiveDecidedStates(('accepted', 'accepted_but_modified', ))
         logger.info('Done.')
 
-    def _after_reinstall(self):
-        """Use that hook that is called just after the profile has been reinstalled by
-           PloneMeeting, this way, we may launch some steps before PloneMeeting ones.
-           Here we will update used workflows before letting PM do his job."""
-        logger.info('Replacing old no more existing workflows...')
-        PMMigrate_To_4_0._after_reinstall(self)
-        for cfg in self.tool.objectValues('MeetingConfig'):
-            # MeetingItem workflow
-            if cfg.getItemWorkflow() == 'meetingitemcollege_workflow':
-                cfg.setItemWorkflow('meetingitemcommunes_workflow')
-                cfg._v_oldItemWorkflow = 'meetingitemcollege_workflow'
-                wfAdaptations = list(cfg.getWorkflowAdaptations())
-                if 'no_publication' not in wfAdaptations:
-                    wfAdaptations.append('no_publication')
-                if 'no_global_observation' not in wfAdaptations:
-                    wfAdaptations.append('no_global_observation')
-                cfg.setWorkflowAdaptations(wfAdaptations)
-            if cfg.getItemWorkflow() == 'meetingitemcouncil_workflow':
-                cfg.setItemWorkflow('meetingitemcommunes_workflow')
-                cfg._v_oldItemWorkflow = 'meetingitemcouncil_workflow'
-            # Meeting workflow
-            if cfg.getMeetingWorkflow() == 'meetingcollege_workflow':
-                cfg.setMeetingWorkflow('MeetingLalouviere_workflow')
-                cfg._v_oldMeetingWorkflow = 'meetingcollege_workflow'
-            if cfg.getMeetingWorkflow() == 'meetingcouncil_workflow':
-                cfg.setMeetingWorkflow('MeetingLalouviere_workflow')
-                cfg._v_oldMeetingWorkflow = 'meetingcouncil_workflow'
-        # delete old unused workflows, aka every workflows containing 'college' or 'council'
-        wfTool = api.portal.get_tool('portal_workflow')
-        self.wfs_to_delete = [wfId for wfId in wfTool.listWorkflows()
-                              if wfId.endswith(('meetingitemcollege_workflow',
-                                                'meetingitemcouncil_workflow',
-                                                'meetingcollege_workflow',
-                                                'meetingcouncil_workflow'))]
-        logger.info('Done.')
-
     def _deleteUselessWorkflows(self):
         """Finally, remove useless workflows."""
         logger.info('Removing useless workflows...')
@@ -85,16 +49,19 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             wfTool.manage_delObjects(self.wfs_to_delete)
         logger.info('Done.')
 
-    def run(self):
+    def run(self, step=None):
         # change self.profile_name that is reinstalled at the beginning of the PM migration
         self.profile_name = u'profile-Products.MeetingLalouviere:default'
+
         # call steps from Products.PloneMeeting
-        PMMigrate_To_4_0.run(self)
-        # now MeetingLiege specific steps
-        logger.info('Migrating to MeetingLalouviere 4.0...')
-        self._cleanCDLD()
-        self._migrateItemPositiveDecidedStates()
-        self._deleteUselessWorkflows()
+        PMMigrate_To_4_0.run(self, step=step)
+
+        if step == 3:
+            # now MeetingLalouviere specific steps
+            logger.info('Migrating to MeetingLalouviere 4.0...')
+            self._cleanCDLD()
+            self._migrateItemPositiveDecidedStates()
+            self._deleteUselessWorkflows()
 
 
 # The migration function -------------------------------------------------------
@@ -110,4 +77,37 @@ def migrate(context):
     migrator = Migrate_To_4_0(context)
     migrator.run()
     migrator.finish()
-# ------------------------------------------------------------------------------
+
+
+def migrate_step1(context):
+    '''This migration function:
+
+       1) Reinstall Products.MeetingLalouviere and execute the Products.PloneMeeting migration.
+    '''
+    migrator = Migrate_To_4_0(context)
+    migrator.run(step=1)
+    migrator.finish()
+
+
+def migrate_step2(context):
+    '''This migration function:
+
+       1) Execute step2 of Products.PloneMeeting migration profile (imio.annex).
+    '''
+    migrator = Migrate_To_4_0(context)
+    migrator.run(step=2)
+    migrator.finish()
+
+
+def migrate_step3(context):
+    '''This migration function:
+
+       1) Execute step3 of Products.PloneMeeting migration profile.
+       2) Clean CDLD attributes;
+       3) Add an annex type for Meetings;
+       4) Remove useless workflows;
+       5) Migrate positive decided states.
+    '''
+    migrator = Migrate_To_4_0(context)
+    migrator.run(step=3)
+    migrator.finish()

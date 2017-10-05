@@ -20,7 +20,7 @@
 # 02110-1301, USA.
 #
 
-from DateTime import DateTime
+from plone import api
 from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
 from Products.MeetingLalouviere.setuphandlers import _configureCollegeCustomAdvisers
 from Products.MeetingLalouviere.setuphandlers import _createFinancesGroup
@@ -96,7 +96,7 @@ class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
                                      'itemfrozen': 'itemfrozen',
                                     }
 
-    WF_ITEM_STATE_NAME_MAPPINGS_1 = {'itemcreated': 'itemcreated',
+    WF_ITEM_STATE_NAME_MAPPINGS_2 = {'itemcreated': 'itemcreated',
                                      'proposed': 'proposed_to_director',
                                      'validated': 'validated',
                                      'presented': 'presented',
@@ -109,11 +109,24 @@ class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
     ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
                                               'close': 'accepted'}
 
-    TRANSITIONS_FOR_FREEZING_MEETING_1 = ('freeze',)
-    TRANSITIONS_FOR_FREEZING_MEETING_2 = ('setInCommittee',)
+    TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_1 = ('freeze',)
+    TRANSITIONS_FOR_FREEZING_MEETING_2 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = ('setInCommittee',)
 
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = ('freeze', 'decide', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('setInCommittee', 'setInCouncil', )
+
+
+    def freezeMeeting(self, meeting):
+        '''Freeze passed p_meeting using TRANSITIONS_FOR_FREEZING_MEETING_x.
+           The p_meetingConfigNumber specify if we use meetingConfig or meetingConfig2, so
+           the _x here above in TRANSITIONS_FOR_FREEZING_MEETING_x is 1 or 2.'''
+        tool = api.portal.get_tool('portal_plonemeeting')
+        mc = tool.getMeetingConfig(meeting)
+        if mc.getId() == 'meeting-config-council':
+            meetingConfigNumber = 2
+        else:
+            meetingConfigNumber = 1
+        self._doTransitionsFor(meeting, getattr(self, ('TRANSITIONS_FOR_FREEZING_MEETING_%d' % meetingConfigNumber)))
 
     def _configureFinancesAdvice(self, cfg):
         """ """

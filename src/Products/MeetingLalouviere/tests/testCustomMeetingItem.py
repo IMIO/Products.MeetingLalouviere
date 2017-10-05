@@ -41,6 +41,7 @@ class testCustomMeetingItem(MeetingLalouviereTestCase):
         cfg = self.meetingConfig
         cfg.setItemAutoSentToOtherMCStates(('accepted', ))
         cfg2 = self.meetingConfig2
+        cfg2.setDefaultMeetingItemMotivation('<p>test</p>')
         # by default, college items are sendable to council
         destMeetingConfigId = cfg2.getId()
         self.assertTrue(destMeetingConfigId in [config['meeting_config']

@@ -396,7 +396,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         item = self.create('MeetingItem')
         # 'pmManager' may propose the item and he will be able to validate it
         self.proposeItem(item)
-        self.assertTrue(item.queryState() == self.WF_STATE_NAME_MAPPINGS['proposed'])
+        self.assertTrue(item.queryState() == self.WF_ITEM_STATE_NAME_MAPPINGS_1['proposed'])
         # we have no avaialble transition, or just two
         availableTransitions = self.wfTool.getTransitionsFor(item)
         if availableTransitions:
