@@ -10,7 +10,7 @@
   <body>
   <metal:title fill-slot="content-title"
                tal:define="itemNumber python: context.getItemNumber(relativeTo='meeting')">
-   <metal:header use-macro="here/@@pm-macros/itemHeader"/>
+      <tal:header replace="structure context/@@header" />
   </metal:title>
   <metal:description fill-slot="content-description">
    <tal:comment replace="nothing">Just hide the description as shown by default by Plone</tal:comment>
@@ -23,7 +23,6 @@
                                   dummy context/checkPrivacyViewable;
                                   meetingConfig python:tool.getMeetingConfig(context);
                                   meeting context/getMeeting;
-                                  showColors tool/showColorsForUser;
                                   usedAttrs meetingConfig/getUsedItemAttributes;
                                   usedMeetingAttributes meetingConfig/getUsedMeetingAttributes;
                                   bilingual python: 'secondLanguage' in tool.getModelAdaptations();
@@ -38,48 +37,32 @@
         whose number is given by the user.</tal:comment>
 
     <form name="formGotoItem" tal:attributes="action python: context.absolute_url_path() + '/object_goto'">
-        <input type="hidden" name="objectId"/>
-        <input type="hidden" name="meetingUid"/>
-        <input type="hidden" name="idType" value="number"/>
+        <input type="hidden" name="uid"/>
     </form>
+
 
     <tal:comment replace="nothing">Show navigation between items of the same meeting</tal:comment>
     <tal:itemNavigation tal:condition="python: meeting">
       <metal:itemNavigation  use-macro="here/@@navigate-macros/item"/>
     </tal:itemNavigation>
 
-    <table width="100%">
+    <table width="100%" border="0" class="item-infos">
       <tr valign="top">
         <td width="50%" style="padding-right: 0.5em;">
 
-            <tal:comment replace="nothing">Classifier</tal:comment>
-            <div class="discreet"
-                 tal:condition="python: 'classifier' in usedAttrs"
-                 tal:define="classifier context/getClassifier">
-                <span class="item_attribute_label"
-                      i18n:translate="PloneMeeting_label_classifier"></span>:&nbsp;&nbsp;
-                <span tal:condition="classifier" tal:content="classifier/Title">-</span>
-                <span tal:condition="not: classifier">-</span>
-            </div>
-
-            <tal:comment replace="nothing">Category or proposing group (if group is used as category)</tal:comment>
-            <div class="discreet" tal:define="cat python: context.getCategory(True)" tal:condition="python: cat">
-                <span class="item_attribute_label"
-                      tal:condition="not: meetingConfig/getUseGroupsAsCategories"
-                      i18n:translate="MeetingCategory"></span>
-                <span class="item_attribute_label"
-                      tal:condition="meetingConfig/getUseGroupsAsCategories"
-                      i18n:translate="PloneMeeting_label_proposingGroup"></span>:&nbsp;&nbsp;
-                <span tal:content="python: cat.getName()"></span>
-            </div>
-
-            <tal:comment replace="nothing">Proposing group (if group is not used as category),
-                                           could be empty in the case of a template item.</tal:comment>
-            <div class="discreet" tal:condition="python: not meetingConfig.getUseGroupsAsCategories()">
+            <tal:comment replace="nothing">Proposing group (when proposingGroupWithGroupInCharge is not used)</tal:comment>
+            <div class="discreet" tal:condition="python: not 'proposingGroupWithGroupInCharge' in usedAttrs">
                 <span class="item_attribute_label"
                       i18n:translate="PloneMeeting_label_proposingGroup"></span>:&nbsp;&nbsp;
-                <span tal:condition="context/getProposingGroup"
-                      tal:content="python: getattr(tool, context.getProposingGroup()).Title()"></span>
+                <span metal:use-macro="python: here.widget('proposingGroup', mode='view')" />
+                <span tal:condition="not: context/getProposingGroup">-</span>
+            </div>
+
+            <tal:comment replace="nothing">Proposing group (when proposingGroupWithGroupInCharge is used)</tal:comment>
+            <div class="discreet" tal:condition="python: 'proposingGroupWithGroupInCharge' in usedAttrs">
+                <span class="item_attribute_label"
+                      i18n:translate="PloneMeeting_label_proposingGroupWithGroupInCharge"></span>:&nbsp;&nbsp;
+                <span metal:use-macro="python: here.widget('proposingGroupWithGroupInCharge', mode='view')" />
                 <span tal:condition="not: context/getProposingGroup">-</span>
             </div>
 
@@ -93,6 +76,27 @@
                 </tal:displayAssociatedGroups>
                 <span tal:condition="not: associatedGroups">-</span>
             </div>
+
+            <tal:comment replace="nothing">Classifier</tal:comment>
+            <div class="discreet"
+                 tal:condition="python: 'classifier' in usedAttrs"
+                 tal:define="classifier context/getClassifier">
+                <span class="item_attribute_label"
+                      i18n:translate="PloneMeeting_label_classifier"></span>:&nbsp;&nbsp;
+                <span tal:condition="classifier" tal:content="classifier/Title">-</span>
+                <span tal:condition="not: classifier">-</span>
+            </div>
+
+            <tal:comment replace="nothing">Category</tal:comment>
+            <tal:category condition="not:meetingConfig/getUseGroupsAsCategories">
+            <div class="discreet"
+                 tal:define="cat python: context.getCategory(True)">
+                <span class="item_attribute_label"
+                      tal:condition="not: meetingConfig/getUseGroupsAsCategories"
+                      i18n:translate="MeetingCategory"></span>:&nbsp;&nbsp;
+                <span tal:condition="cat" tal:content="python: cat.getName()"></span>
+            </div>
+            </tal:category>
 
             <tal:comment replace="nothing">Copy groups for this item</tal:comment>
             <div class="discreet" tal:condition="python: context.isCopiesEnabled()"
@@ -117,9 +121,9 @@
                             <span i18n:translate="item_assembly">
                                 Item assembly
                             </span>
-                            <a tal:condition="mayQuickEdit" href="manage_item_assembly_form" class="link-overlay-pm">
-                                <img src="edit.gif"
-                                     tal:attributes="src string:${portal_url}/edit.gif" />
+                            <a tal:condition="mayQuickEdit" href="manage_item_assembly_form?initial_edit=1" class="link-overlay-pm">
+                                <img src="edit.png"
+                                     tal:attributes="src string:${portal_url}/edit.png" />
                             </a>
                         </dt>
                         <dd class="collapsibleContent">
@@ -164,26 +168,102 @@
                       i18n:translate="PloneMeeting_label_itemTags"></span>:&nbsp;&nbsp;
                 <span tal:content="python: ', '.join(context.getItemTags())"></span>
             </div>
-            <tal:comment replace="nothing">Predecessor</tal:comment>
-            <table class="no-style-table"
-                   tal:define="predecessors python: context.adapted().getPredecessors()"
-                   tal:condition="predecessors">
-              <tr>
-                <td style="vertical-align: top;">
-                  <div class="discreet">
-                  <span class="item_attribute_label"
-                        i18n:translate="PloneMeeting_label_predecessor"></span>:&nbsp;&nbsp;
-                  </div>
-                </td>
-                <td>
-                    <ul class="item-predecessors">
-                        <li tal:repeat="predecessor predecessors">
-                            <tal:predecessor replace="structure predecessor" />
-                        </li>
-                    </ul>
-                </td>
-              </tr>
-            </table>
+            <tal:comment replace="nothing">Linked items</tal:comment>
+            <div class="discreet">
+                <tal:defines define="predecessors python: context.adapted().getPredecessors();
+                                     linkedItems context/getManuallyLinkedItems;
+                                     showManuallyLinkedItems python: 'manuallyLinkedItems' in usedAttrs or linkedItems;
+                                     class_to_use python: (predecessors or linkedItems) and 'item_attribute_label highlightValue' or 'item_attribute_label';">
+                    <dl id="linkedItems"
+                        class="collapsible inline collapsedOnLoad">
+                        <dt class="collapsibleHeader"
+                            style="font-size: 100%;">
+                            <span tal:condition="showManuallyLinkedItems"
+                                  class="item_attribute_label"
+                                  tal:attributes="class class_to_use"
+                                  i18n:translate="linked_items_with_manually_linked_items">
+                                Linked items, <span i18n:name="auto_linked_items" tal:content="python: len(predecessors)">4</span> automatically and <span i18n:name="manually_linked_items" tal:content="python: len(linkedItems)">0</span> manually
+                            </span>
+                            <span tal:condition="not:showManuallyLinkedItems"
+                                  class="item_attribute_label"
+                                  tal:attributes="class class_to_use"
+                                  i18n:translate="linked_items">
+                                Linked items (<span i18n:name="auto_linked_items" tal:content="python: len(predecessors)">4</span>)
+                            </span>
+                        </dt>
+                        <dd class="collapsibleContent">
+                              <span class="item_attribute_label" i18n:translate="auto_linked_items">Automatically linked items</span>:&nbsp;&nbsp;
+                              <ul class="item-predecessors"
+                                  tal:condition="predecessors">
+                                  <li tal:repeat="predecessor predecessors">
+                                      <tal:predecessor replace="structure python: context.displayLinkedItem(predecessor)" />
+                                  </li>
+                              </ul>
+                              <span tal:condition="not: predecessors">-</span>
+                              <tal:manuallyLinkedItems condition="showManuallyLinkedItems">
+                                    <p></p>
+                                    <span class="item_attribute_label" i18n:translate="PloneMeeting_label_manuallyLinkedItems">Manually linked items</span>:&nbsp;&nbsp;
+                                    <ul class="item-linkeditems"
+                                        tal:condition="linkedItems">
+                                        <li tal:repeat="item linkedItems">
+                                            <tal:linkedItem replace="structure python: context.displayLinkedItem(item)" />
+                                        </li>
+                                    </ul>
+                                    <span tal:condition="not: linkedItems">-</span>
+                              </tal:manuallyLinkedItems>
+                        </dd>
+                    </dl>
+                </tal:defines>
+            </div>
+
+            <tal:comment replace="nothing">Linked items</tal:comment>
+            <div class="discreet">
+                <tal:defines define="predecessors python: context.adapted().getPredecessors(only_viewable=True);
+                                     linkedItems python: context.getManuallyLinkedItems(only_viewable=True);
+                                     showManuallyLinkedItems python: 'manuallyLinkedItems' in usedAttrs or linkedItems;
+                                     class_to_use python: (predecessors or linkedItems) and 'item_attribute_label highlightValue' or 'item_attribute_label';">
+                    <dl id="linkedItems"
+                        class="collapsible inline collapsedOnLoad">
+                        <dt class="collapsibleHeader"
+                            style="font-size: 100%;">
+                            <span tal:condition="showManuallyLinkedItems"
+                                  class="item_attribute_label"
+                                  tal:attributes="class class_to_use"
+                                  i18n:translate="linked_items_with_manually_linked_items">
+                                Linked items, <span i18n:name="auto_linked_items" tal:content="python: len(predecessors)">4</span> automatically and <span i18n:name="manually_linked_items" tal:content="python: len(linkedItems)">0</span> manually
+                            </span>
+                            <span tal:condition="not:showManuallyLinkedItems"
+                                  class="item_attribute_label"
+                                  tal:attributes="class class_to_use"
+                                  i18n:translate="linked_items">
+                                Linked items (<span i18n:name="auto_linked_items" tal:content="python: len(predecessors)">4</span>)
+                            </span>
+                        </dt>
+                        <dd class="collapsibleContent">
+                              <span class="item_attribute_label" i18n:translate="auto_linked_items">Automatically linked items</span>:&nbsp;&nbsp;
+                              <ul class="item-predecessors"
+                                  tal:condition="predecessors">
+                                  <li tal:repeat="predecessor predecessors">
+                                      <tal:predecessor replace="structure python: context.displayLinkedItem(predecessor)" />
+                                  </li>
+                              </ul>
+                              <span tal:condition="not: predecessors">-</span>
+                              <tal:manuallyLinkedItems condition="showManuallyLinkedItems">
+                                    <p></p>
+                                    <span class="item_attribute_label" i18n:translate="PloneMeeting_label_manuallyLinkedItems">Manually linked items</span>:&nbsp;&nbsp;
+                                    <ul class="item-linkeditems"
+                                        tal:condition="linkedItems">
+                                        <li tal:repeat="item linkedItems">
+                                            <tal:linkedItem replace="structure python: context.displayLinkedItem(item)" />
+                                        </li>
+                                    </ul>
+                                    <span tal:condition="not: linkedItems">-</span>
+                              </tal:manuallyLinkedItems>
+                        </dd>
+                    </dl>
+                </tal:defines>
+            </div>
+
             <div class="discreet"
                  tal:condition="python: 'itemIsSigned' in usedAttrs">
               <span class="item_attribute_label"
@@ -257,7 +337,7 @@
 
             <tal:comment replace="nothing">Other MeetingConfigs Clonable To</tal:comment>
             <div class="discreet"
-                 tal:condition="python: otherMCs or context.isClonableToOtherMeetingConfigs()"
+                 tal:condition="python: otherMCs or context.showClonableToOtherMeetingConfigs()"
                  tal:define="otherMCs context/getOtherMeetingConfigsClonableTo">
                 <span class="item_attribute_label"
                       i18n:translate="PloneMeeting_label_otherMeetingConfigsClonableTo"></span>:&nbsp;&nbsp;
@@ -273,6 +353,39 @@
                  tal:condition="python: ('privacy' in usedAttrs) and privacy">
               <span class="#" tal:attributes="class string:item_privacy_${privacy}" tal:content="python: 'ip_%s' % privacy" i18n:translate="" />
             </div>
+
+            <tal:comment replace="nothing">To discuss?</tal:comment>
+            <div class="discreet" tal:condition="context/showToDiscuss">
+                <span class="item_attribute_label"
+                      i18n:translate="PloneMeeting_label_toDiscuss"></span>:&nbsp;&nbsp;
+                <tal:to_discuss replace="structure python: context.restrictedTraverse('item-to-discuss')()" />
+            </div>
+
+            <tal:comment replace="nothing">Poll type</tal:comment>
+            <div class="discreet" tal:condition="python: 'pollType' in usedAttrs">
+                <span class="item_attribute_label"
+                      i18n:translate="PloneMeeting_label_pollType"></span>:&nbsp;&nbsp;
+                <span metal:use-macro="python: here.widget('pollType', mode='view')" />
+                <tal:displayPollTypeObservations tal:condition="python: 'pollTypeObservations' in usedAttrs">
+                    <img src="++resource++collective.iconifiedcategory.more_infos.png"
+                         id="showPollTypeObservations"
+                         style="cursor: pointer;"
+                         tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory.more_infos.png"
+                         i18n:attributes="title" title="See/hide data used for council item" />
+                    <script type="text/javascript">
+                        $( "#showPollTypeObservations" ).bind( "click", function(event) {
+                            event.preventDefault();
+                            var dataPollTypeObservations = $('#dataPollTypeObservations');
+                            dataPollTypeObservations.fadeToggle();
+                            });
+                    </script>
+                    <fieldset id="dataPollTypeObservations" style="display: none; margin-top: 0;">
+                        <legend i18n:translate="PloneMeeting_label_pollTypeObservations">Poll type observations</legend>
+                        <span metal:use-macro="python: here.widget('pollTypeObservations', mode='view')" />
+                    </fieldset>
+                </tal:displayPollTypeObservations>
+            </div>
+
             <tal:comment replace="nothing">Oral question or item</tal:comment>
             <div class="discreet" tal:condition="python: 'oralQuestion' in usedAttrs">
              <tal:defines define="oq context/getOralQuestion">
@@ -284,6 +397,7 @@
               </tal:not_oral_question>
              </tal:defines>
             </div>
+
             <tal:comment replace="nothing">Item initiator</tal:comment>
             <div class="discreet" tal:condition="python: 'itemInitiator' in usedAttrs">
                 <tal:defines define="itemInitiator context/getItemInitiator">
@@ -307,8 +421,8 @@
                                 Item signatures
                             </span>
                             <a tal:condition="mayQuickEdit" href="manage_item_signatures_form" class="link-overlay-pm">
-                                <img src="edit.gif"
-                                     tal:attributes="src string:${portal_url}/edit.gif" />
+                                <img src="edit.png"
+                                     tal:attributes="src string:${portal_url}/edit.png" />
                             </a>
                         </dt>
                         <dd class="collapsibleContent">
@@ -362,40 +476,74 @@
 
     <tal:comment replace="nothing">Annexes and advices</tal:comment>
     <a name="adviceAndAnnexes"></a>
-    <table width="100%" cellpadding="1" cellspacing="1"
-           tal:define="hasAnnexes python: context.hasAnnexesWhere(relatedTo='item');
-                       hasAnnexesDecision python: context.hasAnnexesWhere(relatedTo='item_decision');
-                       hasAdvices python: (meetingConfig.getUseAdvices() and context.displayAdvices())">
+    <table width="100%" cellpadding="1" cellspacing="1">
         <tr style="vertical-align: top;">
             <td class="itemAnnexesCell" width="50%">
-                <fieldset style="margin: 0;">
+                <fieldset>
+            <td class="itemAnnexesCell" width="50%" tal:condition="python: tool.showAnnexesTab(context)">
+                <fieldset tal:define="hasAnnexes python: tool.hasAnnexes(context, portal_type='annex');
+                                      hasAnnexesDecision python: tool.hasAnnexes(context, portal_type='annexDecision');">
                     <legend i18n:translate="existing_annexes">Annexes</legend>
                     <table width="100%" class="no-style-table" cellpadding="0" cellspacing="0" style="margin: 0;">
                         <tr tal:define="obj python: context">
-                            <td tal:define="relatedTo string:item" tal:condition="hasAnnexes">
-                                <metal:annexes use-macro="obj/@@annexes-macros/annexesIcons"/>
+                            <td tal:condition="hasAnnexes">
+                                <tal:annexes replace="structure python: context.restrictedTraverse('categorized-childs')(portal_type='annex')" />
                             </td>
-                            <td tal:define="relatedTo string:item_decision"
-                                tal:condition="python: member.has_permission('PloneMeeting: Read decision annex', context) and hasAnnexesDecision">
-                                <metal:annexes use-macro="obj/@@annexes-macros/annexesIcons"/>
+                            <td tal:condition="python: member.has_permission('PloneMeeting: Read decision annex', context) and hasAnnexesDecision">
+                                <tal:annexesDecision replace="structure python: context.restrictedTraverse('@@annexes-icons')(relatedTo='item_decision')" />
+                            </td>
+                            <td tal:condition="hasAnnexesDecision">
+                                <div class="decisionAnnexDescription">
+                                    <span class="discreet" style="padding-left: 0.7em;"
+                                          i18n:translate="AnnexesDecisionShort"></span>
+                                    <span class="discreet">:</span>&nbsp;
+                                </div>
+                                <tal:annexesDecision replace="structure python: context.restrictedTraverse('categorized-childs')(portal_type='annexDecision')" />
                             </td>
                             <td tal:condition="python: not hasAnnexes and not hasAnnexesDecision">
                                 <span>-</span>
+                            </td>
+                            <td width="110px">
+                             <a href="@@categorized-annexes">
+                              <img class="categorized_elements_more_infos_icon"
+                                   src="more_infos.png"
+                                   tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory.more_infos.png" />
+                              <span i18n:domain="collective.iconifiedcategory" i18n:translate="">More infos</span>
+                             </a>
                             </td>
                         </tr>
                     </table>
                 </fieldset>
             </td>
-
             <tal:comment replace="nothing">Advices</tal:comment>
-            <td class="itemAdvicesCell" width="50%">
-                <fieldset style="margin: 0;" tal:define="meetingItem python: context">
+            <td class="itemAdvicesCell" tal:condition="python: context.adapted().showAdvices()" width="50%">
+                <fieldset tal:define="meetingItem python: context">
                 <legend i18n:translate="PloneMeeting_label_advices">Advices</legend>
                     <metal:advices use-macro="context/@@advices-macros/macros/advicesIcons"/>
                 </fieldset>
             </td>
         </tr>
     </table>
+
+    <tal:comment replace="nothing">In and out moves</tal:comment>
+    <tal:field define="fieldName python: 'inAndOutMoves'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
+
+    <tal:comment replace="nothing">Notes</tal:comment>
+    <tal:field define="fieldName python: 'notes'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
+
+    <tal:comment replace="nothing">Marginal notes</tal:comment>
+    <tal:field define="fieldName python: 'marginalNotes'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
+
+    <tal:comment replace="nothing">Internal notes</tal:comment>
+    <tal:field define="fieldName python: 'internalNotes'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
 
     <tal:comment replace="nothing">Observations</tal:comment>
     <tal:field define="fieldName python: 'observations'; ajaxEdit python:True">
@@ -448,17 +596,25 @@
     <tal:itemInConfig condition="context/isDefinedInTool">
 
       <tal:templateUsingGroups condition="python: 'itemtemplates' in context.absolute_url()">
-        <span class="discreet item_attribute_label"
-              i18n:translate="PloneMeeting_label_templateUsingGroups">Template using groups</span>&nbsp:<br />
-        <span metal:use-macro="python: here.widget('templateUsingGroups', mode='view')" /><p>&nbsp;</p>
-        <a tal:attributes="href python: meetingConfig.absolute_url() + '?pageName=data#itemTemplates'" i18n:translate="back"></a><br /><br />
+        <div class="discreet">
+         <span class="item_attribute_label" i18n:translate="PloneMeeting_label_templateUsingGroups">Template using groups</span>:&nbsp;&nbsp;
+         <span metal:use-macro="python: here.widget('templateUsingGroups', mode='view')" />
+        </div>
+        <p>&nbsp;</p>
+        <a tal:attributes="href string:${meetingConfig/absolute_url}?pageName=data#itemTemplates" i18n:translate="back"></a><br /><br />
       </tal:templateUsingGroups>
 
       <tal:transitionsForRecurring condition="python: context.getParentNode().getId() == 'recurringitems'">
         <span class="discreet item_attribute_label"
               i18n:translate="PloneMeeting_label_meetingTransitionInsertingMe" />&nbsp:<br />
         <span metal:use-macro="python: here.widget('meetingTransitionInsertingMe', mode='view')" /><p>&nbsp;</p>
-        <a tal:attributes="href python: meetingConfig.absolute_url() + '?pageName=data#recItems'" i18n:translate="back"></a><br /><br />
+        <a tal:attributes="href python: meetingConfig.absolute_url() + '?pageName=data#recurringitems'" i18n:translate="back"></a><br /><br />
+        <div class="discreet">
+         <span class="item_attribute_label" i18n:translate="PloneMeeting_label_meetingTransitionInsertingMe">Meeting transition inserting me</span>:&nbsp;&nbsp;
+         <span metal:use-macro="python: here.widget('meetingTransitionInsertingMe', mode='view')" />
+        </div>
+        <p>&nbsp;</p>
+        <a tal:attributes="href string:${meetingConfig/absolute_url}?pageName=data#recurringitems" i18n:translate="back"></a><br /><br />
       </tal:transitionsForRecurring>
 
     </tal:itemInConfig>
