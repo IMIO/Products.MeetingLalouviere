@@ -28,10 +28,10 @@ from Products.PloneMeeting.tests.testMeetingGroup import testMeetingGroup as pmt
 
 
 class testMeetingGroup(MeetingLalouviereTestCase, pmtmg):
-    '''Tests the testMeetingGroup class methods.'''
+    """Tests the testMeetingGroup class methods."""
 
     def test_pm_CanNotRemoveUsedMeetingGroup(self):
-        '''Run the test_pm_CanNotRemoveUsedMeetingGroup from PloneMeeting.'''
+        """Run the test_pm_CanNotRemoveUsedMeetingGroup from PloneMeeting."""
         # remove every recurring items in existing meetingConfigs except template2 in self.meetingConfig
         self.changeUser('admin')
         self._removeConfigObjectsFor(self.meetingConfig, folders=['recurringitems', ])

@@ -14,8 +14,8 @@
                        tool python: context.portal_plonemeeting;
                        member tool/getUser;
                        portal context/portal_url/getPortalObject;
-                       meetingConfig python: tool.getMeetingConfig(context);
-                       usedAttrs meetingConfig/getUsedItemAttributes;
+                       cfg python: tool.getMeetingConfig(context);
+                       usedAttrs cfg/getUsedItemAttributes;
                        bilingual python: 'secondLanguage' in tool.getModelAdaptations();">
 
     <tal:showWarningWillInvalidateAdvices condition="context/willInvalidateAdvices">
@@ -39,42 +39,21 @@
     <tal:comment replace="nothing">Proposing group, category, classifier, toDiscuss</tal:comment>
     <table cellpadding="0" cellspacing="0">
       <tr valign="top">
-        <td><metal:field use-macro="python:here.widget('proposingGroup', mode='edit')"/></td>
+        <td>
+            <metal:field use-macro="python:here.widget('proposingGroup', mode='edit')"/>
+            <metal:field use-macro="python:here.widget('proposingGroupWithGroupInCharge', mode='edit')"/>
+        </td>
         <td><metal:field use-macro="python:here.widget('classifier', mode='edit')"/></td>
         <td><metal:field use-macro="python:here.widget('category', mode='edit')"/></td>
-        <tal:comment replace="nothing">Custom display of field "toDiscuss"</tal:comment>
-        <td tal:condition="context/showToDiscuss">
-          <div id="archetypes-fieldname-toDiscuss" class="field"
-               tal:define="field python: here.getField('toDiscuss');
-                           reqValue request/toDiscuss|nothing;
-                           value python: test(reqValue, reqValue, str(context.getToDiscuss()))">
-            <input type="radio" id="toDiscuss_no" name="toDiscuss" class="noborder"
-                   tal:attributes="value python:'False'; checked python: value=='False'"/>
-            <label for="toDiscuss_no" class="formQuestion" i18n:domain="PloneMeeting"
-                   i18n:translate="to_discuss_no"></label><br/>
-            <input type="radio" id="toDiscuss_yes" name="toDiscuss" value="on" class="noborder"
-                   tal:attributes="value python:'True'; checked python: value=='True'"/>
-            <label for="toDiscuss_yes" class="formQuestion" i18n:domain="PloneMeeting"
-                   i18n:translate="to_discuss_yes"></label>
-          </div>
-        </td>
-        <td tal:condition="python: context.adapted().maySignItem(member)">
-          <div id="archetypes-fieldname-itemIsSigned" class="field"
-               tal:define="field python: here.getField('itemIsSigned');
-                           reqValue request/itemIsSigned|nothing;
-                           value python: test(reqValue, reqValue, str(context.getItemIsSigned()))">
-            <input type="radio" id="itemIsSigned_no" name="itemIsSigned" class="noborder"
-                   tal:attributes="value python:'False'; checked python: value=='False'"/>
-            <label for="toDiscuss_no" class="formQuestion" i18n:domain="PloneMeeting"
-                   i18n:translate="item_is_signed_no"></label><br/>
-            <input type="radio" id="itemIsSigned_yes" name="itemIsSigned" value="on" class="noborder"
-                   tal:attributes="value python:'True'; checked python: value=='True'"/>
-            <label for="item_is_signed_yes_yes" class="formQuestion" i18n:domain="PloneMeeting"
-                   i18n:translate="item_is_signed_yes"></label>
-          </div>
-        </td>
       </tr>
     </table>
+
+    <metal:field use-macro="python:here.widget('toDiscuss', mode='edit')"/>
+    <metal:field use-macro="python:here.widget('itemIsSigned', mode='edit')"/>
+    <metal:field use-macro="python:here.widget('pollType', mode='edit')"/>
+    <metal:field use-macro="python:here.widget('pollTypeObservations', mode='edit')"/>
+    <metal:field use-macro="python:here.widget('manuallyLinkedItems', mode='edit')"/>
+
     <tal:comment replace="nothing">Associated groups, optional advisers and copyGroups</tal:comment>
     <table cellpadding="0" cellspacing="0">
       <tr valign="top">
@@ -86,46 +65,73 @@
     </table>
     <tal:comment replace="nothing">Preferred meeting, item keywords, privacy</tal:comment>
     <table cellpadding="0" cellspacing="0">
-      <tr valign="top">
-        <td><metal:field use-macro="python:here.widget('preferredMeeting', mode='edit')"/></td>
-        <td><metal:field use-macro="python:here.widget('itemKeywords', mode='edit')"/></td>
-        <td><metal:field use-macro="python:here.widget('sendToAuthority', mode='edit')"/></td>
-        <td><metal:field use-macro="python:here.widget('otherMeetingConfigsClonableTo', mode='edit')"/></td>
-        <td><metal:field use-macro="python:here.widget('privacy', mode='edit')"/></td>
-      </tr>
-    </table>
+        <tr valign="top">
+           <td>
+            <metal:field use-macro="python:here.widget('preferredMeeting', mode='edit')"/>
+           </td>
+        </tr>
+        <tr>
+           <td tal:condition="python:'sendToAuthority' in usedAttrs">
+            <metal:field use-macro="python:here.widget('sendToAuthority', mode='edit')"/>
+           </td>
+           <td tal:condition="python:'privacy' in usedAttrs">
+            <metal:field use-macro="python:here.widget('privacy', mode='edit')"/>
+           </td>
+           <td tal:condition="python:'itemKeywords' in usedAttrs">
+            <metal:field use-macro="python:here.widget('itemKeywords', mode='edit')"/>
+           </td>
+        </tr>
+        <tr>
+            <td colspan="5"
+                tal:define="showOtherMeetingConfigsClonableToSpecialFields python: cfg.getMeetingConfigsToCloneTo() and ('otherMeetingConfigsClonableToEmergency' in usedAttrs or 'otherMeetingConfigsClonableToPrivacy' in usedAttrs)"
+                tal:attributes="style python: showOtherMeetingConfigsClonableToSpecialFields and 'border: 1px solid lightgrey;; min-width: 600px;;' or ''">
+                <metal:field use-macro="python:here.widget('otherMeetingConfigsClonableTo', mode='edit')"/>
+                <metal:field use-macro="python:here.widget('otherMeetingConfigsClonableToPrivacy', mode='edit')"/>
+                <metal:field use-macro="python:here.widget('otherMeetingConfigsClonableToEmergency', mode='edit', label=0)"/>
+                <tal:scriptForOtherMeetingConfigsClonableToSpecificFields condition="showOtherMeetingConfigsClonableToSpecialFields">
+                <script type="text/javascript">
+                    $("input[id^='otherMeetingConfigsClonableTo_']").each(function()
+                        {
+                         $(this).bind("click", function() {
+                            number = this.id.split('_')[1]
+                            otherMCEmergencyField = $('#otherMeetingConfigsClonableToEmergency_' + number);
+                            otherMCPrivacyField = $('#otherMeetingConfigsClonableToPrivacy_' + number);
+                            if (this.checked) {
+                                otherMCEmergencyField.attr('disabled', false);
+                                otherMCPrivacyField.attr('disabled', false);
+                            }
+                            else {
+                                otherMCEmergencyField.attr('checked', false);
+                                otherMCEmergencyField.attr('disabled', true);
+                                otherMCPrivacyField.attr('checked', false);
+                                otherMCPrivacyField.attr('disabled', true);
+                            };
+                            });
+                        });
+
+                    jQuery(document).ready(function($) {
+                    $("input[id^='otherMeetingConfigsClonableTo_']").each(function()
+                        {
+                        if (!$(this).attr('checked')) {
+                            number = this.id.split('_')[1]
+                            otherMCEmergencyField = $('#otherMeetingConfigsClonableToEmergency_' + number);
+                            otherMCEmergencyField.attr('checked', false);
+                            otherMCEmergencyField.attr('disabled', true);
+                            otherMCPrivacyField = $('#otherMeetingConfigsClonableToPrivacy_' + number);
+                            otherMCPrivacyField.attr('checked', false);
+                            otherMCPrivacyField.attr('disabled', true);
+                            };
+                        });
+                    });
+                </script>
+                </tal:scriptForOtherMeetingConfigsClonableToSpecificFields>
+            </td>
+        </tr>
+    </table><br />
 
     <tal:comment replace="nothing">Budget-related information</tal:comment>
-    <tal:budget define="cbChecked  python: (request.get('budgetRelated',None)==True) or context.getBudgetRelated()"
-                condition="python: 'budgetInfos' in usedAttrs">
-    <script language="javascript">
-      function toggleBudgetInfo(checkbox) {
-        var budgetField = $('#budgetField');
-        if (checkbox.checked) {
-            budgetField.fadeIn();
-        }
-        else {
-            budgetField.fadeOut("normal", function() {
-                $(this).hide();
-            });
-        };
-      }
-    </script>
-    <div id="archetypes-fieldname-budgetRelated" class="field ArchetypesBooleanWidget"
-         tal:define="brField python: here.getField('budgetRelated')">
-      <input type="checkbox" id="budgetRelated" name="budgetRelated:boolean" value="on" class="noborder"
-             onclick="javascript:toggleBudgetInfo(this)" tal:attributes="checked cbChecked"/>
-      <input type="hidden" name="budgetRelated:boolean:default" value="" originalvalue=""/>
-      <label for="budgetRelated" class="formQuestion" i18n:domain="PloneMeeting"
-             tal:content="brField/widget/label_msgid" i18n:translate=""></label>
-      <br/>
-    </div>
-    <div id="budgetField" name="budgetField"
-         tal:attributes="style python:test(cbChecked, 'display: block', 'display: none')">
-      <metal:field use-macro="python:here.widget('budgetInfos', mode='edit')"/>
-      <br/>
-    </div>
-    </tal:budget>
+    <metal:field use-macro="python:here.widget('budgetRelated', mode='edit')"/>
+    <metal:field use-macro="python:here.widget('budgetInfos', mode='edit')"/>
 
     <metal:field use-macro="python:here.widget('oralQuestion', mode='edit')"/>
     <metal:field use-macro="python:here.widget('itemInitiator', mode='edit')"/>
@@ -136,30 +142,46 @@
     <tal:field define="fieldName python: 'decision'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
-        <tal:comment replace="nothing">XXX Interventions</tal:comment>
-        <tal:field define="fieldName python: 'interventions'">
-          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
-        </tal:field>
-        <tal:comment replace="nothing">XXX Commission transcript</tal:comment>
-        <tal:field define="fieldName python: 'commissionTranscript'">
-          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
-        </tal:field>
+    <tal:field define="fieldName python: 'inAndOutMoves'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
+    <tal:field define="fieldName python: 'notes'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
+    <tal:field define="fieldName python: 'marginalNotes'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
+    <tal:field define="fieldName python: 'internalNotes'"
+               condition="python: 'internalNotes' in usedAttrs" >
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
 
-        <tal:comment replace="nothing">XXX followUp</tal:comment>
-        <metal:field use-macro="python:here.widget('followUp', mode='edit')"/>
+    <tal:comment replace="nothing">XXX Interventions</tal:comment>
+    <tal:field define="fieldName python: 'interventions'">
+      <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
+    </tal:field>
+    <tal:comment replace="nothing">XXX Commission transcript</tal:comment>
+    <tal:field define="fieldName python: 'commissionTranscript'">
+      <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
+    </tal:field>
 
-        <tal:comment replace="nothing">XXX neededFollowUp</tal:comment>
-        <tal:field define="fieldName python: 'neededFollowUp'">
-          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
-        </tal:field>
-        <tal:comment replace="nothing">XXX providedFollowUp</tal:comment>
-        <tal:field define="fieldName python: 'providedFollowUp'">
-          <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
-        </tal:field>
+    <tal:comment replace="nothing">XXX followUp</tal:comment>
+    <metal:field use-macro="python:here.widget('followUp', mode='edit')"/>
+
+    <tal:comment replace="nothing">XXX neededFollowUp</tal:comment>
+    <tal:field define="fieldName python: 'neededFollowUp'">
+      <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
+    </tal:field>
+    <tal:comment replace="nothing">XXX providedFollowUp</tal:comment>
+    <tal:field define="fieldName python: 'providedFollowUp'">
+      <metal:f use-macro="context/@@pm-macros/macros/editContentField"/>
+    </tal:field>
+
     <tal:field define="fieldName python: 'observations'"
                condition="python: 'observations' in usedAttrs" >
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
+
     <metal:field use-macro="python:here.widget('itemTags', mode='edit')"/>
     <table cellpadding="0" cellspacing="0" width="100%">
       <tr valign="top">

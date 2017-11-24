@@ -1306,7 +1306,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">accept</action>
+  <action url="" icon="%(portal_url)s/accept.png" category="workflow" i18n:translate="">accept</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayDecide()</guard-expression>
   </guard>
@@ -1318,7 +1318,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">accept_but_modify</action>
+  <action url="" icon="%(portal_url)s/accept_but_modify.png" category="workflow" i18n:translate="">accept_but_modify</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayDecide()</guard-expression>
   </guard>
@@ -1330,7 +1330,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToItemCreated</action>
+  <action url="" icon="%(portal_url)s/backToItemCreated.png" category="workflow" i18n:translate="">backToItemCreated</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -1342,7 +1342,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToItemInCommittee</action>
+  <action url="" icon="%(portal_url)s/backToItemInCommittee.png" category="workflow" i18n:translate="">backToItemInCommittee</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -1354,7 +1354,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToItemInCouncil</action>
+  <action url="" icon="%(portal_url)s/backToItemInCouncil.png" category="workflow" i18n:translate="">backToItemInCouncil</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -1366,7 +1366,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToPresented</action>
+  <action url="" icon="%(portal_url)s/backToPresented.png" category="workflow" i18n:translate="">backToPresented</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -1378,7 +1378,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToProposedToDirector</action>
+  <action url="" icon="%(portal_url)s/backToProposedToDirector.png" category="workflow" i18n:translate="">backToProposedToDirector</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -1390,7 +1390,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToValidated</action>
+  <action url="" icon="%(portal_url)s/backToValidated.png" category="workflow" i18n:translate="">backToValidated</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -1402,7 +1402,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">delay</action>
+  <action url="" icon="%(portal_url)s/delay.png" category="workflow" i18n:translate="">delay</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayDelay()</guard-expression>
   </guard>
@@ -1414,7 +1414,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">present</action>
+  <action url="" icon="%(portal_url)s/present.png" category="workflow" i18n:translate="">present</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayPresent()</guard-expression>
   </guard>
@@ -1426,7 +1426,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">proposeToDirector</action>
+  <action url="" icon="%(portal_url)s/proposeToDirector.png" category="workflow" i18n:translate="">proposeToDirector</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayProposeToDirector()</guard-expression>
   </guard>
@@ -1438,7 +1438,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">refuse</action>
+  <action url="" icon="%(portal_url)s/refuse.png" category="workflow" i18n:translate="">refuse</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayRefuse()</guard-expression>
   </guard>
@@ -1450,7 +1450,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">setItemInCommittee</action>
+  <action url="" icon="%(portal_url)s/item_in_committee.png" category="workflow" i18n:translate="">setItemInCommittee</action>
   <guard>
     <guard-expression>python:here.wfConditions().maySetItemInCommittee()</guard-expression>
   </guard>
@@ -1462,7 +1462,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">setItemInCouncil</action>
+  <action url="" icon="%(portal_url)s/item_in_council.png" category="workflow" i18n:translate="">setItemInCouncil</action>
   <guard>
     <guard-expression>python:here.wfConditions().maySetItemInCouncil()</guard-expression>
   </guard>
@@ -1474,7 +1474,7 @@ Manager</permission-role>
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">validate</action>
+  <action url="" icon="%(portal_url)s/validate.png" category="workflow" i18n:translate="">validate</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayValidate()</guard-expression>
   </guard>
