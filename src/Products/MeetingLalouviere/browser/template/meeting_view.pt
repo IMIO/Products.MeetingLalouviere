@@ -1,0 +1,138 @@
+<tal:left define="hidden python:request.set('disable_plone.leftcolumn', view.hide_left_column)" />
+<tal:right define="hidden python:request.set('disable_plone.rightcolumn', view.hide_right_column)" />
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+  lang="en-US"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="PloneMeeting">
+
+<metal:jsslot fill-slot="javascript_head_slot">
+  <script type="text/javascript"
+    tal:content="string:jQuery(document).ready(function(evt){
+        Faceted.Load(evt, '${context/absolute_url}/');
+    });"></script>
+  <script type="text/javascript"
+    tal:content="string:jQuery(window).unload(function(){
+        Faceted.Unload();
+    });"></script>
+</metal:jsslot>
+
+<body>
+  <metal:title fill-slot="content-title">
+      <tal:header replace="structure context/@@header" />
+  </metal:title>
+  <metal:description fill-slot="content-description">
+   <tal:comment replace="nothing">Just hide the description as shown by default by Plone</tal:comment>
+  </metal:description>
+
+<div metal:fill-slot="content-core"
+     tal:define="tool python: context.portal_plonemeeting;
+                 member context/@@plone_portal_state/member;
+                 showPage tool/showMeetingView;
+                 showAvailableItems python:member.has_permission('Modify portal content', context) and context.wfConditions().mayAcceptItems();">
+
+<tal:showPage condition="showPage">
+  <script language="javascript"
+    tal:content="python: 'ploneEditor = \'%s\';' % (member.getProperty('wysiwyg_editor') or here.portal_properties.site_properties.default_editor)">
+  </script>
+
+  <tal:comment replace="nothing">XXX begin changes for MeetingLalouviere</tal:comment>
+
+  <tal:comment replace="nothing">Pre-meeting info</tal:comment>
+
+  <tal:premeetings condition="python: 'preMeetingDate' in usedAttrs">
+      <dl id="premeetings" class="collapsible inline collapsedOnLoad">
+        <dt class="collapsibleHeader" i18n:translate="pre_meeting">Premeetings</dt>
+        <dd class="collapsibleContent" tal:define="categories python: context.getCommissionCategories();">
+            <br />
+            <table class="listing nosort">
+              <tr i18n:domain="PloneMeeting">
+                <th i18n:translate="listingheader_premeeting_name"/>
+                <th style="min-width: 115px;" i18n:translate="listingheader_premeeting_date"/>
+                <th i18n:translate="listingheader_premeeting_place"/>
+                <th i18n:translate="listingheader_premeeting_assembly"/>
+              </tr>
+              <tal:loop repeat="category categories">
+              <tr tal:define="oddrow repeat/category/odd" valign="top" tal:attributes="class python: oddrow and 'odd' or 'even'">
+               <tal:defines define="index repeat/category/number;">
+               <td tal:content="python: isinstance(category, tuple) and 'Commission ' + '/'.join([subcat.Title().replace('Commission ', '') for subcat in category]) or category.Title()">Category title</td>
+               <td>
+                  <tal:block define="date python: getattr(context, 'preMeetingDate_%d' %index, context.getPreMeetingDate());">
+                    <span tal:condition="date"
+                          tal:content="python: toLocalizedTime(date, long_format=1)">Premeeting date</span>
+                    <span tal:condition="not: date">-</span>
+                  </tal:block>
+               </td>
+               <td>
+                 <tal:block define="place python: getattr(context, 'preMeetingPlace_%d' %index, context.getPreMeetingPlace()).strip();">
+                   <span tal:condition="place" tal:content="place">Premeeting place</span>
+                   <span tal:condition="not: place">-</span>
+                 </tal:block>
+               </td>
+               <td>
+                 <tal:block define="assembly python: getattr(context, 'preMeetingAssembly_%d' %index, context.getPreMeetingAssembly)();">
+                   <span tal:condition="assembly" tal:replace="structure python: tool.toHTMLStrikedContent(assembly)">Premeeting assembly</span>
+                   <span tal:condition="not: assembly">-</span>
+                 </tal:block>
+               </td>
+               </tal:defines>
+              </tr>
+              </tal:loop>
+            </table>
+        </dd>
+      </dl>
+  </tal:premeetings>
+  <tal:comment replace="nothing">XXX end changes for MeetingLalouviere</tal:comment>
+
+
+  <tal:comment replace="nothing">XXX changed for PM, infos displayed before the faceted table.</tal:comment>
+  <tal:meetingBeforeFacetedInfos replace="structure context/@@meeting-before-faceted-infos" />
+  <br />
+
+  <tal:availableItems condition="showAvailableItems">
+    <h2 class="available-items" >
+      <span i18n:translate='available_items'>Available items</span>
+    </h2>
+    <iframe src="@@meeting_available_items_view"
+            tal:attributes="src string:${context/absolute_url}/@@meeting_available_items_view?ajax_load=0&ajax_include_head=1"
+            class="auto-height" style="width: 100%; padding-bottom: 2em;">
+    </iframe>
+    
+    <script>
+        $('iframe.auto-height').iFrameResize({log:false, scrolling:true})
+    </script>
+  </tal:availableItems>
+  <h2 class="presented-items">
+    <span i18n:translate="presented_items">Presented items</span> (<span class="meeting_number_of_items" tal:content="context/numberOfItems"/>)
+  </h2>
+
+  <!-- Folder contents -->
+  <div class="faceted-form faceted-presented-items" metal:define-macro="widgets" id="faceted-form"
+    tal:define="mode view/mode | string:view" tal:attributes="data-mode mode"
+    i18n:domain="eea">
+
+    <!-- Basic/Extended search -->
+    <div class="faceted-sections-buttons">
+      <a href="#" class="faceted-sections-buttons-more" i18n:translate="">More filters</a>
+      <a href="#" class="faceted-sections-buttons-less" i18n:translate="">Less filters</a>
+    </div>
+
+    <metal:widgets use-macro="here/@@faceted_widgets/macros/widgets" />
+
+    <!-- Faceted version -->
+    <div style="display: none" id="faceted-version"
+      tal:content="here/@@faceted_version|string:" />
+  </div>
+
+  <tal:comment replace="nothing">XXX changed for PM, infos displayed after the faceted table.</tal:comment>
+  <tal:meetingBeforeFacetedInfos replace="structure context/@@meeting-after-faceted-infos" />
+
+</tal:showPage>
+
+<tal:notShowPage condition="not: showPage">
+  <p i18n:translate="hide_meeting_view_page">This page is currently not accessible. Meeting managers will soon allow you to access it again. Sorry for the inconvenience.</p>
+</tal:notShowPage>
+
+</div>
+</body>
+</html>
