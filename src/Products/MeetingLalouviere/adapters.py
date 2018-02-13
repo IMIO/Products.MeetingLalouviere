@@ -325,7 +325,7 @@ class CustomMeeting(Meeting):
             return len(self.context.getItems(uids=itemUids, listTypes=listTypes))
         # Either, we will have to filter (privacy, categories, late)
         filteredItemUids = []
-        uid_catalog = getToolByName(self.context, 'uid_catalog')
+        uid_catalog = self.uid_catalog
         for itemUid in itemUids:
             obj = uid_catalog(UID=itemUid)[0].getObject()
             if not (privacy == '*' or obj.getPrivacy() == privacy):
