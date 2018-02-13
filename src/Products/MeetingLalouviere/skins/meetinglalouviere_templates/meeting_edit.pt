@@ -281,18 +281,6 @@
           </tal:premeetings>
         <tal:comment replace="nothing">XXX end changes by MeetingLalouviere</tal:comment>
 
-        <fieldset tal:condition="python: 'preMeetingDate' in usedAttrs and not context.isTemporary()">
-          <legend i18n:translate="pre_meeting" i18n:domain="PloneMeeting"></legend>
-          <table cellpadding="0" cellspacing="0" class="no-style-table meeting-premeeting-fields">
-            <tr>
-              <td><metal:field use-macro="python:here.widget('preMeetingDate', mode='edit')"/></td>
-              <td tal:condition="python: 'preMeetingPlace' in usedAttrs">
-                <metal:field use-macro="python:here.widget('preMeetingPlace', mode='edit')"/>
-              </td>
-            </tr>
-          </table>
-        </fieldset>
-
         <tal:field define="fieldName python: 'inAndOutMoves'"
                    condition="python: context.showMeetingManagerReservedField('inAndOutMoves')">
           <metal:f use-macro="context/@@pm-macros/editContentField"/>

@@ -32,4 +32,13 @@
              factory=".adapters.MLItemPrettyLinkAdapter"
              provides="imio.prettylink.interfaces.IPrettyLink" />
 
+    <!-- before faceted infos on the meeting_view -->
+    <browser:page
+      for="Products.PloneMeeting.interfaces.IMeeting"
+      name="meeting-before-faceted-infos"
+      template="browser/template/meeting_before_faceted_infos.pt"
+      class="Products.PloneMeeting.browser.views.MeetingBeforeFacetedInfosView"
+      permission="zope2.View"
+      />
+
 </configure>
