@@ -336,6 +336,7 @@ class CustomMeeting(Meeting):
                 continue
             filteredItemUids.append(itemUid)
         return len(filteredItemUids)
+    Meeting.getNumberOfItems = getNumberOfItems
 
     def getItemsFirstSuppl(self, itemUids, privacy='public'):
         """Returns the items presented as first supplement"""
