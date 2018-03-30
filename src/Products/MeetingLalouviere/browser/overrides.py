@@ -8,6 +8,7 @@
 #
 
 from plone import api
+from Products.CMFPlone.utils import safe_unicode
 from Products.PloneMeeting.browser.views import FolderDocumentGenerationHelperView
 from Products.PloneMeeting.browser.views import ItemDocumentGenerationHelperView
 from Products.PloneMeeting.browser.views import MeetingDocumentGenerationHelperView
@@ -15,7 +16,6 @@ from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import getLastEvent
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
-
 
 def formatedAssembly(assembly, focus):
     is_finish = False
@@ -95,8 +95,9 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
         for annex in annexes:
             url = annex.absolute_url()
             title = annex.Title().replace('&', '&amp;')
-            res.append('<a href="{0}">{1}</a><br/>'.format(url, title))
-        return ('\n'.join(res))
+            res.append(u'<p><a href="{0}">{1}</a></p>'.format(
+                url, safe_unicode(title)))
+        return (u'\n'.join(res))
 
     def printFormatedAdvice(self):
         ''' Printing Method use in templates :
@@ -107,10 +108,16 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
             for advice in self.context.getAdvicesByType()[key]:
                 if advice['type'] == 'not_given':
                     continue
+
                 comment = ''
-                if advice['comment']:
+                type = key
+
+                if 'hidden_during_redaction' in advice and advice['hidden_during_redaction']:
+                    type = 'hidden_during_redaction'
+                elif advice['comment']:
                     comment = advice['comment']
-                res.append({'type': self.translate(msgid=key, domain='PloneMeeting').encode('utf-8'),
+
+                res.append({'type': self.translate(msgid=type, domain='PloneMeeting').encode('utf-8'),
                             'name': advice['name'].encode('utf-8'),
                             'comment': comment})
         return res
@@ -125,10 +132,11 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
         assembly = self.context.getItemAssembly().replace('<p>', '').replace('</p>', '').split('<br />')
         return formatedAssembly(assembly, focus)
 
-    def printFinanceAdvice(self, case):
+    def printFinanceAdvice(self, cases, show_hidden=False):
         """
-        :param case: can be either 'initiative', 'legal', 'simple' or 'not_given'
-        :return: an array dictionaries same as MeetingItem.getAdviceDataFor
+        :param cases: collection containing either 'initiative', 'legal', 'simple' or 'not_given'
+               cases can also be a string in case a single case should be returned and for backward compatibility.
+        :return: an array of dictionaries same as MeetingItem.getAdviceDataFor
         or empty if no advice matching the given case.
         """
 
@@ -136,53 +144,63 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
         case 'simple' means the financial advice was requested but without any delay.
         case 'legal' means the financial advice was requested with a delay. It's a legal financial advice.
         case 'initiative' means the financial advice was given without being requested at the first place.
-        case 'legal_not_given' means the financial advice was requested with delay. But was ignored by the finance
+        case 'legal_not_given' means the financial advice was requested with delay. But was ignored by the finance director.
         case 'simple_not_given' means the financial advice was requested without delay. But was ignored by the finance
          director.
         """
+
+        def check_given_or_not_cases(advice, case_to_check, case_given, case_not_given):
+            if advice['advice_given_on']:
+                return case_to_check == case_given
+            else:
+                return case_to_check == case_not_given
+
+        if isinstance(cases, str):
+            cases = [cases]
 
         result = []
         tool = api.portal.get_tool('portal_plonemeeting')
         cfg = tool.getMeetingConfig(self.context)
         finance_advice_ids = cfg.adapted().getUsedFinanceGroupIds()
 
-        if finance_advice_ids and case in ['initiative', 'legal', 'simple', 'simple_not_given', 'legal_not_given']:
+        if finance_advice_ids:
             advices = self.context.getAdviceDataFor(self.context.context)
 
-            for finance_advice_id in finance_advice_ids:
+            for case in cases:
+                if case in ['initiative', 'legal', 'simple', 'simple_not_given', 'legal_not_given']:
+                    for finance_advice_id in finance_advice_ids:
 
-                if finance_advice_id in advices:
-                    advice = advices[finance_advice_id]
-                else:
-                    continue
+                        if finance_advice_id in advices:
+                            advice = advices[finance_advice_id]
+                        else:
+                            continue
 
-                if advice['advice_given_on']:
-                    if case == 'initiative' and advice['not_asked']:
-                        result.append(advice)
+                        # Change data if advice is hidden
+                        if 'hidden_during_redaction' in advice and advice['hidden_during_redaction'] and not show_hidden:
+                            message = self.translate('hidden_during_redaction', domain='PloneMeeting')
+                            advice['type_translated'] = message
+                            advice['type'] = 'hidden_during_redaction'
+                            advice['comment'] = message
 
-                if 'delay_infos' in advice and not advice['not_asked']:
-
-                    advice['item_transmitted_on'] = self.getItemFinanceAdviceTransmissionDate()
-                    if advice['item_transmitted_on']:
-                        advice['item_transmitted_on_localized'] = self.display_date(date=advice['item_transmitted_on'])
-
-                    if (case == 'simple' or case == 'simple_not_given') and not advice['delay_infos']:
-
-                        if case == 'simple' and advice['advice_given_on']:
-                            result.append(advice)
-
-                        elif case == 'simple_not_given' and not advice['advice_given_on']:
-                            result.append(advice)
-
-                    elif advice['delay_infos']:
-
-                        if advice['advice_given_on']:
-
-                            if case == 'legal':
+                        # check if advice was given on self initiative by the adviser
+                        if advice['not_asked']:
+                            if case == 'initiative' and advice['advice_given_on']:
                                 result.append(advice)
+                        else:
+                            # set transmission date to adviser because advice was asked by the agent
+                            advice['item_transmitted_on'] = self.getItemFinanceAdviceTransmissionDate(finance_advice_id)
+                            if advice['item_transmitted_on']:
+                                advice['item_transmitted_on_localized'] = self.display_date(
+                                    date=advice['item_transmitted_on'])
+                            else:
+                                advice['item_transmitted_on_localized'] = ''
 
-                        elif case == 'legal_not_given':
-                            result.append(advice)
+                            # If there is a delay then it is a legal advice. If not, it's a simple advice
+                            if advice['delay']:
+                                if check_given_or_not_cases(advice, case, 'legal', 'legal_not_given'):
+                                    result.append(advice)
+                            elif check_given_or_not_cases(advice, case, 'simple', 'simple_not_given'):
+                                result.append(advice)
         return result
 
     def getItemFinanceDelayLimitDate(self):
@@ -202,12 +220,15 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
 
         return None
 
-    def getItemFinanceAdviceTransmissionDate(self):
+    def getItemFinanceAdviceTransmissionDate(self, finance_id=None):
         """
         :return: The date as a string when the finance service received the advice request.
                  No matter if a legal delay applies on it or not.
         """
-        finance_id = self.context.adapted().getFinanceAdviceId()
+        if not finance_id:
+            finance_id = self.context.adapted().getFinanceAdviceId()
+            # may return None anyway
+
         if finance_id:
             data = self.real_context.getAdviceDataFor(self.real_context, finance_id)
             if 'delay_infos' in data and 'delay_started_on' in data['delay_infos'] \
@@ -248,12 +269,12 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
                or str(self.real_context.Creator())
 
     def getDeliberation(self, withFinanceAdvice=True, **kwargs):
-        '''Override getDeliberation to be able to specify that we want to print the finance advice.'''
+        """Override getDeliberation to be able to specify that we want to print the finance advice."""
         deliberation = self.getMotivation(**kwargs)
         # insert finance advice if necessary
         if withFinanceAdvice:
             if FINANCE_GROUP_ID in self.adviceIndex and \
-               self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
+                    self.adviceIndex[FINANCE_GROUP_ID]['type'] != NOT_GIVEN_ADVICE_VALUE:
                 financeAdviceData = self.getAdviceDataFor(self.getSelf(), FINANCE_GROUP_ID)
                 if financeAdviceData['comment'] and financeAdviceData['comment'].strip():
                     comment = "<p>Vu l'avis du Directeur financier repris ci-dessous ainsi qu'en annexe :</p>"
@@ -271,7 +292,7 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
             return formated assembly with 'absent', 'excused', ... '''
         if focus not in ('present', 'excuse', 'absent'):
             return ''
-        # ie: Pierre Helson, Bourgmestre, Président
+        # ie: Pierre Helson, Bourgmestre, PrÃ©sident
         # focus is present, excuse or absent
         assembly = self.context.getAssembly().replace('<p>', '').replace('</p>', '').split('<br />')
         return formatedAssembly(assembly, focus)
