@@ -22,11 +22,11 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.tests.testUtils import testUtils as pmtu
 
 
-class testUtils(MeetingCommunesTestCase, pmtu):
+class testUtils(MeetingLalouviereTestCase, pmtu):
     ''' '''
 
 
