@@ -633,6 +633,18 @@ class CustomMeetingItem(MeetingItem):
                 #we found the relevant group
                 self.context.manage_addLocalRoles(groupId, ('MeetingCommissionEditor',))
 
+    security.declarePublic('getCollegeItem')
+
+    def getCollegeItem(self):
+        '''Returns the predecessor item that was in the college.'''
+        item = self.getSelf()
+        predecessor = item.getPredecessor()
+        collegeItem = None
+        while predecessor:
+            if predecessor.portal_type == 'MeetingItemCollege':
+                collegeItem = predecessor
+                break
+        return collegeItem
 
     def _initDecisionFieldIfEmpty(self):
         """
