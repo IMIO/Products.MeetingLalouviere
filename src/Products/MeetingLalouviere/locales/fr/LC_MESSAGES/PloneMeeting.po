@@ -477,6 +477,18 @@ msgstr "<span class='follow_up_provided_not_printed'>Le suivi nécessaire a ét�
 msgid "reviewers"
 msgstr "échevins"
 
+#. Default: "SearchItemsForDashboard"
+msgid "searchItemsForDashboard"
+msgstr "Suivi à imprimer"
+
+#. Default: "SearchItemsToProviderNotToPrint"
+msgid "searchItemsToProviderNotToPrint"
+msgstr "Suivi à ne pas imprimer"
+
+#. Default: "SearchItemsTofollow_up_yes"
+msgid "searchItemsTofollow_up_yes"
+msgstr "Suivi à apporter"
+
 #. Default: "Advices proposed to financial controller"
 msgid "searchadviceproposedtocontroller"
 msgstr "Avis proposés au contrôleur financier"
