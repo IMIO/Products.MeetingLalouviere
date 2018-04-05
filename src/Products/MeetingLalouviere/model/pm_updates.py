@@ -439,7 +439,7 @@ def update_item_schema(baseSchema):
                 label_msgid='MeetingLalouviere_label_followUp',
                 i18n_domain='PloneMeeting',
             ),
-            vocabulary='listFollowUps',
+            vocabulary_factory='Products.MeetingLalouviere.vocabularies.listFollowUps',
             write_permission="MeetingLalouviere: Write followUp",
             read_permission="MeetingLalouviere: Read followUp",
         ),

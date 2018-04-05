@@ -13,6 +13,7 @@
   <include package="Products.PloneMeeting"/>
   <includeOverrides file="overrides.zcml" />
   <include file="events.zcml"/>
+  <include file="vocabularies.zcml"/>
 
   <!-- WF actions and conditions for Meeting and MeetingItem for College -->
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
@@ -67,10 +68,5 @@
   <adapter for="Products.PloneMeeting.interfaces.IMeetingGroup"
            factory="Products.MeetingLalouviere.adapters.CustomMeetingGroup"
            provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
-
-
-  <i18n:registerTranslations directory="locales" />
-
-  <include file="profiles.zcml" />
 
 </configure>

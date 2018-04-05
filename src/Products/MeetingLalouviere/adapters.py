@@ -548,20 +548,20 @@ class CustomMeetingItem(MeetingItem):
     def __init__(self, item):
         self.context = item
 
-    security.declarePublic('listFollowUps')
-
-    def listFollowUps(self):
-        """List available values for vocabulary of the 'followUp' field."""
-        d = 'PloneMeeting'
-        u = self.utranslate
-        res = DisplayList((
-            ("follow_up_no", u('follow_up_no', domain=d)),
-            ("follow_up_yes", u('follow_up_yes', domain=d)),
-            ("follow_up_provided", u('follow_up_provided', domain=d)),
-            ("follow_up_provided_not_printed", u('follow_up_provided_not_printed', domain=d)),
-        ))
-        return res
-    MeetingItem.listFollowUps = listFollowUps
+    # security.declarePublic('listFollowUps')
+    #
+    # def listFollowUps(self):
+    #     """List available values for vocabulary of the 'followUp' field."""
+    #     d = 'PloneMeeting'
+    #     u = self.utranslate
+    #     res = DisplayList((
+    #         ("follow_up_no", u('follow_up_no', domain=d)),
+    #         ("follow_up_yes", u('follow_up_yes', domain=d)),
+    #         ("follow_up_provided", u('follow_up_provided', domain=d)),
+    #         ("follow_up_provided_not_printed", u('follow_up_provided_not_printed', domain=d)),
+    #     ))
+    #     return res
+    # MeetingItem.listFollowUps = listFollowUps
 
     security.declarePublic('activateFollowUp')
 
@@ -832,6 +832,78 @@ class CustomMeetingConfig(MeetingConfig):
                              {'i': 'review_state',
                               'o': 'plone.app.querystring.operation.selection.is',
                               'v': ['validated']}
+                         ],
+                     'sort_on': u'created',
+                     'sort_reversed': True,
+                     'showNumberOfItems': False,
+                     'tal_condition': "",
+                     'roles_bypassing_talcondition': ['Manager', ]
+                 }
+                 ),
+                # Items to follow up'
+                ('searchItemsTofollow_up_yes',
+                 {
+                     'subFolderId': 'searches_items',
+                     'active': True,
+                     'query':
+                         [
+                             {'i': 'portal_type',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': [itemType, ]},
+                             {'i': 'review_state',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['accepted', 'refused', 'delayed', 'accepted_but_modified', ]},
+                             {'i': 'getFollowUp',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['follow_up_yes', ]}
+                         ],
+                     'sort_on': u'created',
+                     'sort_reversed': True,
+                     'showNumberOfItems': False,
+                     'tal_condition': "",
+                     'roles_bypassing_talcondition': ['Manager', ]
+                 }
+                 ),
+                # Items to follow provider but not to print in Dashboard'
+                ('searchItemsToProviderNotToPrint',
+                 {
+                     'subFolderId': 'searches_items',
+                     'active': True,
+                     'query':
+                         [
+                             {'i': 'portal_type',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': [itemType, ]},
+                             {'i': 'review_state',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['accepted', 'refused', 'delayed', 'accepted_but_modified', ]},
+                             {'i': 'getFollowUp',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['follow_up_provided_not_printed', ]}
+                         ],
+                     'sort_on': u'created',
+                     'sort_reversed': True,
+                     'showNumberOfItems': False,
+                     'tal_condition': "",
+                     'roles_bypassing_talcondition': ['Manager', ]
+                 }
+                 ),
+                # Items to follow provider and to print'
+                ('searchItemsForDashboard',
+                 {
+                     'subFolderId': 'searches_items',
+                     'active': True,
+                     'query':
+                         [
+                             {'i': 'portal_type',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': [itemType, ]},
+                             {'i': 'review_state',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['accepted', 'refused', 'delayed', 'accepted_but_modified', ]},
+                             {'i': 'getFollowUp',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['follow_up_provided', ]}
                          ],
                      'sort_on': u'created',
                      'sort_reversed': True,
