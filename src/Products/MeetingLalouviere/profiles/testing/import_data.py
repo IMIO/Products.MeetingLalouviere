@@ -297,7 +297,7 @@ collegeMeeting.shortName = 'College'
 collegeMeeting.annexTypes = [financialAnalysis, budgetAnalysisCfg1, overheadAnalysis,
                              itemAnnex, decisionAnnex, marketingAnalysis,
                              adviceAnnex, adviceLegalAnalysis, meetingAnnex]
-collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned', )
+collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned', 'observations',)
 collegeMeeting.maxShownListings = '100'
 collegeMeeting.itemWorkflow = 'meetingitemcollegelalouviere_workflow'
 collegeMeeting.meetingWorkflow = 'meetingcollegelalouviere_workflow'
@@ -412,9 +412,9 @@ councilMeeting.shortName = 'Council'
 councilMeeting.annexTypes = [financialAnalysis, legalAnalysis,
                              budgetAnalysisCfg2, itemAnnex, decisionAnnex,
                              adviceAnnex, adviceLegalAnalysis, meetingAnnex]
-councilMeeting.usedItemAttributes = ['oralQuestion', 'itemInitiator', 'observations',
+councilMeeting.usedItemAttributes = ('oralQuestion', 'itemInitiator', 'observations',
                                      'privacy', 'itemAssembly', 'itemIsSigned',
-                                     'motivation', ]
+                                     'motivation', 'observations',)
 councilMeeting.usedMeetingAttributes = (
     'place', 'observations', 'signatures', 'assembly', 'preMeetingDate', 'preMeetingPlace', 'preMeetingAssembly',
     'preMeetingDate_2', 'preMeetingPlace_2', 'preMeetingAssembly_2', 'preMeetingDate_3', 'preMeetingPlace_3',

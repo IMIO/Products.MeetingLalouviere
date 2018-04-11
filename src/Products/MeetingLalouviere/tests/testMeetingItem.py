@@ -219,6 +219,13 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         self.failUnless(secretItem.isPrivacyViewable())
         self.failUnless(publicItem.isPrivacyViewable())
 
+    def test_pm_SendItemToOtherMCUsingEmergencyInitializePreferredMeeting(self):
+        # by pass because council meeting are never late
+        pass
+
+    def test_pm_SendItemToOtherMCUsingEmergency(self):
+        # by pass because council meeting are never late
+        pass
 
 def test_suite():
     from unittest import TestSuite, makeSuite

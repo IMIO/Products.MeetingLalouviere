@@ -27,10 +27,3 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLa
 
 class testCustomViews(MeetingLalouviereTestCase):
     ''' '''
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(testCustomViews, prefix='test_pm_'))
-    return suite

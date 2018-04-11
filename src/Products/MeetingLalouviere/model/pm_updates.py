@@ -1,3 +1,4 @@
+from Products.CMFCore.permissions import ModifyPortalContent
 from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import DateTimeField
 from Products.Archetypes.atapi import LinesField
@@ -492,6 +493,8 @@ def update_item_schema(baseSchema):
     baseSchema['privacy'].widget.condition = "python: here.attributeIsUsed('privacy') and " \
                                              "portal.portal_plonemeeting.isManager(here)"
     baseSchema['decision'].default = '<p>DECIDE :</p>'
+
+    baseSchema['observations'].write_permission = ModifyPortalContent
 
     completeItemSchema = baseSchema + specificSchema.copy()
     return completeItemSchema

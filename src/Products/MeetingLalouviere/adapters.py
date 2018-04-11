@@ -1415,6 +1415,9 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
         # We may have to send a mail.
         self.context.sendMailIfRelevant('itemPresented', 'Owner', isRole=True)
 
+    def _freezePresentedItem(self):
+        pass
+
 
 class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
