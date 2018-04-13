@@ -66,6 +66,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         # pmCreator1 creates an item with 1 annex and proposes it
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         annex1 = self.addAnnex(item1)
         self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'proposeToServiceHead')
@@ -74,6 +75,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the ServiceHead validation level
         self.changeUser('pmServiceHead1')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'proposeToOfficeManager')
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
@@ -81,6 +83,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the OfficeManager validation level
         self.changeUser('pmOfficeManager1')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'proposeToDivisionHead')
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
@@ -88,6 +91,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the DivisionHead validation level
         self.changeUser('pmDivisionHead1')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'proposeToDirector')
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
@@ -95,6 +99,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the Director validation level
         self.changeUser('pmDirector1')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'validate')
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
@@ -102,6 +107,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # pmManager creates a meeting
         self.changeUser('pmManager')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         self.addAnnex(item1, relatedTo='item_decision')
         # pmCreator2 creates and proposes an item
@@ -166,6 +172,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         # pmCreator1 creates an item with 1 annex and proposes it
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item', autoAddCategory=False)
+        self.assertTrue(item1.mayQuickEdit('observations'))
         self.addAnnex(item1)
         # The creator can add a decision annex on created item
         self.addAnnex(item1, relatedTo='item_decision')
@@ -178,6 +185,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.changeUser('pmDirector1')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'validate')
         self.failIf(self.hasPermission('Modify portal content', item1))
@@ -185,6 +193,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         # pmManager creates a meeting
         self.changeUser('pmManager')
+        self.assertTrue(item1.mayQuickEdit('observations'))
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         # The meetingManager can add a decision annex
         self.addAnnex(item1, relatedTo='item_decision')

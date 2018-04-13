@@ -673,7 +673,7 @@ class CustomMeetingItem(MeetingItem):
         """
           Keep some new fields when item is cloned (to another mc or from itemtemplate).
         """
-        res = ['interventions', 'commissionTranscript', 'followUp', 'neededFollowUp', 'providedFollowUp']
+        res = ['interventions', 'commissionTranscript']
         if cloned_to_same_mc:
             res = res + []
         return res
@@ -1587,9 +1587,5 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
                           translate('icon_help_proposed_to_budgetimpact_reviewer',
                                     domain="PloneMeeting",
                                     context=self.request)))
-        elif itemState == 'itemcreated_waiting_advices':
-            icons.append(('itemcreated_waiting_advices.png',
-                          translate('icon_help_itemcreated_waiting_advices  ',
-                                    domain="PloneMeeting",
-                                    context=self.request)))
+
         return icons

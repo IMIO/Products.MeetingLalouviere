@@ -40,6 +40,11 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         Tests the MeetingItem class methods.
     """
 
+    def _extraNeutralFields(self):
+        """This method is made to be overrided by subplugins that added
+           neutral fields to the MeetingItem schema."""
+        return ['followUp', 'neededFollowUp', 'providedFollowUp']
+
     def test_pm_PowerObserversLocalRoles(self):
         '''Check that powerobservers local roles are set correctly...
            Test alternatively item or meeting that is accessible to and not...'''
@@ -219,6 +224,13 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         self.failUnless(secretItem.isPrivacyViewable())
         self.failUnless(publicItem.isPrivacyViewable())
 
+    def test_pm_SendItemToOtherMCUsingEmergencyInitializePreferredMeeting(self):
+        # by pass because council meeting are never late
+        pass
+
+    def test_pm_SendItemToOtherMCUsingEmergency(self):
+        # by pass because council meeting are never late
+        pass
 
 def test_suite():
     from unittest import TestSuite, makeSuite
