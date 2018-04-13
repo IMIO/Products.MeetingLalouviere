@@ -40,6 +40,11 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         Tests the MeetingItem class methods.
     """
 
+    def _extraNeutralFields(self):
+        """This method is made to be overrided by subplugins that added
+           neutral fields to the MeetingItem schema."""
+        return ['followUp', 'neededFollowUp', 'providedFollowUp']
+
     def test_pm_PowerObserversLocalRoles(self):
         '''Check that powerobservers local roles are set correctly...
            Test alternatively item or meeting that is accessible to and not...'''

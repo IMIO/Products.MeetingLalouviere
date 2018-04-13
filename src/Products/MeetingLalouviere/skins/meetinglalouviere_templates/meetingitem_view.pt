@@ -419,6 +419,16 @@
     <tal:field define="fieldName python: 'decision'; ajaxEdit python:True">
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
+        
+    <tal:comment replace="nothing">XXX Interventions</tal:comment>
+    <tal:field define="fieldName python: 'interventions'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
+
+    <tal:comment replace="nothing">XXX Commission transcript</tal:comment>
+    <tal:field define="fieldName python: 'commissionTranscript'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
 
     <tal:comment replace="nothing">Annexes and advices</tal:comment>
     <a name="adviceAndAnnexes"></a>
@@ -486,18 +496,6 @@
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
-    <tal:comment replace="nothing">XXX Interventions</tal:comment>
-    <tal:field define="fieldName python: 'interventions'; ajaxEdit python:True"
-               condition="python: here.portal_type == 'MeetingItemCouncil' and isManager">
-       <metal:f use-macro="context/@@pm-macros/macros/viewContentField"/>
-    </tal:field>
-
-    <tal:comment replace="nothing">XXX Commission transcript</tal:comment>
-    <tal:field define="fieldName python: 'commissionTranscript'; ajaxEdit python:True"
-               condition="python: here.portal_type == 'MeetingItemCouncil'">
-       <metal:f use-macro="context/@@pm-macros/macros/viewContentField"/>
-    </tal:field>
-
     <tal:comment replace="nothing">Observations</tal:comment>
     <tal:field define="fieldName python: 'observations'; ajaxEdit python:True">
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
@@ -520,10 +518,10 @@
        <tal:translate i18n:translate="yes_followup_needed_itemview">A follow-up is needed.</tal:translate>
        <tal:translate condition="isManager" i18n:translate="yes_followup_needed_actions_itemview">Actions.</tal:translate>
        <tal:field define="fieldName python: 'neededFollowUp'; ajaxEdit python:True">
-         <metal:f use-macro="context/@@pm-macros/macros/viewContentField"/>
+         <metal:f use-macro="context/@@pm-macros/viewContentField"/>
        </tal:field>
        <tal:field define="fieldName python: 'providedFollowUp'; ajaxEdit python:True">
-         <metal:f use-macro="context/@@pm-macros/macros/viewContentField"/>
+         <metal:f use-macro="context/@@pm-macros/viewContentField"/>
        </tal:field>
       </tal:yesFollowUp>
       <tal:providedFollowUp condition="python: followUp in ['follow_up_provided', 'follow_up_provided_not_printed']">
