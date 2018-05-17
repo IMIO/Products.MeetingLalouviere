@@ -1,6 +1,8 @@
-from imio.actionspanel.utils import unrestrictedRemoveGivenObject
-from Products.PloneMeeting.interfaces import IAnnexable
+# -*- coding: utf-8 -*-
+
+from plone import api
 from Products.PloneMeeting.utils import forceHTMLContentTypeForEmptyRichFields
+from Products.PloneMeeting.utils import getLastEvent
 
 
 def onItemDuplicated(original, event):
@@ -16,6 +18,24 @@ def onItemDuplicated(original, event):
         newItem.setMotivation(defaultCouncilMotivation + '<p>&nbsp;</p><p>&nbsp;</p>' + existingMotivation)
     # Make sure we have 'text/html' for every Rich fields
     forceHTMLContentTypeForEmptyRichFields(newItem)
+
+
+def onItemAfterTransition(item, event):
+    '''Called after the transition event called by default in PloneMeeting.
+       Here, we are sure that code done in the onItemTransition event is finished.'''
+
+    # if it is an item Council in state 'presented' (for which last transition was 'present'),
+    # do item state correspond to meeting state
+    if item.portal_type == 'MeetingItemCouncil' and \
+       item.queryState() == 'presented' and \
+       getLastEvent(item)['action'] == 'present':
+        meeting = item.getMeeting()
+        meetingState = meeting.queryState()
+        if meetingState in ('in_committee', 'in_council'):
+            wTool = api.portal.get_tool('portal_workflow')
+            wTool.doActionFor(item, 'setItemInCommittee')
+            if meetingState in ('in_council', ):
+                wTool.doActionFor(item, 'setItemInCouncil')
 
 
 def _removeTypistNote(field):

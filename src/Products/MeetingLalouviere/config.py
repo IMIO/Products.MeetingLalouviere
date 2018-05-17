@@ -8,11 +8,6 @@
 #
 # GNU General Public License (GPL)
 #
-
-__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
-__docformat__ = 'plaintext'
-
-
 # Product configuration.
 #
 # The contents of this module will be imported into __init__.py, the
@@ -22,9 +17,13 @@ __docformat__ = 'plaintext'
 # AppConfig.py in your product's root directory. The items in there
 # will be included (by importing) in this file if found.
 
-from Products.CMFCore.permissions import setDefaultRoles
-from collections import OrderedDict
 import os
+from collections import OrderedDict
+from Products.CMFCore.permissions import setDefaultRoles
+from Products.PloneMeeting import config as PMconfig
+
+__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
+__docformat__ = 'plaintext'
 
 PROJECTNAME = "MeetingLalouviere"
 
@@ -45,8 +44,6 @@ PRODUCT_DEPENDENCIES = []
 # the id of the collection querying finance advices
 FINANCE_ADVICES_COLLECTION_ID = 'searchitemswithfinanceadvice'
 
-##code-section config-bottom #fill in your manual code here
-from Products.PloneMeeting import config as PMconfig
 LALOUVIEREROLES = {}
 LALOUVIEREROLES['budgetimpactreviewers'] = 'MeetingBudgetImpactReviewer'
 LALOUVIEREROLES['serviceheads'] = 'MeetingServiceHead'
@@ -62,6 +59,8 @@ LALOUVIEREMEETINGREVIEWERS = OrderedDict([('directors', 'proposed_to_director'),
                                           ('officemanagers', 'proposed_to_officemanager'),
                                           ('serviceheads', 'proposed_to_servicehead'), ])
 PMconfig.MEETINGREVIEWERS = LALOUVIEREMEETINGREVIEWERS
+LALOUVIERE_MEETING_STATES_ACCEPTING_ITEMS = ('created', 'frozen', 'published', 'decided', 'in_committee', 'in_council')
+PMconfig.MEETING_STATES_ACCEPTING_ITEMS = LALOUVIERE_MEETING_STATES_ACCEPTING_ITEMS
 
 # url of the DEF application
 DEFURL = os.environ.get('DEFURL', 'http://192.168.1.106/def')
