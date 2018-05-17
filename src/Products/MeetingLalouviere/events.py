@@ -2,7 +2,6 @@
 
 from plone import api
 from Products.PloneMeeting.utils import forceHTMLContentTypeForEmptyRichFields
-from Products.PloneMeeting.utils import getLastEvent
 
 
 def onItemDuplicated(original, event):
@@ -26,9 +25,7 @@ def onItemAfterTransition(item, event):
 
     # if it is an item Council in state 'presented' (for which last transition was 'present'),
     # do item state correspond to meeting state
-    if item.portal_type == 'MeetingItemCouncil' and \
-       item.queryState() == 'presented' and \
-       getLastEvent(item)['action'] == 'present':
+    if item.portal_type == 'MeetingItemCouncil' and event.transition.id == 'present':
         meeting = item.getMeeting()
         meetingState = meeting.queryState()
         if meetingState in ('in_committee', 'in_council'):
