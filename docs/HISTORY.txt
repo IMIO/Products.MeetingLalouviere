@@ -24,6 +24,9 @@ Products.MeetingLalouviere Changelog
   printFinanceAdvice(self, case)
 - Added parameter 'excludedGroupIds' to getPrintableItems and getPrintableItemsByCategory
 - MeetingObserverLocal has every View-like permissions in every states
+- Do not override doPresent for Council but synch item and meeting states in the after transition event
+- Redefine MEETING_STATES_ACCEPTING_ITEMS and removed no more existing redefinitions for Meeting.acceptItemsStates
+  and MeetingConfig.getMeetingsAcceptingItemsAdditionalManagerStates
 
 3.3 (unreleased)
 ----------------

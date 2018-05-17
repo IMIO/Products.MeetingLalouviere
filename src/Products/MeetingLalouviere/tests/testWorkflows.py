@@ -228,10 +228,11 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failIf(len(meeting.getItems()) != 2)
         self.failIf(len(meeting.getItems(listTypes=['late'])) != 0)
         # remove the item, set the meeting in council and add it again
-        self.do(item2, 'backToPresented')
-        self.do(item2, 'backToValidated')
+        self.backToState(item2, 'validated')
         self.failIf(len(meeting.getItems()) != 1)
         self.do(meeting, 'setInCouncil')
+        # remove published meeting to check that item is correctly presented in this cas as well
+        self.setCurrentMeeting(None)
         self.do(item2, 'present')
         # setting the meeting in council (setInCouncil) add 1 recurring item...
         self.failIf(len(meeting.getItems()) != 3)
@@ -303,18 +304,18 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         """
         # First, define recurring items in the meeting config
         self.changeUser('pmManager')
-        #create a meeting
+        # create a meeting
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        #create 2 items and present it to the meeting
+        # create 2 items and present it to the meeting
         item1 = self.create('MeetingItem', title='The first item')
         item2 = self.create('MeetingItem', title='The second item')
         for item in (item1, item2,):
             self.presentItem(item)
         wftool = self.portal.portal_workflow
-        #every presented items are in the 'presented' state
+        # every presented items are in the 'presented' state
         self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
-        #every items must be in the 'itemfrozen' state if we freeze the meeting
+        # every items must be in the 'itemfrozen' state if we freeze the meeting
         self.freezeMeeting(meeting)
         self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
@@ -332,7 +333,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         """
         # First, define recurring items in the meeting config
         self.changeUser('pmManager')
-        #create a meeting (with 7 items)
+        # create a meeting (with 7 items)
         meetingDate = DateTime().strftime('%y/%m/%d %H:%M:00')
         meeting = self.create('Meeting', date=meetingDate)
         item1 = self.create('MeetingItem')  # id=o2
@@ -352,14 +353,14 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         item7.setProposingGroup('vendors')
         for item in (item1, item2, item3, item4, item5, item6, item7):
             self.presentItem(item)
-        #we freeze the meeting
+        # we freeze the meeting
         self.do(meeting, 'freeze')
-        #a MeetingManager can put the item back to presented
+        # a MeetingManager can put the item back to presented
         self.do(item7, 'backToPresented')
-        #we decide the meeting
-        #while deciding the meeting, every items that where presented are frozen
+        # we decide the meeting
+        # while deciding the meeting, every items that where presented are frozen
         self.do(meeting, 'decide')
-        #change all items in all different state (except first who is in good state)
+        # change all items in all different state (except first who is in good state)
         self.do(item7, 'backToPresented')
         self.do(item2, 'accept')
         self.do(item3, 'accept')
@@ -369,19 +370,19 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.do(item5, 'delay')
         self.do(item6, 'refuse')
         self.changeUser('pmManager')
-        #we close the meeting
+        # we close the meeting
         self.do(meeting, 'close')
-        #every items must be in the 'decided' state if we close the meeting
+        # every items must be in the 'decided' state if we close the meeting
         wftool = self.portal.portal_workflow
-        #itemfrozen change into accepted
+        # itemfrozen change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('accepted', wftool.getInfoFor(item2, 'review_state'))
         self.assertEquals('accepted', wftool.getInfoFor(item3, 'review_state'))
-        #accepted_but_modified rest accepted_but_modified (it's already a 'decide' state)
+        # accepted_but_modified rest accepted_but_modified (it's already a 'decide' state)
         self.assertEquals('accepted_but_modified', wftool.getInfoFor(item4, 'review_state'))
         self.assertEquals('delayed', wftool.getInfoFor(item5, 'review_state'))
         self.assertEquals('refused', wftool.getInfoFor(item6, 'review_state'))
-        #presented change into accepted
+        # presented change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
 
     def test_pm_RecurringItemsBypassSecutiry(self):

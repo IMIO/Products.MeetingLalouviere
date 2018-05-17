@@ -22,16 +22,12 @@
 # 02110-1301, USA.
 #
 
-from DateTime import DateTime
 import logging
-
-from Products.CMFCore.permissions import AccessContentsInformation
-from Products.CMFCore.permissions import View
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from DateTime import DateTime
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
+logger = logging.getLogger('MeetingLalouviere: testing')
 
-logger = logging.getLogger('MeetingSeraing: testing')
 
 class testCustomWorkflows(MeetingLalouviereTestCase):
     """Tests the default workflows implemented in PloneMeeting."""

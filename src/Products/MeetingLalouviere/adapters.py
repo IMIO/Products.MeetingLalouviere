@@ -27,7 +27,6 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from appy.gen import No
 from collections import OrderedDict
-from DateTime import DateTime
 from zope.interface import implements
 from zope.i18n import translate
 
@@ -54,7 +53,6 @@ from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
 from Products.PloneMeeting.model import adaptations
-from Products.PloneMeeting.utils import getCurrentMeetingObject
 
 from Products.MeetingLalouviere import logger
 from Products.MeetingLalouviere.config import FINANCE_ADVICES_COLLECTION_ID
@@ -86,64 +84,65 @@ adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_
 RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen', 'itempublished',
                                               'item_in_committee', 'item_in_council', )
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES
-RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemcollegelalouviere_workflow':
+RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
+    'meetingitemcollegelalouviere_workflow':
     # view permissions
     {'Access contents information':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'View':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'PloneMeeting: Read budget infos':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'PloneMeeting: Read decision':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'PloneMeeting: Read item observations':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'MeetingLalouviere: Read commission transcript':
-    ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-     'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
-    'MeetingLalouviere: Read providedFollowUp':
-    ['Manager', ],
-    'MeetingLalouviere: Read followUp':
-    ['Manager', ],
-    'MeetingLalouviere: Read neededFollowUp':
-    ['Manager', ],
-    # edit permissions
-    'Modify portal content':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Write budget infos':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', 'MeetingBudgetImpactEditor'],
-    'PloneMeeting: Write decision':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'Review portal content':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'Add portal content':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Add annex':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Add annexDecision':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Write decision annex':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    # MeetingManagers edit permissions
-    'Delete objects':
-    ['Manager', 'MeetingManager', ],
-    'PloneMeeting: Write item MeetingManager reserved fields':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'MeetingLalouviere: Write commission transcript':
-    ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
-    'PloneMeeting: Write marginal notes':
-    ['Manager', 'MeetingManager', ],
-    'MeetingLalouviere: Write providedFollowUp':
-    ['Manager', ],
-    'MeetingLalouviere: Write followUp':
-    ['Manager', ],
-    'MeetingLalouviere: Write neededFollowUp':
-    ['Manager', ],
+     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+     'View':
+     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+     'PloneMeeting: Read budget infos':
+     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+     'PloneMeeting: Read decision':
+     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+     'PloneMeeting: Read item observations':
+     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+     'MeetingLalouviere: Read commission transcript':
+     ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+      'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+     'MeetingLalouviere: Read providedFollowUp':
+     ['Manager', ],
+     'MeetingLalouviere: Read followUp':
+     ['Manager', ],
+     'MeetingLalouviere: Read neededFollowUp':
+     ['Manager', ],
+     # edit permissions
+     'Modify portal content':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'PloneMeeting: Write budget infos':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', 'MeetingBudgetImpactEditor'],
+     'PloneMeeting: Write decision':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'Review portal content':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'Add portal content':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'PloneMeeting: Add annex':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'PloneMeeting: Add annexDecision':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'PloneMeeting: Write decision annex':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     # MeetingManagers edit permissions
+     'Delete objects':
+     ['Manager', 'MeetingManager', ],
+     'PloneMeeting: Write item MeetingManager reserved fields':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'MeetingLalouviere: Write commission transcript':
+     ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+     'PloneMeeting: Write marginal notes':
+     ['Manager', 'MeetingManager', ],
+     'MeetingLalouviere: Write providedFollowUp':
+     ['Manager', ],
+     'MeetingLalouviere: Write followUp':
+     ['Manager', ],
+     'MeetingLalouviere: Write neededFollowUp':
+     ['Manager', ],
      }
 }
 
@@ -153,6 +152,7 @@ RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = \
     {'meetingitemcollegelalouviere_workflow': 'meetingitemcollegelalouviere_workflow.itemcreated',
      'meetingitemcouncillalouviere_workflow': 'meetingitemcouncillalouviere_workflow.itemcreated'}
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
+
 
 class CustomMeeting(Meeting):
     """Adapter that adapts a meeting implementing IMeeting to the
@@ -231,13 +231,13 @@ class CustomMeeting(Meeting):
             elif excludedGroupIds and obj.getProposingGroup() in excludedGroupIds:
                 continue
             filteredItemUids.append(itemUid)
-        #in case we do not have anything, we return an empty list
+        # in case we do not have anything, we return an empty list
         if not filteredItemUids:
             return []
         else:
             items = self.context.getItems(uids=filteredItemUids, listTypes=listTypes, ordered=True)
             if renumber:
-                #returns a list of tuple with first element the number and second element the item itself
+                # returns a list of tuple with first element the number and second element the item itself
                 i = firstNumber
                 res = []
                 for item in items:
@@ -246,7 +246,7 @@ class CustomMeeting(Meeting):
                 items = res
             return items
 
-    #helper methods used in templates
+    # helper methods used in templates
 
     security.declarePublic('getNormalCategories')
 
@@ -261,9 +261,9 @@ class CustomMeeting(Meeting):
         thirdSupplCatIds = self.getThirdSupplCategories()
         for cat in categories:
             catId = cat.getId()
-            if not catId in firstSupplCatIds and \
-               not catId in secondSupplCatIds and \
-               not catId in thirdSupplCatIds:
+            if catId not in firstSupplCatIds and \
+               catId not in secondSupplCatIds and \
+               catId not in thirdSupplCatIds:
                 res.append(catId)
         return res
     Meeting.getNormalCategories = getNormalCategories
@@ -568,7 +568,7 @@ class CustomMeetingItem(MeetingItem):
     def activateFollowUp(self):
         """Activate follow-up by setting followUp to 'follow_up_yes'."""
         self.setFollowUp('follow_up_yes')
-        #initialize the neededFollowUp field with the available content of the 'decision' field
+        # initialize the neededFollowUp field with the available content of the 'decision' field
         if not self.getNeededFollowUp():
             self.setNeededFollowUp(self.getDecision())
         self.reindexObject(idxs=['getFollowUp', ])
@@ -616,7 +616,7 @@ class CustomMeetingItem(MeetingItem):
         # this is only done for MeetingItemCouncil
         if not self.context.portal_type == 'MeetingItemCouncil':
             return
-        #existing commission Plone groups
+        # existing commission Plone groups
         commissionEditorsGroupIds = [(commissionId + COMMISSION_EDITORS_SUFFIX) for commissionId in
                                      set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))]
         groupsTool = getToolByName(self.context, 'portal_groups')
@@ -627,10 +627,10 @@ class CustomMeetingItem(MeetingItem):
             if principalId in commissionPloneGroupIds:
                 toRemove.append(principalId)
         self.context.manage_delLocalRoles(toRemove)
-        #now add the new local roles
+        # now add the new local roles
         for groupId in commissionPloneGroupIds:
             if self.context.getCategory().startswith(groupId[:-len(COMMISSION_EDITORS_SUFFIX)]):
-                #we found the relevant group
+                # we found the relevant group
                 self.context.manage_addLocalRoles(groupId, ('MeetingCommissionEditor',))
 
     security.declarePublic('getCollegeItem')
@@ -917,12 +917,6 @@ class CustomMeetingConfig(MeetingConfig):
         infos.update(extra_infos)
         return infos
 
-    security.declarePublic('getMeetingsAcceptingItemsAdditionalManagerStates')
-
-    def getMeetingsAcceptingItemsAdditionalManagerStates(self):
-        """See doc in interfaces.py."""
-        return ('decided', 'published',  'in_committee', 'in_council', )
-
 
 class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1074,10 +1068,10 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
           that is in the state 'itemcreated'
         """
         res = False
-        #first of all, the use must have the 'Review portal content permission'
+        # first of all, the use must have the 'Review portal content permission'
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
-            #if the current item state is 'itemcreated', only the MeetingManager can validate
+            # if the current item state is 'itemcreated', only the MeetingManager can validate
             tool = getToolByName(self.context, 'portal_plonemeeting')
             if self.context.queryState() in ('itemcreated',) and not tool.isManager(self.context):
                 res = False
@@ -1278,8 +1272,6 @@ class MeetingCouncilLalouviereWorkflowConditions(MeetingWorkflowConditions):
 
     def __init__(self, meeting):
         self.context = meeting
-        customAcceptItemsStates = ('created', 'in_committee', 'in_council', )
-        self.acceptItemsStates = customAcceptItemsStates
 
     security.declarePublic('maySetInCommittee')
 
@@ -1388,32 +1380,6 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
         """When an item is delayed, by default it is duplicated but we do not
            duplicate it here"""
         pass
-
-    security.declarePrivate('doPresent')
-
-    def doPresent(self, stateChange):
-        """Presents an item into a meeting. If p_forceNormal is True, and the
-           item should be inserted as a late item, it is nevertheless inserted
-           as a normal item."""
-        meeting = getCurrentMeetingObject(self.context)
-        # if we were not on a meeting view, we will present
-        # the item in the next available meeting
-        if not meeting:
-            # find meetings accepting items in the future
-            meeting = self.context.getMeetingToInsertIntoWhenNoCurrentMeetingObject(
-                self.context.getPreferredMeeting())
-        self.context.REQUEST.set('currentlyInsertedItem', self.context)
-        meeting.insertItem(self.context, forceNormal=self._forceInsertNormal())
-        # If the meeting is already frozen and this item is a "late" item,
-        # I must set automatically the item to "itemfrozen".
-        meetingState = meeting.queryState()
-        if meetingState in ('in_committee', 'in_council'):
-            wTool = api.portal.get_tool('portal_workflow')
-            wTool.doActionFor(self.context, 'setItemInCommittee')
-            if meetingState in ('in_council', ):
-                wTool.doActionFor(self.context, 'setItemInCouncil')
-        # We may have to send a mail.
-        self.context.sendMailIfRelevant('itemPresented', 'Owner', isRole=True)
 
 
 class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditions):
@@ -1544,7 +1510,7 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
 
         # add some icons specific for dashboard if we are actually on the dashboard...
         if itemState in cfg.itemDecidedStates and \
-                        item.REQUEST.form.get('topicId', '') == 'searchitemsfollowupdashboard':
+                item.REQUEST.form.get('topicId', '') == 'searchitemsfollowupdashboard':
             itemFollowUp = item.getFollowUp()
             if itemFollowUp == 'follow_up_yes':
                 icons.append(('follow_up_yes.png', 'icon_help_follow_up_needed'))
