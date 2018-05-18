@@ -268,11 +268,60 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         """
             Tests the recurring items system.
         """
-        # call PloneMeeting test and add our own
-        pmtw.test_pm_RecurringItems(self)
+        # we do the test for the college config
+        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
+        # super(testWorkflows, self).test_pm_RecurringItems() workflow is different
+        self._checkRecurringItemsCollege()
         # we do the test for the council config
         self.meetingConfig = getattr(self.tool, 'meeting-config-council')
         self._testRecurringItemsCouncil()
+
+    def _checkRecurringItemsCollege(self):
+        '''Tests the recurring items system.'''
+        # First, define recurring items in the meeting config
+        self.changeUser('admin')
+        # 2 recurring items already exist in the college config, add one supplementary for _init_
+        self.create('MeetingItemRecurring', title='Rec item 1',
+                    proposingGroup='developers',
+                    meetingTransitionInsertingMe='_init_')
+        # add 3 other recurring items that will be inserted at other moments in the WF
+        # backToCreated is not in MeetingItem.meetingTransitionsAcceptingRecurringItems
+        # so it will not be added...
+        self.create('MeetingItemRecurring', title='Rec item 2',
+                    proposingGroup='developers',
+                    meetingTransitionInsertingMe='backToCreated')
+        self.create('MeetingItemRecurring', title='Rec item 3',
+                    proposingGroup='developers',
+                    meetingTransitionInsertingMe='freeze')
+        self.create('MeetingItemRecurring', title='Rec item 4',
+                    proposingGroup='developers',
+                    meetingTransitionInsertingMe='decide')
+        self.changeUser('pmManager')
+        # create a meeting without supplementary items, only the recurring items
+        meeting = self._createMeetingWithItems(withItems=False)
+        # The recurring items must have as owner the meeting creator
+        for item in meeting.getItems():
+            self.assertEquals(item.getOwner().getId(), 'pmManager')
+        # The meeting must contain recurring items : 2 defined and one added here above
+        self.failUnless(len(meeting.getItems()) == 3)
+        self.failIf(meeting.getItems(listTypes=['late']))
+        # After freeze, the meeting must have one recurring item more
+        self.freezeMeeting(meeting)
+        self.failUnless(len(meeting.getItems()) == 4)
+        self.failUnless(len(meeting.getItems(listTypes=['late'])) == 1)
+        # Back to created: rec item 2 is not inserted because
+        # only some transitions can add a recurring item (see MeetingItem).
+        self.backToState(meeting, 'created')
+        self.failUnless(len(meeting.getItems()) == 4)
+        self.failUnless(len(meeting.getItems(listTypes=['late'])) == 1)
+        # Recurring items can be added twice...
+        self.freezeMeeting(meeting)
+        self.failUnless(len(meeting.getItems()) == 5)
+        self.failUnless(len(meeting.getItems(listTypes=['late'])) == 2)
+        # Decide the meeting, a third late item is added
+        self.decideMeeting(meeting)
+        self.failUnless(len(meeting.getItems()) == 6)
+        self.failUnless(len(meeting.getItems(listTypes=['late'])) == 3)
 
     def _testRecurringItemsCouncil(self):
         '''Tests the recurring items system.
@@ -294,96 +343,6 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.failUnless(len(meeting.getItems()) == 1)
         self.do(meeting, 'close')
         self.failUnless(len(meeting.getItems()) == 1)
-
-    def test_subproduct_FreezeMeeting(self):
-        """
-           When we freeze a meeting, every presented items will be frozen
-           too and their state will be set to 'itemfrozen'.  When the meeting
-           come back to 'created', every items will be corrected and set in the
-           'presented' state
-        """
-        # First, define recurring items in the meeting config
-        self.changeUser('pmManager')
-        # create a meeting
-        meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        # create 2 items and present it to the meeting
-        item1 = self.create('MeetingItem', title='The first item')
-        item2 = self.create('MeetingItem', title='The second item')
-        for item in (item1, item2,):
-            self.presentItem(item)
-        wftool = self.portal.portal_workflow
-        # every presented items are in the 'presented' state
-        self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
-        # every items must be in the 'itemfrozen' state if we freeze the meeting
-        self.freezeMeeting(meeting)
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
-        # when an item is 'itemfrozen' it will stay itemfrozen if nothing is
-        # defined in the meetingConfig.onMeetingTransitionItemTransitionToTrigger
-        self.meetingConfig.setOnMeetingTransitionItemTransitionToTrigger([])
-        self.backToState(meeting, 'created')
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
-
-    def test_subproduct_CloseMeeting(self):
-        """
-           When we close a meeting, every items are set to accepted if they are still
-           not decided...
-        """
-        # First, define recurring items in the meeting config
-        self.changeUser('pmManager')
-        # create a meeting (with 7 items)
-        meetingDate = DateTime().strftime('%y/%m/%d %H:%M:00')
-        meeting = self.create('Meeting', date=meetingDate)
-        item1 = self.create('MeetingItem')  # id=o2
-        item1.setProposingGroup('vendors')
-        item1.setAssociatedGroups(('developers',))
-        item2 = self.create('MeetingItem')  # id=o3
-        item2.setProposingGroup('developers')
-        item3 = self.create('MeetingItem')  # id=o4
-        item3.setProposingGroup('vendors')
-        item4 = self.create('MeetingItem')  # id=o5
-        item4.setProposingGroup('developers')
-        item5 = self.create('MeetingItem')  # id=o7
-        item5.setProposingGroup('vendors')
-        item6 = self.create('MeetingItem', title='The sixth item')
-        item6.setProposingGroup('vendors')
-        item7 = self.create('MeetingItem')  # id=o8
-        item7.setProposingGroup('vendors')
-        for item in (item1, item2, item3, item4, item5, item6, item7):
-            self.presentItem(item)
-        # we freeze the meeting
-        self.do(meeting, 'freeze')
-        # a MeetingManager can put the item back to presented
-        self.do(item7, 'backToPresented')
-        # we decide the meeting
-        # while deciding the meeting, every items that where presented are frozen
-        self.do(meeting, 'decide')
-        # change all items in all different state (except first who is in good state)
-        self.do(item7, 'backToPresented')
-        self.do(item2, 'accept')
-        self.do(item3, 'accept')
-        self.do(item4, 'accept_but_modify')
-        # only Managers may 'delay' and 'refuse' an item...
-        self.changeUser('admin')
-        self.do(item5, 'delay')
-        self.do(item6, 'refuse')
-        self.changeUser('pmManager')
-        # we close the meeting
-        self.do(meeting, 'close')
-        # every items must be in the 'decided' state if we close the meeting
-        wftool = self.portal.portal_workflow
-        # itemfrozen change into accepted
-        self.assertEquals('accepted', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('accepted', wftool.getInfoFor(item2, 'review_state'))
-        self.assertEquals('accepted', wftool.getInfoFor(item3, 'review_state'))
-        # accepted_but_modified rest accepted_but_modified (it's already a 'decide' state)
-        self.assertEquals('accepted_but_modified', wftool.getInfoFor(item4, 'review_state'))
-        self.assertEquals('delayed', wftool.getInfoFor(item5, 'review_state'))
-        self.assertEquals('refused', wftool.getInfoFor(item6, 'review_state'))
-        # presented change into accepted
-        self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
 
     def test_pm_RecurringItemsBypassSecutiry(self):
         '''Tests that recurring items are addable by a MeetingManager even if by default,
@@ -417,10 +376,6 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.assertTrue(meeting.getItems()[0].getProposingGroup() == 'developers')
 
     def test_pm_WorkflowPermissions(self):
-        """Bypass this test..."""
-        pass
-
-    def test_pm_RecurringItems(self):
         """Bypass this test..."""
         pass
 
