@@ -178,7 +178,8 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.addAnnex(item1, relatedTo='item_decision')
         # the item is not proposable until it has a category
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        item1.setCategory('deployment')
+        item1.setCategory('commission-ag-1er-supplement')
+        item1.at_post_edit_script()
         self.do(item1, 'proposeToDirector')
         self.failIf(self.hasPermission('Modify portal content', item1))
         # The creator cannot add a decision annex on proposed item
@@ -214,6 +215,9 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.assertRaises(Unauthorized, self.addAnnex, item1)
         self.changeUser('pmManager')
         self.do(meeting, 'setInCommittee')
+        self.assertEqual(item1.queryState(), 'item_in_committee')
+        self.changeUser('commissioneditor')
+        self.assertTrue(item1.mayQuickEdit('commissionTranscript'))
         # pmReviewer2 validates item2
         self.changeUser('pmDirector2')
         self.do(item2, 'validate')

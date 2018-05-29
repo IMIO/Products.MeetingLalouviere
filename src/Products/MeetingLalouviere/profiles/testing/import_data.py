@@ -147,6 +147,13 @@ marketing = CategoryDescriptor('marketing', 'Marketing', active=False)
 # usingGroups category
 subproducts = CategoryDescriptor('subproducts', 'Subproducts wishes', usingGroups=('vendors',))
 
+# commission
+commission = CategoryDescriptor('commission-ag', 'Commission AG')
+commission_compl = CategoryDescriptor('commission-ag-1er-supplement', 'Commissions AG 1er Complément')
+
+commission2 = CategoryDescriptor('commission-patrimoine', 'Commission Patrimoine')
+commission2_compl = CategoryDescriptor('commission-patrimoine-1er-supplement', 'Commission Patrimoine 1er Complément')
+
 # Classifiers
 classifier1 = CategoryDescriptor('classifier1', 'Classifier 1')
 classifier2 = CategoryDescriptor('classifier2', 'Classifier 2')
@@ -202,6 +209,27 @@ council_restrictedpowerobservers = PloneGroupDescriptor('meeting-config-council_
                                                         [])
 restrictedpowerobserver2.ploneGroups = [council_restrictedpowerobservers, ]
 
+# Commission editors
+commissioneditor = UserDescriptor('commissioneditor',
+                                    [],
+                                    email="commissioneditor@plonemeeting.org",
+                                    fullname='M. Commission Editor')
+
+commission_ag_commissioneditors = PloneGroupDescriptor('commission-ag_commissioneditors',
+                                                                 'Commission ag (Rédacteurs PV)',
+                                                                 [])
+commissioneditor.ploneGroups = [commission_ag_commissioneditors]
+
+commissioneditor2 = UserDescriptor('commissioneditor2',
+                                    [],
+                                    email="commissioneditor2@plonemeeting.org",
+                                    fullname='M. Commission Editor')
+
+commission_patrimoine_commissioneditors = PloneGroupDescriptor('commission-patrimoine_commissioneditors',
+                                                                 'Commission patrimoine (Rédacteurs PV)',
+                                                                 [])
+commissioneditor2.ploneGroups = [commission_ag_commissioneditors, commission_patrimoine_commissioneditors]
+
 # Add a vintage group
 endUsers = GroupDescriptor('endUsers', 'End users', 'EndUsers', active=False)
 
@@ -221,6 +249,8 @@ developers.directors.append(pmReviewer1)
 developers.directors.append(pmManager)
 developers.reviewers.append(pmReviewer1)
 developers.reviewers.append(pmManager)
+developers.reviewers.append(commissioneditor)
+developers.reviewers.append(commissioneditor2)
 developers.observers.append(pmObserver1)
 developers.observers.append(pmReviewer1)
 developers.observers.append(pmManager)
@@ -241,6 +271,8 @@ vendors.creators.append(pmCreator2)
 vendors.directors.append(pmReviewer2)
 vendors.directors.append(pmDirector2)
 vendors.reviewers.append(pmReviewer2)
+vendors.reviewers.append(commissioneditor)
+vendors.reviewers.append(commissioneditor2)
 vendors.observers.append(pmReviewer2)
 vendors.advisers.append(pmReviewer2)
 vendors.advisers.append(pmManager)
@@ -406,7 +438,7 @@ R.ANKAERT
 Le Président,
 J.GOBERT"""
 councilMeeting.categories = [deployment, maintenance, development, events,
-                             research, projects, marketing, subproducts]
+                             research, projects, marketing, subproducts, commission, commission_compl, commission2, commission2_compl]
 councilMeeting.classifiers = [classifier1, classifier2, classifier3]
 councilMeeting.shortName = 'Council'
 councilMeeting.annexTypes = [financialAnalysis, legalAnalysis,
@@ -486,5 +518,5 @@ data = PloneMeetingConfiguration(
 data.restrictUsers = False
 data.usersOutsideGroups = [voter1, voter2, powerobserver1, powerobserver2,
                            restrictedpowerobserver1, restrictedpowerobserver2,
-                           budgetimpacteditor]
+                           budgetimpacteditor, commissioneditor, commissioneditor2]
 # ------------------------------------------------------------------------------
