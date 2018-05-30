@@ -147,13 +147,6 @@ marketing = CategoryDescriptor('marketing', 'Marketing', active=False)
 # usingGroups category
 subproducts = CategoryDescriptor('subproducts', 'Subproducts wishes', usingGroups=('vendors',))
 
-# commission
-commission = CategoryDescriptor('commission-ag', 'Commission AG')
-commission_compl = CategoryDescriptor('commission-ag-1er-supplement', 'Commissions AG 1er Complément')
-
-commission2 = CategoryDescriptor('commission-patrimoine', 'Commission Patrimoine')
-commission2_compl = CategoryDescriptor('commission-patrimoine-1er-supplement', 'Commission Patrimoine 1er Complément')
-
 # Classifiers
 classifier1 = CategoryDescriptor('classifier1', 'Classifier 1')
 classifier2 = CategoryDescriptor('classifier2', 'Classifier 2')
@@ -437,8 +430,7 @@ councilMeeting.signatures = """Le Secrétaire,
 R.ANKAERT
 Le Président,
 J.GOBERT"""
-councilMeeting.categories = [deployment, maintenance, development, events,
-                             research, projects, marketing, subproducts, commission, commission_compl, commission2, commission2_compl]
+councilMeeting.categories = [deployment, maintenance, development, events, research, projects, marketing, subproducts]
 councilMeeting.classifiers = [classifier1, classifier2, classifier3]
 councilMeeting.shortName = 'Council'
 councilMeeting.annexTypes = [financialAnalysis, legalAnalysis,

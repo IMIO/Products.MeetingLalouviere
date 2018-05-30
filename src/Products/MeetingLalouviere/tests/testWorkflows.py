@@ -22,14 +22,14 @@
 # 02110-1301, USA.
 #
 
-from AccessControl import Unauthorized
-from DateTime import DateTime
-from plone.app.testing.helpers import setRoles
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
-
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.tests.testWorkflows import testWorkflows as pmtw
+from plone.app.testing.helpers import setRoles
+
+from AccessControl import Unauthorized
+from DateTime import DateTime
 
 
 class testWorkflows(MeetingLalouviereTestCase, pmtw):
@@ -54,7 +54,6 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.changeUser('admin')
         self._removeConfigObjectsFor(self.meetingConfig, folders=['recurringitems'])
         self._testWholeDecisionProcessCollege()
-        self.setMeetingConfig(self.meetingConfig2.getId())
         # remove recurring items
         self.changeUser('admin')
         self._removeConfigObjectsFor(self.meetingConfig2, folders=['recurringitems'])
@@ -160,9 +159,18 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
             This test covers the whole decision workflow. It begins with the
             creation of some items, and ends by closing a meeting.
         """
+        self.setMeetingConfig(self.meetingConfig2.getId())
+        # commission categories
+        commission = self.create('MeetingCategory', id='commission-ag', title='Commission AG')
+        commission_compl = self.create('MeetingCategory', id='commission-ag-1er-supplement',
+                                       title='Commissions AG 1er Complément')
+
+        commission2 = self.create('MeetingCategory', id='commission-patrimoine', title='Commission Patrimoine')
+        commission2_compl = self.create('MeetingCategory', id='commission-patrimoine-1er-supplement',
+                                        title='Commission Patrimoine 1er Complément')
+
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
         self.changeUser('admin')
-        self.meetingConfig = self.meetingConfig2
         self.meetingConfig.setWorkflowAdaptations('return_to_proposing_group')
         performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
         self.create('MeetingItemRecurring', title='Rec item 1',
@@ -361,7 +369,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.create('MeetingItemRecurring', title='Rec item developers',
                     proposingGroup='developers',
                     meetingTransitionInsertingMe='_init_')
-        self.createUser('pmManagerRestricted', ('MeetingManager', ))
+        self.createUser('pmManagerRestricted', ('MeetingManager',))
         self.portal.portal_groups.addPrincipalToGroup('pmManagerRestricted', 'developers_creators')
         self.changeUser('pmManagerRestricted')
         # first check that current 'pmManager' may not 'propose'
