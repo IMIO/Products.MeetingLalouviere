@@ -11,4 +11,7 @@
                    Products.PloneMeeting.interfaces.IItemAfterTransitionEvent"
               handler=".events.onItemAfterTransition"/>
 
+  <subscriber for="Products.PloneMeeting.interfaces.IMeetingItem
+                   Products.PloneMeeting.interfaces.IItemLocalRolesUpdatedEvent"
+              handler=".events.onItemLocalRolesUpdated"/>
 </configure>

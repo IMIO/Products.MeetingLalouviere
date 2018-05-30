@@ -3,6 +3,9 @@
 from plone import api
 from Products.PloneMeeting.utils import forceHTMLContentTypeForEmptyRichFields
 
+from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
+from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
+from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS_2013
 
 def onItemDuplicated(original, event):
     '''After item's cloning, we removed decision annexe.
@@ -39,3 +42,26 @@ def _removeTypistNote(field):
     ''' Remove typist's note find with highlight-purple class'''
     import re
     return re.sub('<span class="highlight-purple">.*?</span>', '', field)
+
+def onItemLocalRolesUpdated(item, event):
+    """Depending on the selected Council commission (category),
+       give the 'MeetingCommissionEditor' role to the relevant Plone group"""
+    # if the current category id startswith a given Plone group, this is the correspondance
+    # for example, category 'commission-travaux' correspond to Plone
+    # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
+    # category 'commission-travaux-1er-supplement' correspond to Plone
+    # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
+    # first, remove previously set local roles for the Plone group commission
+    # this is only done for MeetingItemCouncil
+
+    if not item.portal_type == 'MeetingItemCouncil':
+        return
+    # existing commission Plone groups
+    commissionEditorsGroupIds = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
+
+    # now add the new local roles
+    for groupId in commissionEditorsGroupIds:
+        if item.getCategory().startswith(groupId):
+            # we found the relevant group
+            item.manage_addLocalRoles(groupId + COMMISSION_EDITORS_SUFFIX, ('MeetingCommissionEditor',))
+            return

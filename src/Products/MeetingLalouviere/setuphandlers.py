@@ -140,7 +140,7 @@ def addCommissionEditorGroups(context, portal):
         groupId = commissionId + COMMISSION_EDITORS_SUFFIX
         if not groupId in existingPloneGroupIds:
             #add the Plone group
-            groupTitle = groupId.replace('-', ' ').capitalize() + u' (RÃ©dacteurs PV)'.encode('utf-8')
+            groupTitle = groupId.replace('-', ' ').capitalize() + u' (Rédacteurs PV)'.encode('utf-8')
             portal.portal_groups.addGroup(groupId, title=groupTitle)
 
 

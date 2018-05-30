@@ -69,4 +69,9 @@
            factory="Products.MeetingLalouviere.adapters.CustomMeetingGroup"
            provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
 
+   <adapter for="*"
+           factory="Products.MeetingLalouviere.adapters.SearchItemsOfMyCommissionsAdapter"
+           provides="collective.compoundcriterion.interfaces.ICompoundCriterionFilter"
+           name="items-of-my-commissions" />
+
 </configure>
