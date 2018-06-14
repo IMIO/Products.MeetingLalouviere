@@ -67,13 +67,16 @@ def logStep(method, context):
     logger.info("Applying '%s' in profile '%s'" % (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
 
 
-def isNotMeetingLalouviereLalouviereProfile(context):
-    return context.readDataFile("MeetingLalouviere_lalouviere_marker.txt") is None
+def isMeetingLalouviereLalouviereProfile(context):
+    logStep("check profile", context)
+    return context.readDataFile("MeetingLalouviere_lalouviere_marker.txt") or\
+        context.readDataFile("MeetingLalouviere_bourgmestre_marker.txt") or\
+        context.readDataFile("MeetingLalouviere_codir_marker.txt")
 
 
 def installMeetingLalouviere(context):
     """ Run the default profile before bing able to run the lalouviere profile"""
-    if isNotMeetingLalouviereLalouviereProfile(context):
+    if not isMeetingLalouviereLalouviereProfile(context):
         return
 
     logStep("installMeetingLalouviere", context)
@@ -103,9 +106,8 @@ def _installPloneMeeting(context):
 def initializeTool(context):
     '''Initialises the PloneMeeting tool based on information from the current
        profile.'''
-    if isNotMeetingLalouviereLalouviereProfile(context):
+    if not isMeetingLalouviereLalouviereProfile(context):
         return
-
     logStep("initializeTool", context)
     _installPloneMeeting(context)
     return ToolInitializer(context, PROJECTNAME).run()
@@ -148,7 +150,7 @@ def addSearches(context, portal):
     '''
        Add additional searches
     '''
-    if isNotMeetingLalouviereLalouviereProfile(context):
+    if not isMeetingLalouviereLalouviereProfile(context):
         return
 
     logStep("addCouncilSearches", context)
@@ -366,7 +368,7 @@ def reorderSkinsLayers(context, site):
        Reinstall Products.plonemeetingskin and re-apply MeetingLalouviere skins.xml step
        as the reinstallation of MeetingLalouviere and PloneMeeting changes the portal_skins layers order
     """
-    if isNotMeetingLalouviereProfile(context) and isNotMeetingLalouviereLalouviereProfile(context):
+    if isNotMeetingLalouviereProfile(context) and not isMeetingLalouviereLalouviereProfile(context):
         return
 
     logStep("reorderSkinsLayers", context)
@@ -386,7 +388,7 @@ def reorderCss(context):
        Make sure CSS are correctly reordered in portal_css so things
        work as expected...
     """
-    if isNotMeetingLalouviereProfile(context) and isNotMeetingLalouviereLalouviereProfile(context):
+    if isNotMeetingLalouviereProfile(context) and not isMeetingLalouviereLalouviereProfile(context):
         return
 
     site = context.getSite()
