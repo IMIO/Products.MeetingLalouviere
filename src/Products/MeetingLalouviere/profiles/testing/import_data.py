@@ -158,6 +158,7 @@ pmCreator1 = UserDescriptor('pmCreator1', [], email="pmcreator1@plonemeeting.org
 pmCreator1b = UserDescriptor('pmCreator1b', [], email="pmcreator1b@plonemeeting.org", fullname='M. PMCreator One bee')
 pmObserver1 = UserDescriptor('pmObserver1', [], email="pmobserver1@plonemeeting.org", fullname='M. PMObserver One')
 pmReviewer1 = UserDescriptor('pmReviewer1', [])
+pmAlderman = UserDescriptor('pmAlderman', [], email="pmalderman@plonemeeting.org", fullname='M. PMAlderman One')
 pmReviewerLevel1 = UserDescriptor('pmReviewerLevel1', [],
                                   email="pmreviewerlevel1@plonemeeting.org", fullname='M. PMReviewer Level One')
 pmServiceHead1 = UserDescriptor('pmServiceHead1', [])
@@ -251,6 +252,7 @@ developers.advisers.append(pmAdviser1)
 developers.advisers.append(pmManager)
 developers.followupwriters.append(pmManager)
 developers.budgetimpactreviewers.append(pmManager)
+developers.alderman.append(pmAlderman)
 setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
 # put pmReviewerLevel1 in first level of reviewers from what is in MEETINGREVIEWERS

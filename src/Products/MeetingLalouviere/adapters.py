@@ -47,9 +47,10 @@ from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
+from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter, CompoundCriterionBaseAdapter
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
-from Products.PloneMeeting.interfaces import IMeetingConfigCustom
+from Products.PloneMeeting.interfaces import IMeetingConfigCustom, IToolPloneMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingGroupCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
@@ -70,7 +71,7 @@ from zope.i18n import translate
 from zope.interface import implements
 
 # disable most of wfAdaptations
-customWfAdaptations = ('return_to_proposing_group',)
+customWfAdaptations = ('return_to_proposing_group', 'validate_by_dg_and_alderman',)
 MeetingConfig.wfAdaptations = customWfAdaptations
 
 # configure parameters for the returned_to_proposing_group wfAdaptation
@@ -1028,6 +1029,16 @@ class MeetingItemCollegeLalouviereWorkflowActions(MeetingItemWorkflowActions):
     def doProposeToDivisionHead(self, stateChange):
         pass
 
+    security.declarePrivate('doPropose_to_dg')
+
+    def doPropose_to_dg(self, stateChange):
+        pass
+
+    security.declarePrivate('doPropose_to_alderman')
+
+    def doPropose_to_alderman(self, stateChange):
+        pass
+
     security.declarePrivate('doValidateByBudgetImpactReviewer')
 
     def doValidateByBudgetImpactReviewer(self, stateChange):
@@ -1196,6 +1207,28 @@ class MeetingItemCollegeLalouviereWorkflowConditions(MeetingItemWorkflowConditio
     security.declarePublic('mayProposeToDirector')
 
     def mayProposeToDirector(self):
+        """
+          Check that the user has the 'Review portal content'
+        """
+        res = False
+        if _checkPermission(ReviewPortalContent, self.context):
+            res = True
+        return res
+
+    security.declarePublic('mayProposeToDg')
+
+    def mayProposeToDg(self):
+        """
+          Check that the user has the 'Review portal content'
+        """
+        res = False
+        if _checkPermission(ReviewPortalContent, self.context):
+            res = True
+        return res
+
+    security.declarePublic('mayProposeToAlderman')
+
+    def mayProposeToAlderman(self):
         """
           Check that the user has the 'Review portal content'
         """
@@ -1499,6 +1532,125 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
         return False
 
 
+class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
+    '''Adapter that adapts a tool implementing ToolPloneMeeting to the
+       interface IToolPloneMeetingCustom'''
+
+    implements(IToolPloneMeetingCustom)
+    security = ClassSecurityInfo()
+
+    def __init__(self, item):
+        self.context = item
+
+    def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow):
+        """ """
+        if wfAdaptation == 'validate_by_dg_and_alderman':
+            wfTool = api.portal.get_tool('portal_workflow')
+            itemStates = itemWorkflow.states
+            itemTransitions = itemWorkflow.transitions
+            if 'proposed_to_dg' not in itemStates:
+                itemStates.addState('proposed_to_dg')
+            proposed_to_dg = getattr(itemStates, 'proposed_to_dg')
+            if 'proposed_to_alderman' not in itemStates:
+                itemStates.addState('proposed_to_alderman')
+            proposed_to_alderman = getattr(itemStates, 'proposed_to_alderman')
+
+            stateToClone = getattr(itemStates, 'validated')
+            proposed_to_dg.permission_roles = stateToClone.permission_roles
+
+            cloned_permissions = dict(stateToClone.permission_roles)
+            cloned_permissions_with_alderman = {}
+            # we need to use an intermediate dict because roles are stored as a tuple and we need a list...
+            for permission in cloned_permissions:
+                # the acquisition is defined like this : if permissions is a tuple, it is not acquired
+                # if it is a list, it is acquired...  WTF???  So make sure we store the correct type...
+                acquired = isinstance(cloned_permissions[permission], list) and True or False
+                cloned_permissions_with_alderman[permission] = list(cloned_permissions[permission])
+                if 'MeetingManager' in cloned_permissions[permission]:
+                    if not 'Read' in permission and not 'Access' in permission and 'View' != permission:
+                        cloned_permissions_with_alderman[permission].remove('MeetingManager')
+
+                    cloned_permissions_with_alderman[permission].append('MeetingAlderman')
+
+                if not acquired:
+                    cloned_permissions_with_alderman[permission] = tuple(cloned_permissions_with_alderman[permission])
+
+            proposed_to_alderman.permission_roles = cloned_permissions_with_alderman
+
+            if 'propose_to_dg' not in itemTransitions:
+                itemTransitions.addTransition('propose_to_dg')
+
+            propose_to_dg = itemTransitions['propose_to_dg']
+            # use same guard from ReturnToProposingGroup
+            propose_to_dg.setProperties(
+                title='propose_to_dg',
+                new_state_id='proposed_to_dg', trigger_type=1, script_name='',
+                actbox_name='propose_to_dg', actbox_url='', actbox_category='workflow',
+                actbox_icon='%(portal_url)s/return_to_advise.png',
+                props={'guard_expr': 'python:here.wfConditions().mayProposeToDg()'})
+
+            if 'propose_to_alderman' not in itemTransitions:
+                itemTransitions.addTransition('propose_to_alderman')
+
+            if 'backToProposedToDg' not in itemTransitions:
+                itemTransitions.addTransition('backToProposedToDg')
+
+            backToProposedToDg = itemTransitions['backToProposedToDg']
+            # use same guard from ReturnToProposingGroup
+            backToProposedToDg.setProperties(
+                title='backToProposedToDg',
+                new_state_id='proposed_to_dg', trigger_type=1, script_name='',
+                actbox_name='backToProposedToDg', actbox_url='', actbox_category='workflow',
+                actbox_icon='%(portal_url)s/return_to_advise.png',
+                props={'guard_expr': 'python:here.wfConditions().mayCorrect()'})
+
+            propose_to_alderman = itemTransitions['propose_to_alderman']
+            # use same guard from ReturnToProposingGroup
+            propose_to_alderman.setProperties(
+                title='propose_to_alderman',
+                new_state_id='proposed_to_alderman', trigger_type=1, script_name='',
+                actbox_name='propose_to_alderman', actbox_url='', actbox_category='workflow',
+                actbox_icon='%(portal_url)s/return_to_advise.png',
+                props={'guard_expr': 'python:here.wfConditions().mayProposeToAlderman()'})
+
+            proposed_to_dg.setProperties(
+                    title='proposed_to_dg', description='',
+                    transitions=('backToProposedToDirector',
+                                 'propose_to_alderman',))
+
+            proposed_to_alderman.setProperties(
+                    title='proposed_to_alderman', description='',
+                    transitions=('backToProposedToDg',
+                                 'validate',))
+
+            proposed_to_director = getattr(itemStates, 'proposed_to_director')
+            trx = list(proposed_to_director.transitions)
+            trx.remove('validate')
+            trx.append('propose_to_dg')
+            proposed_to_director.transitions = tuple(trx)
+
+            if 'backToProposedToAlderman' not in itemTransitions:
+                itemTransitions.addTransition('backToProposedToAlderman')
+
+            backToProposedToAlderman = itemTransitions['backToProposedToAlderman']
+            # use same guard from ReturnToProposingGroup
+            backToProposedToAlderman.setProperties(
+                title='backToProposedToAlderman',
+                new_state_id='proposed_to_alderman', trigger_type=1, script_name='',
+                actbox_name='backToProposedToAlderman', actbox_url='', actbox_category='workflow',
+                actbox_icon='%(portal_url)s/return_to_advise.png',
+                props={'guard_expr': 'python:here.wfConditions().mayCorrect()'})
+
+            validated = getattr(itemStates, 'validated')
+            trx = list(validated.transitions)
+            trx.remove('backToProposedToDirector')
+            trx.append('backToProposedToAlderman')
+            validated.transitions = tuple(trx)
+
+            return True
+        return False
+
+
 # ------------------------------------------------------------------------------
 InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeeting)
@@ -1512,6 +1664,7 @@ InitializeClass(MeetingCouncilLalouviereWorkflowActions)
 InitializeClass(MeetingCouncilLalouviereWorkflowConditions)
 InitializeClass(MeetingItemCouncilLalouviereWorkflowActions)
 InitializeClass(MeetingItemCouncilLalouviereWorkflowConditions)
+InitializeClass(CustomLalouviereToolPloneMeeting)
 
 
 # ------------------------------------------------------------------------------

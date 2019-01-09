@@ -137,6 +137,12 @@ msgstr ""
 msgid "proposeToDivisionHead"
 msgstr ""
 
+msgid "proposeToDirector"
+msgstr ""
+
+msgid "proposeToDivisionHead"
+msgstr ""
+
 msgid "proposeToOfficeManager"
 msgstr ""
 
@@ -145,6 +151,14 @@ msgstr ""
 
 #. Default: "Proposed to budget impact reviewer"
 msgid "proposed_to_budgetimpact_reviewer"
+msgstr ""
+
+#. Default: "Proposed to dg"
+msgid "proposed_to_dg"
+msgstr ""
+
+#. Default: "Proposed to alderman"
+msgid "proposed_to_alderman"
 msgstr ""
 
 #. Default: "Proposed to director"
@@ -191,6 +205,14 @@ msgstr ""
 
 #. Default: "send back"
 msgid "backToProposedToDivisionHead"
+msgstr ""
+
+#. Default: "backToProposedToAlderman"
+msgid "backToProposedToAlderman"
+msgstr ""
+
+#. Default: "backToProposedToDg"
+msgid "backToProposedToDg"
 msgstr ""
 
 #. Default: "send back"

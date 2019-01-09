@@ -51,10 +51,12 @@ LALOUVIEREROLES['officemanagers'] = 'MeetingOfficeManager'
 LALOUVIEREROLES['divisionheads'] = 'MeetingDivisionHead'
 LALOUVIEREROLES['directors'] = 'MeetingDirector'
 LALOUVIEREROLES['followupwriters'] = 'MeetingFollowUpWriter'
+LALOUVIEREROLES['alderman'] = 'MeetingAlderman'
 PMconfig.MEETINGROLES.update(LALOUVIEREROLES)
 PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
 
-LALOUVIEREMEETINGREVIEWERS = OrderedDict([('directors', 'proposed_to_director'),
+LALOUVIEREMEETINGREVIEWERS = OrderedDict([('alderman', 'proposed_to_alderman'),
+                                          ('directors', 'proposed_to_director'),
                                           ('divisionheads', 'proposed_to_divisionhead'),
                                           ('officemanagers', 'proposed_to_officemanager'),
                                           ('serviceheads', 'proposed_to_servicehead'), ])
