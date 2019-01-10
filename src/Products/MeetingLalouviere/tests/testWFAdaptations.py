@@ -154,6 +154,30 @@ class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
         self.meetingConfig2.setMeetingWorkflow(self.meetingConfig.getMeetingWorkflow())
         pmtwfa.test_pm_WFA_hide_decisions_when_under_writing(self)
 
+    def test_pm_Validate_workflowAdaptations_custom(self):
+        self.failIf(self.meetingConfig.validate_workflowAdaptations(('validate_by_dg_and_alderman',)))
+        self.meetingConfig.setWorkflowAdaptations('validate_by_dg_and_alderman')
+        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
+        self.failIf(self.meetingConfig.validate_workflowAdaptations(('validate_by_dg_and_alderman',)))
+
+        self.changeUser('pmManager')
+        item = self.create('MeetingItem')
+        self.do(item, 'proposeToServiceHead')
+        self.do(item, 'proposeToOfficeManager')
+        self.do(item, 'proposeToDivisionHead')
+        self.do(item, 'proposeToDirector')
+        self.do(item, 'propose_to_dg')
+
+        self.failUnless(self.meetingConfig.validate_workflowAdaptations(()))
+
+        self.do(item, 'propose_to_alderman')
+        self.failUnless(self.meetingConfig.validate_workflowAdaptations(()))
+
+        self.changeUser('pmAlderman')
+        self.do(item, 'validate')
+        self.failIf(self.meetingConfig.validate_workflowAdaptations(()))
+
+
     def test_pm_WFA_ValidateByDgAndAlderman(self):
         self.meetingConfig.setWorkflowAdaptations('validate_by_dg_and_alderman')
         performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)

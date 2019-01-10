@@ -987,6 +987,23 @@ class CustomMeetingConfig(MeetingConfig):
         infos.update(extra_infos)
         return infos
 
+    MeetingConfig.old_wfa_validation = MeetingConfig.validate_workflowAdaptations
+
+    def new_validate_workflowAdaptations(self, values):
+
+        removed = set(self.getWorkflowAdaptations()).difference(set(values))
+        catalog = api.portal.get_tool('portal_catalog')
+        if 'validate_by_dg_and_alderman' in removed:
+            if catalog(portal_type=self.getItemTypeName(),
+                       review_state=('proposed_to_dg', 'proposed_to_alderman')):
+                return translate('wa_removed_validate_by_dg_and_alderman_error',
+                                 domain='PloneMeeting',
+                                 context=self.REQUEST)
+
+        return self.old_wfa_validation(values)
+
+    MeetingConfig.validate_workflowAdaptations = new_validate_workflowAdaptations
+
 
 class MeetingCollegeLalouviereWorkflowActions(MeetingWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
