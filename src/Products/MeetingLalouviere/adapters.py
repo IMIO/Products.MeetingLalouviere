@@ -814,6 +814,48 @@ class CustomMeetingConfig(MeetingConfig):
                      'roles_bypassing_talcondition': ['Manager', ]
                  }
                  ),
+                # Items in state 'proposed_to_dg'
+                ('searchproposedtodg',
+                 {
+                     'subFolderId': 'searches_items',
+                     'active': True,
+                     'query':
+                         [
+                             {'i': 'portal_type',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': [itemType, ]},
+                             {'i': 'review_state',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['proposed_to_dg']}
+                         ],
+                     'sort_on': u'modified',
+                     'sort_reversed': True,
+                     'showNumberOfItems': True,
+                     'tal_condition': "tool.isManager(here) and 'validate_by_dg_and_alderman' in cfg.getWorkflowAdaptations()",
+                     'roles_bypassing_talcondition': ['Manager', ]
+                 }
+                 ),
+                # Items in state 'proposed_to_alderman'
+                ('searchproposedtoalderman',
+                 {
+                     'subFolderId': 'searches_items',
+                     'active': True,
+                     'query':
+                         [
+                             {'i': 'portal_type',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': [itemType, ]},
+                             {'i': 'review_state',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['proposed_to_alderman']}
+                         ],
+                     'sort_on': u'modified',
+                     'sort_reversed': True,
+                     'showNumberOfItems': True,
+                     'tal_condition': " tool.userIsAmong(['alderman']) and 'validate_by_dg_and_alderman' in cfg.getWorkflowAdaptations()",
+                     'roles_bypassing_talcondition': ['Manager', ]
+                 }
+                 ),
                 # Items in state 'validated'
                 ('searchvalidateditems',
                  {
@@ -1586,7 +1628,7 @@ class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
                 title='propose_to_dg',
                 new_state_id='proposed_to_dg', trigger_type=1, script_name='',
                 actbox_name='propose_to_dg', actbox_url='', actbox_category='workflow',
-                actbox_icon='%(portal_url)s/return_to_advise.png',
+                actbox_icon='%(portal_url)s/proposeToDg.png',
                 props={'guard_expr': 'python:here.wfConditions().mayProposeToDg()'})
 
             if 'propose_to_alderman' not in itemTransitions:
@@ -1601,7 +1643,7 @@ class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
                 title='backToProposedToDg',
                 new_state_id='proposed_to_dg', trigger_type=1, script_name='',
                 actbox_name='backToProposedToDg', actbox_url='', actbox_category='workflow',
-                actbox_icon='%(portal_url)s/return_to_advise.png',
+                actbox_icon='%(portal_url)s/backToProposedToDirector.png',
                 props={'guard_expr': 'python:here.wfConditions().mayCorrect()'})
 
             propose_to_alderman = itemTransitions['propose_to_alderman']
@@ -1610,7 +1652,7 @@ class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
                 title='propose_to_alderman',
                 new_state_id='proposed_to_alderman', trigger_type=1, script_name='',
                 actbox_name='propose_to_alderman', actbox_url='', actbox_category='workflow',
-                actbox_icon='%(portal_url)s/return_to_advise.png',
+                actbox_icon='%(portal_url)s/proposeToAlderman.png',
                 props={'guard_expr': 'python:here.wfConditions().mayProposeToAlderman()'})
 
             proposed_to_dg.setProperties(
@@ -1638,7 +1680,7 @@ class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
                 title='backToProposedToAlderman',
                 new_state_id='proposed_to_alderman', trigger_type=1, script_name='',
                 actbox_name='backToProposedToAlderman', actbox_url='', actbox_category='workflow',
-                actbox_icon='%(portal_url)s/return_to_advise.png',
+                actbox_icon='%(portal_url)s/backToProposedToDirector.png',
                 props={'guard_expr': 'python:here.wfConditions().mayCorrect()'})
 
             validated = getattr(itemStates, 'validated')
@@ -1733,6 +1775,16 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
                                     context=self.request)))
         elif itemState == 'proposed_to_budgetimpact_reviewer':
             icons.append(('proposed_to_budgetimpact_reviewer.png',
+                          translate('icon_help_proposed_to_budgetimpact_reviewer',
+                                    domain="PloneMeeting",
+                                    context=self.request)))
+        elif itemState == 'proposed_to_dg':
+            icons.append(('proposeToDg.png',
+                          translate('icon_help_proposed_to_budgetimpact_reviewer',
+                                    domain="PloneMeeting",
+                                    context=self.request)))
+        elif itemState == 'proposed_to_alderman':
+            icons.append(('proposeToAlderman.png',
                           translate('icon_help_proposed_to_budgetimpact_reviewer',
                                     domain="PloneMeeting",
                                     context=self.request)))

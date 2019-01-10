@@ -562,3 +562,15 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='confi
 #. Default: "<span class='follow_up_yes'>A follow-up is needed.</span>"
 msgid "yes_followup_needed_itemview"
 msgstr "<span class='follow_up_yes'>Un suivi est nécessaire.</span>"
+
+#. Default: "Validation by CEO and Alderman"
+msgid "wa_validate_by_dg_and_alderman"
+msgstr "Validation par le DG et l'échevin"
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtodg"
+msgstr "points proposés au DG"
+
+#. Default: "Items proposed to alderman"
+msgid "searchproposedtoalderman"
+msgstr "points proposés à l'échevin"

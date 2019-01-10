@@ -561,3 +561,16 @@ msgstr ""
 #. Default: "SearchItemsForDashboard"
 msgid "searchItemsForDashboard"
 msgstr "
+
+#. Default: "Validation by CEO and Alderman"
+msgid "wa_validate_by_dg_and_alderman"
+msgstr ""
+
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtodg"
+msgstr ""
+
+#. Default: "Items proposed to alderman"
+msgid "searchproposedtoalderman"
+msgstr ""
