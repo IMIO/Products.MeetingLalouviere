@@ -104,6 +104,14 @@ msgid "backToItemInCouncil"
 msgstr "Remettre en Conseil communal"
 
 #. Default: "send back"
+msgid "backToProposedToAlderman"
+msgstr "Renvoyer à l'échevin"
+
+#. Default: "send back"
+msgid "backToProposedToDg"
+msgstr "Renvoyer au DG"
+
+#. Default: "send back"
 msgid "backToProposedToDirector"
 msgstr "Renvoyer au directeur"
 
@@ -199,6 +207,12 @@ msgstr "Proposer au correspondant financier"
 msgid "proposeToDirector"
 msgstr "Proposer au directeur"
 
+msgid "propose_to_dg"
+msgstr "Proposer au DG"
+
+msgid "propose_to_alderman"
+msgstr "Proposer à l'échevin"
+
 msgid "proposeToDivisionHead"
 msgstr "Proposer au chef de division"
 
@@ -227,6 +241,14 @@ msgstr "Proposer au chef de service"
 #. Default: "Proposed to budget impact reviewer"
 msgid "proposed_to_budgetimpact_reviewer"
 msgstr "Proposé au correspondant financier"
+
+#. Default: "Proposed to dg"
+msgid "proposed_to_dg"
+msgstr "Proposé au DG"
+
+#. Default: "Proposed to alderman"
+msgid "proposed_to_alderman"
+msgstr "Proposé à l'échevin"
 
 #. Default: "Proposed to director"
 msgid "proposed_to_director"

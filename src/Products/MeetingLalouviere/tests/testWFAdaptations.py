@@ -38,7 +38,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
     def test_pm_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
-                          set(('return_to_proposing_group', )))
+                          set(('validate_by_dg_and_alderman', 'return_to_proposing_group', )))
 
     def test_pm_WFA_no_publication(self):
         '''No sense...'''
@@ -154,6 +154,81 @@ class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
         self.meetingConfig2.setMeetingWorkflow(self.meetingConfig.getMeetingWorkflow())
         pmtwfa.test_pm_WFA_hide_decisions_when_under_writing(self)
 
+    def test_pm_Validate_workflowAdaptations_custom(self):
+        self.failIf(self.meetingConfig.validate_workflowAdaptations(('validate_by_dg_and_alderman',)))
+        self.meetingConfig.setWorkflowAdaptations('validate_by_dg_and_alderman')
+        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
+        self.failIf(self.meetingConfig.validate_workflowAdaptations(('validate_by_dg_and_alderman',)))
+
+        self.changeUser('pmManager')
+        item = self.create('MeetingItem')
+        self.do(item, 'proposeToServiceHead')
+        self.do(item, 'proposeToOfficeManager')
+        self.do(item, 'proposeToDivisionHead')
+        self.do(item, 'proposeToDirector')
+        self.do(item, 'propose_to_dg')
+
+        self.failUnless(self.meetingConfig.validate_workflowAdaptations(()))
+
+        self.do(item, 'propose_to_alderman')
+        self.failUnless(self.meetingConfig.validate_workflowAdaptations(()))
+
+        self.changeUser('pmAlderman')
+        self.do(item, 'validate')
+        self.failIf(self.meetingConfig.validate_workflowAdaptations(()))
+
+
+    def test_pm_WFA_ValidateByDgAndAlderman(self):
+        self.meetingConfig.setWorkflowAdaptations('validate_by_dg_and_alderman')
+        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
+        self.changeUser('pmManager')
+        item = self.create('MeetingItem')
+        self.do(item, 'proposeToServiceHead')
+        self.do(item, 'proposeToOfficeManager')
+        self.do(item, 'proposeToDivisionHead')
+        self.do(item, 'proposeToDirector')
+        self.do(item, 'propose_to_dg')
+        self.assertEquals(item.queryState(), 'proposed_to_dg')
+
+        self.changeUser('pmManager')
+        self.failUnless(self.hasPermission('Modify portal content', item))
+
+        for userId in ('pmCreator1', 'pmReviewer1', 'pmAlderman'):
+            self.changeUser(userId)
+            self.failIf(self.wfTool.getTransitionsFor(item))
+
+        self.changeUser('pmManager')
+        self.do(item, 'propose_to_alderman')
+        self.assertEquals(item.queryState(), 'proposed_to_alderman')
+
+        self.changeUser('pmAlderman')
+        self.failUnless(self.hasPermission('Modify portal content', item))
+
+        for userId in ('pmCreator1', 'pmReviewer1', 'pmManager'):
+            self.changeUser(userId)
+            self.failIf(self.wfTool.getTransitionsFor(item))
+
+        self.changeUser('pmAlderman')
+        self.validateItem(item)
+        self.assertEquals(item.queryState(), 'validated')
+
+        self.changeUser('pmManager')
+        self.failUnless(self.hasPermission('Modify portal content', item))
+
+        for userId in ('pmCreator1', 'pmReviewer1', 'pmAlderman'):
+            self.changeUser(userId)
+            self.failIf(self.wfTool.getTransitionsFor(item))
+
+        # test back trx
+        self.changeUser('pmManager')
+        self.do(item, 'backToProposedToAlderman')
+        self.assertEquals(item.queryState(), 'proposed_to_alderman')
+        self.changeUser('pmAlderman')
+        self.do(item, 'backToProposedToDg')
+        self.assertEquals(item.queryState(), 'proposed_to_dg')
+        self.changeUser('pmManager')
+        self.do(item, 'backToProposedToDirector')
+        self.assertEquals(item.queryState(), 'proposed_to_director')
 
 def test_suite():
     from unittest import TestSuite, makeSuite
