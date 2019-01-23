@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from collections import OrderedDict
+
 logger = logging.getLogger('MeetingLalouviere')
 
 from plone import api
@@ -49,6 +51,14 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             wfTool.manage_delObjects(self.wfs_to_delete)
         logger.info('Done.')
 
+    def _compute_plone_groups_for_meetingGroups(self):
+        catalog = api.portal.get_tool('portal_catalog')
+        brains = catalog(portal_type=['MeetingGroup'])
+        for brain in brains:
+            meetingGroup = brain.getObject()
+            meetingGroup.at_post_edit_script()
+
+
     def run(self, step=None):
         # change self.profile_name that is reinstalled at the beginning of the PM migration
         self.profile_name = u'profile-Products.MeetingLalouviere:default'
@@ -62,6 +72,9 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             self._cleanCDLD()
             self._migrateItemPositiveDecidedStates()
             self._deleteUselessWorkflows()
+
+        if step == 4:
+            self._compute_plone_groups_for_meetingGroups()
 
 
 # The migration function -------------------------------------------------------
@@ -110,4 +123,20 @@ def migrate_step3(context):
     '''
     migrator = Migrate_To_4_0(context)
     migrator.run(step=3)
+    migrator.finish()
+
+
+def migrate_step4_and_validation_ceo_and_alderman(context):
+    '''This migration function:
+
+          1) Execute step4 of Products.PloneMeeting migration profile.
+          2) Adds _alderman plone groups (So WFadaptation 'validate_by_dg_and_alderman' is functional
+       '''
+    migrator = Migrate_To_4_0(context)
+    migrator.run(step=4)
+    migrator.finish()
+
+    from add_searches import MigrateToAddSearches
+    migrator = MigrateToAddSearches(context)
+    migrator.run()
     migrator.finish()

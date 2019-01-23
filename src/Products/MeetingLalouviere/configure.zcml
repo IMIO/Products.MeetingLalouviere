@@ -69,9 +69,18 @@
            factory="Products.MeetingLalouviere.adapters.CustomMeetingGroup"
            provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
 
-   <adapter for="*"
+  <!-- Customizations for ToolPloneMeeting -->
+  <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
+           factory="Products.MeetingLalouviere.adapters.CustomLalouviereToolPloneMeeting"
+           provides="Products.PloneMeeting.interfaces.IToolPloneMeetingCustom"/>
+
+  <!-- Searches adapters -->
+  <adapter for="*"
            factory="Products.MeetingLalouviere.adapters.SearchItemsOfMyCommissionsAdapter"
            provides="collective.compoundcriterion.interfaces.ICompoundCriterionFilter"
            name="items-of-my-commissions" />
+
+
+
 
 </configure>
