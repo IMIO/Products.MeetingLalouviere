@@ -466,6 +466,14 @@ msgstr ""
 msgid "icon_help_proposed_to_budgetimpact_reviewer"
 msgstr ""
 
+#. Default: "Proposed to DG"
+msgid "icon_help_proposed_to_dg"
+msgstr ""
+
+#. Default: "Proposed to Alderman"
+msgid "icon_help_proposed_to_alderman"
+msgstr ""
+
 #. Default: "Waiting advices"
 msgid "icon_help_itemcreated_waiting_advices"
 msgstr ""
@@ -560,7 +568,7 @@ msgstr ""
 
 #. Default: "SearchItemsForDashboard"
 msgid "searchItemsForDashboard"
-msgstr "
+msgstr ""
 
 #. Default: "Validation by CEO and Alderman"
 msgid "wa_validate_by_dg_and_alderman"

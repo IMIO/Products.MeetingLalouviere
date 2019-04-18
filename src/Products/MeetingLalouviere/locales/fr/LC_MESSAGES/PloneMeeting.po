@@ -339,6 +339,14 @@ msgstr "En attente des avis"
 msgid "icon_help_proposed_to_budgetimpact_reviewer"
 msgstr "Proposé au correspondant financier"
 
+#. Default: "Proposed to DG"
+msgid "icon_help_proposed_to_dg"
+msgstr "Proposé au Directeur Général"
+
+#. Default: "Proposed to Alderman"
+msgid "icon_help_proposed_to_alderman"
+msgstr "Proposé à l'Échevin"
+
 #. Default: "Proposed to director"
 msgid "icon_help_proposed_to_director"
 msgstr "Proposé au directeur"

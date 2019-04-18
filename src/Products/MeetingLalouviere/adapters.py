@@ -1790,12 +1790,12 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
                                     context=self.request)))
         elif itemState == 'proposed_to_dg':
             icons.append(('proposeToDg.png',
-                          translate('icon_help_proposed_to_budgetimpact_reviewer',
+                          translate('icon_help_proposed_to_dg',
                                     domain="PloneMeeting",
                                     context=self.request)))
         elif itemState == 'proposed_to_alderman':
             icons.append(('proposeToAlderman.png',
-                          translate('icon_help_proposed_to_budgetimpact_reviewer',
+                          translate('icon_help_proposed_to_alderman',
                                     domain="PloneMeeting",
                                     context=self.request)))
 
