@@ -204,7 +204,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, pmtwfa):
         self.changeUser('pmAlderman')
         self.failUnless(self.hasPermission('Modify portal content', item))
 
-        for userId in ('pmCreator1', 'pmReviewer1', 'pmManager'):
+        for userId in ('pmCreator1', 'pmDirector1', 'pmReviewer1'):
             self.changeUser(userId)
             self.failIf(self.wfTool.getTransitionsFor(item))
 

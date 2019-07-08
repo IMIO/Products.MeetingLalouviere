@@ -29,6 +29,7 @@ from Products.MeetingLalouviere import logger
 from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2013
+from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2019
 from Products.MeetingLalouviere.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.MeetingLalouviere.interfaces import IMeetingCollegeLalouviereWorkflowActions
@@ -429,7 +430,7 @@ class CustomMeeting(Meeting):
 
     security.declarePublic('getCommissionTitle')
 
-    def getCommissionTitle(self, commissionNumber=1):
+    def getCommissionTitle(self, commissionNumber=1, roman_prefix = False):
         """
           Given a commissionNumber, return the commission title depending on corresponding categories
         """
@@ -443,6 +444,11 @@ class CustomMeeting(Meeting):
             res = 'Commission ' + '/'.join([subcat.Title().replace('Commission ', '') for subcat in commissionCat])
         else:
             res = commissionCat.Title()
+
+        if roman_prefix:
+            roman_numbers = {1: 'I', 2:'II', 3: 'III', 4: 'IV', 5: 'V', 6: 'VI'}
+            res = '{roman}. {res}'.format(roman=roman_numbers[commissionNumber], res=res)
+
         return res
 
     security.declarePublic('getCommissionCategories')
@@ -450,13 +456,19 @@ class CustomMeeting(Meeting):
     def getCommissionCategories(self):
         """Returns the list of categories used for Commissions.
            Since june 2013, some commission are aggregating several categories, in this case,
-           a sublist of categories is returned..."""
+           a sublist of categories is returned...
+           Since 2019, travaux commission is grouped with finance..."""
         tool = getToolByName(self, 'portal_plonemeeting')
         mc = tool.getMeetingConfig(self)
-        # creating a new Meeting or editing an existing meeting with date >= june 2013
+
         if not self.getDate() or \
-                (self.getDate().year() >= 2013 and self.getDate().month() > 5) or \
-                (self.getDate().year() > 2013):
+                self.getDate().year() > 2019 or \
+                (self.getDate().year() >= 2019 and self.getDate().month() > 8):
+            # since september 2019 commissions are grouped differently
+            # finance is grouped with travaux
+            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2019
+        # creating a new Meeting or editing an existing meeting with date >= june 2013
+        elif self.getDate().year() >= 2013 and self.getDate().month() > 5:
             # since 2013 commissions does NOT correspond to commission as MeetingItem.category
             # several MeetingItem.category are taken for one single commission...
             commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2013

@@ -83,10 +83,31 @@ COUNCIL_COMMISSION_IDS_2013 = ('commission-ag', 'commission-finances', 'commissi
 # commissions taken into account on the Meeting
 # since 2013, some commissions are made of several categories...
 COUNCIL_MEETING_COMMISSION_IDS_2013 = ('commission-travaux',
+
                                        ('commission-ag', 'commission-finances', 'commission-enseignement',
                                         'commission-culture', 'commission-sport', 'commission-sante',),
+
                                        ('commission-cadre-de-vie', 'commission-patrimoine',),
+
                                        'commission-police',
+
+                                       'commission-speciale',)
+
+# commissions taken into account on the Meeting
+# since 2019, travaux and finance are merge. ag and enseignement are merged
+COUNCIL_MEETING_COMMISSION_IDS_2019 = (('commission-travaux',
+                                        'commission-finances'),
+
+                                       ('commission-ag',
+                                        'commission-enseignement',
+                                        'commission-culture',
+                                        'commission-sport',
+                                        'commission-sante',),
+
+                                       ('commission-cadre-de-vie',
+                                        'commission-patrimoine',),
+                                       'commission-police',
+
                                        'commission-speciale',)
 
 # suffix of specific groups containing commission transcript editors
