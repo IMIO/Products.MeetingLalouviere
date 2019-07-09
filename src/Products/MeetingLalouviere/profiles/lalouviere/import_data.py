@@ -665,7 +665,7 @@ councilMeeting.recurringItems = [
         category='recurrent',
         proposingGroup='secretariat',
         decision='',
-        meetingTransitionInsertingMe='setInCouncil'),
+        meetingTransitionInsertingMe='setInCommittee'),
     RecurringItemDescriptor(
         id='recurrent-questions-actualite',
         title='Questions d\'actualités',
@@ -673,7 +673,7 @@ councilMeeting.recurringItems = [
         category='recurrent',
         proposingGroup='secretariat',
         decision='',
-        meetingTransitionInsertingMe='setInCouncil'),
+        meetingTransitionInsertingMe='setInCommittee'),
 ]
 councilMeeting.meetingUsers = [jgobert_mu, asabbatini_mu, jgodin_mu, odestrebecq_mu, ghaine_mu,
                                adupont_mu, fghiot_mu, jcwargnie_mu, dstaquet_mu, bliebin_mu, cburgeon_mu,

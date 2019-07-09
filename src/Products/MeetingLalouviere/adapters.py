@@ -566,6 +566,29 @@ class CustomMeeting(Meeting):
 
     Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
 
+    Meeting.oldGetBeforeFrozenStates = Meeting.getBeforeFrozenStates
+
+    def getCustomBeforeFrozenStates_cachekey(method, self):
+        '''cachekey method for self.getBeforeFrozenStates.'''
+        # do only re-compute if cfg changed
+        tool = api.portal.get_tool('portal_plonemeeting')
+        cfg = tool.getMeetingConfig(self)
+        return (cfg.getId(), cfg._p_mtime)
+
+    @ram.cache(getCustomBeforeFrozenStates_cachekey)
+
+    def getCustomBeforeFrozenStates(self):
+        """
+          Returns states before the meeting is frozen, so states where
+          an item is still not considered as a late item.
+        """
+        meeting = self.getSelf()
+        if meeting.portal_type == 'MeetingCouncil':
+            return ['created']
+        else:
+            return meeting.oldGetBeforeFrozenStates()
+
+    Meeting.getBeforeFrozenStates = getCustomBeforeFrozenStates
 
 class CustomMeetingItem(MeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -705,6 +728,38 @@ class CustomMeetingItem(MeetingItem):
         cfg = tool.getMeetingConfig(item)
         return bool(set(cfg.adapted().getUsedFinanceGroupIds(item)).
                     intersection(set(item.adviceIndex.keys())))
+
+    security.declarePublic('getCouncilItemRef')
+
+    def getCouncilItemRef(self):
+        if not self.context.hasMeeting():
+            return 'no meeting'
+
+        meeting = self.context.getMeeting()
+        if meeting.getStartDate():
+            start_date = meeting.getStartDate()
+        else:
+            start_date = meeting.getDate()
+
+        serviceCat = self.context.getProposingGroup(theObject=True).getAcronym().split('/')[0].strip()
+
+        itemNumber = self.context.getItemNumber(for_display=True)
+
+        if self.context.getPrivacy() == 'secret':
+            secretnum = len(meeting.getItems(unrestricted=True)) - \
+                        len(meeting.getItems(unrestricted=True,
+                                             useCatalog=True,
+                                             additional_catalog_query={'privacy': 'public'}))
+
+            res = '{date}-HC{secretnum}/{srv}/{itemnum}'.format(date=start_date.strftime('%Y%m%d'),
+                                                               secretnum=secretnum,
+                                                               srv=serviceCat,
+                                                               itemnum=itemNumber)
+        else:
+            res = '{date}/{srv}/{itemnum}'.format(date=start_date.strftime('%Y%m%d'),
+                                                               srv=serviceCat,
+                                                               itemnum=itemNumber)
+        return res
 
 
 class CustomMeetingGroup(MeetingGroup):
@@ -1466,6 +1521,21 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemWorkflowActions):
     def doProposeToDirector(self, stateChange):
         pass
 
+    def _freezePresentedItem(self):
+        pass
+
+    def _forceInsertNormal(self):
+        """
+          For Council items can be late when 'in council'.
+          But not for the reccurring items
+          And not for complementary items
+        """
+        if (hasattr(self.context, u'isRecurringItem') and self.context.isRecurringItem) \
+                or self.context.getCategory().endswith('-supplement'):
+            return True
+
+        return bool(self.context.REQUEST.cookies.get('pmForceInsertNormal', 'false') == 'true')
+
     security.declarePrivate('doSetItemInCommittee')
 
     def doSetItemInCommittee(self, stateChange):
@@ -1538,10 +1608,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(MeetingItemWorkflowConditio
     security.declarePublic('isLateFor')
 
     def isLateFor(self, meeting):
-        """
-          No late functionnality for Council
-        """
-        return False
+        return meeting.queryState() == 'in_council'
 
     security.declarePublic('maySetItemInCommittee')
 

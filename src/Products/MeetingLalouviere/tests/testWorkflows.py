@@ -186,7 +186,7 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.addAnnex(item1, relatedTo='item_decision')
         # the item is not proposable until it has a category
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        item1.setCategory('commission-ag-1er-supplement')
+        item1.setCategory('commission-ag')
         item1.at_post_edit_script()
         self.do(item1, 'proposeToDirector')
         self.failIf(self.hasPermission('Modify portal content', item1))
@@ -228,6 +228,8 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         self.assertTrue(item1.mayQuickEdit('commissionTranscript'))
         # pmReviewer2 validates item2
         self.changeUser('pmDirector2')
+        item2.setPreferredMeeting(meeting.UID())
+
         self.do(item2, 'validate')
         # pmManager inserts item2 into the meeting, as late item, and adds an
         # annex to it
@@ -246,9 +248,17 @@ class testWorkflows(MeetingLalouviereTestCase, pmtw):
         # remove published meeting to check that item is correctly presented in this cas as well
         self.setCurrentMeeting(None)
         self.do(item2, 'present')
+
+        item1_addition = self.create('MeetingItem', title='Addition to the first item', autoAddCategory=False)
+        item1_addition.setCategory('commission-ag-1er-supplement')
+        self.do(item1_addition, 'proposeToDirector')
+        item1_addition.setPreferredMeeting(meeting.UID())
+        self.do(item1_addition, 'validate')
+        self.do(item1_addition, 'present')
         # setting the meeting in council (setInCouncil) add 1 recurring item...
-        self.failIf(len(meeting.getItems()) != 3)
-        self.failIf(len(meeting.getItems(listTypes=['late'])) != 0)
+        self.assertEqual(len(meeting.getItems()), 4)
+        self.failUnless(item2.isLate())
+        self.failIf(item1_addition.isLate())
         # an item can be send back to the service so MeetingMembers
         # can edit it and send it back to the meeting
         self.changeUser('pmCreator1')
