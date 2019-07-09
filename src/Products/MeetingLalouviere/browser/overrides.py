@@ -7,16 +7,14 @@
 # GNU General Public License (GPL)
 #
 
-from plone import api
-from Products.CMFPlone.utils import safe_unicode
-from Products.PloneMeeting.browser.views import FolderDocumentGenerationHelperView
-from Products.PloneMeeting.browser.views import ItemDocumentGenerationHelperView
-from Products.PloneMeeting.browser.views import MeetingDocumentGenerationHelperView
+from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from Products.PloneMeeting.browser.views import FolderDocumentGenerationHelperView, ItemDocumentGenerationHelperView, \
+    MeetingDocumentGenerationHelperView
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
-from Products.PloneMeeting.utils import get_annexes
-from Products.PloneMeeting.utils import getLastEvent
-from Products.MeetingLalouviere.config import FINANCE_GROUP_ID, COUNCIL_MEETING_COMMISSION_IDS_2019, \
-    COUNCIL_MEETING_COMMISSION_IDS_2013, COUNCIL_COMMISSION_IDS
+from Products.PloneMeeting.utils import get_annexes, getLastEvent
+
+from Products.CMFPlone.utils import safe_unicode
+from plone import api
 
 
 def formatedAssembly(assembly, focus):

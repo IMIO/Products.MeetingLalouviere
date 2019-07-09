@@ -483,7 +483,7 @@ class CustomMeeting(Meeting):
            Since june 2013, some commission are aggregating several categories, in this case,
            a sublist of categories is returned...
            Since 2019, travaux commission is grouped with finance..."""
-        commissionCategoryIds = self.getCommissionCategoriesIds()
+        commissionCategoryIds = self.getSelf().adapted().getCommissionCategoriesIds()
 
         tool = getToolByName(self, 'portal_plonemeeting')
         mc = tool.getMeetingConfig(self)
