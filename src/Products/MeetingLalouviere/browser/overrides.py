@@ -15,7 +15,9 @@ from Products.PloneMeeting.browser.views import MeetingDocumentGenerationHelperV
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import getLastEvent
-from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from Products.MeetingLalouviere.config import FINANCE_GROUP_ID, COUNCIL_MEETING_COMMISSION_IDS_2019, \
+    COUNCIL_MEETING_COMMISSION_IDS_2013, COUNCIL_COMMISSION_IDS
+
 
 def formatedAssembly(assembly, focus):
     is_finish = False
@@ -297,6 +299,27 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         assembly = self.context.getAssembly().replace('<p>', '').replace('</p>', '').split('<br />')
         return formatedAssembly(assembly, focus)
 
+    def get_categories_for_commission(self, commission_num):
+        if not self.getDate() or \
+                self.getDate().year() > 2019 or \
+                (self.getDate().year() >= 2019 and self.getDate().month() > 8):
+            # since september 2019 commissions are grouped differently
+            # finance is grouped with travaux
+            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2019
+        # creating a new Meeting or editing an existing meeting with date >= june 2013
+        elif self.getDate().year() >= 2013 and self.getDate().month() > 5:
+            # since 2013 commissions does NOT correspond to commission as MeetingItem.category
+            # several MeetingItem.category are taken for one single commission...
+            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2013
+        else:
+            commissionCategoryIds = COUNCIL_COMMISSION_IDS
+
+        cat = commissionCategoryIds[commission_num-1]
+        if isinstance(cat, tuple):
+            return list(cat)
+        else:
+            # single category as a string
+            return [cat]
 
 class MCFolderDocumentGenerationHelperView(FolderDocumentGenerationHelperView):
 
