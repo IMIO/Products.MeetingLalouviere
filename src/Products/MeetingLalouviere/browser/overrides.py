@@ -300,20 +300,7 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         return formatedAssembly(assembly, focus)
 
     def get_categories_for_commission(self, commission_num):
-        if not self.getDate() or \
-                self.getDate().year() > 2019 or \
-                (self.getDate().year() >= 2019 and self.getDate().month() > 8):
-            # since september 2019 commissions are grouped differently
-            # finance is grouped with travaux
-            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2019
-        # creating a new Meeting or editing an existing meeting with date >= june 2013
-        elif self.getDate().year() >= 2013 and self.getDate().month() > 5:
-            # since 2013 commissions does NOT correspond to commission as MeetingItem.category
-            # several MeetingItem.category are taken for one single commission...
-            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2013
-        else:
-            commissionCategoryIds = COUNCIL_COMMISSION_IDS
-
+        commissionCategoryIds = self.real_context.adapted().getCommissionCategoriesIds()
         cat = commissionCategoryIds[commission_num-1]
         if isinstance(cat, tuple):
             return list(cat)

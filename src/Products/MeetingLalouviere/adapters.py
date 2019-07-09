@@ -451,15 +451,14 @@ class CustomMeeting(Meeting):
 
         return res
 
-    security.declarePublic('getCommissionCategories')
+    security.declarePublic('getCommissionCategoriesIds')
 
-    def getCommissionCategories(self):
+    def getCommissionCategoriesIds(self):
         """Returns the list of categories used for Commissions.
            Since june 2013, some commission are aggregating several categories, in this case,
            a sublist of categories is returned...
            Since 2019, travaux commission is grouped with finance..."""
-        tool = getToolByName(self, 'portal_plonemeeting')
-        mc = tool.getMeetingConfig(self)
+
 
         if not self.getDate() or \
                 self.getDate().year() > 2019 or \
@@ -475,6 +474,19 @@ class CustomMeeting(Meeting):
         else:
             commissionCategoryIds = COUNCIL_COMMISSION_IDS
 
+        return commissionCategoryIds
+
+    security.declarePublic('getCommissionCategories')
+
+    def getCommissionCategories(self):
+        """Returns the list of categories used for Commissions.
+           Since june 2013, some commission are aggregating several categories, in this case,
+           a sublist of categories is returned...
+           Since 2019, travaux commission is grouped with finance..."""
+        commissionCategoryIds = self.getCommissionCategoriesIds()
+
+        tool = getToolByName(self, 'portal_plonemeeting')
+        mc = tool.getMeetingConfig(self)
         res = []
         for categoryId in commissionCategoryIds:
             # check if we have subcategories, aka a commission made of several categories
