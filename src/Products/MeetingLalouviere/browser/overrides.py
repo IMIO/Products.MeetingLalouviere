@@ -306,6 +306,35 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
             # single category as a string
             return [cat]
 
+    def get_commission_items(self, itemUids, commission_num=1, supplement=False):
+        """
+        Get the items of the commission
+        :param commission_num: number of the commission we want ([1-6])
+        :param supplement: supplement items
+        :return: list of meetingItem
+        """
+        cats = self.get_categories_for_commission(commission_num)
+        if supplement:  # If we want the supplements items
+            cats = [cat + '-1er-supplement' for cat in cats]  # append supplement suffix to the categories
+        return self.real_context.adapted().getPrintableItems(itemUids, categories=cats)
+
+    def format_premeetingdate(self):
+        """
+        format pre-meeting date like this : (Lundi 20 mai 2019 (18H30), Salle du Conseil communal)
+        :return: formatted pre-meeting date string
+        """
+        meeting = self.context
+        premeetingdate = meeting.getPreMeetingDate()
+        return u"({weekday} {day} {month} {year} ({time}), {place})".format(
+            weekday=meeting.utranslate("weekday_%s" % premeetingdate.aDay().lower(), domain="plonelocales"),
+            day=premeetingdate.strftime('%d'),
+            month=meeting.translate('month_%s' % premeetingdate.strftime('%b').lower(), domain='plonelocales').lower(),
+            year=premeetingdate.strftime('%Y'),
+            time=premeetingdate.strftime('%HH%M'),
+            place=meeting.getPreMeetingPlace()
+        )
+
+
 class MCFolderDocumentGenerationHelperView(FolderDocumentGenerationHelperView):
 
     def get_all_items_dghv_with_finance_advice(self, brains):
