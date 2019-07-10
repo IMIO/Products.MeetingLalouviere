@@ -315,11 +315,10 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         :return: list of meetingItem
         """
         cats = self.get_categories_for_commission(commission_num)
-        print cats
         if type == 'supplement':  # If we want the supplements items only
             cats = [cat + '-1er-supplement' for cat in cats]  # append supplement suffix to the categories
         elif type == '*':  # If we want all items
-            cats = [cat + '-1er-supplement' for cat in cats] + cats
+            cats = cats + [cat + '-1er-supplement' for cat in cats]
         return self.real_context.adapted().getPrintableItems(itemUids, categories=cats)
 
     def format_commission_pre_meeting_date(self, commission_num):

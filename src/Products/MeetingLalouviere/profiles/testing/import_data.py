@@ -483,7 +483,11 @@ councilMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_
 councilMeeting.workflowAdaptations = []
 councilMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
                                              'reverse': '0'}, )
-councilMeeting.podTemplates = []
+agendaTemplate = PodTemplateDescriptor('agendaTemplate', 'Meeting agenda')
+agendaTemplate.odt_file = 'Agenda.odt'
+agendaTemplate.pod_portal_types = ['MeetingCouncil']
+agendaTemplate.tal_condition = ''
+councilMeeting.podTemplates = [agendaTemplate]
 councilMeeting.transitionsToConfirm = []
 councilMeeting.transitionsForPresentingAnItem = ['proposeToDirector', 'validate', 'present', ]
 councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'setInCommittee',
