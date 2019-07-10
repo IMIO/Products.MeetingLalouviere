@@ -309,37 +309,52 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
     def get_commission_items(self, itemUids, commission_num, type='normal'):
         """
         Get the items of the commission
-        :param commission_num: number of the commission we want ([1-6])
+        :param commission_num: number of the commission
         :param supplement: supplement items
+        :param type: must be 'normal', 'supplement' or '*'
         :return: list of meetingItem
         """
         cats = self.get_categories_for_commission(commission_num)
         print cats
-        if type == 'supplement':  # If we want the supplements items
+        if type == 'supplement':  # If we want the supplements items only
             cats = [cat + '-1er-supplement' for cat in cats]  # append supplement suffix to the categories
-        elif type == '*':
+        elif type == '*':  # If we want all items
             cats = [cat + '-1er-supplement' for cat in cats] + cats
         return self.real_context.adapted().getPrintableItems(itemUids, categories=cats)
 
-    def get_commission_premeetingdate(self, commission_num):
+    def format_commission_pre_meeting_date(self, commission_num):
         """
         format pre-meeting date like this : (Lundi 20 mai 2019 (18H30), Salle du Conseil communal)
+        :param commission_num: number of the commission
         :return: formatted pre-meeting date string
         """
         meeting = self.context
-        premeetingdate = getattr(meeting, "getPreMeetingDate_" + str(commission_num))()
+        if commission_num > 1:
+            pre_meeting_date = getattr(meeting, "getPreMeetingDate_" + str(commission_num))()
+            pre_meeting_place = getattr(meeting, "getPreMeetingPlace_" + str(commission_num))()
+        else:
+            pre_meeting_date = meeting.getPreMeetingDate()
+            pre_meeting_place = meeting.getPreMeetingPlace()
         return u"({weekday} {day} {month} {year} ({time}), {place})".format(
-            weekday=meeting.utranslate("weekday_%s" % premeetingdate.aDay().lower(), domain="plonelocales"),
-            day=premeetingdate.strftime('%d'),
-            month=meeting.translate('month_%s' % premeetingdate.strftime('%b').lower(), domain='plonelocales').lower(),
-            year=premeetingdate.strftime('%Y'),
-            time=premeetingdate.strftime('%HH%M'),
-            place=getattr(meeting, "getPreMeetingPlace_" + str(commission_num))()
+            weekday=meeting.utranslate("weekday_%s" % pre_meeting_date.aDay().lower(), domain="plonelocales"),
+            day=pre_meeting_date.strftime('%d'),
+            month=meeting.translate('month_%s' % pre_meeting_date.strftime('%b').lower(), domain='plonelocales').lower(),
+            year=pre_meeting_date.strftime('%Y'),
+            time=pre_meeting_date.strftime('%HH%M'),
+            place=pre_meeting_place
         )
 
     def get_commission_assembly(self, commission_num):
+        """
+        get the commission pre-meeting assembly based on the commission number.
+        :param commission_num: number of the commission
+        :return: preMeetingAssembly
+        """
         meeting = self.context
-        return getattr(meeting, "getPreMeetingAssembly_" + str(commission_num))()
+        if commission_num > 1:
+            return getattr(meeting, "getPreMeetingAssembly_" + str(commission_num))()
+        else:
+            return meeting.getPreMeetingAssembly()
 
 
 class MCFolderDocumentGenerationHelperView(FolderDocumentGenerationHelperView):
