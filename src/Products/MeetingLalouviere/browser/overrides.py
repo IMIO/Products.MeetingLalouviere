@@ -314,6 +314,7 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         :return: list of meetingItem
         """
         cats = self.get_categories_for_commission(commission_num)
+        print cats
         if type == 'supplement':  # If we want the supplements items
             cats = [cat + '-1er-supplement' for cat in cats]  # append supplement suffix to the categories
         elif type == '*':
@@ -326,19 +327,19 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         :return: formatted pre-meeting date string
         """
         meeting = self.context
-        premeetingdate = getattr(meeting, "preMeetingDate_"+(commission_num + 1))
+        premeetingdate = getattr(meeting, "getPreMeetingDate_" + str(commission_num))()
         return u"({weekday} {day} {month} {year} ({time}), {place})".format(
             weekday=meeting.utranslate("weekday_%s" % premeetingdate.aDay().lower(), domain="plonelocales"),
             day=premeetingdate.strftime('%d'),
             month=meeting.translate('month_%s' % premeetingdate.strftime('%b').lower(), domain='plonelocales').lower(),
             year=premeetingdate.strftime('%Y'),
             time=premeetingdate.strftime('%HH%M'),
-            place=meeting.getPreMeetingPlace()
+            place=getattr(meeting, "getPreMeetingPlace_" + str(commission_num))()
         )
 
     def get_commission_assembly(self, commission_num):
         meeting = self.context
-        return getattr(meeting, "getPreMeetingDate_"+(commission_num + 1))()
+        return getattr(meeting, "getPreMeetingAssembly_" + str(commission_num))()
 
 
 class MCFolderDocumentGenerationHelperView(FolderDocumentGenerationHelperView):
