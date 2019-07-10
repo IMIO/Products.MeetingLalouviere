@@ -306,7 +306,7 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
             # single category as a string
             return [cat]
 
-    def get_commission_items(self, itemUids, commission_num=1, supplement=False):
+    def get_commission_items(self, itemUids, commission_num, type='normal'):
         """
         Get the items of the commission
         :param commission_num: number of the commission we want ([1-6])
@@ -314,17 +314,19 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         :return: list of meetingItem
         """
         cats = self.get_categories_for_commission(commission_num)
-        if supplement:  # If we want the supplements items
+        if type == 'supplement':  # If we want the supplements items
             cats = [cat + '-1er-supplement' for cat in cats]  # append supplement suffix to the categories
+        elif type == '*':
+            cats = [cat + '-1er-supplement' for cat in cats] + cats
         return self.real_context.adapted().getPrintableItems(itemUids, categories=cats)
 
-    def format_premeetingdate(self):
+    def get_commission_premeetingdate(self, commission_num):
         """
         format pre-meeting date like this : (Lundi 20 mai 2019 (18H30), Salle du Conseil communal)
         :return: formatted pre-meeting date string
         """
         meeting = self.context
-        premeetingdate = meeting.getPreMeetingDate()
+        premeetingdate = getattr(meeting, "preMeetingDate_"+(commission_num + 1))
         return u"({weekday} {day} {month} {year} ({time}), {place})".format(
             weekday=meeting.utranslate("weekday_%s" % premeetingdate.aDay().lower(), domain="plonelocales"),
             day=premeetingdate.strftime('%d'),
@@ -333,6 +335,10 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
             time=premeetingdate.strftime('%HH%M'),
             place=meeting.getPreMeetingPlace()
         )
+
+    def get_commission_assembly(self, commission_num):
+        meeting = self.context
+        return getattr(meeting, "getPreMeetingDate_"+(commission_num + 1))()
 
 
 class MCFolderDocumentGenerationHelperView(FolderDocumentGenerationHelperView):
