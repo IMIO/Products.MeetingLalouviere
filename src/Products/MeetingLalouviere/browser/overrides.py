@@ -306,6 +306,7 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
             # single category as a string
             return [cat]
 
+
 class MCFolderDocumentGenerationHelperView(FolderDocumentGenerationHelperView):
 
     def get_all_items_dghv_with_finance_advice(self, brains):
