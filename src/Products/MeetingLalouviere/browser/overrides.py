@@ -292,7 +292,7 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
             return formated assembly with 'absent', 'excused', ... '''
         if focus not in ('present', 'excuse', 'absent'):
             return ''
-        # ie: Pierre Helson, Bourgmestre, PrÃ©sident
+        # ie: Pierre Helson, Bourgmestre, Président
         # focus is present, excuse or absent
         assembly = self.context.getAssembly().replace('<p>', '').replace('</p>', '').split('<br />')
         return formatedAssembly(assembly, focus)
