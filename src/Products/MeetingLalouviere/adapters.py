@@ -458,16 +458,15 @@ class CustomMeeting(Meeting):
            Since june 2013, some commission are aggregating several categories, in this case,
            a sublist of categories is returned...
            Since 2019, travaux commission is grouped with finance..."""
-
-
-        if not self.getDate() or \
-                self.getDate().year() > 2019 or \
-                (self.getDate().year() >= 2019 and self.getDate().month() > 8):
+        date = self.getSelf().getDate()
+        if not date or \
+                date.year() > 2019 or \
+                (date.year() >= 2019 and date.month() > 8):
             # since september 2019 commissions are grouped differently
             # finance is grouped with travaux
             commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2019
         # creating a new Meeting or editing an existing meeting with date >= june 2013
-        elif self.getDate().year() >= 2013 and self.getDate().month() > 5:
+        elif date.year() >= 2013 and date.month() > 5:
             # since 2013 commissions does NOT correspond to commission as MeetingItem.category
             # several MeetingItem.category are taken for one single commission...
             commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2013
