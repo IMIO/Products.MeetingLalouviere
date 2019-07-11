@@ -50,7 +50,7 @@ class testCustomViews(MeetingLalouviereTestCase):
         view()
         return view.get_generation_context_helper()
 
-    def _setup_commissions_cat(self, commission_version):
+    def _setup_commissions_categories(self, commission_version):
         # add MEETING_COMMISSION's categories
         self.changeUser("admin")
 
@@ -80,7 +80,7 @@ class testCustomViews(MeetingLalouviereTestCase):
             new_cat = getattr(self.meetingConfig.categories, new_cat_id)
             new_cat.processForm()
 
-    def _test_get_commission_items_by_commissions_version(self, year, month):
+    def _test_get_commission_items_by_date(self, year, month):
         # Create a meeting with a given year and month and the view
         self.changeUser("pmManager")
         meeting = self.create("Meeting", date="{}/{}/1 18:00:00".format(year, month))
@@ -156,8 +156,8 @@ class testCustomViews(MeetingLalouviereTestCase):
             {"commissions": COUNCIL_COMMISSION_IDS, "year": "2010", "month": "01"},
         ]
         for cv in commissions_versions:
-            self._setup_commissions_cat(cv["commissions"])
-            self._test_get_commission_items_by_commissions_version(cv["year"], cv["month"])
+            self._setup_commissions_categories(cv["commissions"])
+            self._test_get_commission_items_by_date(cv["year"], cv["month"])
 
     def test_format_commission_pre_meeting_date(self):
         # Create the meeting and the view
