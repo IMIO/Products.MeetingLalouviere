@@ -68,11 +68,13 @@ class testCustomViews(MeetingLalouviereTestCase):
                     commission_categories.append(j)
             else:
                 commission_categories.append(i)
+
         # create 1st-supplement for each cat
         commission_categories = commission_categories + [
             cat + "-1er-supplement" for cat in commission_categories
         ]
 
+        # add categories to the meetingConfig
         for cat in commission_categories:
             new_cat_id = self.meetingConfig.categories.invokeFactory(
                 "MeetingCategory", id=cat, title="commissionCat"
@@ -112,42 +114,42 @@ class testCustomViews(MeetingLalouviereTestCase):
         item_uids = [i.UID() for i in items]
 
         # Tests cases with type='normal'
-        comm_no1_items = view.get_commission_items(item_uids, 1)
-        self.assertEquals(comm_no1_items[0], item)
-        self.assertEquals(len(comm_no1_items), 1)
+        comm_no1_normal_items = [item]
+        self.assertListEqual(view.get_commission_items(item_uids, 1), comm_no1_normal_items)
 
-        comm_no2_items = view.get_commission_items(item_uids, 2)
-        self.assertEquals(comm_no2_items[0], item2)
-        self.assertEquals(len(comm_no2_items), 2)
+        comm_no2_normal_items = [item2, item3]
+        self.assertListEqual(view.get_commission_items(item_uids, 2), comm_no2_normal_items)
 
-        comm_no3_items = view.get_commission_items(item_uids, 3)
-        self.assertEquals(len(comm_no3_items), 0)
+        comm_no3_normal_items = []
+        self.assertListEqual(view.get_commission_items(item_uids, 3), comm_no3_normal_items)
 
         # Tests cases with type='supp'
-        comm_no1_items = view.get_commission_items(item_uids, 1, type="supplement")
-        self.assertEquals(comm_no1_items[0], item_s)
-        self.assertEquals(len(comm_no1_items), 1)
+        comm_no1_supp_items = [item_s]
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 1, type="supplement"), comm_no1_supp_items
+        )
 
-        comm_no2_items = view.get_commission_items(item_uids, 2, type="supplement")
-        self.assertEquals(comm_no2_items[0], item2_s)
-        self.assertEquals(len(comm_no2_items), 2)
+        comm_no2_supp_items = [item2_s, item3_s]
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 2, type="supplement"), comm_no2_supp_items
+        )
 
-        comm_no3_items = view.get_commission_items(item_uids, 3, type="supplement")
-        self.assertEquals(len(comm_no3_items), 0)
+        comm_no3_supp_items = []
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 3, type="supplement"), comm_no3_supp_items
+        )
 
         # Tests cases with type='*', get all items for each commission regardless of type
-        comm_no1_items = view.get_commission_items(item_uids, 1, type="*")
-        self.assertEquals(comm_no1_items[0], item)
-        self.assertEquals(len(comm_no1_items), 2)
+        comm_no1_items = comm_no1_normal_items + comm_no1_supp_items
+        self.assertListEqual(view.get_commission_items(item_uids, 1, type="*"), comm_no1_items)
 
-        comm_no2_items = view.get_commission_items(item_uids, 2, type="*")
-        self.assertEquals(comm_no2_items[2], item2_s)
-        self.assertEquals(len(comm_no2_items), 4)
+        comm_no2_items = comm_no2_normal_items + comm_no2_supp_items
+        self.assertListEqual(view.get_commission_items(item_uids, 2, type="*"), comm_no2_items)
 
-        comm_no3_items = view.get_commission_items(item_uids, 3, type="*")
-        self.assertEquals(len(comm_no3_items), 0)
+        comm_no3_items = []
+        self.assertListEqual(view.get_commission_items(item_uids, 3, type="*"), comm_no3_items)
 
-        self.deleteAsManager(meeting.UID())  # we don't the meeting and it's items
+        self.deleteAsManager(meeting.UID())  # we don't need the meeting and it's items anymore
 
     def test_get_commission_items(self):
         commissions_versions = [
@@ -168,15 +170,15 @@ class testCustomViews(MeetingLalouviereTestCase):
         meeting.setPreMeetingDate(DateTime(2019, 9, 1, 4, 20, 0))
         meeting.setPreMeetingPlace("Pays des bisounours")
         meeting.setPreMeetingDate_2(DateTime(2019, 9, 2, 4, 20, 0))
-        meeting.setPreMeetingPlace_2("Sur la Lune")
+        meeting.setPreMeetingPlace_2("Pays des merveilles")
 
-        self.assertEquals(
+        self.assertEqual(
             view.format_commission_pre_meeting_date(1),
             "(Sunday 01 september 2019 (04H20), Pays des bisounours)",
         )
-        self.assertEquals(
+        self.assertEqual(
             view.format_commission_pre_meeting_date(2),
-            "(Monday 02 september 2019 (04H20), Sur la Lune)",
+            "(Monday 02 september 2019 (04H20), Pays des merveilles)",
         )
 
     def test_get_commission_assembly(self):
