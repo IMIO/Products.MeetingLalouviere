@@ -7,9 +7,9 @@ from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS_2013
 
+
 def onItemDuplicated(original, event):
-    '''After item's cloning, we removed decision annexe.
-    '''
+    '''After item's cloning, we removed decision annexe.'''
     newItem = event.newItem
     # only apply if we are actually creating a MeetingItemCouncil from another MeetingConfig
     if not (newItem.portal_type == 'MeetingItemCouncil' and original.portal_type != 'MeetingItemCouncil'):
@@ -42,6 +42,7 @@ def _removeTypistNote(field):
     ''' Remove typist's note find with highlight-purple class'''
     import re
     return re.sub('<span class="highlight-purple">.*?</span>', '', field)
+
 
 def onItemLocalRolesUpdated(item, event):
     """Depending on the selected Council commission (category),

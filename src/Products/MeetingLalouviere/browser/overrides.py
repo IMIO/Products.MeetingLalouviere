@@ -144,9 +144,10 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
         case 'simple' means the financial advice was requested but without any delay.
         case 'legal' means the financial advice was requested with a delay. It's a legal financial advice.
         case 'initiative' means the financial advice was given without being requested at the first place.
-        case 'legal_not_given' means the financial advice was requested with delay. But was ignored by the finance director.
-        case 'simple_not_given' means the financial advice was requested without delay. But was ignored by the finance
-         director.
+        case 'legal_not_given' means the financial advice was requested with delay.
+        But was ignored by the finance director.
+        case 'simple_not_given' means the financial advice was requested without delay.
+        But was ignored by the finance director.
         """
 
         def check_given_or_not_cases(advice, case_to_check, case_given, case_not_given):
@@ -176,7 +177,9 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
                             continue
 
                         # Change data if advice is hidden
-                        if 'hidden_during_redaction' in advice and advice['hidden_during_redaction'] and not show_hidden:
+                        if 'hidden_during_redaction' in advice and \
+                           advice['hidden_during_redaction'] and \
+                           not show_hidden:
                             message = self.translate('hidden_during_redaction', domain='PloneMeeting')
                             advice['type_translated'] = message
                             advice['type'] = 'hidden_during_redaction'
@@ -188,7 +191,8 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
                                 result.append(advice)
                         else:
                             # set transmission date to adviser because advice was asked by the agent
-                            advice['item_transmitted_on'] = self.getItemFinanceAdviceTransmissionDate(finance_advice_id)
+                            advice['item_transmitted_on'] = self.getItemFinanceAdviceTransmissionDate(
+                                finance_advice_id)
                             if advice['item_transmitted_on']:
                                 advice['item_transmitted_on_localized'] = self.display_date(
                                     date=advice['item_transmitted_on'])
@@ -207,8 +211,8 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
         finance_id = self.context.adapted().getFinanceAdviceId()
         if finance_id:
             data = self.real_context.getAdviceDataFor(self.real_context, finance_id)
-            return ('delay_infos' in data and 'limit_date_localized' in data['delay_infos']
-                    and data['delay_infos']['limit_date_localized']) or None
+            return ('delay_infos' in data and 'limit_date_localized' in data['delay_infos'] and
+                    data['delay_infos']['limit_date_localized']) or None
 
         return None
 
@@ -264,9 +268,9 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
         return self.translate(self.real_context.queryState())
 
     def print_creator_name(self):
-        return (self.real_context.portal_membership.getMemberInfo(str(self.real_context.Creator())) \
-               and self.real_context.portal_membership.getMemberInfo(str(self.real_context.Creator()))['fullname']) \
-               or str(self.real_context.Creator())
+        return (self.real_context.portal_membership.getMemberInfo(str(self.real_context.Creator())) and
+                self.real_context.portal_membership.getMemberInfo(str(self.real_context.Creator()))['fullname']) \
+            or str(self.real_context.Creator())
 
     def getDeliberation(self, withFinanceAdvice=True, **kwargs):
         """Override getDeliberation to be able to specify that we want to print the finance advice."""
@@ -299,7 +303,7 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
 
     def get_categories_for_commission(self, commission_num):
         commissionCategoryIds = self.real_context.adapted().getCommissionCategoriesIds()
-        cat = commissionCategoryIds[commission_num-1]
+        cat = commissionCategoryIds[commission_num - 1]
         if isinstance(cat, tuple):
             return list(cat)
         else:
@@ -337,7 +341,8 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         return u"({weekday} {day} {month} {year} ({time}), {place})".format(
             weekday=meeting.utranslate("weekday_%s" % pre_meeting_date.aDay().lower(), domain="plonelocales"),
             day=pre_meeting_date.strftime('%d'),
-            month=meeting.translate('month_%s' % pre_meeting_date.strftime('%b').lower(), domain='plonelocales').lower(),
+            month=meeting.translate('month_%s' % pre_meeting_date.strftime('%b').lower(),
+                                    domain='plonelocales').lower(),
             year=pre_meeting_date.strftime('%Y'),
             time=pre_meeting_date.strftime('%HH%M'),
             place=pre_meeting_place

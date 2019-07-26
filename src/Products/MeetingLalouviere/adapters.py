@@ -78,9 +78,10 @@ MeetingConfig.wfAdaptations = customWfAdaptations
 # configure parameters for the returned_to_proposing_group wfAdaptation
 # we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
 
-RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_item_in_committee_from_returned_to_proposing_group': ['in_committee', ],
-                                      'backTo_item_in_council_from_returned_to_proposing_group': ['in_council', ],
-                                      }
+RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
+    'backTo_item_in_committee_from_returned_to_proposing_group': ['in_committee', ],
+    'backTo_item_in_council_from_returned_to_proposing_group': ['in_council', ],
+}
 adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen', 'itempublished',
                                               'item_in_committee', 'item_in_council',)
@@ -89,61 +90,62 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     'meetingitemcollegelalouviere_workflow':
     # view permissions
         {'Access contents information':
-             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-              'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
          'View':
-             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-              'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
          'PloneMeeting: Read budget infos':
-             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-              'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
          'PloneMeeting: Read decision':
-             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-              'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
          'PloneMeeting: Read item observations':
-             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-              'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
          'MeetingLalouviere: Read commission transcript':
-             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-              'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
          'MeetingLalouviere: Read providedFollowUp':
-             ['Manager', ],
+            ['Manager', ],
          'MeetingLalouviere: Read followUp':
-             ['Manager', ],
+            ['Manager', ],
          'MeetingLalouviere: Read neededFollowUp':
-             ['Manager', ],
+            ['Manager', ],
          # edit permissions
          'Modify portal content':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'PloneMeeting: Write budget infos':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', 'MeetingBudgetImpactEditor'],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager',
+             'MeetingBudgetImpactEditor'],
          'PloneMeeting: Write decision':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'Review portal content':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'Add portal content':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'PloneMeeting: Add annex':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'PloneMeeting: Add annexDecision':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'PloneMeeting: Write decision annex':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          # MeetingManagers edit permissions
          'Delete objects':
-             ['Manager', 'MeetingManager', ],
+            ['Manager', 'MeetingManager', ],
          'PloneMeeting: Write item MeetingManager reserved fields':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'MeetingLalouviere: Write commission transcript':
-             ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
          'PloneMeeting: Write marginal notes':
-             ['Manager', 'MeetingManager', ],
+            ['Manager', 'MeetingManager', ],
          'MeetingLalouviere: Write providedFollowUp':
-             ['Manager', ],
+            ['Manager', ],
          'MeetingLalouviere: Write followUp':
-             ['Manager', ],
+            ['Manager', ],
          'MeetingLalouviere: Write neededFollowUp':
-             ['Manager', ],
+            ['Manager', ],
          }
 }
 
@@ -383,7 +385,8 @@ class CustomMeeting(Meeting):
         thirdSupplCategories = self.getThirdSupplCategories()
         firstNumber = self.getNumberOfItems(itemUids,
                                             privacy=privacy,
-                                            categories=normalCategories + firstSupplCategories + secondSupplCategories) + 1
+                                            categories=normalCategories +
+                                            firstSupplCategories + secondSupplCategories) + 1
         return self.adapted().getPrintableItems(itemUids,
                                                 privacy=privacy,
                                                 categories=thirdSupplCategories,
@@ -430,7 +433,7 @@ class CustomMeeting(Meeting):
 
     security.declarePublic('getCommissionTitle')
 
-    def getCommissionTitle(self, commissionNumber=1, roman_prefix = False):
+    def getCommissionTitle(self, commissionNumber=1, roman_prefix=False):
         """
           Given a commissionNumber, return the commission title depending on corresponding categories
         """
@@ -446,7 +449,7 @@ class CustomMeeting(Meeting):
             res = commissionCat.Title()
 
         if roman_prefix:
-            roman_numbers = {1: 'I', 2:'II', 3: 'III', 4: 'IV', 5: 'V', 6: 'VI'}
+            roman_numbers = {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V', 6: 'VI'}
             res = '{roman}. {res}'.format(roman=roman_numbers[commissionNumber], res=res)
 
         return res
@@ -458,7 +461,8 @@ class CustomMeeting(Meeting):
            Since june 2013, some commission are aggregating several categories, in this case,
            a sublist of categories is returned...
            Since 2019, travaux commission is grouped with finance..."""
-        date = self.getSelf().getDate()
+        meeting = self.getSelf()
+        date = meeting.getDate()
         if not date or \
                 date.year() > 2019 or \
                 (date.year() >= 2019 and date.month() > 8):
@@ -587,7 +591,6 @@ class CustomMeeting(Meeting):
         return (cfg.getId(), cfg._p_mtime)
 
     @ram.cache(getCustomBeforeFrozenStates_cachekey)
-
     def getCustomBeforeFrozenStates(self):
         """
           Returns states before the meeting is frozen, so states where
@@ -600,6 +603,7 @@ class CustomMeeting(Meeting):
             return meeting.oldGetBeforeFrozenStates()
 
     Meeting.getBeforeFrozenStates = getCustomBeforeFrozenStates
+
 
 class CustomMeetingItem(MeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -758,18 +762,20 @@ class CustomMeetingItem(MeetingItem):
 
         if self.context.getPrivacy() == 'secret':
             secretnum = len(meeting.getItems(unrestricted=True)) - \
-                        len(meeting.getItems(unrestricted=True,
-                                             useCatalog=True,
-                                             additional_catalog_query={'privacy': 'public'}))
+                len(meeting.getItems(unrestricted=True,
+                                     useCatalog=True,
+                                     additional_catalog_query={'privacy': 'public'}))
 
-            res = '{date}-HC{secretnum}/{srv}/{itemnum}'.format(date=start_date.strftime('%Y%m%d'),
-                                                               secretnum=secretnum,
-                                                               srv=serviceCat,
-                                                               itemnum=itemNumber)
+            res = '{date}-HC{secretnum}/{srv}/{itemnum}'.format(
+                date=start_date.strftime('%Y%m%d'),
+                secretnum=secretnum,
+                srv=serviceCat,
+                itemnum=itemNumber)
         else:
-            res = '{date}/{srv}/{itemnum}'.format(date=start_date.strftime('%Y%m%d'),
-                                                               srv=serviceCat,
-                                                               itemnum=itemNumber)
+            res = '{date}/{srv}/{itemnum}'.format(
+                date=start_date.strftime('%Y%m%d'),
+                srv=serviceCat,
+                itemnum=itemNumber)
         return res
 
 
@@ -909,7 +915,8 @@ class CustomMeetingConfig(MeetingConfig):
                      'sort_on': u'modified',
                      'sort_reversed': True,
                      'showNumberOfItems': True,
-                     'tal_condition': "tool.isManager(here) and 'validate_by_dg_and_alderman' in cfg.getWorkflowAdaptations()",
+                     'tal_condition': "tool.isManager(here) and 'validate_by_dg_and_alderman' in "
+                                "cfg.getWorkflowAdaptations()",
                      'roles_bypassing_talcondition': ['Manager', ]
                  }
                  ),
@@ -930,7 +937,8 @@ class CustomMeetingConfig(MeetingConfig):
                      'sort_on': u'modified',
                      'sort_reversed': True,
                      'showNumberOfItems': True,
-                     'tal_condition': " tool.userIsAmong(['alderman']) and 'validate_by_dg_and_alderman' in cfg.getWorkflowAdaptations()",
+                     'tal_condition': "python:tool.userIsAmong(['alderman']) and 'validate_by_dg_and_alderman' "
+                                "in cfg.getWorkflowAdaptations()",
                      'roles_bypassing_talcondition': ['Manager', ]
                  }
                  ),
@@ -1687,7 +1695,6 @@ class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
     def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow):
         """ """
         if wfAdaptation == 'validate_by_dg_and_alderman':
-            wfTool = api.portal.get_tool('portal_workflow')
             itemStates = itemWorkflow.states
             itemTransitions = itemWorkflow.transitions
             if 'proposed_to_dg' not in itemStates:
@@ -1709,7 +1716,7 @@ class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
                 acquired = isinstance(cloned_permissions[permission], list) and True or False
                 cloned_permissions_with_alderman[permission] = list(cloned_permissions[permission])
                 if 'MeetingManager' in cloned_permissions[permission]:
-                    if not 'Read' in permission and not 'Access' in permission and 'View' != permission:
+                    if 'Read' not in permission and 'Access' not in permission and 'View' != permission:
                         cloned_permissions_with_alderman[permission].remove('MeetingManager')
 
                     cloned_permissions_with_alderman[permission].append('MeetingAlderman')
@@ -1756,14 +1763,14 @@ class CustomLalouviereToolPloneMeeting(ToolPloneMeeting):
                 props={'guard_expr': 'python:here.wfConditions().mayProposeToAlderman()'})
 
             proposed_to_dg.setProperties(
-                    title='proposed_to_dg', description='',
-                    transitions=('backToProposedToDirector',
-                                 'propose_to_alderman',))
+                title='proposed_to_dg', description='',
+                transitions=('backToProposedToDirector',
+                             'propose_to_alderman',))
 
             proposed_to_alderman.setProperties(
-                    title='proposed_to_alderman', description='',
-                    transitions=('backToProposedToDg',
-                                 'validate',))
+                title='proposed_to_alderman', description='',
+                transitions=('backToProposedToDg',
+                             'validate',))
 
             proposed_to_director = getattr(itemStates, 'proposed_to_director')
             trx = list(proposed_to_director.transitions)
@@ -1922,3 +1929,4 @@ class SearchItemsOfMyCommissionsAdapter(CompoundCriterionBaseAdapter):
 
     # we may not ram.cache methods in same file with same name...
     query = query_itemsofmycommissions
+
