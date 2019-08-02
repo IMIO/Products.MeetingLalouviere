@@ -338,8 +338,8 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         else:
             pre_meeting_date = meeting.getPreMeetingDate()
             pre_meeting_place = meeting.getPreMeetingPlace()
-        return u"({weekday} {day} {month} {year} ({time}), {place})".format(
-            weekday=meeting.utranslate("weekday_%s" % pre_meeting_date.aDay().lower(), domain="plonelocales"),
+        return "({weekday} {day} {month} {year} ({time}), {place})".format(
+            weekday=meeting.translate("weekday_%s" % pre_meeting_date.aDay().lower(), domain="plonelocales"),
             day=pre_meeting_date.strftime('%d'),
             month=meeting.translate('month_%s' % pre_meeting_date.strftime('%b').lower(),
                                     domain='plonelocales').lower(),
@@ -347,6 +347,18 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
             time=pre_meeting_date.strftime('%HH%M'),
             place=pre_meeting_place
         )
+
+    def has_commission_pre_meeting_date(self, commission_num):
+        """
+        Has the commission [com_num] a pre-meeting date ?
+        :return: True if it has one, False otherwise
+        """
+        meeting = self.context
+        if commission_num > 1:
+            pre_meeting_date = getattr(meeting, "getPreMeetingDate_" + str(commission_num))()
+        else:
+            pre_meeting_date = meeting.getPreMeetingDate()
+        return pre_meeting_date is not None
 
     def get_commission_assembly(self, commission_num):
         """
