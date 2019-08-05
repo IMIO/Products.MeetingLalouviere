@@ -372,6 +372,114 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         else:
             return meeting.getPreMeetingAssembly()
 
+    def _is_in_value_dict(self, item, value_map={}):
+        for key in value_map.keys():
+            if self._get_value(item, key) in value_map[key]:
+                return True
+        return False
+
+    def _filter_item_uids(self, itemUids, ignore_review_states=[], privacy='*', included_values={}, excluded_values={}):
+        """
+        We just filter ignore_review_states here and privacy in order call getItems(uids), passing the correct uids and removing empty uids.
+        :param privacy: can be '*' or 'public' or 'secret' or 'public_heading' or 'secret_heading'
+        """
+        for elt in itemUids:
+            if elt == '':
+                itemUids.remove(elt)
+
+        filteredItemUids = []
+        uid_catalog = self.context.uid_catalog
+
+        for itemUid in itemUids:
+            obj = uid_catalog(UID=itemUid)[0].getObject()
+            if obj.queryState() in ignore_review_states:
+                continue
+            elif not (privacy == '*' or obj.getPrivacy() == privacy):
+                continue
+            elif included_values and not self._is_in_value_dict(obj, included_values):
+                continue
+            elif excluded_values and self._is_in_value_dict(obj, excluded_values):
+                continue
+            filteredItemUids.append(itemUid)
+        return filteredItemUids
+
+    def _renumber_item(self, items, firstNumber):
+        """
+        :return: a list of tuple with first element the number and second element the item itself
+        """
+        i = firstNumber
+        res = []
+        for item in items:
+            res.append((i, item))
+            i = i + 1
+        return res
+
+    def _get_list_type_value(self, item):
+        return self.translate(item.getListType())
+
+    def _get_value(self, item, value_name):
+        if value_name == 'listType' or value_name == 'listTypes':
+            return self._get_list_type_value(item)
+        elif value_name == 'category' or 'proposingGroup':
+            return self.getDGHV(item).display(value_name)
+        elif item.getField(value_name):
+            return item.getField(value_name).get(item)
+
+    def get_grouped_items(self, itemUids, listTypes=['normal'],
+                          group_by=[], included_values={}, excluded_values={},
+                          ignore_review_states=[], privacy='*',
+                          firstNumber=1, renumber=False):
+
+        """
+
+        :param listTypes: is a list that can be filled with 'normal' and/or 'late ...
+        :param group_by: Can be either 'listTypes', 'category', 'proposingGroup' or a field name as described in MettingItem Schema
+        :param included_values: a Map to filter the returned items regarding the value of a given field.
+                for example : {'proposingGroup':['Secrétariat communal', 'Service informatique', 'Service comptabilité']}
+        :param excluded_values: a Map to filter the returned items regarding the value of a given field.
+                for example : {'proposingGroup':['Secrétariat communal', 'Service informatique', 'Service comptabilité']}
+        :param privacy: can be '*' or 'public' or 'secret'
+        :param firstNumber: If renumber is True, a list of tuple
+           will be return with first element the number and second element, the item.
+           In this case, the firstNumber value can be used.'
+        :return: a list of list of list ... (late or normal or both) items (depending on p_listTypes) in the meeting order but wrapped in defined group_by if not empty.
+                every group condition defined increase the depth of this collection.
+        """
+
+        # Retrieve the list of items
+        filteredItemUids = self._filter_item_uids(itemUids, ignore_review_states, privacy, included_values, excluded_values)
+
+        if not filteredItemUids:
+            return []
+        else:
+            items = self.real_context.getItems(uids=filteredItemUids, listTypes=listTypes, ordered=True)
+            if renumber:
+                items = self._renumber_item(items, firstNumber)
+
+        if not group_by:
+            return items
+
+        res = []
+
+        for item in items:
+            # compute result keeping item original order and repeating groups if needed
+            node = res
+
+            for group in group_by:
+                value = self._get_value(item, group)
+
+                if len(node) == 0 or node[-1][0] != value:
+                    node.append([value])
+
+                node = node[-1]
+
+            if not isinstance(node[-1], (list)):
+                node.append([])
+
+            node[-1].append(item)
+
+        return res
+
 
 class MCFolderDocumentGenerationHelperView(FolderDocumentGenerationHelperView):
 
