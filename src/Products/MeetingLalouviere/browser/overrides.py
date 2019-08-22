@@ -338,14 +338,21 @@ class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView)
         else:
             pre_meeting_date = meeting.getPreMeetingDate()
             pre_meeting_place = meeting.getPreMeetingPlace()
-        return "({weekday} {day} {month} {year} ({time}), {place})".format(
-            weekday=meeting.translate("weekday_%s" % pre_meeting_date.aDay().lower(), domain="plonelocales"),
-            day=pre_meeting_date.strftime('%d'),
-            month=meeting.translate('month_%s' % pre_meeting_date.strftime('%b').lower(),
-                                    domain='plonelocales').lower(),
-            year=pre_meeting_date.strftime('%Y'),
-            time=pre_meeting_date.strftime('%HH%M'),
-            place=pre_meeting_place
+
+        weekday = meeting.translate("weekday_%s" % pre_meeting_date.aDay().lower(), domain="plonelocales")
+        day = pre_meeting_date.strftime('%d')
+        month = meeting.translate('month_%s' % pre_meeting_date.strftime('%b').lower(),
+                                  domain='plonelocales').lower()
+        year = pre_meeting_date.strftime('%Y')
+        time = pre_meeting_date.strftime('%HH%M')
+
+        return u"({weekday} {day} {month} {year} ({time}), {place})".format(
+            weekday=safe_unicode(weekday),
+            day=safe_unicode(day),
+            month=safe_unicode(month),
+            year=safe_unicode(year),
+            time=safe_unicode(time),
+            place=safe_unicode(pre_meeting_place)
         )
 
     def has_commission_pre_meeting_date(self, commission_num):
