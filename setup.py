@@ -1,41 +1,37 @@
+# coding=utf-8
 from setuptools import setup, find_packages
-import os
 
-version = '4.0'
+version = "4.1dev0"
 
-setup(name='Products.MeetingLalouviere',
-      version=version,
-      description="PloneMeeting profile for city of La Louviere",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
-      classifiers=[
+setup(
+    name="Products.MeetingLalouviere",
+    version=version,
+    description="Official meetings management for college and council custom profile for La Louvière",
+    long_description=open("README.rst").read() + "\n" + open("CHANGES.rst").read(),
+    classifiers=[
+        "Environment :: Web Environment",
+        "Framework :: Plone",
+        "Framework :: Plone :: 4.3",
         "Programming Language :: Python",
-        ],
-      keywords='',
-      author='',
-      author_email='',
-      url='http://www.imio.be/produits/gestion-des-deliberations',
-      license='GPL',
-      packages=find_packages('src'),
-      package_dir={'': 'src'},
-      namespace_packages=['Products'],
-      include_package_data=True,
-      zip_safe=False,
-      extras_require=dict(
-            test=['unittest2',
-                  'zope.testing',
-                  'plone.testing',
-                  'plone.app.testing',
-                  'plone.app.robotframework',
-                  'Products.CMFPlacefulWorkflow',
-                  'Products.PloneTestCase',
-                  'zope.testing', ],
-            templates=['Genshi',
-                  ]),
-      install_requires=[
-          'setuptools',
-          'Products.CMFPlone',
-          'Pillow',
-          'Products.PloneMeeting'],
-      entry_points={},
-      )
+        "Programming Language :: Python :: 2.7",
+    ],
+    keywords="",
+    author="Olivier Delaere",
+    author_email="olivier.delaere@imio.be",
+    url="http://www.imio.be/produits/gestion-des-deliberations",
+    license="GPL",
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    namespace_packages=["Products"],
+    include_package_data=True,
+    zip_safe=False,
+    extras_require=dict(test=["Products.PloneMeeting[test]"], templates=["Genshi",]),
+    install_requires=[
+        "setuptools",
+        "Products.CMFPlone",
+        "Pillow",
+        "Products.PloneMeeting",
+        "Products.MeetingCommunes",
+    ],
+    entry_points={},
+)

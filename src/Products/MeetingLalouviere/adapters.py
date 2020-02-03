@@ -57,6 +57,9 @@ from Products.PloneMeeting.interfaces import IMeetingGroupCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.model import adaptations
 
+from Products.MeetingCommunes.adapters import CustomMeetingItem
+from Products.MeetingCommunes.adapters import CustomMeeting
+
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.Archetypes.atapi import DisplayList
@@ -157,7 +160,7 @@ RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = \
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 
-class CustomMeeting(Meeting):
+class LLCustomMeeting(CustomMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
        interface IMeetingCustom."""
 
@@ -605,7 +608,7 @@ class CustomMeeting(Meeting):
     Meeting.getBeforeFrozenStates = getCustomBeforeFrozenStates
 
 
-class CustomMeetingItem(MeetingItem):
+class LLCustomMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCustom."""
     implements(IMeetingItemCustom)
@@ -779,7 +782,7 @@ class CustomMeetingItem(MeetingItem):
         return res
 
 
-class CustomMeetingGroup(MeetingGroup):
+class LLCustomMeetingGroup(MeetingGroup):
     """Adapter that adapts a meetingGroup implementing IMeetingGroup to the
        interface IMeetingGroupCustom."""
 
