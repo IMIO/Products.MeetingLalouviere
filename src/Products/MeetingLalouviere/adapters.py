@@ -486,28 +486,10 @@ class LLCustomMeeting(CustomMeeting):
 
     Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
 
-    Meeting.oldGetBeforeFrozenStates = Meeting.getBeforeFrozenStates
-
-    def getCustomBeforeFrozenStates_cachekey(method, self):
-        '''cachekey method for self.getBeforeFrozenStates.'''
-        # do only re-compute if cfg changed
-        tool = api.portal.get_tool('portal_plonemeeting')
-        cfg = tool.getMeetingConfig(self)
-        return (cfg.getId(), cfg._p_mtime)
-
-    @ram.cache(getCustomBeforeFrozenStates_cachekey)
-    def getCustomBeforeFrozenStates(self):
-        """
-          Returns states before the meeting is frozen, so states where
-          an item is still not considered as a late item.
-        """
-        meeting = self.getSelf()
-        if meeting.portal_type == 'MeetingCouncil':
-            return ['created']
-        else:
-            return meeting.oldGetBeforeFrozenStates()
-
-    Meeting.getBeforeFrozenStates = getCustomBeforeFrozenStates
+    def getLateState(self):
+        if self.portal_type == 'MeetingCouncil':
+            return 'in_committee'
+        return super(CustomMeeting, self).getLateState()
 
 
 class LLCustomMeetingItem(CustomMeetingItem):
