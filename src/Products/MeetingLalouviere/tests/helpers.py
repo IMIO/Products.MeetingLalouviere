@@ -21,12 +21,12 @@
 #
 
 from plone import api
-from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
+from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 from Products.MeetingLalouviere.setuphandlers import _configureCollegeCustomAdvisers
 from Products.MeetingLalouviere.setuphandlers import _createFinancesGroup
 
 
-class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
+class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     '''Override some values of PloneMeetingTestingHelpers.'''
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToServiceHead',
@@ -114,7 +114,6 @@ class MeetingLalouviereTestingHelpers(PloneMeetingTestingHelpers):
 
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = ('freeze', 'decide', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('setInCommittee', 'setInCouncil', )
-
 
     def freezeMeeting(self, meeting):
         '''Freeze passed p_meeting using TRANSITIONS_FOR_FREEZING_MEETING_x.
