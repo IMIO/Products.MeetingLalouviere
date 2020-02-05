@@ -22,8 +22,8 @@
 
 from plone import api
 from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
-from Products.MeetingLalouviere.setuphandlers import _configureCollegeCustomAdvisers
-from Products.MeetingLalouviere.setuphandlers import _createFinancesGroup
+# from Products.MeetingLalouviere.setuphandlers import _configureCollegeCustomAdvisers
+# from Products.MeetingLalouviere.setuphandlers import _createFinancesGroup
 
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
@@ -127,9 +127,9 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
             meetingConfigNumber = 1
         self._doTransitionsFor(meeting, getattr(self, ('TRANSITIONS_FOR_FREEZING_MEETING_%d' % meetingConfigNumber)))
 
-    def _configureFinancesAdvice(self, cfg):
-        """ """
-        # configure customAdvisers for 'meeting-config-college'
-        _configureCollegeCustomAdvisers(self.portal)
-        # add finances group
-        _createFinancesGroup(self.portal)
+    # def _configureFinancesAdvice(self, cfg):
+    #     """ """
+    #     # configure customAdvisers for 'meeting-config-college'
+    #     _configureCollegeCustomAdvisers(self.portal)
+    #     # add finances group
+    #     _createFinancesGroup(self.portal)

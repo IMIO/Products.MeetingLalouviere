@@ -24,13 +24,13 @@ __author__ = """Gauthier Bastien <gbastien@commune.sambreville.be>"""
 __docformat__ = 'plaintext'
 
 # ------------------------------------------------------------------------------
-from Products.PloneMeeting.interfaces import \
-    IMeetingItemWorkflowConditions, IMeetingItemWorkflowActions, \
-    IMeetingWorkflowActions, IMeetingWorkflowConditions
+from Products.MeetingCommunes.interfaces import \
+    IMeetingItemCommunesWorkflowConditions, IMeetingItemCommunesWorkflowActions, \
+    IMeetingCommunesWorkflowActions, IMeetingCommunesWorkflowConditions
 
 
 # ------------------------------------------------------------------------------
-class IMeetingItemCollegeLalouviereWorkflowActions(IMeetingItemWorkflowActions):
+class IMeetingItemCollegeLalouviereWorkflowActions(IMeetingItemCommunesWorkflowActions):
     '''This interface represents a meeting item as viewed by the specific
        item workflow that is defined in this MeetingLalouviere product.'''
     def doPresent():
@@ -47,7 +47,7 @@ class IMeetingItemCollegeLalouviereWorkflowActions(IMeetingItemWorkflowActions):
         """
 
 
-class IMeetingItemCollegeLalouviereWorkflowConditions(IMeetingItemWorkflowConditions):
+class IMeetingItemCollegeLalouviereWorkflowConditions(IMeetingItemCommunesWorkflowConditions):
     '''This interface represents a meeting item as viewed by the specific
        item workflow that is defined in this MeetingLalouviere product.'''
     def mayDecide():
@@ -64,7 +64,7 @@ class IMeetingItemCollegeLalouviereWorkflowConditions(IMeetingItemWorkflowCondit
         """
 
 
-class IMeetingCollegeLalouviereWorkflowActions(IMeetingWorkflowActions):
+class IMeetingCollegeLalouviereWorkflowActions(IMeetingCommunesWorkflowActions):
     '''This interface represents a meeting as viewed by the specific meeting
        workflow that is defined in this MeetingLalouviere product.'''
     def doClose():
@@ -85,7 +85,7 @@ class IMeetingCollegeLalouviereWorkflowActions(IMeetingWorkflowActions):
         """
 
 
-class IMeetingCollegeLalouviereWorkflowConditions(IMeetingWorkflowConditions):
+class IMeetingCollegeLalouviereWorkflowConditions(IMeetingCommunesWorkflowConditions):
     '''This interface represents a meeting as viewed by the specific meeting
        workflow that is defined in this MeetingLalouviere product.'''
     def mayFreeze():
@@ -106,7 +106,7 @@ class IMeetingCollegeLalouviereWorkflowConditions(IMeetingWorkflowConditions):
         """
 
 
-class IMeetingCouncilLalouviereWorkflowActions(IMeetingWorkflowActions):
+class IMeetingCouncilLalouviereWorkflowActions(IMeetingCommunesWorkflowActions):
     '''This interface represents a meeting as viewed by the specific meeting
        workflow that is defined in this MeetingLalouviere product.'''
     def doClose():
@@ -127,7 +127,7 @@ class IMeetingCouncilLalouviereWorkflowActions(IMeetingWorkflowActions):
         """
 
 
-class IMeetingCouncilLalouviereWorkflowConditions(IMeetingWorkflowConditions):
+class IMeetingCouncilLalouviereWorkflowConditions(IMeetingCommunesWorkflowConditions):
     '''This interface represents a meeting as viewed by the specific meeting
        workflow that is defined in this MeetingLalouviere product.'''
     def mayFreeze():
@@ -148,7 +148,7 @@ class IMeetingCouncilLalouviereWorkflowConditions(IMeetingWorkflowConditions):
         """
 
 
-class IMeetingItemCouncilLalouviereWorkflowActions(IMeetingItemWorkflowActions):
+class IMeetingItemCouncilLalouviereWorkflowActions(IMeetingItemCommunesWorkflowActions):
     '''This interface represents a meeting item as viewed by the specific
        item workflow that is defined in this MeetingLalouviere product.'''
     def doPresent():
@@ -157,7 +157,7 @@ class IMeetingItemCouncilLalouviereWorkflowActions(IMeetingItemWorkflowActions):
         """
 
 
-class IMeetingItemCouncilLalouviereWorkflowConditions(IMeetingItemWorkflowConditions):
+class IMeetingItemCouncilLalouviereWorkflowConditions(IMeetingItemCommunesWorkflowConditions):
     '''This interface represents a meeting item as viewed by the specific
        item workflow that is defined in this MeetingLalouviere product.'''
     def mayDecide():

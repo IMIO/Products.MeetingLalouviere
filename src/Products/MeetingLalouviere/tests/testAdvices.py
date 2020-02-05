@@ -2,7 +2,7 @@
 #
 # File: testAdvices.py
 #
-# Copyright (c) 2007-2012 by CommunesPlone.org
+# Copyright (c) 2016 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -22,14 +22,6 @@
 # 02110-1301, USA.
 #
 
-from AccessControl import Unauthorized
-from zope.schema.interfaces import RequiredMissing
-
-from plone.app.textfield.value import RichTextValue
-from plone.dexterity.utils import createContentInContainer
-
-from Products.CMFCore.permissions import View
-
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.tests.testAdvices import testAdvices as pmta
 
@@ -37,10 +29,6 @@ from Products.PloneMeeting.tests.testAdvices import testAdvices as pmta
 class testAdvices(MeetingLalouviereTestCase, pmta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
-
-    def test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self):
-        """test"""
-        pmta.test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self)
 
 
 def test_suite():

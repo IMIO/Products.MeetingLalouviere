@@ -41,4 +41,68 @@
       permission="zope2.View"
       />
 
+    <!-- WF actions and conditions for Meeting and MeetingItem for College -->
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+           factory="Products.MeetingLalouviere.adapters.MeetingItemCollegeLalouviereWorkflowActions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+           factory="Products.MeetingLalouviere.adapters.MeetingItemCollegeLalouviereWorkflowConditions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+           factory="Products.MeetingLalouviere.adapters.MeetingCollegeLalouviereWorkflowActions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+           factory="Products.MeetingLalouviere.adapters.MeetingCollegeLalouviereWorkflowConditions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions"/>
+
+  <!-- WF actions and conditions for Meeting and MeetingItem for Council -->
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+           factory="Products.MeetingLalouviere.adapters.MeetingItemCouncilLalouviereWorkflowActions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+           factory="Products.MeetingLalouviere.adapters.MeetingItemCouncilLalouviereWorkflowConditions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+           factory="Products.MeetingLalouviere.adapters.MeetingCouncilLalouviereWorkflowActions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+           factory="Products.MeetingLalouviere.adapters.MeetingCouncilLalouviereWorkflowConditions"
+           provides="Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions"/>
+
+  <!-- Customizations for every Meetings -->
+  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+           factory="Products.MeetingLalouviere.adapters.LLCustomMeeting"
+           provides="Products.PloneMeeting.interfaces.IMeetingCustom"/>
+
+  <!-- Customizations for every MeetingItems -->
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+           factory="Products.MeetingLalouviere.adapters.LLCustomMeetingItem"
+           provides="Products.PloneMeeting.interfaces.IMeetingItemCustom"/>
+
+  <!-- Customizations for every MeetingConfigs -->
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingConfig"
+           factory="Products.MeetingLalouviere.adapters.LLMeetingConfig"
+           provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
+
+  <!-- Customizations for every MeetingGroups -->
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingGroup"
+           factory="Products.MeetingLalouviere.adapters.LLCustomMeetingGroup"
+           provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
+
+  <!-- Customizations for ToolPloneMeeting -->
+  <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
+           factory="Products.MeetingLalouviere.adapters.LLCustomToolPloneMeeting"
+           provides="Products.PloneMeeting.interfaces.IToolPloneMeetingCustom"/>
+
+  <!-- Searches adapters -->
+  <adapter for="*"
+           factory="Products.MeetingLalouviere.adapters.SearchItemsOfMyCommissionsAdapter"
+           provides="collective.compoundcriterion.interfaces.ICompoundCriterionFilter"
+           name="items-of-my-commissions" />
 </configure>

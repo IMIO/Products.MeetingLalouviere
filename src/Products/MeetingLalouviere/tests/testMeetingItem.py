@@ -27,7 +27,7 @@ from DateTime import DateTime
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
-from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
+# from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.CMFCore.permissions import View
@@ -178,8 +178,8 @@ class testMeetingItem(MeetingLalouviereTestCase, pmtmi):
         # we will use the copyGroups to check who can fully access item and who can not
         self.meetingConfig.setItemCopyGroupsStates(('presented', ))
         # make powerobserver1 a PowerObserver
-        self.portal.portal_groups.addPrincipalToGroup('powerobserver1', '%s_%s' %
-                                                      (self.meetingConfig.getId(), POWEROBSERVERS_GROUP_SUFFIX))
+        # self.portal.portal_groups.addPrincipalToGroup('powerobserver1', '%s_%s' %
+        #                                               (self.meetingConfig.getId(), POWEROBSERVERS_GROUP_SUFFIX))
         # create a 'public' and a 'secret' item
         self.changeUser('pmManager')
         # add copyGroups that check that 'external' viewers can access the item but not isPrivacyViewable

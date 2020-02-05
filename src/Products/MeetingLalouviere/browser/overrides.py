@@ -11,7 +11,9 @@ from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.PloneMeeting.browser.views import FolderDocumentGenerationHelperView, ItemDocumentGenerationHelperView, \
     MeetingDocumentGenerationHelperView
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
-from Products.PloneMeeting.utils import get_annexes, getLastEvent
+from Products.PloneMeeting.utils import get_annexes
+from imio.history.utils import getLastAction
+from imio.history.utils import getLastWFAction
 
 from Products.CMFPlone.utils import safe_unicode
 from plone import api
@@ -70,7 +72,7 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
             and adviceData['comment'] or ''
         advice_id = 'advice_id' in adviceData\
             and adviceData['advice_id'] or ''
-        signature_event = advice_id and getLastEvent(getattr(self.context, advice_id), 'signFinancialAdvice') or ''
+        signature_event = advice_id and getLastWFAction(getattr(self.context, advice_id), 'signFinancialAdvice') or ''
         res['out_of_financial_dpt'] = 'time' in signature_event and signature_event['time'] or ''
         res['out_of_financial_dpt_localized'] = res['out_of_financial_dpt']\
             and res['out_of_financial_dpt'].strftime('%d/%m/%Y') or ''
@@ -258,7 +260,7 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
             wf_present_transition.append('itemfreeze')
 
         for item_transition in wf_present_transition:
-            event = getLastEvent(self.context, item_transition)
+            event = getLastWFAction(self.context, item_transition)
             if event and 'review_state' in event and event['review_state'] in item_advice_states:
                 return event['time']
 

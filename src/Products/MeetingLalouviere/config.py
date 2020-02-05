@@ -44,16 +44,15 @@ PRODUCT_DEPENDENCIES = []
 # the id of the collection querying finance advices
 FINANCE_ADVICES_COLLECTION_ID = 'searchitemswithfinanceadvice'
 
-LALOUVIEREROLES = {}
-LALOUVIEREROLES['budgetimpactreviewers'] = 'MeetingBudgetImpactReviewer'
-LALOUVIEREROLES['serviceheads'] = 'MeetingServiceHead'
-LALOUVIEREROLES['officemanagers'] = 'MeetingOfficeManager'
-LALOUVIEREROLES['divisionheads'] = 'MeetingDivisionHead'
-LALOUVIEREROLES['directors'] = 'MeetingDirector'
-LALOUVIEREROLES['followupwriters'] = 'MeetingFollowUpWriter'
-LALOUVIEREROLES['alderman'] = 'MeetingAlderman'
-PMconfig.MEETINGROLES.update(LALOUVIEREROLES)
-PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
+PMconfig.EXTRA_GROUP_SUFFIXES = [
+    {'fct_title': u'budgetimpactreviewers', 'fct_id': u'budgetimpactreviewers', 'fct_orgs': []},
+    {'fct_title': u'serviceheads', 'fct_id': u'serviceheads', 'fct_orgs': []},
+    {'fct_title': u'officemanagers', 'fct_id': u'officemanagers', 'fct_orgs': []},
+    {'fct_title': u'divisionheads', 'fct_id': u'divisionheads', 'fct_orgs': []},
+    {'fct_title': u'directors', 'fct_id': u'directors', 'fct_orgs': []},
+    {'fct_title': u'followupwriters', 'fct_id': u'followupwriters', 'fct_orgs': []},
+    {'fct_title': u'alderman', 'fct_id': u'alderman', 'fct_orgs': []},
+]
 
 LALOUVIEREMEETINGREVIEWERS = OrderedDict([('alderman', 'proposed_to_alderman'),
                                           ('directors', 'proposed_to_director'),
