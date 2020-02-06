@@ -70,6 +70,7 @@ from zope.interface import implements
 
 # disable most of wfAdaptations
 customWfAdaptations = ('return_to_proposing_group', 'validate_by_dg_and_alderman',)
+CustomMeetingConfig.wfAdaptations = customWfAdaptations
 MeetingConfig.wfAdaptations = customWfAdaptations
 
 # configure parameters for the returned_to_proposing_group wfAdaptation
@@ -567,13 +568,13 @@ class LLCustomMeetingItem(CustomMeetingItem):
             return True
         return False
 
-    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
+    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc, cloned_from_item_template):
         """
           Keep some new fields when item is cloned (to another mc or from itemtemplate).
         """
-        res = ['interventions', 'commissionTranscript']
+        res = []
         if cloned_to_same_mc:
-            res = res + []
+            res = ['interventions', 'commissionTranscript']
         return res
 
     def adviceDelayIsTimedOutWithRowId(self, groupId, rowIds=[]):
