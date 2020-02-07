@@ -22,16 +22,21 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testChangeItemOrderView import testChangeItemOrderView as pmtciov
+from Products.MeetingCommunes.tests.testChangeItemOrderView import (
+    testChangeItemOrderView as mctciov,
+)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testChangeItemOrderView(MeetingLalouviereTestCase, pmtciov):
-    '''Tests the ChangeItemOrderView class methods.'''
+class testChangeItemOrderView(MeetingLalouviereTestCase, mctciov):
+    """Tests the ChangeItemOrderView class methods."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testChangeItemOrderView, prefix='test_pm_'))
+    suite.addTest(makeSuite(testChangeItemOrderView, prefix="test_"))
     return suite

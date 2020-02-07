@@ -26,4 +26,4 @@
 
 __author__ = """Gauthier Bastien <gbastien@imio.be>, Stephan Geulette
 <sgeulette@imio.be>"""
-__docformat__ = 'plaintext'
+__docformat__ = "plaintext"

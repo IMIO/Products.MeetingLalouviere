@@ -22,16 +22,19 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.testSetup import testSetup as pmts
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
+from Products.MeetingCommunes.tests.testSetup import testSetup as mcts
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testSetup(MeetingLalouviereTestCase, pmts):
-    '''Tests the setup, especially registered profiles.'''
+class testSetup(MeetingLalouviereTestCase, mcts):
+    """Tests the setup, especially registered profiles."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testSetup, prefix='test_pm_'))
+    suite.addTest(makeSuite(testSetup, prefix="test_"))
     return suite

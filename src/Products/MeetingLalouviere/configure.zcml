@@ -11,6 +11,7 @@
   <include package=".browser" />
   <include package="Products.CMFPlacefulWorkflow"/>
   <include package="Products.PloneMeeting"/>
+  <include package="Products.MeetingCommunes"/>
   <includeOverrides file="overrides.zcml" />
   <include file="events.zcml"/>
   <include file="vocabularies.zcml"/>

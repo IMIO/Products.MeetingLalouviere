@@ -22,15 +22,19 @@
 # 02110-1301, USA.
 #
 
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
+
 from DateTime import DateTime
 from zope.annotation import IAnnotations
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testCustomMeetingItem(MeetingLalouviereTestCase):
     """
         Tests the MeetingItem adapted methods
     """
+
     def test_onDuplicated(self):
         """
           When a college item is duplicated to the council meetingConfig,
@@ -39,20 +43,22 @@ class testCustomMeetingItem(MeetingLalouviereTestCase):
           defined on original item (college item)
         """
         cfg = self.meetingConfig
-        cfg.setItemAutoSentToOtherMCStates(('accepted', ))
+        cfg.setItemAutoSentToOtherMCStates(("accepted",))
         cfg2 = self.meetingConfig2
-        cfg2.setDefaultMeetingItemMotivation('<p>test</p>')
+        cfg2.setDefaultMeetingItemMotivation("<p>test</p>")
         # by default, college items are sendable to council
         destMeetingConfigId = cfg2.getId()
-        self.assertTrue(destMeetingConfigId in [config['meeting_config']
-                                                for config in cfg.getMeetingConfigsToCloneTo()])
+        self.assertTrue(
+            destMeetingConfigId
+            in [config["meeting_config"] for config in cfg.getMeetingConfigsToCloneTo()]
+        )
         # create an item in college, set a motivation, send it to council and check
-        self.changeUser('pmManager')
-        item = self.create('MeetingItem')
-        item.setDecision('<p>A decision</p>')
+        self.changeUser("pmManager")
+        item = self.create("MeetingItem")
+        item.setDecision("<p>A decision</p>")
         item.setOtherMeetingConfigsClonableTo((destMeetingConfigId,))
         self.assertTrue(item.getMotivation() == cfg.getDefaultMeetingItemMotivation())
-        meeting = self.create('Meeting', date=DateTime('2013/05/05'))
+        meeting = self.create("Meeting", date=DateTime("2013/05/05"))
         self.presentItem(item)
         # now close the meeting so the item is automatically accepted and sent to meetingConfig2
         self.closeMeeting(meeting)
@@ -60,7 +66,19 @@ class testCustomMeetingItem(MeetingLalouviereTestCase):
         self.assertTrue(item._checkAlreadyClonedToOtherMC(destMeetingConfigId))
         # get the item that was sent to meetingConfig2 and check his motivation field
         annotation_key = item._getSentToOtherMCAnnotationKey(destMeetingConfigId)
-        newItem = self.portal.uid_catalog(UID=IAnnotations(item)[annotation_key])[0].getObject()
-        expectedNewItemMotivation = cfg2.getDefaultMeetingItemMotivation() + \
-            '<p>&nbsp;</p><p>&nbsp;</p>' + item.getMotivation()
+        newItem = self.portal.uid_catalog(UID=IAnnotations(item)[annotation_key])[
+            0
+        ].getObject()
+        expectedNewItemMotivation = (
+            cfg2.getDefaultMeetingItemMotivation()
+            + "<p>&nbsp;</p><p>&nbsp;</p>"
+            + item.getMotivation()
+        )
         self.assertTrue(newItem.getMotivation() == expectedNewItemMotivation)
+
+
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(testCustomMeetingItem, prefix='test_'))
+    return suite

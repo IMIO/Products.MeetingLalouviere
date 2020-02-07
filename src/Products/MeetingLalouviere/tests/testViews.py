@@ -22,16 +22,19 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testViews import testViews as pmtv
+from Products.MeetingCommunes.tests.testViews import testViews as mctv
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testViews(MeetingLalouviereTestCase, pmtv):
-    ''' '''
+class testViews(MeetingLalouviereTestCase, mctv):
+    """ """
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testViews, prefix='test_pm_'))
+    suite.addTest(makeSuite(testViews, prefix="test_"))
     return suite

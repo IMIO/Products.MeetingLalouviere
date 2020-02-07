@@ -22,11 +22,13 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testValidators import testValidators as pmtv
+from Products.MeetingCommunes.tests.testValidators import testValidators as mctv
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testValidators(MeetingLalouviereTestCase, pmtv):
+class testValidators(MeetingLalouviereTestCase, mctv):
     """
         Tests the validators.
     """
@@ -34,6 +36,7 @@ class testValidators(MeetingLalouviereTestCase, pmtv):
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testValidators, prefix='test_pm_'))
+    suite.addTest(makeSuite(testValidators, prefix="test_"))
     return suite

@@ -22,16 +22,19 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testPortlets import testPortlets as pmtp
+from Products.MeetingCommunes.tests.testPortlets import testPortlets as mctp
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testPortlets(MeetingLalouviereTestCase, pmtp):
-    '''Tests the portlets methods.'''
+class testPortlets(MeetingLalouviereTestCase, mctp):
+    """Tests the portlets methods."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testPortlets, prefix='test_pm_'))
+    suite.addTest(makeSuite(testPortlets, prefix="test_"))
     return suite

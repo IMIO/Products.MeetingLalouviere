@@ -20,112 +20,171 @@
 # 02110-1301, USA.
 #
 
-from plone import api
 from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
+
+from plone import api
+
+
 # from Products.MeetingLalouviere.setuphandlers import _configureCollegeCustomAdvisers
 # from Products.MeetingLalouviere.setuphandlers import _createFinancesGroup
 
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
-    '''Override some values of PloneMeetingTestingHelpers.'''
+    """Override some values of PloneMeetingTestingHelpers."""
 
-    TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToServiceHead',
-                                        'proposeToOfficeManager',
-                                        'proposeToDivisionHead',
-                                        'proposeToDirector', )
-    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('proposeToDirector', )
-    TRANSITIONS_FOR_VALIDATING_ITEM_1 = ('proposeToServiceHead',
-                                         'proposeToOfficeManager',
-                                         'proposeToDivisionHead',
-                                         'proposeToDirector',
-                                         'validate', )
-    TRANSITIONS_FOR_VALIDATING_ITEM_2 = ('proposeToDirector', 'validate', )
-    TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('proposeToServiceHead',
-                                         'proposeToOfficeManager',
-                                         'proposeToDivisionHead',
-                                         'proposeToDirector',
-                                         'validate',
-                                         'present', )
-    TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('proposeToDirector', 'validate', 'present', )
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('freeze', 'decide', )
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('setInCommittee', 'setInCouncil', )
+    TRANSITIONS_FOR_PROPOSING_ITEM_1 = (
+        "proposeToServiceHead",
+        "proposeToOfficeManager",
+        "proposeToDivisionHead",
+        "proposeToDirector",
+    )
+    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ("proposeToDirector",)
+    TRANSITIONS_FOR_VALIDATING_ITEM_1 = (
+        "proposeToServiceHead",
+        "proposeToOfficeManager",
+        "proposeToDivisionHead",
+        "proposeToDirector",
+        "validate",
+    )
+    TRANSITIONS_FOR_VALIDATING_ITEM_2 = (
+        "proposeToDirector",
+        "validate",
+    )
+    TRANSITIONS_FOR_PRESENTING_ITEM_1 = (
+        "proposeToServiceHead",
+        "proposeToOfficeManager",
+        "proposeToDivisionHead",
+        "proposeToDirector",
+        "validate",
+        "present",
+    )
+    TRANSITIONS_FOR_PRESENTING_ITEM_2 = (
+        "proposeToDirector",
+        "validate",
+        "present",
+    )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = (
+        "freeze",
+        "decide",
+    )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = (
+        "setInCommittee",
+        "setInCouncil",
+    )
 
-    TRANSITIONS_FOR_DECIDING_MEETING_1 = ('freeze', 'decide', )
-    TRANSITIONS_FOR_DECIDING_MEETING_2 = ('setInCommittee', 'setInCouncil', )
-    TRANSITIONS_FOR_CLOSING_MEETING_1 = ('freeze', 'decide', 'close', )
-    TRANSITIONS_FOR_CLOSING_MEETING_2 = ('setInCommittee', 'setInCouncil', 'close', )
+    TRANSITIONS_FOR_DECIDING_MEETING_1 = (
+        "freeze",
+        "decide",
+    )
+    TRANSITIONS_FOR_DECIDING_MEETING_2 = (
+        "setInCommittee",
+        "setInCouncil",
+    )
+    TRANSITIONS_FOR_CLOSING_MEETING_1 = (
+        "freeze",
+        "decide",
+        "close",
+    )
+    TRANSITIONS_FOR_CLOSING_MEETING_2 = (
+        "setInCommittee",
+        "setInCouncil",
+        "close",
+    )
     BACK_TO_WF_PATH_1 = {
         # Meeting
-        'created': ('backToPublished',
-                    'backToFrozen',
-                    'backToCreated',),
+        "created": ("backToPublished", "backToFrozen", "backToCreated",),
         # MeetingItem
-        'itemcreated': ('backToItemFrozen',
-                        'backToPresented',
-                        'backToValidated',
-                        'backToProposedToDirector',
-                        'backToProposedToDivisionHead',
-                        'backToProposedToOfficeManager',
-                        'backToProposedToServiceHead',
-                        'backToItemCreated'),
-        'proposed_to_director': ('backToItemFrozen',
-                                 'backToPresented',
-                                 'backToValidated',
-                                 'backToProposedToDirector', ),
-        'validated': ('backToItemFrozen',
-                      'backToPresented',
-                      'backToValidated', )}
+        "itemcreated": (
+            "backToItemFrozen",
+            "backToPresented",
+            "backToValidated",
+            "backToProposedToDirector",
+            "backToProposedToDivisionHead",
+            "backToProposedToOfficeManager",
+            "backToProposedToServiceHead",
+            "backToItemCreated",
+        ),
+        "proposed_to_director": (
+            "backToItemFrozen",
+            "backToPresented",
+            "backToValidated",
+            "backToProposedToDirector",
+        ),
+        "validated": ("backToItemFrozen", "backToPresented", "backToValidated",),
+    }
     BACK_TO_WF_PATH_2 = {
-        'itemcreated': ('backToItemFrozen',
-                        'backToPresented',
-                        'backToValidated',
-                        'backToProposedToDirector',
-                        'backToItemCreated'),
-        'proposed_to_director': ('backToItemFrozen',
-                                 'backToPresented',
-                                 'backToValidated',
-                                 'backToProposedToDirector', ),
-        'validated': ('backToItemFrozen',
-                      'backToPresented',
-                      'backToValidated', )}
+        "itemcreated": (
+            "backToItemFrozen",
+            "backToPresented",
+            "backToValidated",
+            "backToProposedToDirector",
+            "backToItemCreated",
+        ),
+        "proposed_to_director": (
+            "backToItemFrozen",
+            "backToPresented",
+            "backToValidated",
+            "backToProposedToDirector",
+        ),
+        "validated": ("backToItemFrozen", "backToPresented", "backToValidated",),
+    }
 
-    WF_ITEM_STATE_NAME_MAPPINGS_1 = {'itemcreated': 'itemcreated',
-                                     'proposed': 'proposed_to_director',
-                                     'validated': 'validated',
-                                     'presented': 'presented',
-                                     'itemfrozen': 'itemfrozen',
-                                    }
+    WF_ITEM_STATE_NAME_MAPPINGS_1 = {
+        "itemcreated": "itemcreated",
+        "proposed": "proposed_to_director",
+        "validated": "validated",
+        "presented": "presented",
+        "itemfrozen": "itemfrozen",
+    }
 
-    WF_ITEM_STATE_NAME_MAPPINGS_2 = {'itemcreated': 'itemcreated',
-                                     'proposed': 'proposed_to_director',
-                                     'validated': 'validated',
-                                     'presented': 'presented',
-                                     'itemfrozen': 'item_in_committee',
-                                    }
+    WF_ITEM_STATE_NAME_MAPPINGS_2 = {
+        "itemcreated": "itemcreated",
+        "proposed": "proposed_to_director",
+        "validated": "validated",
+        "presented": "presented",
+        "itemfrozen": "item_in_committee",
+    }
 
-    WF_MEETING_TRANSITION_NAME_MAPPINGS_2 = {'frozen': 'in_committee'}
+    WF_MEETING_TRANSITION_NAME_MAPPINGS_2 = {"frozen": "in_committee"}
 
     # in which state an item must be after an particular meeting transition?
-    ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
-                                              'close': 'accepted'}
+    ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {
+        "publish_decisions": "accepted",
+        "close": "accepted",
+    }
 
-    TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_1 = ('freeze',)
-    TRANSITIONS_FOR_FREEZING_MEETING_2 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = ('setInCommittee',)
+    TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_1 = (
+        "freeze",
+    )
+    TRANSITIONS_FOR_FREEZING_MEETING_2 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = (
+        "setInCommittee",
+    )
 
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = ('freeze', 'decide', )
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('setInCommittee', 'setInCouncil', )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = (
+        "freeze",
+        "decide",
+    )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = (
+        "setInCommittee",
+        "setInCouncil",
+    )
 
     def freezeMeeting(self, meeting):
-        '''Freeze passed p_meeting using TRANSITIONS_FOR_FREEZING_MEETING_x.
+        """Freeze passed p_meeting using TRANSITIONS_FOR_FREEZING_MEETING_x.
            The p_meetingConfigNumber specify if we use meetingConfig or meetingConfig2, so
-           the _x here above in TRANSITIONS_FOR_FREEZING_MEETING_x is 1 or 2.'''
-        tool = api.portal.get_tool('portal_plonemeeting')
+           the _x here above in TRANSITIONS_FOR_FREEZING_MEETING_x is 1 or 2."""
+        tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(meeting)
-        if mc.getId() == 'meeting-config-council':
+        if mc.getId() == "meeting-config-council":
             meetingConfigNumber = 2
         else:
             meetingConfigNumber = 1
-        self._doTransitionsFor(meeting, getattr(self, ('TRANSITIONS_FOR_FREEZING_MEETING_%d' % meetingConfigNumber)))
+        self._doTransitionsFor(
+            meeting,
+            getattr(
+                self, ("TRANSITIONS_FOR_FREEZING_MEETING_%d" % meetingConfigNumber)
+            ),
+        )
 
     # def _configureFinancesAdvice(self, cfg):
     #     """ """

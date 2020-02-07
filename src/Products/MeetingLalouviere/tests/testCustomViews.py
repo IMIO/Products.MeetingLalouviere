@@ -22,12 +22,15 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.MeetingLalouviere.config import (
     COUNCIL_MEETING_COMMISSION_IDS_2019,
     COUNCIL_MEETING_COMMISSION_IDS_2013,
     COUNCIL_COMMISSION_IDS,
 )
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
+
 from DateTime import DateTime
 
 
@@ -115,46 +118,71 @@ class testCustomViews(MeetingLalouviereTestCase):
 
         # Tests cases with type='normal'
         comm_no1_normal_items = [item]
-        self.assertListEqual(view.get_commission_items(item_uids, 1), comm_no1_normal_items)
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 1), comm_no1_normal_items
+        )
 
         comm_no2_normal_items = [item2, item3]
-        self.assertListEqual(view.get_commission_items(item_uids, 2), comm_no2_normal_items)
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 2), comm_no2_normal_items
+        )
 
         comm_no3_normal_items = []
-        self.assertListEqual(view.get_commission_items(item_uids, 3), comm_no3_normal_items)
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 3), comm_no3_normal_items
+        )
 
         # Tests cases with type='supp'
         comm_no1_supp_items = [item_s]
         self.assertListEqual(
-            view.get_commission_items(item_uids, 1, type="supplement"), comm_no1_supp_items
+            view.get_commission_items(item_uids, 1, type="supplement"),
+            comm_no1_supp_items,
         )
 
         comm_no2_supp_items = [item2_s, item3_s]
         self.assertListEqual(
-            view.get_commission_items(item_uids, 2, type="supplement"), comm_no2_supp_items
+            view.get_commission_items(item_uids, 2, type="supplement"),
+            comm_no2_supp_items,
         )
 
         comm_no3_supp_items = []
         self.assertListEqual(
-            view.get_commission_items(item_uids, 3, type="supplement"), comm_no3_supp_items
+            view.get_commission_items(item_uids, 3, type="supplement"),
+            comm_no3_supp_items,
         )
 
         # Tests cases with type='*', get all items for each commission regardless of type
         comm_no1_items = comm_no1_normal_items + comm_no1_supp_items
-        self.assertListEqual(view.get_commission_items(item_uids, 1, type="*"), comm_no1_items)
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 1, type="*"), comm_no1_items
+        )
 
         comm_no2_items = comm_no2_normal_items + comm_no2_supp_items
-        self.assertListEqual(view.get_commission_items(item_uids, 2, type="*"), comm_no2_items)
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 2, type="*"), comm_no2_items
+        )
 
         comm_no3_items = []
-        self.assertListEqual(view.get_commission_items(item_uids, 3, type="*"), comm_no3_items)
+        self.assertListEqual(
+            view.get_commission_items(item_uids, 3, type="*"), comm_no3_items
+        )
 
-        self.deleteAsManager(meeting.UID())  # we don't need the meeting and it's items anymore
+        self.deleteAsManager(
+            meeting.UID()
+        )  # we don't need the meeting and it's items anymore
 
     def test_get_commission_items(self):
         commissions_versions = [
-            {"commissions": COUNCIL_MEETING_COMMISSION_IDS_2019, "year": "2019", "month": "09"},
-            {"commissions": COUNCIL_MEETING_COMMISSION_IDS_2013, "year": "2013", "month": "06"},
+            {
+                "commissions": COUNCIL_MEETING_COMMISSION_IDS_2019,
+                "year": "2019",
+                "month": "09",
+            },
+            {
+                "commissions": COUNCIL_MEETING_COMMISSION_IDS_2013,
+                "year": "2013",
+                "month": "06",
+            },
             {"commissions": COUNCIL_COMMISSION_IDS, "year": "2010", "month": "01"},
         ]
         for cv in commissions_versions:
@@ -189,5 +217,16 @@ class testCustomViews(MeetingLalouviereTestCase):
         # Set pre-meeting assembly
         meeting.setPreMeetingAssembly("myAssembly")
         meeting.setPreMeetingAssembly_2("myAssembly 2")
-        self.assertEqual(meeting.getPreMeetingAssembly(), view.get_commission_assembly(1))
-        self.assertEqual(meeting.getPreMeetingAssembly_2(), view.get_commission_assembly(2))
+        self.assertEqual(
+            meeting.getPreMeetingAssembly(), view.get_commission_assembly(1)
+        )
+        self.assertEqual(
+            meeting.getPreMeetingAssembly_2(), view.get_commission_assembly(2)
+        )
+
+
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(testCustomViews, prefix='test_'))
+    return suite

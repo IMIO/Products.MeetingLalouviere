@@ -70,8 +70,9 @@ from zope.interface import implements
 
 # disable most of wfAdaptations
 customWfAdaptations = ('return_to_proposing_group', 'validate_by_dg_and_alderman',)
-CustomMeetingConfig.wfAdaptations = customWfAdaptations
 MeetingConfig.wfAdaptations = customWfAdaptations
+CustomMeetingConfig.wfAdaptations = customWfAdaptations
+originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
 # configure parameters for the returned_to_proposing_group wfAdaptation
 # we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
@@ -665,8 +666,6 @@ class LLMeetingConfig(CustomMeetingConfig):
 
     implements(IMeetingConfigCustom)
     security = ClassSecurityInfo()
-
-    security.declarePublic('getUsedFinanceGroupIds')
 
     def _extraSearchesInfo(self, infos):
         """Add some specific searches."""

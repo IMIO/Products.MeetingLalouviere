@@ -95,7 +95,9 @@ developers.reviewers.append(commissioneditor2)
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.itemWorkflow = "meetingitemcollegelalouviere_workflow"
 collegeMeeting.meetingWorkflow = "meetingcollegelalouviere_workflow"
-collegeMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
+collegeMeeting.itemConditionsInterface = (
+    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
+)
 collegeMeeting.itemActionsInterface = (
     "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
 )
@@ -136,7 +138,9 @@ collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.itemWorkflow = "meetingitemcouncillalouviere_workflow"
 councilMeeting.meetingWorkflow = "meetingcouncillalouviere_workflow"
-councilMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
+councilMeeting.itemConditionsInterface = (
+    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
+)
 councilMeeting.itemActionsInterface = (
     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
 )
@@ -172,6 +176,7 @@ councilMeeting.itemCopyGroupsStates = [
 ]
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
+
 # # Annex types
 # overheadAnalysisSubtype = ItemAnnexSubTypeDescriptor(
 #     'overhead-analysis-sub-annex',

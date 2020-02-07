@@ -22,16 +22,19 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testFaceted import testFaceted as pmtf
+from Products.MeetingCommunes.tests.testFaceted import testFaceted as mctf
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testFaceted(MeetingLalouviereTestCase, pmtf):
-    '''Tests the faceted navigation.'''
+class testFaceted(MeetingLalouviereTestCase, mctf):
+    """Tests the faceted navigation."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testFaceted, prefix='test_pm_'))
+    suite.addTest(makeSuite(testFaceted, prefix="test_"))
     return suite

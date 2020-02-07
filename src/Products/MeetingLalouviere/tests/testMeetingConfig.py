@@ -21,17 +21,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-import logging
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as pmtmc
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
-class testMeetingConfig(MeetingLalouviereTestCase, pmtmc):
-    '''Call testMeetingConfig tests.'''
+
+class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
+    """Call testMeetingConfig tests."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeetingConfig, prefix='test_pm_'))
+    suite.addTest(makeSuite(testMeetingConfig, prefix="test_"))
     return suite

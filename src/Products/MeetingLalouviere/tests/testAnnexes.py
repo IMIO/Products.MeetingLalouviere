@@ -22,16 +22,23 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testAnnexes import testAnnexes as pmta
+from Products.MeetingCommunes.tests.testAnnexes import testAnnexes as mcta
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testAnnexes(MeetingLalouviereTestCase, pmta):
-    ''' '''
+class testAnnexes(MeetingLalouviereTestCase, mcta):
+    """"""
+
+    def _manage_custom_searchable_fields(self, item):
+        item.setCommissionTranscript("")
+        item.setProvidedFollowUp("")
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testAnnexes, prefix='test_pm_'))
+    suite.addTest(makeSuite(testAnnexes, prefix="test_"))
     return suite

@@ -22,16 +22,21 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.testMeetingCategory import testMeetingCategory as pmtmc
+from Products.MeetingCommunes.tests.testMeetingCategory import (
+    testMeetingCategory as mctmc,
+)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
+    MeetingLalouviereTestCase,
+)
 
 
-class testMeetingCategory(MeetingLalouviereTestCase, pmtmc):
-    '''Tests the MeetingCategory class methods.'''
+class testMeetingCategory(MeetingLalouviereTestCase, mctmc):
+    """Tests the MeetingCategory class methods."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeetingCategory, prefix='test_pm_'))
+    suite.addTest(makeSuite(testMeetingCategory, prefix="test_"))
     return suite
