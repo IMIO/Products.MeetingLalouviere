@@ -189,7 +189,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.create(
             "MeetingItemRecurring",
             title="Rec item 1",
-            proposingGroup="developers",
+            proposingGroup=self.developers_uid,
             category="deployment",
             meetingTransitionInsertingMe="setInCouncil",
         )
@@ -327,7 +327,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.create(
             "MeetingItemRecurring",
             title="Rec item 1",
-            proposingGroup="developers",
+            proposingGroup=self.developers_uid,
             meetingTransitionInsertingMe="_init_",
         )
         # add 3 other recurring items that will be inserted at other moments in the WF
@@ -336,19 +336,19 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.create(
             "MeetingItemRecurring",
             title="Rec item 2",
-            proposingGroup="developers",
+            proposingGroup=self.developers_uid,
             meetingTransitionInsertingMe="backToCreated",
         )
         self.create(
             "MeetingItemRecurring",
             title="Rec item 3",
-            proposingGroup="developers",
+            proposingGroup=self.developers_uid,
             meetingTransitionInsertingMe="freeze",
         )
         self.create(
             "MeetingItemRecurring",
             title="Rec item 4",
-            proposingGroup="developers",
+            proposingGroup=self.developers_uid,
             meetingTransitionInsertingMe="decide",
         )
         self.changeUser("pmManager")
@@ -387,7 +387,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.create(
             "MeetingItemRecurring",
             title="Rec item 1",
-            proposingGroup="developers",
+            proposingGroup=self.developers_uid,
             category="deployment",
             meetingTransitionInsertingMe="setInCouncil",
         )
@@ -415,7 +415,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.create(
             "MeetingItemRecurring",
             title="Rec item developers",
-            proposingGroup="developers",
+            proposingGroup=self.developers_uid,
             meetingTransitionInsertingMe="_init_",
         )
         self.createUser("pmManagerRestricted", ("MeetingManager",))
@@ -438,7 +438,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # now, create a meeting, the item is correctly
         meeting = self.create("Meeting", date=DateTime("2013/01/01"))
         self.assertTrue(len(meeting.getItems()) == 1)
-        self.assertTrue(meeting.getItems()[0].getProposingGroup() == "developers")
+        self.assertTrue(meeting.getItems()[0].getProposingGroup() == self.developers_uid)
 
     def test_pm_WorkflowPermissions(self):
         """Bypass this test..."""

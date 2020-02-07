@@ -68,7 +68,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         self.assertEquals(
             adapter.query,
             {
-                "getProposingGroup": {"query": ["developers"]},
+                "getProposingGroup": {"query": [self.developers_uid]},
                 "portal_type": {"query": itemTypeName},
                 "review_state": {"query": self._stateMappingFor("proposed")},
             },
