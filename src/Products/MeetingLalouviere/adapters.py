@@ -90,22 +90,82 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     # view permissions
         {'Access contents information':
             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
          'View':
             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
          'PloneMeeting: Read budget infos':
             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
          'PloneMeeting: Read decision':
             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
          'PloneMeeting: Read item observations':
             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
          'MeetingLalouviere: Read commission transcript':
             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
-             'MeetingDivisionHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ],
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
+         'MeetingLalouviere: Read providedFollowUp':
+            ['Manager', ],
+         'MeetingLalouviere: Read followUp':
+            ['Manager', ],
+         'MeetingLalouviere: Read neededFollowUp':
+            ['Manager', ],
+         # edit permissions
+         'Modify portal content':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'PloneMeeting: Write budget infos':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager',
+             'MeetingBudgetImpactEditor'],
+         'PloneMeeting: Write decision':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'Review portal content':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'Add portal content':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'PloneMeeting: Add annex':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'PloneMeeting: Add annexDecision':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'PloneMeeting: Write decision annex':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         # MeetingManagers edit permissions
+         'Delete objects':
+            ['Manager', 'MeetingManager', ],
+         'PloneMeeting: Write item MeetingManager reserved fields':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'MeetingLalouviere: Write commission transcript':
+            ['Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', ],
+         'PloneMeeting: Write marginal notes':
+            ['Manager', 'MeetingManager', ],
+         'MeetingLalouviere: Write providedFollowUp':
+            ['Manager', ],
+         'MeetingLalouviere: Write followUp':
+            ['Manager', ],
+         'MeetingLalouviere: Write neededFollowUp':
+            ['Manager', ],
+         },
+    'meetingitemcouncillalouviere_workflow':
+    # view permissions
+        {'Access contents information':
+             ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+              'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
+         'View':
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
+         'PloneMeeting: Read budget infos':
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
+         'PloneMeeting: Read decision':
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
+         'PloneMeeting: Read item observations':
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
+         'MeetingLalouviere: Read commission transcript':
+            ['Manager', 'MeetingManager', 'MeetingMember', 'MeetingServiceHead', 'MeetingOfficeManager',
+             'MeetingDivisionHead', 'MeetingDirector', 'MeetingObserverLocal', 'Reader', ],
          'MeetingLalouviere: Read providedFollowUp':
             ['Manager', ],
          'MeetingLalouviere: Read followUp':
