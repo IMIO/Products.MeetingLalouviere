@@ -388,7 +388,7 @@ Meeting.schema = update_meeting_schema(Meeting.schema)
 def update_item_schema(baseSchema):
 
     specificSchema = Schema((
-        #specific field for council added for MeetingManagers to transcribe interventions
+        # specific field for council added for MeetingManagers to transcribe interventions
         TextField(
             name='interventions',
             widget=RichWidget(
@@ -406,7 +406,7 @@ def update_item_schema(baseSchema):
             allowable_content_types=('text/html',),
             default_output_type="text/html",
         ),
-        #specific field for council added for MeetingManagers to transcribe interventions
+        # specific field for council added for MeetingManagers to transcribe interventions
         TextField(
             name='commissionTranscript',
             widget=RichWidget(
