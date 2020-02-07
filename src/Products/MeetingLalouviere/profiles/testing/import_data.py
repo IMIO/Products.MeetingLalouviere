@@ -120,15 +120,10 @@ collegeMeeting.transitionsForPresentingAnItem = (
     "proposeToOfficeManager",
     "proposeToDivisionHead",
     "proposeToDirector",
-    # "proposeToDG",
-    # "proposeToAlderman",
     "validate",
     "present",
 )
-collegeMeeting.workflowAdaptations = [
-    "return_to_proposing_group",
-    # "validate_by_dg_and_alderman",
-]
+collegeMeeting.workflowAdaptations = []
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
