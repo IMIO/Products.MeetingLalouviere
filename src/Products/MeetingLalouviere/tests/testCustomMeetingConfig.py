@@ -25,7 +25,6 @@
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
-
 from DateTime import DateTime
 from imio.helpers.cache import cleanRamCacheFor
 

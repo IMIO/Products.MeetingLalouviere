@@ -1,13 +1,15 @@
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
-
 from collective.compoundcriterion.interfaces import ICompoundCriterionFilter
 from imio.helpers.cache import cleanRamCacheFor
 from zope.component import getAdapter
 
 
 class testCustomSearches(MeetingLalouviereTestCase):
+    """
+
+    """
     def test_pm_SearchItemsOfMyCommissions(self):
         """Test the 'items-of-my-commissions' adapter that returns items using category
          if it matches the right commissions for the user."""
