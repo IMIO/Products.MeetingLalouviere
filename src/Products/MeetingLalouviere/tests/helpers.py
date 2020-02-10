@@ -158,6 +158,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     )
     TRANSITIONS_FOR_FREEZING_MEETING_2 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = (
         "setInCommittee",
+        "setInCouncil",
     )
 
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = (
