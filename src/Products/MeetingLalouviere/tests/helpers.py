@@ -169,27 +169,3 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "setInCommittee",
         "setInCouncil",
     )
-
-    def freezeMeeting(self, meeting):
-        """Freeze passed p_meeting using TRANSITIONS_FOR_FREEZING_MEETING_x.
-           The p_meetingConfigNumber specify if we use meetingConfig or meetingConfig2, so
-           the _x here above in TRANSITIONS_FOR_FREEZING_MEETING_x is 1 or 2."""
-        tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(meeting)
-        if mc.getId() == "meeting-config-council":
-            meetingConfigNumber = 2
-        else:
-            meetingConfigNumber = 1
-        self._doTransitionsFor(
-            meeting,
-            getattr(
-                self, ("TRANSITIONS_FOR_FREEZING_MEETING_%d" % meetingConfigNumber)
-            ),
-        )
-
-    # def _configureFinancesAdvice(self, cfg):
-    #     """ """
-    #     # configure customAdvisers for 'meeting-config-college'
-    #     _configureCollegeCustomAdvisers(self.portal)
-    #     # add finances group
-    #     _createFinancesGroup(self.portal)
