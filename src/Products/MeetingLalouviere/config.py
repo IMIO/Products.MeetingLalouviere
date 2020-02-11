@@ -44,8 +44,6 @@ DEPENDENCIES = []
 PRODUCT_DEPENDENCIES = []
 
 # the id of the collection querying finance advices
-FINANCE_ADVICES_COLLECTION_ID = "searchitemswithfinanceadvice"
-
 PMconfig.EXTRA_GROUP_SUFFIXES = [
     {
         "fct_title": u"budgetimpactreviewers",
