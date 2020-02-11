@@ -170,6 +170,24 @@ councilMeeting.itemCopyGroupsStates = [
     "item_in_council",
 ]
 
+councilMeeting.onMeetingTransitionItemActionToExecute = (
+    {'meeting_transition': 'setInCommittee',
+     'item_action': 'setItemInCommittee',
+     'tal_expression': ''},
+    {'meeting_transition': 'setInCouncil',
+     'item_action': 'setItemInCouncil',
+     'tal_expression': ''},
+    {'meeting_transition': 'backToCreated',
+     'item_action': 'backToPresented',
+     'tal_expression': ''},
+    {'meeting_transition': 'backToInCommittee',
+     'item_action': 'backToItemInCouncil',
+     'tal_expression': ''},
+    {'meeting_transition': 'backToInCommittee',
+     'item_action': 'backToItemInCommittee',
+     'tal_expression': ''},
+)
+
 data.meetingConfigs = (collegeMeeting, councilMeeting)
 
 # # Annex types

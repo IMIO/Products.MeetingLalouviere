@@ -22,12 +22,6 @@
 
 from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
-from plone import api
-
-
-# from Products.MeetingLalouviere.setuphandlers import _configureCollegeCustomAdvisers
-# from Products.MeetingLalouviere.setuphandlers import _createFinancesGroup
-
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     """Override some values of PloneMeetingTestingHelpers."""
@@ -68,8 +62,8 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "decide",
     )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = (
-        "setInCommittee",
-        "setInCouncil",
+        "setItemInCommittee",
+        "setItemInCouncil",
     )
 
     TRANSITIONS_FOR_DECIDING_MEETING_1 = (
