@@ -44,9 +44,9 @@ class testCustomSearches(MeetingLalouviereTestCase):
         self.assertEqual(
             adapter.query,
             {
-                "portal_type": {"query": itemTypeName},
+                "portal_type": {"query": "MeetingItemCouncil"},
                 "getCategory": {
-                    "query": ["commission-ag", "commission-ag-1er-supplement"]
+                    "query": ["developers", "developers-1er-supplement"]
                 },
             },
         )
@@ -59,13 +59,13 @@ class testCustomSearches(MeetingLalouviereTestCase):
         self.assertDictEqual(
             adapter.query,
             {
-                "portal_type": {"query": itemTypeName},
+                "portal_type": {"query": "MeetingItemCouncil"},
                 "getCategory": {
                     "query": [
-                        "commission-ag",
-                        "commission-ag-1er-supplement",
-                        "commission-patrimoine",
-                        "commission-patrimoine-1er-supplement",
+                        "developers",
+                        "developers-1er-supplement",
+                        "vendors",
+                        "vendors-1er-supplement"
                     ]
                 },
             },
