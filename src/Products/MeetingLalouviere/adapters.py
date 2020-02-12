@@ -1422,20 +1422,14 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
     security.declarePublic("mayRefuse")
 
     def mayRefuse(self):
-        """Only 'Manager' may refuse an item, it is for history reasons because now this is not
-           used anymore but some old items were 'refused'..."""
-        tool = getToolByName(self.context, "portal_plonemeeting")
-        if tool.isManager(self.context, realManagers=True):
+        if _checkPermission(ReviewPortalContent, self.context):
             return True
         return False
 
     security.declarePublic("mayDelay")
 
     def mayDelay(self):
-        """Only 'Manager' may delay an item, it is for history reasons because now this is not
-           used anymore but some old items were 'delayed'..."""
-        tool = getToolByName(self.context, "portal_plonemeeting")
-        if tool.isManager(self.context, realManagers=True):
+        if _checkPermission(ReviewPortalContent, self.context):
             return True
         return False
 
@@ -1594,13 +1588,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
     security.declarePublic("mayRemove")
 
     def mayRemove(self):
-        """
-          We may remove an item if the linked meeting is in the 'decided'
-          state.  It is kept for backward compatibility, but for now, only allow real
-          managers to do that so MeetingManagers are not bothered with the icon.
-        """
-        tool = getToolByName(self.context, "portal_plonemeeting")
-        if tool.isManager(self.context, realManagers=True):
+        if _checkPermission(ReviewPortalContent, self.context):
             return True
         return False
 
@@ -1895,10 +1883,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
     security.declarePublic("mayRefuse")
 
     def mayRefuse(self):
-        """Only 'Manager' may refuse an item, it is for history reasons because now this is not
-           used anymore but some old items were 'refused'..."""
-        tool = getToolByName(self.context, "portal_plonemeeting")
-        if tool.isManager(self.context, realManagers=True):
+        if _checkPermission(ReviewPortalContent, self.context):
             return True
         return False
 
