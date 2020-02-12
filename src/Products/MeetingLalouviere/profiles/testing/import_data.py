@@ -10,19 +10,16 @@ data = deepcopy(mc_import_data.data)
 
 # USERS
 pmServiceHead1 = UserDescriptor("pmServiceHead1", [])
+pmServiceHead2 = UserDescriptor("pmServiceHead2", [])
 pmOfficeManager1 = UserDescriptor("pmOfficeManager1", [])
+pmOfficeManager2 = UserDescriptor("pmOfficeManager2", [])
 pmDivisionHead1 = UserDescriptor("pmDivisionHead1", [])
+pmDivisionHead2 = UserDescriptor("pmDivisionHead2", [])
 pmDirector1 = UserDescriptor("pmDirector1", [])
-pmCreator2 = UserDescriptor("pmCreator2", [])
-pmReviewer2 = UserDescriptor("pmReviewer2", [])
-pmReviewerLevel2 = UserDescriptor(
-    "pmReviewerLevel2",
-    [],
-    email="pmreviewerlevel2@plonemeeting.org",
-    fullname="M. PMReviewer Level Two",
-)
 pmDirector2 = UserDescriptor("pmDirector2", [])
+pmCreator2 = UserDescriptor("pmCreator2", [])
 pmAdviser1 = UserDescriptor("pmAdviser1", [])
+pmAdviser2 = UserDescriptor("pmAdviser2", [])
 voter1 = UserDescriptor("voter1", [], fullname="M. Voter One")
 voter2 = UserDescriptor("voter2", [], fullname="M. Voter Two")
 
@@ -33,28 +30,12 @@ commissioneditor = UserDescriptor(
     email="commissioneditor@plonemeeting.org",
     fullname="M. Commission Editor",
 )
-
-commission_ag_commissioneditors = PloneGroupDescriptor(
-    "commission-ag_commissioneditors", "Commission ag (Rédacteurs PV)", []
-)
-commissioneditor.ploneGroups = [commission_ag_commissioneditors]
-
 commissioneditor2 = UserDescriptor(
     "commissioneditor2",
     [],
     email="commissioneditor2@plonemeeting.org",
-    fullname="M. Commission Editor",
+    fullname="M. Commission Editor 2",
 )
-
-commission_patrimoine_commissioneditors = PloneGroupDescriptor(
-    "commission-patrimoine_commissioneditors",
-    "Commission patrimoine (Rédacteurs PV)",
-    [],
-)
-commissioneditor2.ploneGroups = [
-    commission_ag_commissioneditors,
-    commission_patrimoine_commissioneditors,
-]
 
 pmAlderman = UserDescriptor(
     "pmAlderman", [], email="pmalderman@plonemeeting.org", fullname="M. PMAlderman One"
@@ -87,9 +68,28 @@ developers.followupwriters.append(pmManager)
 developers.budgetimpactreviewers.append(pmManager)
 developers.alderman.append(pmManager)
 developers.alderman.append(pmAlderman)
-# legacy groups
-developers.reviewers.append(commissioneditor)
-developers.reviewers.append(commissioneditor2)
+developers.commissioneditors.append(commissioneditor)
+developers.commissioneditors.append(commissioneditor2)
+
+vendors = data.orgs[1]
+developers.serviceheads.append(pmReviewer2)
+developers.serviceheads.append(pmServiceHead2)
+developers.serviceheads.append(pmManager)
+developers.officemanagers.append(pmOfficeManager2)
+developers.officemanagers.append(pmReviewer2)
+developers.officemanagers.append(pmManager)
+developers.divisionheads.append(pmDivisionHead2)
+developers.divisionheads.append(pmReviewer2)
+developers.divisionheads.append(pmManager)
+developers.directors.append(pmDirector2)
+developers.directors.append(pmReviewer2)
+developers.directors.append(pmReviewerLevel2)
+developers.directors.append(pmManager)
+developers.followupwriters.append(pmManager)
+developers.budgetimpactreviewers.append(pmManager)
+developers.alderman.append(pmManager)
+developers.alderman.append(pmAlderman)
+vendors.commissioneditors.append(commissioneditor2)
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)

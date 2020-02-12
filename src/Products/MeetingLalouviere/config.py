@@ -56,6 +56,7 @@ PMconfig.EXTRA_GROUP_SUFFIXES = [
     {"fct_title": u"directors", "fct_id": u"directors", "fct_orgs": []},
     {"fct_title": u"followupwriters", "fct_id": u"followupwriters", "fct_orgs": []},
     {"fct_title": u"alderman", "fct_id": u"alderman", "fct_orgs": []},
+    {"fct_title": u"commissioneditors", "fct_id": u"commissioneditors", "fct_orgs": []},
 ]
 
 LALOUVIEREROLES = {
@@ -156,7 +157,7 @@ COUNCIL_MEETING_COMMISSION_IDS_2019 = (
 )
 
 # suffix of specific groups containing commission transcript editors
-COMMISSION_EDITORS_SUFFIX = "_commissioneditors"
+COMMISSION_EDITORS_SUFFIX = "commissioneditors"
 
 # id of finance advice group
 FINANCE_GROUP_ID = "avis-directeur-financier-2200020ac"
