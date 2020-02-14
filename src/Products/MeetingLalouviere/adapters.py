@@ -99,6 +99,7 @@ from zope.interface import implements
 
 # disable most of wfAdaptations
 customWfAdaptations = (
+    "refused",
     "return_to_proposing_group",
     "validate_by_dg_and_alderman",
 )
