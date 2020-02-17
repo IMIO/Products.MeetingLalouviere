@@ -39,22 +39,12 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         return ["followUp", "neededFollowUp", "providedFollowUp"]
 
     def test_pm_SendItemToOtherMCUsingEmergencyInitializePreferredMeeting(self):
-        # by pass because council meeting are never late
+        # by pass because college meeting items are never sent late
         pass
 
     def test_pm_SendItemToOtherMCUsingEmergency(self):
-        # by pass because council meeting are never late
+        # by pass because college meeting items are never sent late
         pass
-
-    def test_pm_OnTransitionFieldTransforms(self):
-        # by pass because nobody can refuse or delay an item
-        pass
-
-    def test_pm_OnTransitionFieldTransformsUseLastCommentFromHistory(self):
-        # by pass because nobody can refuse or delay an item
-        pass
-
-
 
 
 def test_suite():
