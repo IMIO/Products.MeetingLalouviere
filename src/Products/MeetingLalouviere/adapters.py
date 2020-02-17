@@ -1356,11 +1356,6 @@ class MeetingItemCollegeLalouviereWorkflowActions(MeetingItemCommunesWorkflowAct
     implements(IMeetingItemCollegeLalouviereWorkflowActions)
     security = ClassSecurityInfo()
 
-    security.declarePrivate("doRemove")
-
-    def doRemove(self, stateChange):
-        pass
-
     security.declarePrivate("doProposeToServiceHead")
 
     def doProposeToServiceHead(self, stateChange):
@@ -1421,20 +1416,6 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
     implements(IMeetingItemCollegeLalouviereWorkflowConditions)
     security = ClassSecurityInfo()
 
-    security.declarePublic("mayRefuse")
-
-    def mayRefuse(self):
-        if _checkPermission(ReviewPortalContent, self.context):
-            return True
-        return False
-
-    security.declarePublic("mayDelay")
-
-    def mayDelay(self):
-        if _checkPermission(ReviewPortalContent, self.context):
-            return True
-        return False
-
     security.declarePublic("mayValidate")
 
     def mayValidate(self):
@@ -1453,45 +1434,6 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
                 self.context
             ):
                 res = False
-        return res
-
-    security.declarePublic("mayFreeze")
-
-    def mayFreeze(self):
-        res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            if self.context.hasMeeting() and (
-                self.context.getMeeting().queryState()
-                in ("frozen", "decided", "closed")
-            ):
-                res = True
-        return res
-
-    security.declarePublic("mayCorrect")
-
-    def mayCorrect(self):
-        # Check with the default PloneMeeting method and our test if res is
-        # False. The diffence here is when we correct an item from itemfrozen to
-        # presented, we have to check if the Meeting is in the "created" state
-        # and not "published".
-        res = MeetingItemWorkflowConditions.mayCorrect(self)
-        # Manage our own behaviour now when the item is linked to a meeting,
-        # a MeetingManager can correct anything except if the meeting is closed
-        if res is not True:
-            if _checkPermission(ReviewPortalContent, self.context):
-                # Get the meeting
-                meeting = self.context.getMeeting()
-                if meeting:
-                    # Meeting can be None if there was a wf problem leading
-                    # an item to be in a "presented" state with no linked
-                    # meeting.
-                    meetingState = meeting.queryState()
-                    # A user having ReviewPortalContent permission can correct
-                    # an item in any case except if the meeting is closed.
-                    if meetingState != "closed":
-                        res = True
-                else:
-                    res = True
         return res
 
     security.declarePublic("mayWaitAdvices")
@@ -1586,13 +1528,6 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
-
-    security.declarePublic("mayRemove")
-
-    def mayRemove(self):
-        if _checkPermission(ReviewPortalContent, self.context):
-            return True
-        return False
 
     security.declarePublic("mayValidateByBudgetImpactReviewer")
 
@@ -1691,47 +1626,6 @@ class MeetingCouncilLalouviereWorkflowConditions(MeetingCommunesWorkflowConditio
             return False
         return True
 
-    security.declarePublic("mayClose")
-
-    def mayClose(self):
-        res = False
-        # The user just needs the "Review portal content" permission on the
-        # object to close it.
-        if _checkPermission(ReviewPortalContent, self.context):
-            res = True
-        return res
-
-    security.declarePublic("mayChangeItemsOrder")
-
-    def mayChangeItemsOrder(self):
-        """We can change the order if the meeting is not closed"""
-        res = False
-        if _checkPermission(
-            ModifyPortalContent, self.context
-        ) and self.context.queryState() not in ("closed",):
-            res = True
-        return res
-
-    def mayCorrect(self):
-        """Take the default behaviour except if the meeting is frozen
-           we still have the permission to correct it."""
-        from Products.PloneMeeting.Meeting import MeetingWorkflowConditions
-
-        res = MeetingWorkflowConditions.mayCorrect(self)
-        currentState = self.context.queryState()
-        if res is not True and currentState in ("in_committee", "in_council",):
-            # Change the behaviour for being able to correct a frozen meeting
-            # back to created.
-            if _checkPermission(ReviewPortalContent, self.context):
-                return True
-        return res
-
-    def mayDecide(self):
-        res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            res = True
-        return res
-
 
 class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemCommunesWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1743,9 +1637,6 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemCommunesWorkflowAct
     security.declarePrivate("doProposeToDirector")
 
     def doProposeToDirector(self, stateChange):
-        pass
-
-    def _freezePresentedItem(self):
         pass
 
     def _forceInsertNormal(self):
@@ -1866,28 +1757,6 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
             ):
                 res = True
         return res
-
-    security.declarePublic("mayDecide")
-
-    def mayDecide(self):
-        """We may decide an item if the linked meeting is in the 'decided'
-           state."""
-        res = False
-        meeting = self.context.getMeeting()
-        if (
-            _checkPermission(ReviewPortalContent, self.context)
-            and meeting
-            and (meeting.queryState() in ["in_council", "closed"])
-        ):
-            res = True
-        return res
-
-    security.declarePublic("mayRefuse")
-
-    def mayRefuse(self):
-        if _checkPermission(ReviewPortalContent, self.context):
-            return True
-        return False
 
 
 class LLCustomToolPloneMeeting(CustomToolPloneMeeting):
@@ -2213,7 +2082,8 @@ class SearchItemsOfMyCommissionsAdapter(CompoundCriterionBaseAdapter):
     def query_itemsofmycommissions(self):
         """Queries all items of commissions of the current user, no matter wich suffix
            of the group the user is in."""
-
+        if not self.cfg:
+            return {}
         # retrieve the commissions which the current user is editor for.
         # a commission groupId match a category but with an additional suffix (COMMISSION_EDITORS_SUFFIX)
         # so we remove that suffix
