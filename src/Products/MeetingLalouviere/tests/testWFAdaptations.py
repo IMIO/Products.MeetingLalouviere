@@ -42,7 +42,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         """Most of wfAdaptations makes no sense, just make sure most are disabled."""
         self.assertEquals(
             set(self.meetingConfig.listWorkflowAdaptations()),
-            set(("validate_by_dg_and_alderman", "return_to_proposing_group",)),
+            set(("removed", "refused", "validate_by_dg_and_alderman", "return_to_proposing_group",)),
         )
 
     def test_pm_WFA_no_publication(self):
