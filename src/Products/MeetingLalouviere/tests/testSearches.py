@@ -34,6 +34,8 @@ from collective.compoundcriterion.interfaces import ICompoundCriterionFilter
 from imio.helpers.cache import cleanRamCacheFor
 from zope.component import getAdapter
 
+from Products.PloneMeeting.adapters import _find_nothing_query
+
 
 class testSearches(MeetingLalouviereTestCase, mcts):
     """Test searches."""
@@ -57,9 +59,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         )
         # if user si not a reviewer, we want the search to return
         # nothing so the query uses an unknown review_state
-        self.assertEquals(
-            adapter.query, {"review_state": {"query": ["unknown_review_state"]}}
-        )
+        self.assertEquals(adapter.query, _find_nothing_query(itemTypeName))
         # for a reviewer, query is correct
         self.changeUser("pmReviewer1")
         cleanRamCacheFor(
