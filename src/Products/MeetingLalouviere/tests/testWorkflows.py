@@ -26,6 +26,8 @@ from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
+
+from Products.CMFCore.permissions import ModifyPortalContent
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from plone.app.testing.helpers import setRoles
@@ -46,21 +48,6 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
        (self.assertRaise). Instead, we check that the user has the permission
        to do so (getSecurityManager().checkPermission)."""
 
-    def test_pm_WholeDecisionProcess(self):
-        """
-            This test covers the whole decision workflow. It begins with the
-            creation of some items, and ends by closing a meeting.
-            This call 2 sub tests for each process : college and council
-        """
-        # remove recurring items
-        self.changeUser("admin")
-        self._removeConfigObjectsFor(self.meetingConfig, folders=["recurringitems"])
-        self._testWholeDecisionProcessCollege()
-        # remove recurring items
-        self.changeUser("admin")
-        self._removeConfigObjectsFor(self.meetingConfig2, folders=["recurringitems"])
-        self._testWholeDecisionProcessCouncil()
-
     def _testWholeDecisionProcessCollege(self):
         """This test covers the whole decision workflow. It begins with the
            creation of some items, and ends by closing a meeting."""
@@ -77,7 +64,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # the ServiceHead validation level
         self.changeUser("pmServiceHead1")
         self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission("Modify portal content", (item1, annex1)))
+        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         self.do(item1, "proposeToOfficeManager")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
@@ -85,7 +72,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # the OfficeManager validation level
         self.changeUser("pmOfficeManager1")
         self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission("Modify portal content", (item1, annex1)))
+        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         self.do(item1, "proposeToDivisionHead")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
@@ -93,7 +80,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # the DivisionHead validation level
         self.changeUser("pmDivisionHead1")
         self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission("Modify portal content", (item1, annex1)))
+        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         self.do(item1, "proposeToDirector")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
@@ -101,7 +88,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # the Director validation level
         self.changeUser("pmDirector1")
         self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission("Modify portal content", (item1, annex1)))
+        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         self.do(item1, "validate")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
@@ -119,17 +106,16 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(item2, "proposeToServiceHead")
         # pmReviewer1 can not validate the item has not in the same proposing group
         self.changeUser("pmReviewer1")
-        self.failIf(self.hasPermission("Modify portal content", item2))
-        # even pmManagercan not see/validate an item in the validation queue
-        self.changeUser("pmManager")
-        self.failIf(self.hasPermission("Modify portal content", item2))
+        self.failIf(self.hasPermission(ModifyPortalContent, item2))
+        # but pmReviwer2 can because its his own group
+        self.changeUser("pmReviewer2")
+        self.failUnless(self.hasPermission(ModifyPortalContent, item2))
         # do the complete validation
-        self.changeUser("admin")
+        self.changeUser("pmManager")
         self.do(item2, "proposeToOfficeManager")
         self.do(item2, "proposeToDivisionHead")
         self.do(item2, "proposeToDirector")
         # pmManager inserts item1 into the meeting and publishes it
-        self.changeUser("pmManager")
         managerAnnex = self.addAnnex(item1)
         self.portal.restrictedTraverse("@@delete_givenuid")(managerAnnex.UID())
         self.do(item1, "present")
@@ -145,9 +131,10 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser("pmManager")
         self.do(item2, "present")
         self.addAnnex(item2)
-        # So now we should have 1 normal item (no recurring items) and one late item in the meeting
-        self.failUnless(len(meeting.getItems(listTypes=["normal"])) == 1)
-        self.failUnless(len(meeting.getItems(listTypes=["late"])) == 1)
+        # So now we should have 3 normal item (no recurring items) and one late item in the meeting
+        self.assertEqual(len(meeting.getItems(listTypes=["normal"])), 3)
+        self.assertEqual(len(meeting.getItems(listTypes=["late"])), 1)
+        self.assertEqual(meeting.getItems(listTypes=["late"])[0], item2)
         self.do(meeting, "decide")
         self.do(item1, "accept")
         self.assertEquals(item1.queryState(), "accepted")
@@ -162,6 +149,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             This test covers the whole decision workflow. It begins with the
             creation of some items, and ends by closing a meeting.
         """
+        self.changeUser("admin")
         self.setMeetingConfig(self.meetingConfig2.getId())
         # commission categories
         commission = self.create(
@@ -183,7 +171,6 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         )
 
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
-        self.changeUser("admin")
         self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
         performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
         self.create(
@@ -204,10 +191,10 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.addAnnex(item1, relatedTo="item_decision")
         # the item is not proposable until it has a category
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        item1.setCategory("commission-ag")
+        item1.setCategory(commission.id)
         item1.at_post_edit_script()
         self.do(item1, "proposeToDirector")
-        self.failIf(self.hasPermission("Modify portal content", item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, item1))
         # The creator cannot add a decision annex on proposed item
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
@@ -215,7 +202,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertTrue(item1.mayQuickEdit("observations"))
         self.addAnnex(item1, relatedTo="item_decision")
         self.do(item1, "validate")
-        self.failIf(self.hasPermission("Modify portal content", item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, item1))
         # The reviewer cannot add a decision annex on validated item
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         # pmManager creates a meeting
@@ -229,13 +216,13 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         item2 = self.create(
             "MeetingItem", title="The second item", preferredMeeting=meeting.UID()
         )
-        item2.setCategory("events")
+        item2.setCategory(commission2.id)
         self.do(item2, "proposeToDirector")
         # pmManager inserts item1 into the meeting and freezes it
         self.changeUser("pmManager")
         managerAnnex = self.addAnnex(item1)
         self.portal.restrictedTraverse("@@delete_givenuid")(managerAnnex.UID())
-        self.do(item1, "present")
+        self.presentItem(item1)
         self.changeUser("pmCreator1")
         # The creator cannot add any kind of annex on presented item
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
@@ -253,7 +240,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # pmManager inserts item2 into the meeting, as late item, and adds an
         # annex to it
         self.changeUser("pmManager")
-        self.do(item2, "present")
+        self.presentItem(item2)
         self.addAnnex(item2)
         # An item is freely addable to a meeting if the meeting is 'open'
         # so in states 'created', 'in_committee' and 'in_council'
@@ -271,7 +258,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         item1_addition = self.create(
             "MeetingItem", title="Addition to the first item", autoAddCategory=False
         )
-        item1_addition.setCategory("commission-ag-1er-supplement")
+        item1_addition.setCategory(commission_compl.id)
         self.do(item1_addition, "proposeToDirector")
         item1_addition.setPreferredMeeting(meeting.UID())
         self.do(item1_addition, "validate")
@@ -283,14 +270,14 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # an item can be send back to the service so MeetingMembers
         # can edit it and send it back to the meeting
         self.changeUser("pmCreator1")
-        self.failIf(self.hasPermission("Modify portal content", item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, item1))
         self.changeUser("pmManager")
         # send the item back to the service
         self.do(item1, "return_to_proposing_group")
         self.changeUser("pmCreator1")
-        self.failUnless(self.hasPermission("Modify portal content", item1))
+        self.failUnless(self.hasPermission(ModifyPortalContent, item1))
         self.do(item1, "backTo_item_in_council_from_returned_to_proposing_group")
-        self.failIf(self.hasPermission("Modify portal content", item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, item1))
         # item state follow meeting state
         self.changeUser("pmManager")
         self.assertEquals(item1.queryState(), "item_in_council")
@@ -307,78 +294,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEquals(item1.queryState(), "accepted_but_modified")
         self.assertEquals(item2.queryState(), "accepted")
 
-    def test_pm_RecurringItems(self):
-        """
-            Tests the recurring items system.
-        """
-        # we do the test for the college config
-        self.meetingConfig = getattr(self.tool, "meeting-config-college")
-        # super(testWorkflows, self).test_pm_RecurringItems() workflow is different
-        self._checkRecurringItemsCollege()
-        # we do the test for the council config
-        self.meetingConfig = getattr(self.tool, "meeting-config-council")
-        self._testRecurringItemsCouncil()
-
-    def _checkRecurringItemsCollege(self):
-        """Tests the recurring items system."""
-        # First, define recurring items in the meeting config
-        self.changeUser("admin")
-        # 2 recurring items already exist in the college config, add one supplementary for _init_
-        self.create(
-            "MeetingItemRecurring",
-            title="Rec item 1",
-            proposingGroup=self.developers_uid,
-            meetingTransitionInsertingMe="_init_",
-        )
-        # add 3 other recurring items that will be inserted at other moments in the WF
-        # backToCreated is not in MeetingItem.meetingTransitionsAcceptingRecurringItems
-        # so it will not be added...
-        self.create(
-            "MeetingItemRecurring",
-            title="Rec item 2",
-            proposingGroup=self.developers_uid,
-            meetingTransitionInsertingMe="backToCreated",
-        )
-        self.create(
-            "MeetingItemRecurring",
-            title="Rec item 3",
-            proposingGroup=self.developers_uid,
-            meetingTransitionInsertingMe="freeze",
-        )
-        self.create(
-            "MeetingItemRecurring",
-            title="Rec item 4",
-            proposingGroup=self.developers_uid,
-            meetingTransitionInsertingMe="decide",
-        )
-        self.changeUser("pmManager")
-        # create a meeting without supplementary items, only the recurring items
-        meeting = self._createMeetingWithItems(withItems=False)
-        # The recurring items must have as owner the meeting creator
-        for item in meeting.getItems():
-            self.assertEquals(item.getOwner().getId(), "pmManager")
-        # The meeting must contain recurring items : 2 defined and one added here above
-        self.failUnless(len(meeting.getItems()) == 3)
-        self.failIf(meeting.getItems(listTypes=["late"]))
-        # After freeze, the meeting must have one recurring item more
-        self.freezeMeeting(meeting)
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getItems(listTypes=["late"])) == 1)
-        # Back to created: rec item 2 is not inserted because
-        # only some transitions can add a recurring item (see MeetingItem).
-        self.backToState(meeting, "created")
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getItems(listTypes=["late"])) == 1)
-        # Recurring items can be added twice...
-        self.freezeMeeting(meeting)
-        self.failUnless(len(meeting.getItems()) == 5)
-        self.failUnless(len(meeting.getItems(listTypes=["late"])) == 2)
-        # Decide the meeting, a third late item is added
-        self.decideMeeting(meeting)
-        self.failUnless(len(meeting.getItems()) == 6)
-        self.failUnless(len(meeting.getItems(listTypes=["late"])) == 3)
-
-    def _testRecurringItemsCouncil(self):
+    def _checkRecurringItemsCouncil(self):
         """Tests the recurring items system.
            Recurring items are added when the meeting is setInCouncil."""
         # First, define a recurring item in the meeting config
@@ -402,7 +318,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(meeting, "close")
         self.failUnless(len(meeting.getItems()) == 1)
 
-    def test_pm_RecurringItemsBypassSecutiry(self):
+    def test_pm_RecurringItemsBypassSecurity(self):
         """Tests that recurring items are addable by a MeetingManager even if by default,
            one of the transition to trigger for the item to be presented should not be triggerable
            by the MeetingManager inserting the recurring item.
@@ -419,8 +335,9 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             meetingTransitionInsertingMe="_init_",
         )
         self.createUser("pmManagerRestricted", ("MeetingManager",))
+        developers_creators = '{}_creators'.format(self.developers_uid)
         self.portal.portal_groups.addPrincipalToGroup(
-            "pmManagerRestricted", "developers_creators"
+            "pmManagerRestricted", developers_creators
         )
         self.changeUser("pmManagerRestricted")
         # first check that current 'pmManager' may not 'propose'
@@ -439,10 +356,6 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         meeting = self.create("Meeting", date=DateTime("2013/01/01"))
         self.assertTrue(len(meeting.getItems()) == 1)
         self.assertTrue(meeting.getItems()[0].getProposingGroup() == self.developers_uid)
-
-    def test_pm_WorkflowPermissions(self):
-        """Bypass this test..."""
-        pass
 
 
 def test_suite():

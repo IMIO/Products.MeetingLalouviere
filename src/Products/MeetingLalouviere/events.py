@@ -6,6 +6,8 @@ from Products.PloneMeeting.utils import forceHTMLContentTypeForEmptyRichFields
 from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS_2013
+from collective.contact.plonegroup.utils import get_organization
+from Products.PloneMeeting.utils import org_id_to_uid
 
 
 def onItemDuplicated(original, event):
@@ -55,14 +57,18 @@ def onItemLocalRolesUpdated(item, event):
     # first, remove previously set local roles for the Plone group commission
     # this is only done for MeetingItemCouncil
 
-    if not item.portal_type == 'MeetingItemCouncil':
+    if not item.portal_type == 'MeetingItemCouncil' \
+            or not item.queryState() in ('item_in_committee', 'item_in_council'):
         return
     # existing commission Plone groups
     commissionEditorsGroupIds = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
-
     # now add the new local roles
     for groupId in commissionEditorsGroupIds:
         if item.getCategory().startswith(groupId):
             # we found the relevant group
-            item.manage_addLocalRoles(groupId + COMMISSION_EDITORS_SUFFIX, ('MeetingCommissionEditor',))
-            return
+            org_uid = org_id_to_uid(groupId)
+            org = get_organization(org_uid)
+            if org:
+                group_id = "{}_{}".format(org.UID(), COMMISSION_EDITORS_SUFFIX)
+                item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
+                return

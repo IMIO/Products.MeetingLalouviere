@@ -4,7 +4,7 @@ from copy import deepcopy
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 
-from Products.PloneMeeting.profiles import UserDescriptor
+from Products.PloneMeeting.profiles import UserDescriptor, OrgDescriptor
 
 data = deepcopy(mc_import_data.data)
 
@@ -42,6 +42,7 @@ pmAlderman = UserDescriptor(
 )
 
 # Inherited users
+pmCreator1 = deepcopy(pm_import_data.pmCreator1)
 pmReviewer1 = deepcopy(pm_import_data.pmReviewer1)
 pmReviewer2 = deepcopy(pm_import_data.pmReviewer2)
 pmReviewerLevel1 = deepcopy(pm_import_data.pmReviewerLevel1)
@@ -69,7 +70,6 @@ developers.budgetimpactreviewers.append(pmManager)
 developers.alderman.append(pmManager)
 developers.alderman.append(pmAlderman)
 developers.commissioneditors.append(commissioneditor)
-developers.commissioneditors.append(commissioneditor2)
 
 vendors = data.orgs[1]
 vendors.serviceheads.append(pmReviewer2)
@@ -91,13 +91,76 @@ vendors.alderman.append(pmManager)
 vendors.alderman.append(pmAlderman)
 vendors.commissioneditors.append(commissioneditor2)
 
+ag = OrgDescriptor('commission-ag', 'Commission AG', u'AG')
+ag.creators.append(pmCreator1)
+ag.creators.append(pmManager)
+ag.prereviewers.append(pmReviewerLevel1)
+ag.reviewers.append(pmReviewer1)
+ag.reviewers.append(pmReviewerLevel2)
+ag.reviewers.append(pmManager)
+ag.observers.append(pmReviewer1)
+ag.observers.append(pmManager)
+ag.advisers.append(pmAdviser1)
+ag.advisers.append(pmManager)
+ag.commissioneditors.append(commissioneditor)
+ag.serviceheads.append(pmReviewer1)
+ag.serviceheads.append(pmServiceHead1)
+ag.serviceheads.append(pmManager)
+ag.officemanagers.append(pmOfficeManager1)
+ag.officemanagers.append(pmReviewer1)
+ag.officemanagers.append(pmManager)
+ag.divisionheads.append(pmDivisionHead1)
+ag.divisionheads.append(pmReviewer1)
+ag.divisionheads.append(pmManager)
+ag.directors.append(pmDirector1)
+ag.directors.append(pmReviewer1)
+ag.directors.append(pmReviewerLevel2)
+ag.directors.append(pmManager)
+ag.followupwriters.append(pmManager)
+ag.budgetimpactreviewers.append(pmManager)
+ag.alderman.append(pmManager)
+ag.alderman.append(pmAlderman)
+ag.commissioneditors.append(commissioneditor)
+
+patrimoine = OrgDescriptor('commission-patrimoine', 'Commission Patrimoine', u'PAT')
+patrimoine.creators.append(pmCreator2)
+patrimoine.creators.append(pmManager)
+patrimoine.prereviewers.append(pmReviewerLevel2)
+patrimoine.reviewers.append(pmReviewer2)
+patrimoine.reviewers.append(pmReviewerLevel2)
+patrimoine.reviewers.append(pmManager)
+patrimoine.observers.append(pmReviewer2)
+patrimoine.observers.append(pmManager)
+patrimoine.advisers.append(pmAdviser2)
+patrimoine.advisers.append(pmManager)
+patrimoine.commissioneditors.append(commissioneditor)
+patrimoine.serviceheads.append(pmReviewer2)
+patrimoine.serviceheads.append(pmServiceHead2)
+patrimoine.serviceheads.append(pmManager)
+patrimoine.officemanagers.append(pmOfficeManager2)
+patrimoine.officemanagers.append(pmReviewer2)
+patrimoine.officemanagers.append(pmManager)
+patrimoine.divisionheads.append(pmDivisionHead2)
+patrimoine.divisionheads.append(pmReviewer2)
+patrimoine.divisionheads.append(pmManager)
+patrimoine.directors.append(pmDirector2)
+patrimoine.directors.append(pmReviewer2)
+patrimoine.directors.append(pmReviewerLevel2)
+patrimoine.directors.append(pmManager)
+patrimoine.followupwriters.append(pmManager)
+patrimoine.budgetimpactreviewers.append(pmManager)
+patrimoine.alderman.append(pmManager)
+patrimoine.alderman.append(pmAlderman)
+patrimoine.commissioneditors.append(commissioneditor2)
+
+endUsers = data.orgs[2]
+data.orgs = (developers, vendors, endUsers, ag, patrimoine)
+
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.itemWorkflow = "meetingitemcollegelalouviere_workflow"
 collegeMeeting.meetingWorkflow = "meetingcollegelalouviere_workflow"
-collegeMeeting.itemConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
-)
+collegeMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
 collegeMeeting.itemActionsInterface = (
     "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
 )
@@ -126,15 +189,23 @@ collegeMeeting.workflowAdaptations = []
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
+
+collegeMeeting.usedItemAttributes = (
+    u"description",
+    u"observations",
+    u"toDiscuss",
+    u"itemTags",
+    u"itemIsSigned",
+)
+
+
 collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.itemWorkflow = "meetingitemcouncillalouviere_workflow"
 councilMeeting.meetingWorkflow = "meetingcouncillalouviere_workflow"
-councilMeeting.itemConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
-)
+councilMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
 councilMeeting.itemActionsInterface = (
     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
 )
@@ -169,21 +240,45 @@ councilMeeting.itemCopyGroupsStates = [
 ]
 
 councilMeeting.onMeetingTransitionItemActionToExecute = (
-    {'meeting_transition': 'setInCommittee',
-     'item_action': 'setItemInCommittee',
-     'tal_expression': ''},
-    {'meeting_transition': 'setInCouncil',
-     'item_action': 'setItemInCouncil',
-     'tal_expression': ''},
-    {'meeting_transition': 'backToCreated',
-     'item_action': 'backToPresented',
-     'tal_expression': ''},
-    {'meeting_transition': 'backToInCommittee',
-     'item_action': 'backToItemInCouncil',
-     'tal_expression': ''},
-    {'meeting_transition': 'backToInCommittee',
-     'item_action': 'backToItemInCommittee',
-     'tal_expression': ''},
+    {
+        "meeting_transition": "setInCommittee",
+        "item_action": "setItemInCommittee",
+        "tal_expression": "",
+    },
+    {
+        "meeting_transition": "setInCouncil",
+        "item_action": "setItemInCouncil",
+        "tal_expression": "",
+    },
+    {
+        "meeting_transition": "backToCreated",
+        "item_action": "backToPresented",
+        "tal_expression": "",
+    },
+    {
+        "meeting_transition": "backToInCommittee",
+        "item_action": "backToItemInCouncil",
+        "tal_expression": "",
+    },
+    {
+        "meeting_transition": "backToInCommittee",
+        "item_action": "backToItemInCommittee",
+        "tal_expression": "",
+    },
+    {
+        "meeting_transition": "close",
+        "item_action": "accept",
+        "tal_expression": "",
+    },
+)
+
+councilMeeting.usedItemAttributes = (
+    u"description",
+    u"observations",
+    u"toDiscuss",
+    u"itemTags",
+    u"itemIsSigned",
+    u"commissionTranscript",
 )
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
