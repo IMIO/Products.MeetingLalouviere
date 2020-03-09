@@ -70,6 +70,7 @@ developers.budgetimpactreviewers.append(pmManager)
 developers.alderman.append(pmManager)
 developers.alderman.append(pmAlderman)
 developers.commissioneditors.append(commissioneditor)
+developers.commissioneditors.append(pmManager)
 
 vendors = data.orgs[1]
 vendors.serviceheads.append(pmReviewer2)
@@ -90,6 +91,7 @@ vendors.budgetimpactreviewers.append(pmManager)
 vendors.alderman.append(pmManager)
 vendors.alderman.append(pmAlderman)
 vendors.commissioneditors.append(commissioneditor2)
+vendors.commissioneditors.append(pmManager)
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)

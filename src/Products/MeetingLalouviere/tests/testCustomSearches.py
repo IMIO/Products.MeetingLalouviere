@@ -26,16 +26,6 @@ class testCustomSearches(MeetingLalouviereTestCase):
             {"portal_type": {"query": itemTypeName}, "getCategory": {"query": []}},
         )
 
-        # neither is pmManager
-        self.changeUser("pmManager")
-        cleanRamCacheFor(
-            "Products.MeetingLalouviere.adapters.query_itemsofmycommissions"
-        )
-        self.assertEqual(
-            adapter.query,
-            {"portal_type": {"query": itemTypeName}, "getCategory": {"query": []}},
-        )
-
         # commissioneditor is member of 'commission-ag'
         self.changeUser("commissioneditor")
         cleanRamCacheFor(
@@ -51,8 +41,24 @@ class testCustomSearches(MeetingLalouviereTestCase):
             },
         )
 
-        # commissioneditor2 is member of 'commission-ag' and 'commission-patrimoine'
         self.changeUser("commissioneditor2")
+        cleanRamCacheFor(
+            "Products.MeetingLalouviere.adapters.query_itemsofmycommissions"
+        )
+        self.assertDictEqual(
+            adapter.query,
+            {
+                "portal_type": {"query": "MeetingItemCouncil"},
+                "getCategory": {
+                    "query": [
+                        "vendors",
+                        "vendors-1er-supplement"
+                    ]
+                },
+            },
+        )
+
+        self.changeUser("pmManager")
         cleanRamCacheFor(
             "Products.MeetingLalouviere.adapters.query_itemsofmycommissions"
         )
