@@ -411,7 +411,8 @@ def update_item_schema(baseSchema):
             name='commissionTranscript',
             widget=RichWidget(
                 rows=15,
-                condition="python: here.portal_type == 'MeetingItemCouncil'",
+                condition="python: here.portal_type == 'MeetingItemCouncil' and "
+                          "here.attributeIsUsed('commissionTranscript')",
                 label='CommissionTranscript',
                 label_msgid='MeetingLalouviere_label_commissionTranscript',
                 description='Transcription of commission',

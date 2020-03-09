@@ -31,10 +31,44 @@ from Products.MeetingLalouviere.tests.helpers import MeetingLalouviereTestingHel
 # adapters.py but overrided by Products.PloneMeeting here in the tests...
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 
+from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
+
+from collective.contact.plonegroup.utils import get_plone_group_id
+
 MeetingConfig.wfAdaptations = customWfAdaptations
 
 
-class MeetingLalouviereTestCase(MeetingCommunesTestCase, MeetingLalouviereTestingHelpers):
+class MeetingLalouviereTestCase(
+    MeetingCommunesTestCase, MeetingLalouviereTestingHelpers
+):
     """Base class for defining MeetingLalouviere test cases."""
 
     layer = MLL_TESTING_PROFILE_FUNCTIONAL
+
+    def add_commission_orgs(self):
+        self.changeUser("admin")
+        ag = self.create(
+            "organization", id="commission-ag", title="Commission AG", acronym=u"AG"
+        )
+        self._select_organization(ag.UID())
+        self.ag = ag
+        self._addPrincipalToGroup('pmCreator1', get_plone_group_id(ag.UID(), 'creators'))
+        self._addPrincipalToGroup('pmManager', get_plone_group_id(ag.UID(), 'creators'))
+
+        self._addPrincipalToGroup('pmDirector1', get_plone_group_id(ag.UID(), 'directors'))
+        self._addPrincipalToGroup('commissioneditor', get_plone_group_id(ag.UID(), COMMISSION_EDITORS_SUFFIX))
+
+        pat = self.create(
+            "organization",
+            id="commission-patrimoine",
+            title="Commission Patrimoine",
+            acronym=u"PAT",
+        )
+        self._select_organization(pat.UID())
+        self.pat = pat
+
+        self._addPrincipalToGroup('pmCreator2', get_plone_group_id(pat.UID(), 'creators'))
+        self._addPrincipalToGroup('pmManager', get_plone_group_id(pat.UID(), 'creators'))
+
+        self._addPrincipalToGroup('pmDirector2', get_plone_group_id(pat.UID(), 'directors'))
+        self._addPrincipalToGroup('commissioneditor2', get_plone_group_id(pat.UID(), 'commissioneditors'))
