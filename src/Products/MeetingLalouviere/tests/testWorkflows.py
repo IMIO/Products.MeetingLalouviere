@@ -111,11 +111,10 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser("pmReviewer2")
         self.failUnless(self.hasPermission(ModifyPortalContent, item2))
         # do the complete validation
-        self.changeUser("pmManager")
-        self.do(item2, "proposeToOfficeManager")
-        self.do(item2, "proposeToDivisionHead")
-        self.do(item2, "proposeToDirector")
+
+        self.proposeItem(item2)
         # pmManager inserts item1 into the meeting and publishes it
+        self.changeUser("pmManager")
         managerAnnex = self.addAnnex(item1)
         self.portal.restrictedTraverse("@@delete_givenuid")(managerAnnex.UID())
         self.do(item1, "present")
