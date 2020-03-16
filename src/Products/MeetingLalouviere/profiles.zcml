@@ -5,9 +5,6 @@
 
   <include package="Products.GenericSetup" file="meta.zcml" />
 
-  <!-- ##code-section profiles.zcml-top #fill in your manual code here -->
-  <!-- ##/code-section profiles.zcml-top -->
-
   <genericsetup:registerProfile
       name="default"
       title="MeetingLalouviere"
@@ -16,42 +13,12 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   
-  <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
   <genericsetup:registerProfile
-   name="lalouviere"
-   title="PloneMeeting / For La Louviere"
-   description="PloneMeeting for City College and Council of La Louviere"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="testing"
-   title="PloneMeeting / Unit testing profile for La Louviere"
-   description="MeetingLalouviere unit testing profile"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zbourgmestre"
-   title="PloneMeeting / Bourgmestre"
-   description="PloneMeeting for Bourgmestre (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zcodir"
-   title="PloneMeeting / CoDir"
-   description="PloneMeeting for CoDir (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:upgradeStep
-      title="Add somes searches"
-      description=""
-      source="*"
-      destination="4.0"
-      handler="Products.MeetingLalouviere.migrations.add_searches.migrate"
-      profile="Products.MeetingLalouviere:default" />
-
-  <!-- ##/code-section profiles.zcml-bottom -->
+      name="lalouviere"
+      title="PloneMeeting / Demo profile for La Louvière with french examples"
+      directory="profiles/lalouviere"
+      description="PloneMeeting for City of La Louviere (Belgium)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
 </configure>
