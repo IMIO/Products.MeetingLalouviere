@@ -30,6 +30,8 @@ from Products.MeetingLalouviere.tests.helpers import MeetingLalouviereTestingHel
 # monkey patch the MeetingConfig.wfAdaptations again because it is done in
 # adapters.py but overrided by Products.PloneMeeting here in the tests...
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
+from Products.PloneMeeting.utils import reviewersFor
+
 
 from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
 
@@ -72,3 +74,14 @@ class MeetingLalouviereTestCase(
 
         self._addPrincipalToGroup('pmDirector2', get_plone_group_id(pat.UID(), 'directors'))
         self._addPrincipalToGroup('commissioneditor2', get_plone_group_id(pat.UID(), 'commissioneditors'))
+
+    def _turnUserIntoPrereviewer(self, member):
+        """
+          Helper method for adding a given p_member to every '_prereviewers' group
+          corresponding to every '_reviewers' group he is in.
+        """
+        reviewers = reviewersFor(self.meetingConfig.getItemWorkflow())
+        groups = [group for group in member.getGroups() if group.endswith('_%s' % reviewers.keys()[1])]
+        groups = [group.replace(reviewers.keys()[1], reviewers.keys()[-1]) for group in groups]
+        for group in groups:
+            self._addPrincipalToGroup(member.getId(), group)

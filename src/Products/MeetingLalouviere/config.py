@@ -71,15 +71,15 @@ PMconfig.MEETINGROLES.update(LALOUVIEREROLES)
 LALOUVIEREMEETINGREVIEWERS = {
     "meetingitemcollegelalouviere_workflow": OrderedDict(
         [
-            ("alderman", "proposed_to_alderman"),
-            ("directors", "proposed_to_director"),
-            ("divisionheads", "proposed_to_divisionhead"),
-            ("officemanagers", "proposed_to_officemanager"),
-            ("serviceheads", "proposed_to_servicehead"),
+            ("alderman", ["proposed_to_alderman"]),
+            ("directors", ["proposed_to_director"]),
+            ("divisionheads", ["proposed_to_divisionhead"]),
+            ("officemanagers", ["proposed_to_officemanager"]),
+            ("serviceheads", ["proposed_to_servicehead"]),
         ]
     ),
     "meetingitemcouncillalouviere_workflow": OrderedDict(
-        [("directors", "proposed_to_director"),]
+        [("directors", ["proposed_to_director"]),]
     ),
 }
 PMconfig.MEETINGREVIEWERS = LALOUVIEREMEETINGREVIEWERS

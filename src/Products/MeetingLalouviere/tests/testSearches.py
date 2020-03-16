@@ -65,12 +65,12 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
         )
-        self.assertEquals(
+        self.assertDictEqual(
             adapter.query,
             {
-                "getProposingGroup": {"query": [self.developers_uid]},
                 "portal_type": {"query": itemTypeName},
-                "review_state": {"query": self._stateMappingFor("proposed")},
+                'reviewProcessInfo':
+                    {'query': ['{}__reviewprocess__proposed_to_director'.format(self.developers_uid)]},
             },
         )
 
@@ -92,7 +92,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
         )
-        self.failIf(collection.getQuery())
+        self.failIf(collection.results())
         self.changeUser("pmReviewerLevel1")
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
@@ -104,7 +104,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
         )
-        self.failIf(collection.getQuery())
+        self.failIf(collection.results())
         # pass the item to second last level of hierarchy, where 'pmReviewerLevel2' is reviewer for
         self.changeUser("pmReviewerLevel1")
         # jump to last level of validation
@@ -112,26 +112,44 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
         )
-        self.failIf(collection.getQuery())
+        self.failIf(collection.results())
         # alderman don't see the item validated to director
         self.changeUser("pmReviewerLevel2")
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
         )
-        self.failIf(collection.getQuery())
-
+        self.maxDiff = None
+        query = adapter.query
+        query['reviewProcessInfo']['query'].sort()
+        self.assertDictEqual(
+            adapter.query,
+            {
+                "portal_type": {"query": itemTypeName},
+                'reviewProcessInfo':
+                    {'query': sorted(['{}__reviewprocess__proposed_to_director'.format(self.developers_uid),
+                               '{}__reviewprocess__proposed_to_director'.format(self.vendors_uid)])},
+            },
+        )
         self.changeUser("pmDirector1")
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
         )
-        self.failUnless(collection.getQuery())
+
+        self.assertDictEqual(
+            adapter.query,
+            {
+                "portal_type": {"query": itemTypeName},
+                'reviewProcessInfo':
+                    {'query': ['{}__reviewprocess__proposed_to_director'.format(self.developers_uid)]},
+            },
+        )
 
         # now give a view on the item by 'pmReviewer2' and check if, as a reviewer,
         # the search does returns him the item, it should not as he is just a reviewer
         # but not able to really validate the new item
         cfg.setUseCopies(True)
         cfg.setItemCopyGroupsStates("proposed_to_director")
-        item.setCopyGroups(("vendors_reviewers",))
+        item.setCopyGroups(("{}_reviewers".format(self.vendors_uid),))
         item.at_post_edit_script()
         self.changeUser("pmReviewer2")
         # the user can see the item
@@ -140,7 +158,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         cleanRamCacheFor(
             "Products.PloneMeeting.adapters.query_itemstovalidateofhighesthierarchiclevel"
         )
-        self.failIf(collection.getQuery())
+        self.failIf(collection.results())
         # if the item is validated, it will not appear for pmReviewer1 anymore
         self.changeUser("pmReviewer1")
         cleanRamCacheFor(
@@ -148,7 +166,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
         )
         self.failUnless(collection.getQuery())
         self.validateItem(item)
-        self.failIf(collection.getQuery())
+        self.failIf(collection.results())
 
 
 def test_suite():
