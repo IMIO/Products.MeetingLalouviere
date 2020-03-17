@@ -166,23 +166,23 @@ FINANCE_GROUP_ID = "avis-directeur-financier-2200020ac"
 # if not, only the finances manager may sign advices
 POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER = False
 
-COLLEGE_DEFAULT_MOTIVATION = u"<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant codification de la " \
-                             u"législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de " \
-                             u"la décentralisation;" \
-                             u"</p><p>&nbsp;</p>" \
-                             u"<p>Vu le décret du 27 mai 2004 portant confirmation dudit arrêté du gouvernement " \
-                             u"Wallon du 22 avril 2004;</p>" \
-                             u"<p>&nbsp;</p>" \
-                             u"<p>Vu l'article 123 de la nouvelle Loi communale;</p>" \
-                             u"<p>&nbsp;</p>" \
-                             u"<p>Vu l'article L1123-23 du code de la Démocratie locale et de la Décentralisation;</p>"
+COLLEGE_DEFAULT_MOTIVATION = "<p>Vu l'arrêté du Gouvernement Wallon du 22 avril 2004 portant codification de la " \
+                             "législation relative aux pouvoirs locaux; dit le code de la démocratie locale et de " \
+                             "la décentralisation;" \
+                             "</p><p>&nbsp;</p>" \
+                             "<p>Vu le décret du 27 mai 2004 portant confirmation dudit arrêté du gouvernement " \
+                             "Wallon du 22 avril 2004;</p>" \
+                             "<p>&nbsp;</p>" \
+                             "<p>Vu l'article 123 de la nouvelle Loi communale;</p>" \
+                             "<p>&nbsp;</p>" \
+                             "<p>Vu l'article L1123-23 du code de la Démocratie locale et de la Décentralisation;</p>"
 
-COUNCIL_DEFAULT_MOTIVATION = u"<p>Le Conseil,</p>" \
-                             u"<p>&nbsp;</p>" \
-                             u"<p>Vu, d'une part, l'arrêté du Gouvernement Wallon du 22 avril 2004 portant " \
-                             u"codification de la législation relative aux pouvoirs locaux et d'autre part, " \
-                             u"le décret du 27 mai 2004 portant confirmation dudit arrêté;</p>" \
-                             u"<p>&nbsp;</p>" \
-                             u"<p>Vu l'article 117 de la nouvelle Loi Communale;</p>" \
-                             u"<p>&nbsp;</p>" \
-                             u"<p>Vu l'article L 1122-30 du Code de Démocratie Locale et de la Décentralisation;</p>"
+COUNCIL_DEFAULT_MOTIVATION = "<p>Le Conseil,</p>" \
+                             "<p>&nbsp;</p>" \
+                             "<p>Vu, d'une part, l'arrêté du Gouvernement Wallon du 22 avril 2004 portant " \
+                             "codification de la législation relative aux pouvoirs locaux et d'autre part, " \
+                             "le décret du 27 mai 2004 portant confirmation dudit arrêté;</p>" \
+                             "<p>&nbsp;</p>" \
+                             "<p>Vu l'article 117 de la nouvelle Loi Communale;</p>" \
+                             "<p>&nbsp;</p>" \
+                             "<p>Vu l'article L 1122-30 du Code de Démocratie Locale et de la Décentralisation;</p>"
