@@ -15,10 +15,6 @@ import os
 from Products.MeetingLalouviere.config import PROJECTNAME
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 
-from collective.eeafaceted.dashboard.utils import addFacetedCriteria
-from dexterity.localroles.utils import add_fti_configuration
-from plone import api
-
 logger = logging.getLogger('MeetingLalouviere: setuphandlers')
 
 
@@ -45,12 +41,9 @@ def logStep(method, context):
 
 
 def isMeetingLalouviereConfigureProfile(context):
-    return context.readDataFile("MeetingLalouviere_examples_fr_marker.txt") or \
-        context.readDataFile("MeetingLalouviere_cpas_marker.txt") or \
+    return context.readDataFile("MeetingLalouviere_lalouviere_marker.txt") or \
         context.readDataFile("MeetingLalouviere_bourgmestre_marker.txt") or \
         context.readDataFile("MeetingLalouviere_codir_marker.txt") or \
-        context.readDataFile("MeetingLalouviere_ca_marker.txt") or \
-        context.readDataFile("MeetingLalouviere_coges_marker.txt") or \
         context.readDataFile("MeetingLalouviere_testing_marker.txt")
 
 
@@ -130,47 +123,6 @@ def reorderSkinsLayers(context, site):
     site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
 
 
-def _configureDexterityLocalRolesField():
-    """Configure field meetingadvice.advice_group for meetingadvicefinances."""
-    # meetingadvicefinances
-    roles_config = {
-        'advice_group': {
-            'advice_given': {
-                'advisers': {'roles': [], 'rel': ''}},
-            'advicecreated': {
-                u'financialprecontrollers': {'roles': [u'Editor', u'Reviewer'], 'rel': ''}},
-            'proposed_to_financial_controller': {
-                u'financialcontrollers': {'roles': [u'Editor', u'Reviewer'], 'rel': ''}},
-            'proposed_to_financial_editor': {
-                u'financialeditors': {'roles': [u'Editor', u'Reviewer'], 'rel': ''}},
-            'proposed_to_financial_manager': {
-                u'financialmanagers': {'roles': [u'Editor', u'Reviewer'], 'rel': ''}},
-            'financial_advice_signed': {
-                u'financialmanagers': {'roles': [u'Reviewer'], 'rel': ''}},
-            'proposed_to_financial_reviewer': {
-                u'financialreviewers': {'roles': [u'Editor', u'Reviewer'], 'rel': ''}
-            }
-        }
-    }
-    msg = add_fti_configuration(portal_type='meetingadvicefinances',
-                                configuration=roles_config['advice_group'],
-                                keyname='advice_group',
-                                force=True)
-    if msg:
-        logger.warn(msg)
-
-
-def _addFacetedCriteria(context, site):
-    """ """
-    logStep("addFacetedCriteria", context)
-    tool = api.portal.get_tool('portal_plonemeeting')
-    xmlpath = os.path.join(os.path.dirname(__file__),
-                           'faceted_conf/meetingLalouviere_dashboard_items_widgets.xml')
-    for cfg in tool.objectValues('MeetingConfig'):
-        obj = cfg.searches.searches_items
-        addFacetedCriteria(obj, xmlpath)
-
-
 def reorderCss(context):
     """
        Make sure CSS are correctly reordered in portal_css so things
@@ -188,7 +140,7 @@ def reorderCss(context):
     css = ['plonemeeting.css',
            'meeting.css',
            'meetingitem.css',
-           'meetingLalouviere.css',
+           'meetinglalouviere.css',
            'imioapps.css',
            'plonemeetingskin.css',
            'imioapps_IEFixes.css',
