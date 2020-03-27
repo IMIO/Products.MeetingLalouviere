@@ -21,6 +21,22 @@
             provides="Products.GenericSetup.interfaces.EXTENSION"
             for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+    <genericsetup:registerProfile
+            name="zcodir"
+            title="PloneMeeting / CoDir"
+            directory="profiles/zcodir"
+            description="PloneMeeting for CoDir of City of La Louviere (Belgium)"
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+            for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <genericsetup:registerProfile
+            name="zbourgmestre"
+            title="PloneMeeting / Bourgmestre"
+            directory="profiles/zbourgmestre"
+            description="PloneMeeting for Bourgmestre of City of La Louviere (Belgium)"
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+            for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
     <genericsetup:upgradeStep
             title="Go to MeetingLalouviere 4.1"
             description=""
