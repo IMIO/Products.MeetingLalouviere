@@ -12,7 +12,7 @@
        <tal:block define="dummy view/createItem" />
       </div>
       <div tal:condition="not: mayadd">
-      Nope...
+       <p>Nope...</p>
       </div>
      </tal:block>
     </metal:body>
