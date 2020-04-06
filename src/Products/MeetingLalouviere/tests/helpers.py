@@ -86,7 +86,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     )
     BACK_TO_WF_PATH_1 = {
         # Meeting
-        "created": ("backToPublished", "backToFrozen", "backToCreated",),
+        "created": ("backToDecided", "backToPublished", "backToFrozen", "backToCreated",),
         # MeetingItem
         "itemcreated": (
             "backToItemFrozen",
