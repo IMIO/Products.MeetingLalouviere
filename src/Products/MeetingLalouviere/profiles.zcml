@@ -41,7 +41,7 @@
             title="Go to MeetingLalouviere 4.1"
             description=""
             source="4.0"
-            destination="4.1"
+            destination="4.1.0"
             handler="Products.MeetingLalouviere.migrations.migrate_to_4_1.migrate"
             profile="Products.MeetingLalouviere:default"/>
 </configure>
