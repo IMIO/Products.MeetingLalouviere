@@ -18,7 +18,7 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
             "profile-collective.iconifiedcategory:default", "actions"
         )
         self.ps.runImportStepFromProfile(
-            "profile-Products.MeetingLalouviere:default", "workflows"
+            "profile-Products.MeetingLalouviere:default", "workflow"
         )
         super(Migrate_To_4_1, self).run(
             extra_omitted=["Products.MeetingLalouviere:default"]
