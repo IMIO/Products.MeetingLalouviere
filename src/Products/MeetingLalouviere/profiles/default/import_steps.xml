@@ -5,7 +5,7 @@
             id="MeetingLalouviere-postInstall"
             handler="Products.MeetingLalouviere.setuphandlers.postInstall"
             title="manual coded post-install for MeetingLalouviere"
-            version="2016-09-23T16:04:41.523295">
+            version="2020-04-08T12:04:41.523295">
         <dependency step="MeetingLalouviere-QI-dependencies"/>
         manual coded post-install for MeetingLalouviere
     </import-step>
@@ -14,10 +14,9 @@
             id="MeetingLalouviere-reorderCss"
             handler="Products.MeetingLalouviere.setuphandlers.reorderCss"
             title="Make sure CSS order is correct."
-            version="2013-04-22T13:00:00.000000">
+            version="2020-04-08T13:00:00.000000">
         <dependency step="MeetingLalouviere-postInstall"/>
         Make sure CSS order is correct.
     </import-step>
 
 </import-steps>
- 
