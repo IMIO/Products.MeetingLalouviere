@@ -149,7 +149,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             creation of some items, and ends by closing a meeting.
         """
         self.changeUser("admin")
-        self.add_commission_orgs()
+        self.add_commission_plone_groups()
         self.setMeetingConfig(self.meetingConfig2.getId())
         # commission categories
         commission = self.create(
@@ -186,7 +186,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             "MeetingItem", title="The first item", autoAddCategory=False
         )
         self.assertTrue(item1.mayQuickEdit("observations"))
-        item1.setProposingGroup(self.ag.UID())
+        item1.setProposingGroup(self.developers_uid)
         self.addAnnex(item1)
         # The creator can add a decision annex on created item
         self.addAnnex(item1, relatedTo="item_decision")

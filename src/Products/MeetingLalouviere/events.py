@@ -70,14 +70,11 @@ def onItemLocalRolesUpdated(item, event):
             or not item.queryState() in ('item_in_committee', 'item_in_council'):
         return
     # existing commission Plone groups
-    commissionEditorsGroupIds = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
+    plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
     # now add the new local roles
-    for groupId in commissionEditorsGroupIds:
-        if item.getCategory().startswith(groupId):
+    for group_id in plone_group_ids:
+        if item.getCategory().startswith(group_id):
             # we found the relevant group
-            org_uid = org_id_to_uid(groupId)
-            org = get_organization(org_uid)
-            if org:
-                group_id = "{}_{}".format(org.UID(), COMMISSION_EDITORS_SUFFIX)
-                item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
-                return
+            group_id = "{}_{}".format(group_id, COMMISSION_EDITORS_SUFFIX)
+            item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
+            return

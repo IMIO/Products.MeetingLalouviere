@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
+from plone import api
 
 from Products.MeetingCommunes.tests.MeetingCommunesTestCase import (
     MeetingCommunesTestCase,
@@ -47,33 +48,21 @@ class MeetingLalouviereTestCase(
 
     layer = MLL_TESTING_PROFILE_FUNCTIONAL
 
-    def add_commission_orgs(self):
+    def add_commission_plone_groups(self):
         self.changeUser("admin")
-        ag = self.create(
-            "organization", id="commission-ag", title="Commission AG", acronym=u"AG"
+        ag = api.group.create(
+            groupname="commission-ag_{}".format(COMMISSION_EDITORS_SUFFIX),
+            title='AG Commission Editors',
         )
-        self._select_organization(ag.UID())
         self.ag = ag
-        self._addPrincipalToGroup('pmCreator1', get_plone_group_id(ag.UID(), 'creators'))
-        self._addPrincipalToGroup('pmManager', get_plone_group_id(ag.UID(), 'creators'))
+        api.group.add_user(ag.id, username='commissioneditor')
 
-        self._addPrincipalToGroup('pmDirector1', get_plone_group_id(ag.UID(), 'directors'))
-        self._addPrincipalToGroup('commissioneditor', get_plone_group_id(ag.UID(), COMMISSION_EDITORS_SUFFIX))
-
-        pat = self.create(
-            "organization",
-            id="commission-patrimoine",
+        pat = api.group.create(
+            groupname="commission-patrimoine_{}".format(COMMISSION_EDITORS_SUFFIX),
             title="Commission Patrimoine",
-            acronym=u"PAT",
         )
-        self._select_organization(pat.UID())
         self.pat = pat
-
-        self._addPrincipalToGroup('pmCreator2', get_plone_group_id(pat.UID(), 'creators'))
-        self._addPrincipalToGroup('pmManager', get_plone_group_id(pat.UID(), 'creators'))
-
-        self._addPrincipalToGroup('pmDirector2', get_plone_group_id(pat.UID(), 'directors'))
-        self._addPrincipalToGroup('commissioneditor2', get_plone_group_id(pat.UID(), 'commissioneditors'))
+        api.group.add_user(pat.id, username='commissioneditor2')
 
     def _turnUserIntoPrereviewer(self, member):
         """
