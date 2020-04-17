@@ -11,6 +11,7 @@ class testCustomSearches(MeetingLalouviereTestCase):
 
     """
     def test_pm_SearchItemsOfMyCommissions(self):
+        self.add_commission_plone_groups()
         """Test the 'items-of-my-commissions' adapter that returns items using category
          if it matches the right commissions for the user."""
         cfg = self.meetingConfig2
@@ -36,7 +37,7 @@ class testCustomSearches(MeetingLalouviereTestCase):
             {
                 "portal_type": {"query": "MeetingItemCouncil"},
                 "getCategory": {
-                    "query": ["developers", "developers-1er-supplement"]
+                    "query": ["commission-ag", "commission-ag-1er-supplement"]
                 },
             },
         )
@@ -51,8 +52,8 @@ class testCustomSearches(MeetingLalouviereTestCase):
                 "portal_type": {"query": "MeetingItemCouncil"},
                 "getCategory": {
                     "query": [
-                        "vendors",
-                        "vendors-1er-supplement"
+                        "commission-patrimoine",
+                        "commission-patrimoine-1er-supplement"
                     ]
                 },
             },
@@ -67,12 +68,7 @@ class testCustomSearches(MeetingLalouviereTestCase):
             {
                 "portal_type": {"query": "MeetingItemCouncil"},
                 "getCategory": {
-                    "query": [
-                        "developers",
-                        "developers-1er-supplement",
-                        "vendors",
-                        "vendors-1er-supplement"
-                    ]
+                    "query": []
                 },
             },
         )

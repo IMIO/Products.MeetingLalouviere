@@ -2087,11 +2087,13 @@ class SearchItemsOfMyCommissionsAdapter(CompoundCriterionBaseAdapter):
         # retrieve the commissions which the current user is editor for.
         # a commission groupId match a category but with an additional suffix (COMMISSION_EDITORS_SUFFIX)
         # so we remove that suffix
-        organisations = self.tool.get_orgs_for_user(suffixes=[COMMISSION_EDITORS_SUFFIX])
+        groups = self.tool.get_plone_groups_for_user()
         cats = []
-        for organisation in organisations:
-            cats.append(organisation.id)
-            cats.append("{}-1er-supplement".format(organisation.id))
+        for group in groups:
+            if group.endswith(COMMISSION_EDITORS_SUFFIX):
+                cat_id = group.split('_')[0]
+                cats.append(cat_id)
+                cats.append("{}-1er-supplement".format(cat_id))
 
         return {
             "portal_type": {"query": self.cfg.getItemTypeName()},
