@@ -460,16 +460,9 @@ class LLCustomMeeting(CustomMeeting):
         mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
-        firstSupplCatIds = self.getFirstSupplCategories()
-        secondSupplCatIds = self.getSecondSupplCategories()
-        thirdSupplCatIds = self.getThirdSupplCategories()
         for cat in categories:
             catId = cat.getId()
-            if (
-                catId not in firstSupplCatIds
-                and catId not in secondSupplCatIds
-                and catId not in thirdSupplCatIds
-            ):
+            if not catId.endswith("supplement"):
                 res.append(catId)
         return res
 
