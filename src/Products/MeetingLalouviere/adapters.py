@@ -67,9 +67,7 @@ from Products.MeetingLalouviere.interfaces import (
 )
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
-from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.MeetingItem import MeetingItem
-from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
 from Products.PloneMeeting.adapters import (
     ItemPrettyLinkAdapter,
     CompoundCriterionBaseAdapter,
@@ -920,27 +918,22 @@ class LLCustomMeetingItem(CustomMeetingItem):
         else:
             return False
 
-    security.declarePublic("getCouncilItemRef")
-
-    def getCouncilItemRef(self):
-        if not self.context.hasMeeting():
-            return "no meeting"
-
-        meeting = self.context.getMeeting()
-        if meeting.getStartDate():
-            start_date = meeting.getStartDate()
-        else:
-            start_date = meeting.getDate()
-
-        serviceCat = (
-            self.context.getProposingGroup(theObject=True)
-            .getAcronym()
-            .split("/")[0]
-            .strip()
+    def _get_default_item_ref(self, meeting_date, service, item_number):
+        return "{service}/{meetingdate}-{itemnumber}".format(
+            meetingdate=meeting_date,
+            service=service,
+            itemnumber=item_number
         )
 
-        itemNumber = self.context.getItemNumber(for_display=True)
+    def _get_college_item_ref(self, meeting, meeting_date, service, item_number):
+        return "{meetingdate}-{meetingnumber}/{service}/{itemnumber}".format(
+            meetingdate=meeting_date,
+            meetingnumber=meeting.getMeetingNumber(),
+            service=service,
+            itemnumber=item_number
+        )
 
+    def _get_council_item_ref(self, meeting, meeting_date, service, item_number):
         if self.context.getPrivacy() == "secret":
             secretnum = len(meeting.getItems(unrestricted=True)) - len(
                 meeting.getItems(
@@ -951,48 +944,40 @@ class LLCustomMeetingItem(CustomMeetingItem):
             )
 
             res = "{date}-HC{secretnum}/{srv}/{itemnum}".format(
-                date=start_date.strftime("%Y%m%d"),
+                date=meeting_date,
                 secretnum=secretnum,
-                srv=serviceCat,
-                itemnum=itemNumber,
+                srv=service,
+                itemnum=item_number,
             )
         else:
             res = "{date}/{srv}/{itemnum}".format(
-                date=start_date.strftime("%Y%m%d"), srv=serviceCat, itemnum=itemNumber
+                date=meeting_date, srv=service, itemnum=item_number
             )
         return res
 
+    security.declarePublic("compute_item_ref")
 
-class LLCustomMeetingGroup(MeetingGroup):
-    """Adapter that adapts a meetingGroup implementing IMeetingGroup to the
-       interface IMeetingGroupCustom."""
+    def compute_item_ref(self):
+        if not self.context.hasMeeting():
+            return ""
 
-    implements(IMeetingGroupCustom)
-    security = ClassSecurityInfo()
+        meeting = self.context.getMeeting()
+        if meeting.getStartDate():
+            meeting_date = meeting.getStartDate()
+        else:
+            meeting_date = meeting.getDate()
 
-    def __init__(self, item):
-        self.context = item
+        meeting_date.strftime("%Y%m%d")
+        service = (self.context.getProposingGroup(theObject=True)
+                   .acronym.split("/")[0].strip().upper())
+        item_number = self.context.getItemNumber(for_display=True)
 
-    security.declarePrivate("validate_signatures")
-
-    def validate_signatures(self, value):
-        """Validate the MeetingGroup.signatures field."""
-        if value.strip() and not len(value.split("\n")) == 12:
-            return self.utranslate("signatures_length_error", domain="PloneMeeting")
-
-    MeetingGroup.validate_signatures = validate_signatures
-
-    def listEchevinServices(self):
-        """Returns a list of groups that can be selected on an group (without isEchevin)."""
-        res = []
-        tool = getToolByName(self, "portal_plonemeeting")
-        # Get every Plone group related to a MeetingGroup
-        for group in tool.getMeetingGroups():
-            res.append((group.id, group.getProperty("title")))
-
-        return DisplayList(tuple(res))
-
-    MeetingGroup.listEchevinServices = listEchevinServices
+        if self.context.portal_type == "MeetingItemCollege":
+            return self._get_college_item_ref(meeting, meeting_date, service, item_number)
+        elif self.context.portal_type == "MeetingItemCouncil":
+            return self._get_council_item_ref(meeting, meeting_date, service, item_number)
+        else:
+            return self._get_default_item_ref(meeting_date, service, item_number)
 
 
 class LLMeetingConfig(CustomMeetingConfig):
@@ -1921,7 +1906,6 @@ class LLCustomToolPloneMeeting(CustomToolPloneMeeting):
 InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeeting)
 InitializeClass(LLMeetingConfig)
-InitializeClass(LLCustomMeetingGroup)
 InitializeClass(MeetingCollegeLalouviereWorkflowActions)
 InitializeClass(MeetingCollegeLalouviereWorkflowConditions)
 InitializeClass(MeetingItemCollegeLalouviereWorkflowActions)

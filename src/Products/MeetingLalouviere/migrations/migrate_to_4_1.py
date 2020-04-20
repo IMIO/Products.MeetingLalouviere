@@ -34,6 +34,12 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
 
         set_registry_functions(functions_result)
 
+    def reapply_meetingconfigs_config(self):
+        # fix item reference TAL
+        for cfg in self.tool.objectValues('MeetingConfig'):
+            cfg.setItemReferenceFormat("python: item.adapted().compute_item_ref()")
+            cfg.reindexObject()
+
     def run(self, **kwargs):
         self.ps.upgradeProfile("profile-plonetheme.imioapps:default")
         # reapply the actions.xml of collective.iconifiedcategory
@@ -55,6 +61,7 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
             ignore_dependencies=True,
             dependency_strategy=DEPENDENCY_STRATEGY_NEW,
         )
+        self.reapply_meetingconfigs_config()
 
 
 def migrate(context):
