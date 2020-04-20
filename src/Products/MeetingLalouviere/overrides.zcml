@@ -82,11 +82,6 @@
            factory="Products.MeetingLalouviere.adapters.LLMeetingConfig"
            provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
 
-  <!-- Customizations for every MeetingGroups -->
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingGroup"
-           factory="Products.MeetingLalouviere.adapters.LLCustomMeetingGroup"
-           provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
-
   <!-- Customizations for ToolPloneMeeting -->
   <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
            factory="Products.MeetingLalouviere.adapters.LLCustomToolPloneMeeting"
