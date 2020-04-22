@@ -2,20 +2,22 @@
 from copy import deepcopy
 
 from Products.MeetingCommunes.profiles.examples_fr import import_data as mc_import_data
-
 from Products.PloneMeeting.profiles import (
     AnnexTypeDescriptor,
     ItemAnnexTypeDescriptor,
     ItemAnnexSubTypeDescriptor,
     CategoryDescriptor,
-    OrgDescriptor)
+    OrgDescriptor,
+)
 
 data = deepcopy(mc_import_data.data)
 
 # Users and groups -------------------------------------------------------------
 # no user
-data.orgs.append(OrgDescriptor('secretaire-communal', 'Secrétaire Communal', u'Sec'))
-data.orgs.append(OrgDescriptor('secretaire-communal-adj', 'Secrétaire Communal Adjoint', u'Sec-Adj'))
+data.orgs.append(OrgDescriptor("secretaire-communal", "Secrétaire Communal", u"Sec"))
+data.orgs.append(
+    OrgDescriptor("secretaire-communal-adj", "Secrétaire Communal Adjoint", u"Sec-Adj")
+)
 
 # <editor-fold desc="Annex types">
 overheadAnalysisSubtype = ItemAnnexSubTypeDescriptor(
@@ -156,7 +158,7 @@ collegeMeeting.itemAdviceViewStates = [
     "proposed_to_alderman",
     "validated",
     "presented",
-    "itemfrozen"
+    "itemfrozen",
 ]
 collegeMeeting.workflowAdaptations = [
     "refused",
@@ -170,17 +172,23 @@ collegeMeeting.itemAdviceStates = [
 
 collegeMeeting.usedItemAttributes = (
     u"budgetInfos",
-    u"observations",
-    u"toDiscuss",
     u"motivation",
+    u"toDiscuss",
+    u"observations",
+    u"manuallyLinkedItems",
+    u"itemTags",
     u"neededFollowUp",
     u"providedFollowUp",
-    u"description",
-    u"observations",
-    u"itemTags",
-    u"itemIsSigned",
 )
 
+collegeMeeting.usedMeetingAttributes = (
+    u"startDate",
+    u"endDate",
+    u"signatures",
+    u"assembly",
+    u"place",
+    u"observations",
+)
 
 collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 
@@ -285,12 +293,46 @@ councilMeeting.onMeetingTransitionItemActionToExecute = (
 )
 
 councilMeeting.usedItemAttributes = (
-    u"description",
+    u"budgetInfos",
+    u"motivation",
+    u"oralQuestion",
+    u"itemInitiator",
     u"observations",
-    u"toDiscuss",
+    u"manuallyLinkedItems",
+    u"privacy",
     u"itemTags",
-    u"itemIsSigned",
+    u"interventions",
     u"commissionTranscript",
+)
+
+councilMeeting.usedMeetingAttributes = (
+    u"startDate",
+    u"endDate",
+    u"signatures",
+    u"assembly",
+    u"place",
+    u"observations",
+    u"preMeetingDate",
+    u"preMeetingPlace",
+    u"preMeetingAssembly",
+    u"preMeetingDate_2",
+    u"preMeetingPlace_2",
+    u"preMeetingAssembly_2",
+    u"preMeetingDate_3",
+    u"preMeetingPlace_3",
+    u"preMeetingAssembly_3",
+    u"preMeetingDate_4",
+    u"preMeetingPlace_4",
+    u"preMeetingAssembly_4",
+    u"preMeetingDate_5",
+    u"preMeetingPlace_5",
+    u"preMeetingAssembly_5",
+    u"preMeetingDate_6",
+    u"preMeetingPlace_6",
+    u"preMeetingAssembly_6",
+    u"preMeetingDate_7",
+    u"preMeetingPlace_7",
+    u"preMeetingAssembly_7",
 )
 
 categories = [
@@ -495,6 +537,10 @@ categories = [
     ),
 ]
 councilMeeting.categories = categories
+councilMeeting.useGroupsAsCategories = False
+
+for recurringItem in councilMeeting.recurringItems:
+    recurringItem.category = "recurrent"
 
 councilMeeting.annexTypes = [
     financialAnalysis,
@@ -510,5 +556,30 @@ councilMeeting.annexTypes = [
 councilMeeting.itemBudgetInfosStates = ()
 councilMeeting.meetingAppDefaultView = "searchallitems"
 councilMeeting.itemAdviceViewStates = []
+councilMeeting.availableItemsListVisibleColumns = [
+    "Creator",
+    "CreationDate",
+    "getProposingGroup",
+    "getCategory",
+    "actions",
+]
+councilMeeting.itemsListVisibleColumns = [
+    "Creator",
+    "CreationDate",
+    "review_state",
+    "getProposingGroup",
+    "getCategory",
+    "actions",
+]
+# columns shown on items listings.  Order is important!
+councilMeeting.itemColumns = [
+    "Creator",
+    "CreationDate",
+    "review_state",
+    "getProposingGroup",
+    "getCategory",
+    "linkedMeetingDate",
+    "actions",
+]
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
