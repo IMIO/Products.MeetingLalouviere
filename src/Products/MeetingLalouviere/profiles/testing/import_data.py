@@ -43,6 +43,9 @@ pmAlderman = UserDescriptor(
     "pmAlderman", [], email="pmalderman@plonemeeting.org", fullname="M. PMAlderman One"
 )
 
+pmFollowup1 = UserDescriptor("pmFollowup1", [])
+pmFollowup2 = UserDescriptor("pmFollowup2", [])
+
 # Inherited users
 pmCreator1 = deepcopy(pm_import_data.pmCreator1)
 pmReviewer1 = deepcopy(pm_import_data.pmReviewer1)
@@ -72,6 +75,7 @@ developers.followupwriters.append(pmManager)
 developers.budgetimpactreviewers.append(pmManager)
 developers.alderman.append(pmManager)
 developers.alderman.append(pmAlderman)
+developers.followupwriters.append(pmFollowup1)
 
 vendors = data.orgs[1]
 vendors.serviceheads.append(pmReviewer2)
@@ -88,6 +92,7 @@ vendors.followupwriters.append(pmManager)
 vendors.budgetimpactreviewers.append(pmManager)
 vendors.alderman.append(pmManager)
 vendors.alderman.append(pmAlderman)
+developers.followupwriters.append(pmFollowup2)
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
@@ -129,8 +134,9 @@ collegeMeeting.usedItemAttributes = (
     u"toDiscuss",
     u"itemTags",
     u"itemIsSigned",
+    u"neededFollowUp",
+    u"providedFollowUp",
 )
-
 
 collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 

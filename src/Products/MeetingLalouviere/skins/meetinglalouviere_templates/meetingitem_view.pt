@@ -546,10 +546,6 @@
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
-    <tal:itemNavigation tal:condition="nocall:meeting">
-      <tal:itemNavigation replace="structure context/@@item-navigation-widget" />
-    </tal:itemNavigation>
-
     <tal:comment replace="nothing">XXX follow-up</tal:comment>
     <tal:followUp condition="python: 'neededFollowUp' in usedAttrs and here.queryState() in cfg.getItemDecidedStates()">
     <tal:defines define="followUp context/getFollowUp">
@@ -585,6 +581,10 @@
      <p>&nbsp;</p>
     </tal:defines>
     </tal:followUp>
+
+    <tal:itemNavigation tal:condition="nocall:meeting">
+      <tal:itemNavigation replace="structure context/@@item-navigation-widget" />
+    </tal:itemNavigation>
 
     <tal:comment replace="nothing">Fields that appear only if the item is defined in a configuration</tal:comment>
     <tal:itemInConfig condition="context/isDefinedInTool">

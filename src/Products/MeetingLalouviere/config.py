@@ -64,6 +64,7 @@ LALOUVIEREROLES = {
     "divisionheads": "MeetingDivisionHead",
     "directors": "MeetingDirector",
     "alderman": "MeetingAlderman",
+    "followupwriters": "MeetingFollowUpWriter",
 }
 PMconfig.MEETINGROLES.update(LALOUVIEREROLES)
 

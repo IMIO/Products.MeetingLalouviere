@@ -423,8 +423,7 @@ def update_item_schema(baseSchema):
             optional=True,
             widget=RichWidget(
                 rows=15,
-                condition="python: here.attributeIsUsed('neededFollowUp') and "
-                          "here.queryState() in here.itemDecidedStates",
+                condition="python: here.attributeIsUsed('neededFollowUp')",
                 label='NeededFollowUp',
                 label_msgid='MeetingLalouviere_label_neededFollowUp',
                 description='Follow-up needed for this item',
@@ -443,8 +442,7 @@ def update_item_schema(baseSchema):
             optional=True,
             widget=RichWidget(
                 rows=15,
-                condition="python: here.attributeIsUsed('providedFollowUp') and "
-                          "here.queryState() in here.itemDecidedStates",
+                condition="python: here.attributeIsUsed('providedFollowUp')",
                 label='ProvidedFollowUp',
                 label_msgid='MeetingLalouviere_label_providedFollowUp',
                 description='Follow-up provided for this item',
