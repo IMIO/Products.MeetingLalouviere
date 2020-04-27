@@ -960,17 +960,17 @@ class LLCustomMeetingItem(CustomMeetingItem):
         else:
             meeting_date = meeting.getDate()
 
-        meeting_date.strftime("%Y%m%d")
+        date_str = meeting_date.strftime("%Y%m%d")
         service = (self.context.getProposingGroup(theObject=True)
                    .acronym.split("/")[0].strip().upper())
         item_number = self.context.getItemNumber(for_display=True)
 
         if self.context.portal_type == "MeetingItemCollege":
-            return self._get_college_item_ref(meeting, meeting_date, service, item_number)
+            return self._get_college_item_ref(meeting, date_str, service, item_number)
         elif self.context.portal_type == "MeetingItemCouncil":
-            return self._get_council_item_ref(meeting, meeting_date, service, item_number)
+            return self._get_council_item_ref(meeting, date_str, service, item_number)
         else:
-            return self._get_default_item_ref(meeting_date, service, item_number)
+            return self._get_default_item_ref(date_str, service, item_number)
 
 
 class LLMeetingConfig(CustomMeetingConfig):
