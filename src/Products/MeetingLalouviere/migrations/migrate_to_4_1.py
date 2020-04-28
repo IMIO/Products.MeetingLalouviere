@@ -56,7 +56,7 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
                     "suffix_profile_reviewers",
                 ],
             )
-            cfg.getMeetingAnnexConfidentialVisibleFor(meetingAnnexConfidentialVisibleFor)
+            cfg.setMeetingAnnexConfidentialVisibleFor(meetingAnnexConfidentialVisibleFor)
             cfg.processForm()
             cfg.reindexObject()
 
