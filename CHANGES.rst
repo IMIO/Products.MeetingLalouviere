@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.1rc2 (unreleased)
+4.1.1rc2 (2020-04-29)
 ---------------------
 
 - Fixed item reference method.
