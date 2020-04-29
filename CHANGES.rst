@@ -6,7 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.1rc2 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Fixed item reference method.
+  [odelaere]
+- updated migration script to patch new workflow and its adaptations properly.
+  [odelaere]
 
 
 4.1.1rc1 (2020-04-24)
