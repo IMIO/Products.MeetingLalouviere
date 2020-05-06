@@ -457,7 +457,7 @@ class LLCustomMeeting(CustomMeeting):
     def getNormalCategories(self):
         """Returns the 'normal' categories"""
         tool = api.portal.get_tool('portal_plonemeeting')
-        mc = tool.getMeetingConfig(self.context)
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
@@ -473,7 +473,7 @@ class LLCustomMeeting(CustomMeeting):
     def getFirstSupplCategories(self):
         """Returns the '1er-supplement' categories"""
         tool = api.portal.get_tool('portal_plonemeeting')
-        mc = tool.getMeetingConfig(self.context)
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
@@ -489,7 +489,7 @@ class LLCustomMeeting(CustomMeeting):
     def getSecondSupplCategories(self):
         """Returns the '2eme-supplement' categories"""
         tool = api.portal.get_tool('portal_plonemeeting')
-        mc = tool.getMeetingConfig(self.context)
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
@@ -505,7 +505,7 @@ class LLCustomMeeting(CustomMeeting):
     def getThirdSupplCategories(self):
         """Returns the '3eme-supplement' categories"""
         tool = api.portal.get_tool('portal_plonemeeting')
-        mc = tool.getMeetingConfig(self.context)
+        mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
         for cat in categories:
