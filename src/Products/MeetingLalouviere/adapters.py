@@ -521,7 +521,7 @@ class LLCustomMeeting(CustomMeeting):
         normalCategories = self.getNormalCategories()
         firstSupplCategories = self.getFirstSupplCategories()
         firstNumber = (
-            self.getNumberOfItems(
+            self.adapted().getNumberOfItems(
                 itemUids, privacy=privacy, categories=normalCategories
             )
             + 1
@@ -542,12 +542,12 @@ class LLCustomMeeting(CustomMeeting):
         firstSupplCategories = self.getFirstSupplCategories()
         secondSupplCategories = self.getSecondSupplCategories()
         firstNumber = (
-            self.getNumberOfItems(
-                itemUids,
-                privacy=privacy,
-                categories=normalCategories + firstSupplCategories,
-            )
-            + 1
+                self.adapted().getNumberOfItems(
+                    itemUids,
+                    privacy=privacy,
+                    categories=normalCategories + firstSupplCategories,
+                )
+                + 1
         )
         return self.adapted().getPrintableItems(
             itemUids,
@@ -566,14 +566,14 @@ class LLCustomMeeting(CustomMeeting):
         secondSupplCategories = self.getSecondSupplCategories()
         thirdSupplCategories = self.getThirdSupplCategories()
         firstNumber = (
-            self.getNumberOfItems(
-                itemUids,
-                privacy=privacy,
-                categories=normalCategories
-                + firstSupplCategories
-                + secondSupplCategories,
-            )
-            + 1
+                self.adapted().getNumberOfItems(
+                    itemUids,
+                    privacy=privacy,
+                    categories=normalCategories
+                               + firstSupplCategories
+                               + secondSupplCategories,
+                )
+                + 1
         )
         return self.adapted().getPrintableItems(
             itemUids,
