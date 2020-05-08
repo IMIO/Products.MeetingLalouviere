@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.1rc4 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Fix sendMailIfRelevant.
+  [odelaere]
 
 
 4.1.1rc3 (2020-05-08)
