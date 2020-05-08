@@ -81,6 +81,7 @@ from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingGroupCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.model import adaptations
+from Products.PloneMeeting.utils import sendMailIfRelevant
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
@@ -456,7 +457,7 @@ class LLCustomMeeting(CustomMeeting):
 
     def getNormalCategories(self):
         """Returns the 'normal' categories"""
-        tool = api.portal.get_tool('portal_plonemeeting')
+        tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
@@ -472,7 +473,7 @@ class LLCustomMeeting(CustomMeeting):
 
     def getFirstSupplCategories(self):
         """Returns the '1er-supplement' categories"""
-        tool = api.portal.get_tool('portal_plonemeeting')
+        tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
@@ -488,7 +489,7 @@ class LLCustomMeeting(CustomMeeting):
 
     def getSecondSupplCategories(self):
         """Returns the '2eme-supplement' categories"""
-        tool = api.portal.get_tool('portal_plonemeeting')
+        tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
@@ -504,7 +505,7 @@ class LLCustomMeeting(CustomMeeting):
 
     def getThirdSupplCategories(self):
         """Returns the '3eme-supplement' categories"""
-        tool = api.portal.get_tool('portal_plonemeeting')
+        tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
         categories = mc.getCategories(onlySelectable=False)
         res = []
@@ -542,12 +543,12 @@ class LLCustomMeeting(CustomMeeting):
         firstSupplCategories = self.getFirstSupplCategories()
         secondSupplCategories = self.getSecondSupplCategories()
         firstNumber = (
-                self.adapted().getNumberOfItems(
-                    itemUids,
-                    privacy=privacy,
-                    categories=normalCategories + firstSupplCategories,
-                )
-                + 1
+            self.adapted().getNumberOfItems(
+                itemUids,
+                privacy=privacy,
+                categories=normalCategories + firstSupplCategories,
+            )
+            + 1
         )
         return self.adapted().getPrintableItems(
             itemUids,
@@ -566,14 +567,14 @@ class LLCustomMeeting(CustomMeeting):
         secondSupplCategories = self.getSecondSupplCategories()
         thirdSupplCategories = self.getThirdSupplCategories()
         firstNumber = (
-                self.adapted().getNumberOfItems(
-                    itemUids,
-                    privacy=privacy,
-                    categories=normalCategories
-                               + firstSupplCategories
-                               + secondSupplCategories,
-                )
-                + 1
+            self.adapted().getNumberOfItems(
+                itemUids,
+                privacy=privacy,
+                categories=normalCategories
+                + firstSupplCategories
+                + secondSupplCategories,
+            )
+            + 1
         )
         return self.adapted().getPrintableItems(
             itemUids,
@@ -913,9 +914,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
 
     def _get_default_item_ref(self, meeting_date, service, item_number):
         return "{service}/{meetingdate}-{itemnumber}".format(
-            meetingdate=meeting_date,
-            service=service,
-            itemnumber=item_number
+            meetingdate=meeting_date, service=service, itemnumber=item_number
         )
 
     def _get_college_item_ref(self, meeting, meeting_date, service, item_number):
@@ -923,7 +922,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
             meetingdate=meeting_date,
             meetingnumber=meeting.getMeetingNumber(),
             service=service,
-            itemnumber=item_number
+            itemnumber=item_number,
         )
 
     def _get_council_item_ref(self, meeting, meeting_date, service, item_number):
@@ -961,8 +960,12 @@ class LLCustomMeetingItem(CustomMeetingItem):
             meeting_date = meeting.getDate()
 
         date_str = meeting_date.strftime("%Y%m%d")
-        service = (self.context.getProposingGroup(theObject=True)
-                   .acronym.split("/")[0].strip().upper())
+        service = (
+            self.context.getProposingGroup(theObject=True)
+            .acronym.split("/")[0]
+            .strip()
+            .upper()
+        )
         item_number = self.context.getItemNumber(for_display=True)
 
         if self.context.portal_type == "MeetingItemCollege":
@@ -1646,11 +1649,14 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemCommunesWorkflowAct
 
     def doReturn_to_proposing_group(self, stateChange):
         """Send an email to the creator and to the officemanagers"""
-        self.context.sendMailIfRelevant(
-            "returnedToProposingGroup", "MeetingMember", isRole=True
+        sendMailIfRelevant(
+            self.context, "returnedToProposingGroup", "MeetingMember", isRole=True
         )
-        self.context.sendMailIfRelevant(
-            "returnedToProposingGroup", "MeetingOfficeManager", isRole=True
+        sendMailIfRelevant(
+            self.context,
+            "returnedToProposingGroup",
+            "MeetingOfficeManager",
+            isRole=True,
         )
 
     security.declarePrivate("doBackToItemInCommittee")
@@ -2068,7 +2074,7 @@ class SearchItemsOfMyCommissionsAdapter(CompoundCriterionBaseAdapter):
         cats = []
         for group in groups:
             if group.endswith(COMMISSION_EDITORS_SUFFIX):
-                cat_id = group.split('_')[0]
+                cat_id = group.split("_")[0]
                 cats.append(cat_id)
                 cats.append("{}-1er-supplement".format(cat_id))
 
