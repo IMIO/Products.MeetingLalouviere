@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.1rc3 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Fixed printing methods.
+  [duchenean]
 
 
 4.1.1rc2 (2020-04-29)
