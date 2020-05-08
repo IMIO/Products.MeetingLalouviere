@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.1rc3 (unreleased)
+4.1.1rc3 (2020-05-08)
 ---------------------
 
 - Fixed printing methods.
