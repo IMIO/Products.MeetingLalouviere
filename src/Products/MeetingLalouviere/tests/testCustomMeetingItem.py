@@ -30,9 +30,11 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 from Products.MeetingCommunes.tests.testCustomMeetingItem import (
     testCustomMeetingItem as mctcm,
 )
-
+from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.MeetingLalouviere.adapters import customWfAdaptations
 
 from DateTime import DateTime
+from imio.helpers.testing import testing_logger
 from zope.annotation import IAnnotations
 
 
@@ -79,7 +81,79 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         )
         self.assertEqual(newItem.getMotivation(), expected_new_item_motivation)
 
+    def test_showFollowUp(self):
+        self.changeUser("pmManager")
+        meeting = self._createMeetingWithItems()
+        self.assertGreater(len(meeting.getItems()), 5)
+        self.meetingConfig.setWorkflowAdaptations(customWfAdaptations)
+        performWorkflowAdaptations(self.meetingConfig)
 
+        for item in meeting.getItems():
+            self.assertEqual(item.queryState(), 'presented')
+            self.assertTrue(item.adapted().showFollowUp())
+            self.changeUser("pmFollowup1")
+            self.assertFalse(item.adapted().showFollowUp())
+            self.changeUser("pmManager")
+
+        self.freezeMeeting(meeting)
+
+        for item in meeting.getItems():
+            self.assertEqual(item.queryState(), 'itemfrozen')
+            self.assertTrue(item.adapted().showFollowUp())
+            self.changeUser("pmFollowup1")
+            self.assertFalse(item.adapted().showFollowUp())
+            self.changeUser("pmManager")
+
+        self.decideMeeting(meeting)
+        item = meeting.getItems()[0]
+        self.do(item, 'accept')
+        self.assertEqual(item.queryState(), 'accepted')
+        self.assertTrue(item.adapted().showFollowUp())
+        self.changeUser("pmFollowup1")
+        self.assertTrue(item.adapted().showFollowUp())
+
+        self.changeUser("pmManager")
+        item = meeting.getItems()[1]
+        self.do(item, 'accept_but_modify')
+        self.assertEqual(item.queryState(), 'accepted_but_modified')
+        self.assertTrue(item.adapted().showFollowUp())
+        self.changeUser("pmFollowup1")
+        self.assertTrue(item.adapted().showFollowUp())
+
+        self.changeUser("pmManager")
+        item = meeting.getItems()[2]
+        self.do(item, 'delay')
+        self.assertEqual(item.queryState(), 'delayed')
+        self.assertTrue(item.adapted().showFollowUp())
+        self.changeUser("pmFollowup1")
+        self.assertTrue(item.adapted().showFollowUp())
+
+        # returned_to_proposing_group items must not display followp
+        self.changeUser("pmManager")
+        item = meeting.getItems()[3]
+        self.do(item, 'return_to_proposing_group')
+        self.assertEqual(item.queryState(), 'returned_to_proposing_group')
+        self.assertFalse(item.adapted().showFollowUp())
+        self.changeUser("pmFollowup1")
+        self.assertFalse(item.adapted().showFollowUp())
+
+        self.changeUser("pmManager")
+        item = meeting.getItems()[4]
+        self.do(item, 'refuse')
+        self.assertEqual(item.queryState(), 'refused')
+        self.assertTrue(item.adapted().showFollowUp())
+        self.changeUser("pmFollowup1")
+        self.assertTrue(item.adapted().showFollowUp())
+
+        self.changeUser("pmManager")
+        item = meeting.getItems()[5]
+        self.do(item, 'remove')
+        self.assertEqual(item.queryState(), 'removed')
+        self.assertTrue(item.adapted().showFollowUp())
+        self.changeUser("pmFollowup1")
+        self.assertTrue(item.adapted().showFollowUp())
+
+        
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

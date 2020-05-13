@@ -85,8 +85,6 @@ from Products.PloneMeeting.utils import sendMailIfRelevant
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from Products.Archetypes.atapi import DisplayList
-from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
@@ -974,6 +972,11 @@ class LLCustomMeetingItem(CustomMeetingItem):
             return self._get_council_item_ref(meeting, date_str, service, item_number)
         else:
             return self._get_default_item_ref(date_str, service, item_number)
+
+    security.declarePublic("showFollowUp")
+
+    def showFollowUp(self):
+        return _checkPermission("MeetingLalouviere: Read followUp", self.context)
 
 
 class LLMeetingConfig(CustomMeetingConfig):

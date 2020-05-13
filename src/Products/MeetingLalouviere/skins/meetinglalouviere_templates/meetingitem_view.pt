@@ -547,7 +547,7 @@
     </tal:field>
 
     <tal:comment replace="nothing">XXX follow-up</tal:comment>
-    <tal:followUp condition="python: 'neededFollowUp' in usedAttrs and here.queryState() in cfg.getItemDecidedStates()">
+    <tal:followUp condition="python: 'neededFollowUp' in usedAttrs and here.adapted().showFollowUp()">
     <tal:defines define="followUp context/getFollowUp">
      <a name="followup"></a>
      <tal:noFollowUp condition="python: followUp == 'follow_up_no'">

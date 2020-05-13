@@ -139,14 +139,23 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEqual(item1.getDecision(), item1.getNeededFollowUp())
         item2.activateFollowUp()
         self.assertEqual(item2.getDecision(), item2.getNeededFollowUp())
-        self.do(item1, "accept")
-        self.assertEquals(item1.queryState(), "accepted")
-        self.assertEquals(item2.queryState(), "itemfrozen")
-        self.assertEquals(item1.queryState(), "accepted")
-        # manager can edit neededfollowup
+        # followup writer cannot edit follow up on frozen items
+        self.changeUser("pmFollowup1")
+        self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
+        self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
+        # manager can edit neededfollowup for frozen and decided items
+        self.changeUser("pmManager")
         self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
 
+        self.assertEquals(item2.queryState(), "itemfrozen")
+        self.assertTrue(item2.mayQuickEdit("neededFollowUp"))
+        self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
+
+        self.do(item1, "accept")
+        self.assertEquals(item1.queryState(), "accepted")
+        self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
+        self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmFollowup1")
         self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))

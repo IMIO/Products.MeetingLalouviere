@@ -787,26 +787,32 @@
   <permission-map name="MeetingLalouviere: Read followUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Read neededFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Read providedFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Write followUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Write neededFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Write providedFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
@@ -928,26 +934,32 @@
   <permission-map name="MeetingLalouviere: Read followUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Read neededFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Read providedFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Write followUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Write neededFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="MeetingLalouviere: Write providedFollowUp"
                   acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
