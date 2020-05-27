@@ -1,5 +1,5 @@
 Products.MeetingLalouviere Changelog
-==================================
+====================================
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 

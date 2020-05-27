@@ -47,14 +47,6 @@ def isMeetingLalouviereConfigureProfile(context):
         context.readDataFile("MeetingLalouviere_testing_marker.txt")
 
 
-def isMeetingLalouviereTestingProfile(context):
-    return context.readDataFile("MeetingLalouviere_testing_marker.txt")
-
-
-def isMeetingLalouviereMigrationProfile(context):
-    return context.readDataFile("MeetingLalouviere_migrations_marker.txt")
-
-
 def installMeetingLalouviere(context):
     """ Run the default profile"""
     if not isMeetingLalouviereConfigureProfile(context):
