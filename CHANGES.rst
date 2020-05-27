@@ -3,8 +3,8 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.1rc4 (unreleased)
----------------------
+4.1.1 (2020-05-27)
+------------------
 
 - Fix sendMailIfRelevant.
   [odelaere]
