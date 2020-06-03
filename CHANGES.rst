@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.2 (unreleased)
+4.1.2 (2020-06-03)
 ------------------
 
 - Fix budget reviewers access.
