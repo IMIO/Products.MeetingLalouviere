@@ -57,6 +57,18 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertTrue(item1.mayQuickEdit("observations"))
         annex1 = self.addAnnex(item1)
         self.addAnnex(item1, relatedTo="item_decision")
+        self.do(item1, "ask_advices_by_itemcreator")
+        self.assertEqual("itemcreated_waiting_advices", item1.queryState())
+        self.do(item1, "backToItemCreated")
+        self.do(item1, "proposeToBudgetImpactReviewer")
+        self.assertEqual("proposed_to_budgetimpact_reviewer", item1.queryState())
+        self.failIf(self.transitions(item1))  # He may trigger no more action
+        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+        self.changeUser("pmBudgetReviewer1")
+        self.assertTrue(item1.mayQuickEdit("observations"))
+        self.do(item1, "validateByBudgetImpactReviewer")
+        self.assertEqual("itemcreated", item1.queryState())
+        self.changeUser("pmCreator1")
         self.do(item1, "proposeToServiceHead")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action

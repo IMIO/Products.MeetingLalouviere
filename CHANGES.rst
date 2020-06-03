@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix budget reviewers access.
+  [odelaere]
 
 
 4.1.1 (2020-05-27)
