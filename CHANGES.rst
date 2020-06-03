@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed mayGenerateFinanceAdvice.
+  [duchenean]
 
 
 4.1.2 (2020-06-03)
