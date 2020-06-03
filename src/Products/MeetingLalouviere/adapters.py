@@ -82,6 +82,7 @@ from Products.PloneMeeting.interfaces import IMeetingGroupCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.utils import sendMailIfRelevant
+from Products.PloneMeeting.utils import org_id_to_uid
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
@@ -875,10 +876,11 @@ class LLCustomMeetingItem(CustomMeetingItem):
         """
           Condition used in the 'Avis DF' PodTemplate.
         """
+        finance_group_uid = org_id_to_uid(FINANCE_GROUP_ID)
         if (
-            FINANCE_GROUP_ID in self.context.adviceIndex
-            and self.context.adviceIndex[FINANCE_GROUP_ID]["delay"]
-            and self.context.adviceIndex[FINANCE_GROUP_ID]["type"]
+            finance_group_uid in self.context.adviceIndex
+            and self.context.adviceIndex[finance_group_uid]["delay"]
+            and self.context.adviceIndex[finance_group_uid]["type"]
             != NOT_GIVEN_ADVICE_VALUE
         ):
             return True
