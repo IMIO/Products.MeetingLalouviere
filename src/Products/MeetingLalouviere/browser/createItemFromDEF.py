@@ -5,6 +5,8 @@ from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.PloneMeeting.utils import org_id_to_uid
 
+from plone import api
+
 
 class CreateItemFromDEFView(BrowserView):
     """
@@ -21,6 +23,8 @@ class CreateItemFromDEFView(BrowserView):
         # every decisions coming out from the DEF intranet are about
         # def-gestion-administrative-personnel
         self.itemProposingGroup = org_id_to_uid('def-gestion-administrative-personnel')
+        self.plone_group = '{}_creators'.format(self.itemProposingGroup)
+        self.tool = api.portal.get_tool('portal_plonemeeting')
 
     def mayUserAddItem(self):
         """
@@ -32,9 +36,7 @@ class CreateItemFromDEFView(BrowserView):
         # the user must be creator for "def-gestion-administrative-personnel"
         if mtool.isAnonymousUser():
             raise Unauthorized
-        member = mtool.getAuthenticatedMember()
-        creator_group = "{}_creators".format(self.itemProposingGroup)
-        if creator_group not in member.getGroups():
+        if self.plone_group not in self.tool.get_plone_groups_for_user(org_uid=self.itemProposingGroup):
             raise Unauthorized
         return True
 

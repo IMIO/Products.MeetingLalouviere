@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix for DEF intranet.
+  [odelaere]
 
 
 4.1.3 (2020-06-03)
