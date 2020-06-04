@@ -15,9 +15,8 @@ class IsLoggedInForDEFView(BrowserView):
         super(BrowserView, self).__init__(context, request)
         self.context = context
         self.request = request
-        self.itemProposingGroup = org_id_to_uid('def-gestion-administrative-personnel')
-        self.plone_group = '{}_creators'.format(self.itemProposingGroup)
-        self.tool = api.portal.get_tool('portal_plonemeeting')
+        self.itemProposingGroup = '21ae631cbfee4fce8b9ecdd36b18a8e9'
+        self.plone_group = '21ae631cbfee4fce8b9ecdd36b18a8e9_creators'
 
     def isConnectedOrNotJSONResponse(self):
         """
@@ -33,6 +32,7 @@ class IsLoggedInForDEFView(BrowserView):
         else:
             # even if the user is logged in, we must check that he can add items
             # for the def-gestion-administrative-personnel group
-            if self.plone_group not in self.tool.get_plone_groups_for_user(org_uid=self.itemProposingGroup):
+            pmtool = api.portal.get_tool('portal_plonemeeting')
+            if self.plone_group not in pmtool.get_plone_groups_for_user(org_uid=self.itemProposingGroup):
                 return 'value_to_show({"value":"#mylogin"});'
             return 'value_to_show({"value":"#mysubmit"});'

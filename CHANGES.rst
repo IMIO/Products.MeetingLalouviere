@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use the UID from prod for DEF instead of trying to find it.
+  [odelaere]
 
 
 4.1.4 (2020-06-04)
