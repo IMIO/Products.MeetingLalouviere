@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.4.2 (unreleased)
+4.1.4.2 (2020-06-09)
 --------------------
 
 - Added DecisionSuite on item views.
