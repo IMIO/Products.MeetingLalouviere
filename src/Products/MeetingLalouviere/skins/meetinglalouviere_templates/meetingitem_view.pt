@@ -466,6 +466,11 @@
     <tal:field define="fieldName python: 'decision'; ajaxEdit python:True">
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
+
+    <tal:comment replace="nothing">DecisionSuite</tal:comment>
+    <tal:field define="fieldName python: 'decisionSuite'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
         
     <tal:comment replace="nothing">XXX Interventions</tal:comment>
     <tal:field define="fieldName python: 'interventions'; ajaxEdit python:True">

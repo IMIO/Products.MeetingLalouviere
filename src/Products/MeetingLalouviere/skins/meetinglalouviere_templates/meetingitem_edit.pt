@@ -124,6 +124,10 @@
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
 
+    <tal:field define="fieldName python: 'decisionSuite'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
+
     <tal:comment replace="nothing">XXX Interventions</tal:comment>
     <tal:field define="fieldName python: 'interventions'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
