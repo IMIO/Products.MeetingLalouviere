@@ -6,7 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.4.3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Display `groupsInCharge` on the item view : when field `MeetingItem.groupsInCharge` is used, from the proposingGroup when
+  `MeetingConfig.includeGroupsInChargeDefinedOnProposingGroup=True` or from the category when
+  `MeetingConfig.includeGroupsInChargeDefinedOnCategory=True`.
+  Set `autoInclude=True` by default instead `False` for `MeetingItem.getGroupsInCharge`
 
 
 4.1.4.2 (2020-06-09)
