@@ -1414,12 +1414,16 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         # first of all, the use must have the 'Review portal content permission'
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
-            # if the current item state is 'itemcreated', only the MeetingManager can validate
-            tool = getToolByName(self.context, "portal_plonemeeting")
-            if self.context.queryState() in ("itemcreated",) and not tool.isManager(
-                self.context
-            ):
-                res = False
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
+            else:
+                # if the current item state is 'itemcreated', only the MeetingManager can validate
+                tool = getToolByName(self.context, "portal_plonemeeting")
+                if self.context.queryState() in ("itemcreated",) and not tool.isManager(
+                    self.context
+                ):
+                    res = False
         return res
 
     security.declarePublic("mayWaitAdvices")
@@ -1429,16 +1433,11 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
           Check that the user has the 'Review portal content'
         """
         res = False
-        if not self.context.getCategory():
-            return No(
-                translate(
-                    "required_category_ko",
-                    domain="PloneMeeting",
-                    context=self.context.REQUEST,
-                )
-            )
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayProposeToServiceHead")
@@ -1448,16 +1447,11 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
           Check that the user has the 'Review portal content'
         """
         res = False
-        if not self.context.getCategory():
-            return No(
-                translate(
-                    "required_category_ko",
-                    domain="PloneMeeting",
-                    context=self.context.REQUEST,
-                )
-            )
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayProposeToOfficeManager")
@@ -1469,6 +1463,9 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayProposeToDivisionHead")
@@ -1480,6 +1477,9 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayProposeToDirector")
@@ -1491,6 +1491,9 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayProposeToDg")
@@ -1502,6 +1505,9 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayProposeToAlderman")
@@ -1513,6 +1519,9 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayValidateByBudgetImpactReviewer")
@@ -1524,6 +1533,9 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("mayProposeToBudgetImpactReviewer")
@@ -1533,16 +1545,11 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
           Check that the user has the 'Review portal content'
         """
         res = False
-        if not self.context.getCategory():
-            return No(
-                translate(
-                    "required_category_ko",
-                    domain="PloneMeeting",
-                    context=self.context.REQUEST,
-                )
-            )
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
 
@@ -1702,14 +1709,13 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
           If the item comes from the college, check that it has a defined
           'category'
         """
-        # In the case the item comes from the college
-        if not self.context.getCategory():
-            return False
-        if _checkPermission(ReviewPortalContent, self.context) and (
-            not self.context.isDefinedInTool()
-        ):
-            return True
-        return False
+        res = False
+        if _checkPermission(ReviewPortalContent, self.context):
+            res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
+        return res
 
     security.declarePublic("isLateFor")
 
@@ -1724,12 +1730,14 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
           And that the linked meeting is in the correct state
         """
         res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            if self.context.hasMeeting() and (
-                self.context.getMeeting().queryState()
-                in ("in_committee", "in_council", "closed")
-            ):
-                res = True
+        if _checkPermission(ReviewPortalContent, self.context) \
+                and self.context.hasMeeting() \
+                and self.context.getMeeting().queryState() \
+                in ("in_committee", "in_council", "closed"):
+            res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
     security.declarePublic("maySetItemInCouncil")
@@ -1740,11 +1748,14 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
           And that the linked meeting is in the correct state
         """
         res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            if self.context.hasMeeting() and (
-                self.context.getMeeting().queryState() in ("in_council", "closed")
-            ):
-                res = True
+        if _checkPermission(ReviewPortalContent, self.context) \
+                and self.context.hasMeeting() \
+                and self.context.getMeeting().queryState() \
+                in ("in_council", "closed"):
+            res = True
+            msg = self._check_required_data()
+            if msg is not None:
+                res = msg
         return res
 
 

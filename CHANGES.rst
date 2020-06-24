@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.4.4 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix WF conditions.
+  [odelaere]
 
 
 4.1.4.3 (2020-06-24)
