@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.4.4 (unreleased)
+4.1.4.4 (2020-06-24)
 --------------------
 
 - Fix WF conditions.
