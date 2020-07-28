@@ -50,12 +50,12 @@ PMconfig.EXTRA_GROUP_SUFFIXES = [
         "fct_title": u"Correspondants Financier",
         "fct_orgs": [],
     },
-    {"fct_id": u"serviceheads", "fct_title": u"Chef de Service", "fct_orgs": []},
-    {"fct_id": u"officemanagers", "fct_title": u"Chef de Bureau", "fct_orgs": []},
-    {"fct_id": u"divisionheads", "fct_title": u"Chef de Division", "fct_orgs": []},
-    {"fct_id": u"directors", "fct_title": u"Directeur", "fct_orgs": []},
-    {"fct_id": u"followupwriters", "fct_title": u"Rédacteur de Suivi", "fct_orgs": []},
-    {"fct_id": u"alderman", "fct_title": u"Échevin", "fct_orgs": []},
+    {"fct_id": u"serviceheads", "fct_title": u"Chef de Service", "fct_orgs": [], 'enabled': True},
+    {"fct_id": u"officemanagers", "fct_title": u"Chef de Bureau", "fct_orgs": [], 'enabled': True},
+    {"fct_id": u"divisionheads", "fct_title": u"Chef de Division", "fct_orgs": [], 'enabled': True},
+    {"fct_id": u"directors", "fct_title": u"Directeur", "fct_orgs": [], 'enabled': True},
+    {"fct_id": u"followupwriters", "fct_title": u"Rédacteur de Suivi", "fct_orgs": [], 'enabled': True},
+    {"fct_id": u"alderman", "fct_title": u"Échevin", "fct_orgs": [], 'enabled': True},
 ]
 
 LALOUVIEREROLES = {
