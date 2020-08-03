@@ -4,7 +4,7 @@ from copy import deepcopy
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 
-from Products.PloneMeeting.profiles import UserDescriptor
+from Products.PloneMeeting.profiles import UserDescriptor, PodTemplateDescriptor
 
 data = deepcopy(mc_import_data.data)
 
@@ -225,5 +225,14 @@ councilMeeting.usedItemAttributes = (
     u"itemIsSigned",
     u"commissionTranscript",
 )
+
+agendaCouncilTemplate = PodTemplateDescriptor('agendaTemplate', 'Ordre du jour')
+agendaCouncilTemplate.odt_file = 'council-oj.odt'
+agendaCouncilTemplate.pod_formats = ['odt', 'pdf', ]
+agendaCouncilTemplate.pod_portal_types = ['Meeting']
+agendaCouncilTemplate.tal_condition = u'python:tool.isManager(here)'
+agendaCouncilTemplate.style_template = ['styles1']
+
+councilMeeting.podTemplates.append(agendaCouncilTemplate)
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
