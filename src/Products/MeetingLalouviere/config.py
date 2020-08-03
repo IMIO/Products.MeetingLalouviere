@@ -49,6 +49,7 @@ PMconfig.EXTRA_GROUP_SUFFIXES = [
         "fct_id": u"budgetimpactreviewers",
         "fct_title": u"Correspondants Financier",
         "fct_orgs": [],
+        'enabled': True,
     },
     {"fct_id": u"serviceheads", "fct_title": u"Chef de Service", "fct_orgs": [], 'enabled': True},
     {"fct_id": u"officemanagers", "fct_title": u"Chef de Bureau", "fct_orgs": [], 'enabled': True},
