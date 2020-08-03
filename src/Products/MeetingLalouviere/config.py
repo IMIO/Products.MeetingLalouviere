@@ -19,8 +19,10 @@
 
 import os
 from collections import OrderedDict
-from Products.CMFCore.permissions import setDefaultRoles
+
 from Products.PloneMeeting import config as PMconfig
+
+from Products.CMFCore.permissions import setDefaultRoles
 
 __author__ = """Gauthier Bastien <g.bastien@imio.be>, 
 Stephan Geulette <s.geulette@imio.be>, 
@@ -49,14 +51,39 @@ PMconfig.EXTRA_GROUP_SUFFIXES = [
         "fct_id": u"budgetimpactreviewers",
         "fct_title": u"Correspondants Financier",
         "fct_orgs": [],
-        'enabled': True,
+        "enabled": True,
     },
-    {"fct_id": u"serviceheads", "fct_title": u"Chef de Service", "fct_orgs": [], 'enabled': True},
-    {"fct_id": u"officemanagers", "fct_title": u"Chef de Bureau", "fct_orgs": [], 'enabled': True},
-    {"fct_id": u"divisionheads", "fct_title": u"Chef de Division", "fct_orgs": [], 'enabled': True},
-    {"fct_id": u"directors", "fct_title": u"Directeur", "fct_orgs": [], 'enabled': True},
-    {"fct_id": u"followupwriters", "fct_title": u"Rédacteur de Suivi", "fct_orgs": [], 'enabled': True},
-    {"fct_id": u"alderman", "fct_title": u"Échevin", "fct_orgs": [], 'enabled': True},
+    {
+        "fct_id": u"serviceheads",
+        "fct_title": u"Chef de Service",
+        "fct_orgs": [],
+        "enabled": True,
+    },
+    {
+        "fct_id": u"officemanagers",
+        "fct_title": u"Chef de Bureau",
+        "fct_orgs": [],
+        "enabled": True,
+    },
+    {
+        "fct_id": u"divisionheads",
+        "fct_title": u"Chef de Division",
+        "fct_orgs": [],
+        "enabled": True,
+    },
+    {
+        "fct_id": u"directors",
+        "fct_title": u"Directeur",
+        "fct_orgs": [],
+        "enabled": True,
+    },
+    {
+        "fct_id": u"followupwriters",
+        "fct_title": u"Rédacteur de Suivi",
+        "fct_orgs": [],
+        "enabled": True,
+    },
+    {"fct_id": u"alderman", "fct_title": u"Échevin", "fct_orgs": [], "enabled": True},
 ]
 
 LALOUVIEREROLES = {
@@ -155,6 +182,22 @@ COUNCIL_MEETING_COMMISSION_IDS_2019 = (
     ),
     ("commission-cadre-de-vie", "commission-patrimoine",),
     "commission-police",
+    "commission-speciale",
+)
+
+# commissions taken into account on the Meeting
+# since 2020, patrimoine is moved with travaux and finance and police goes first
+COUNCIL_MEETING_COMMISSION_IDS_2020 = (
+    "commission-police",
+    ("commission-travaux", "commission-finances", "commission-patrimoine"),
+    (
+        "commission-ag",
+        "commission-enseignement",
+        "commission-culture",
+        "commission-sport",
+        "commission-sante",
+    ),
+    "commission-cadre-de-vie",
     "commission-speciale",
 )
 

@@ -40,6 +40,7 @@ from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2013
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2019
+from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2020
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.MeetingLalouviere.interfaces import (
     IMeetingCollegeLalouviereWorkflowActions,
@@ -668,7 +669,12 @@ class LLCustomMeeting(CustomMeeting):
            Since 2019, travaux commission is grouped with finance..."""
         meeting = self.getSelf()
         date = meeting.getDate()
-        if not date or date.year() > 2019 or (date.year() >= 2019 and date.month() > 8):
+        if not date or (date.year() >= 2020 and date.month() > 8):
+            # since september 2020 commissions are grouped differently
+            # patrimoine is grouped with travaux and finance
+            # also police is moved to first place
+            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2020
+        elif date.year() >= 2019 and date.month() > 8:
             # since september 2019 commissions are grouped differently
             # finance is grouped with travaux
             commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2019
