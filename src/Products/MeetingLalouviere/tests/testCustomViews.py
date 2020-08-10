@@ -1,26 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: testCustomMeeting.py
-#
-# Copyright (c) 2007-2013 by Imio.be
-#
-# GNU General Public License (GPL)
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
 
 from Products.MeetingCommunes.tests.testCustomViews import testCustomViews as mctcv
 from Products.MeetingLalouviere.config import (
@@ -76,11 +54,7 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
 
         # add categories to the meetingConfig
         for cat in commission_categories:
-            new_cat_id = self.meetingConfig.categories.invokeFactory(
-                "MeetingCategory", id=cat, title="commissionCat"
-            )
-            new_cat = getattr(self.meetingConfig.categories, new_cat_id)
-            new_cat.processForm()
+            self.create("meetingcategory", id=cat, title="commissionCat")
 
     def _test_get_commission_items_by_date(self, year, month, day):
         # Create a meeting with a given year and month and the view

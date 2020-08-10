@@ -64,7 +64,7 @@
   </div>
 
   <div id="assembly-and-signatures"
-      onclick="togglePersonsCookie();;toggleDoc('collapsible-assembly-and-signatures');"
+      onclick="togglePersonsCookie();;toggleDetails('collapsible-assembly-and-signatures');"
       class="collapsible discreet">
    <span class="meeting_attribute_label" i18n:translate="assembly_and_signatures">
      Meeting assembly and signatures
@@ -211,7 +211,7 @@ field before and the 'attendees' now, if the field is not empty, we display it</
   <tal:comment replace="nothing">Pre-meeting info</tal:comment>
   <tal:premeetings condition="python: 'preMeetingDate' in usedAttrs">
     <div id="premeetings"
-      onclick="togglePersonsCookie();;toggleDoc('collapsible-premeetings');"
+      onclick="togglePersonsCookie();;toggleDetails('collapsible-premeetings');"
       class="collapsible discreet">
       <span class="meeting_attribute_label" i18n:translate="pre_meeting">
             LLV Pre Meetings

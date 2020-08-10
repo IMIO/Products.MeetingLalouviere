@@ -1,26 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: testWorkflows.py
-#
-# Copyright (c) 2007-2010 by PloneGov
-#
-# GNU General Public License (GPL)
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
 
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
@@ -194,19 +172,18 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.setMeetingConfig(self.meetingConfig2.getId())
         # commission categories
         commission = self.create(
-            "MeetingCategory", id="commission-ag", title="Commission AG"
+            "meetingcategory", id="commission-ag", title="Commission AG"
         )
         commission_compl = self.create(
-            "MeetingCategory",
+            "meetingcategory",
             id="commission-ag-1er-supplement",
             title="Commissions AG 1er Complément",
         )
-
         commission2 = self.create(
-            "MeetingCategory", id="commission-patrimoine", title="Commission Patrimoine"
+            "meetingcategory", id="commission-patrimoine", title="Commission Patrimoine"
         )
         commission2_compl = self.create(
-            "MeetingCategory",
+            "meetingcategory",
             id="commission-patrimoine-1er-supplement",
             title="Commission Patrimoine 1er Complément",
         )
@@ -354,7 +331,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             category="deployment",
             meetingTransitionInsertingMe="setInCouncil",
         )
-        setRoles(self.portal, "pmManager", ["MeetingManager", "Manager",])
+        setRoles(self.portal, "pmManager", ["MeetingManager", "Manager"])
         self.changeUser("pmManager")
         meeting = self.create("Meeting", date="2007/12/11 09:00:00")
         self.failUnless(len(meeting.getItems()) == 0)

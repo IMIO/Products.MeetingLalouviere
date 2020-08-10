@@ -1,26 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: testCustomMeeting.py
-#
-# Copyright (c) 2007-2012 by CommunesPlone.org
-#
-# GNU General Public License (GPL)
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
@@ -54,11 +32,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
             "points-conseillers-3eme-supplement",
         ]
         for supplCat in supplCategories:
-            newCatId = self.meetingConfig.categories.invokeFactory(
-                "MeetingCategory", id=supplCat, title="supplCat"
-            )
-            newCat = getattr(self.meetingConfig.categories, newCatId)
-            newCat.processForm()
+            self.create("meetingcategory", id=supplCat, title="supplCat")
         self.changeUser("pmManager")
         m = self.create("Meeting", date="2009/11/26 09:00:00")
         expectedNormal = [
@@ -132,11 +106,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         self.changeUser("admin")
 
         for cat in categories:
-            newCatId = self.meetingConfig.categories.invokeFactory(
-                "MeetingCategory", id=cat, title="supplCat"
-            )
-            newCat = getattr(self.meetingConfig.categories, newCatId)
-            newCat.processForm()
+            self.create("meetingcategory", id=cat, title="supplCat")
 
         self.changeUser("pmManager")
         meeting2009 = self.create("Meeting", date="2009/11/26 09:00:00")

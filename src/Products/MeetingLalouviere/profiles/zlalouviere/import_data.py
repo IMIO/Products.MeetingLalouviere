@@ -121,7 +121,8 @@ collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.transitionsToConfirm = []
 collegeMeeting.itemWorkflow = "meetingitemcollegelalouviere_workflow"
 collegeMeeting.meetingWorkflow = "meetingcollegelalouviere_workflow"
-collegeMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
+collegeMeeting.itemConditionsInterface = \
+    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
 collegeMeeting.itemActionsInterface = (
     "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
 )
@@ -229,7 +230,8 @@ councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.transitionsToConfirm = []
 councilMeeting.itemWorkflow = "meetingitemcouncillalouviere_workflow"
 councilMeeting.meetingWorkflow = "meetingcouncillalouviere_workflow"
-councilMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
+councilMeeting.itemConditionsInterface = \
+    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
 councilMeeting.itemActionsInterface = (
     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
 )
@@ -289,7 +291,7 @@ councilMeeting.onMeetingTransitionItemActionToExecute = (
         "item_action": "backToItemInCommittee",
         "tal_expression": "",
     },
-    {"meeting_transition": "close", "item_action": "accept", "tal_expression": "",},
+    {"meeting_transition": "close", "item_action": "accept", "tal_expression": "", },
 )
 
 councilMeeting.usedItemAttributes = (
@@ -339,8 +341,8 @@ categories = [
     CategoryDescriptor(
         "recurrent",
         "Point récurrent",
-        categoryId="recurrent",
-        usingGroups=(
+        category_id="recurrent",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -348,44 +350,44 @@ categories = [
         ),
     ),
     CategoryDescriptor(
-        "commission-travaux", "Commission Travaux", categoryId="commission-travaux",
+        "commission-travaux", "Commission Travaux", category_id="commission-travaux",
     ),
     CategoryDescriptor(
         "commission-enseignement",
         "Commission Enseignement",
-        categoryId="commission-enseignement",
+        category_id="commission-enseignement",
     ),
     CategoryDescriptor(
-        "commission-culture", "Commission Culture", categoryId="commission-culture"
+        "commission-culture", "Commission Culture", category_id="commission-culture"
     ),
     CategoryDescriptor(
-        "commission-sport", "Commission Sport", categoryId="commission-sport"
+        "commission-sport", "Commission Sport", category_id="commission-sport"
     ),
     CategoryDescriptor(
-        "commission-sante", "Commission Santé", categoryId="commission-sante"
+        "commission-sante", "Commission Santé", category_id="commission-sante"
     ),
     CategoryDescriptor(
         "commission-cadre-de-vie",
         "Commission Cadre de Vie",
-        categoryId="commission-cadre-de-vie",
+        category_id="commission-cadre-de-vie",
     ),
-    CategoryDescriptor("commission-ag", "Commission AG", categoryId="commission-ag"),
+    CategoryDescriptor("commission-ag", "Commission AG", category_id="commission-ag"),
     CategoryDescriptor(
-        "commission-finances", "Commission Finances", categoryId="commission-finances"
+        "commission-finances", "Commission Finances", category_id="commission-finances"
     ),
     CategoryDescriptor(
         "commission-patrimoine",
         "Commission Patrimoine",
-        categoryId="commission-patrimoine",
+        category_id="commission-patrimoine",
     ),
     CategoryDescriptor(
-        "commission-police", "Commission Police", categoryId="commission-police"
+        "commission-police", "Commission Police", category_id="commission-police"
     ),
     CategoryDescriptor(
         "commission-speciale",
         "Commission Spéciale",
-        categoryId="commission-speciale",
-        usingGroups=(
+        category_id="commission-speciale",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -395,8 +397,8 @@ categories = [
     CategoryDescriptor(
         "commission-travaux-1er-supplement",
         "Commission Travaux (1er supplément)",
-        categoryId="commission-travaux-1er-supplement",
-        usingGroups=(
+        category_id="commission-travaux-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -406,8 +408,8 @@ categories = [
     CategoryDescriptor(
         "commission-enseignement-1er-supplement",
         "Commission Enseignement (1er supplément)",
-        categoryId="commission-enseignement-1er-supplement",
-        usingGroups=(
+        category_id="commission-enseignement-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -417,8 +419,8 @@ categories = [
     CategoryDescriptor(
         "commission-culture-1er-supplement",
         "Commission Culture (1er supplément)",
-        categoryId="commission-culture-1er-supplement",
-        usingGroups=(
+        category_id="commission-culture-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -428,8 +430,8 @@ categories = [
     CategoryDescriptor(
         "commission-sport-1er-supplement",
         "Commission Sport (1er supplément)",
-        categoryId="commission-travaux-1er-supplement",
-        usingGroups=(
+        category_id="commission-travaux-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -439,8 +441,8 @@ categories = [
     CategoryDescriptor(
         "commission-sante-1er-supplement",
         "Commission Santé (1er supplément)",
-        categoryId="commission-sante-1er-supplement",
-        usingGroups=(
+        category_id="commission-sante-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -450,8 +452,8 @@ categories = [
     CategoryDescriptor(
         "commission-cadre-de-vie-1er-supplement",
         "Commission Cadre de Vie (1er supplément)",
-        categoryId="commission-cadre-de-vie-1er-supplement",
-        usingGroups=(
+        category_id="commission-cadre-de-vie-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -461,8 +463,8 @@ categories = [
     CategoryDescriptor(
         "commission-ag-1er-supplement",
         "Commission AG (1er supplément)",
-        categoryId="commission-ag-1er-supplement",
-        usingGroups=(
+        category_id="commission-ag-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -472,8 +474,8 @@ categories = [
     CategoryDescriptor(
         "commission-finances-1er-supplement",
         "Commission Finances (1er supplément)",
-        categoryId="commission-finances-1er-supplement",
-        usingGroups=(
+        category_id="commission-finances-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -483,8 +485,8 @@ categories = [
     CategoryDescriptor(
         "commission-patrimoine-1er-supplement",
         "Commission Patrimoine (1er supplément)",
-        categoryId="commission-patrimoine-1er-supplement",
-        usingGroups=(
+        category_id="commission-patrimoine-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -494,8 +496,8 @@ categories = [
     CategoryDescriptor(
         "commission-police-1er-supplement",
         "Commission Police (1er supplément)",
-        categoryId="commission-police-1er-supplement",
-        usingGroups=(
+        category_id="commission-police-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -505,8 +507,8 @@ categories = [
     CategoryDescriptor(
         "commission-speciale-1er-supplement",
         "Commission Spéciale (1er supplément)",
-        categoryId="commission-speciale-1er-supplement",
-        usingGroups=(
+        category_id="commission-speciale-1er-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -516,8 +518,8 @@ categories = [
     CategoryDescriptor(
         "points-conseillers-2eme-supplement",
         "Points conseillers (2ème supplément)",
-        categoryId="points-conseillers-2eme-supplement",
-        usingGroups=(
+        category_id="points-conseillers-2eme-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",
@@ -527,8 +529,8 @@ categories = [
     CategoryDescriptor(
         "points-conseillers-3eme-supplement",
         "Points conseillers (3ème supplément)",
-        categoryId="points-conseillers-3eme-supplement",
-        usingGroups=(
+        category_id="points-conseillers-3eme-supplement",
+        using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
             "secretariat",

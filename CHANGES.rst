@@ -6,7 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.4.5 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Adapted code and tests regarding DX meetingcategory.
+ [gbastien]
+- Adapted templates regarding last changes in Products.PloneMeeting.
+ [gbastien]
 
 
 4.1.4.4 (2020-06-24)
