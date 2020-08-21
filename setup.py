@@ -1,7 +1,7 @@
 # coding=utf-8
 from setuptools import setup, find_packages
 
-version = "4.1.4.5.dev0"
+version = "4.1.5.dev0"
 
 setup(
     name="Products.MeetingLalouviere",
@@ -12,6 +12,7 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Plone",
         "Framework :: Plone :: 4.3",
+        "License :: OSI Approved :: GNU General Public License (GPL)",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
     ],

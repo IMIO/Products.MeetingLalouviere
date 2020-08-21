@@ -3,13 +3,13 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.4.5 (unreleased)
---------------------
+4.1.5 (unreleased)
+------------------
 
 - Adapted code and tests regarding DX meetingcategory.
- [gbastien]
+  [gbastien]
 - Adapted templates regarding last changes in Products.PloneMeeting.
- [gbastien]
+  [gbastien]
 
 
 4.1.4.4 (2020-06-24)
