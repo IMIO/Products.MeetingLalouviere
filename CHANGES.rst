@@ -3,8 +3,8 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.6 (unreleased)
-------------------
+4.1.5.1 (2020-08-25)
+--------------------
 
 - Fix commission order.
   [odelaere]
