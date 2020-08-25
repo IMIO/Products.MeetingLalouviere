@@ -186,9 +186,8 @@ COUNCIL_MEETING_COMMISSION_IDS_2019 = (
 )
 
 # commissions taken into account on the Meeting
-# since 2020, patrimoine is moved with travaux and finance and police goes first
+# since 2020, patrimoine is moved with travaux and finance
 COUNCIL_MEETING_COMMISSION_IDS_2020 = (
-    "commission-police",
     ("commission-travaux", "commission-finances", "commission-patrimoine"),
     (
         "commission-ag",
@@ -198,6 +197,7 @@ COUNCIL_MEETING_COMMISSION_IDS_2020 = (
         "commission-sante",
     ),
     "commission-cadre-de-vie",
+    "commission-police",
     "commission-speciale",
 )
 

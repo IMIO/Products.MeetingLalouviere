@@ -168,7 +168,6 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         self.assertTupleEqual(
             meeting2020.adapted().getCommissionCategoriesIds(),
             (
-                "commission-police",
                 ("commission-travaux", "commission-finances", "commission-patrimoine"),
                 (
                     "commission-ag",
@@ -178,6 +177,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
                     "commission-sante",
                 ),
                 "commission-cadre-de-vie",
+                "commission-police",
                 "commission-speciale",
             ),
         )
@@ -185,7 +185,6 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         self.assertTupleEqual(
             meeting2050.adapted().getCommissionCategoriesIds(),
             (
-                "commission-police",
                 ("commission-travaux", "commission-finances", "commission-patrimoine"),
                 (
                     "commission-ag",
@@ -195,6 +194,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
                     "commission-sante",
                 ),
                 "commission-cadre-de-vie",
+                "commission-police",
                 "commission-speciale",
             ),
         )
