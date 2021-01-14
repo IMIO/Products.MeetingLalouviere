@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.5.2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix commission on 01/01/21
+  [odelaere]
 
 
 4.1.5.1 (2020-08-25)
