@@ -669,7 +669,7 @@ class LLCustomMeeting(CustomMeeting):
            Since 2019, travaux commission is grouped with finance..."""
         meeting = self.getSelf()
         date = meeting.getDate()
-        if not date or (date.year() >= 2020 and date.month() > 8):
+        if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
             # since september 2020 commissions are grouped differently
             # patrimoine is grouped with travaux and finance
             # also police is moved to first place
