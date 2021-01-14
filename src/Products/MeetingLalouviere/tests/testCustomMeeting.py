@@ -113,7 +113,8 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         meeting2014 = self.create("Meeting", date="2014/11/26 09:00:00")
         meeting2019 = self.create("Meeting", date="2019/11/26 09:00:00")
         meeting2020 = self.create("Meeting", date="2020/11/26 09:00:00")
-        meeting2050 = self.create("Meeting", date="2050/11/26 09:00:00")
+        meeting2050 = self.create("Meeting", date="2050/01/26 09:00:00")
+        meeting2060 = self.create("Meeting", date="2060/12/26 09:00:00")
 
         self.maxDiff = None
 
@@ -184,6 +185,22 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
 
         self.assertTupleEqual(
             meeting2050.adapted().getCommissionCategoriesIds(),
+            (
+                ("commission-travaux", "commission-finances", "commission-patrimoine"),
+                (
+                    "commission-ag",
+                    "commission-enseignement",
+                    "commission-culture",
+                    "commission-sport",
+                    "commission-sante",
+                ),
+                "commission-cadre-de-vie",
+                "commission-police",
+                "commission-speciale",
+            ),
+        )
+        self.assertTupleEqual(
+            meeting2060.adapted().getCommissionCategoriesIds(),
             (
                 ("commission-travaux", "commission-finances", "commission-patrimoine"),
                 (
