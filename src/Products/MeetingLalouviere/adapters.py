@@ -1825,11 +1825,13 @@ class LLCustomToolPloneMeeting(CustomToolPloneMeeting):
 
             proposed_to_alderman.permission_roles = cloned_permissions_with_alderman
 
-            for permission in validated.permission_roles:
-                if ("Read" in permission or "Access" in permission or "View" == permission) \
-                        and "MeetingDirector" in validated.permission_roles[permission]:
-                    validated.permission_roles[permission] = \
-                        validated.permission_roles[permission] + tuple(["MeetingAlderman"])
+            for state in itemStates.values():
+                for permission in state.permission_roles:
+                    if "MeetingDirector" in state.permission_roles[permission] \
+                            and "MeetingAlderman" not in state.permission_roles[permission] \
+                            and ("Read" in permission or "Access" in permission or "View" in permission):
+                        state.permission_roles[permission] = \
+                            state.permission_roles[permission] + tuple(["MeetingAlderman"])
 
             if "propose_to_dg" not in itemTransitions:
                 itemTransitions.addTransition("propose_to_dg")

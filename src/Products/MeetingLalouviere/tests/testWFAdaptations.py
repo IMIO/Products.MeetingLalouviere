@@ -248,8 +248,32 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
             self.changeUser(userId)
             self.failIf(self.wfTool.getTransitionsFor(item))
 
+        # test alderman access to presented items and after
+        self.changeUser("pmManager")
+        meeting = self.create("Meeting", date="2007/12/11 09:00:00")
+        self.presentItem(item)
+        self.assertEqual(item.queryState(), "presented")
+        self.changeUser("pmAlderman")
+        self.failUnless(self.hasPermission(View, item))
+
+        self.changeUser("pmManager")
+        self.do(meeting, "freeze")
+        self.assertEqual(item.queryState(), "itemfrozen")
+        self.changeUser("pmAlderman")
+        self.failUnless(self.hasPermission(View, item))
+
+        self.changeUser("pmManager")
+        self.do(meeting, "decide")
+        self.do(item, "accept")
+        self.assertEqual(item.queryState(), "accepted")
+        self.changeUser("pmAlderman")
+        self.failUnless(self.hasPermission(View, item))
+
         # test back trx
         self.changeUser("pmManager")
+        self.do(item, "backToItemFrozen")
+        self.do(item, "backToPresented")
+        self.do(item, "backToValidated")
         self.do(item, "backToProposedToAlderman")
         self.assertEquals(item.queryState(), "proposed_to_alderman")
         self.changeUser("pmAlderman")
