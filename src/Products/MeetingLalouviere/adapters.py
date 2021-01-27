@@ -1830,8 +1830,9 @@ class LLCustomToolPloneMeeting(CustomToolPloneMeeting):
                     if "MeetingDirector" in state.permission_roles[permission] \
                             and "MeetingAlderman" not in state.permission_roles[permission] \
                             and ("Read" in permission or "Access" in permission or "View" in permission):
+
                         state.permission_roles[permission] = \
-                            state.permission_roles[permission] + tuple(["MeetingAlderman"])
+                            tuple(state.permission_roles[permission]) + tuple(["MeetingAlderman"])
 
             if "propose_to_dg" not in itemTransitions:
                 itemTransitions.addTransition("propose_to_dg")
