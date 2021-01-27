@@ -33,6 +33,7 @@ from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
 from DateTime import DateTime
+from Products.CMFCore.permissions import View
 
 
 class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
@@ -234,6 +235,11 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.changeUser("pmAlderman")
         self.validateItem(item)
         self.assertEquals(item.queryState(), "validated")
+        self.failUnless(self.hasPermission(View, item))
+        self.failUnless(self.hasPermission("PloneMeeting: Read decision", item))
+        self.failUnless(self.hasPermission("PloneMeeting: Read budget infos", item))
+        self.failUnless(self.hasPermission("PloneMeeting: Read item observations", item))
+        self.failUnless(self.hasPermission("Access contents information", item))
 
         self.changeUser("pmManager")
         self.failUnless(self.hasPermission("Modify portal content", item))

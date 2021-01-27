@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.5.3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix alderman access to validated items.
+  [odelaere]
 
 
 4.1.5.2 (2021-01-14)
