@@ -1789,10 +1789,10 @@ class LLCustomToolPloneMeeting(CustomToolPloneMeeting):
                 itemStates.addState("proposed_to_alderman")
             proposed_to_alderman = getattr(itemStates, "proposed_to_alderman")
 
-            stateToClone = getattr(itemStates, "validated")
-            proposed_to_dg.permission_roles = stateToClone.permission_roles
+            validated = getattr(itemStates, "validated")
+            proposed_to_dg.permission_roles = validated.permission_roles
 
-            cloned_permissions = dict(stateToClone.permission_roles)
+            cloned_permissions = dict(validated.permission_roles)
             cloned_permissions_with_alderman = {}
             # we need to use an intermediate dict because roles are stored as a tuple and we need a list...
             for permission in cloned_permissions:
@@ -1824,6 +1824,12 @@ class LLCustomToolPloneMeeting(CustomToolPloneMeeting):
                     )
 
             proposed_to_alderman.permission_roles = cloned_permissions_with_alderman
+
+            for permission in validated.permission_roles:
+                if ("Read" in permission or "Access" in permission or "View" == permission) \
+                        and "MeetingDirector" in validated.permission_roles[permission]:
+                    validated.permission_roles[permission] = \
+                        validated.permission_roles[permission] + tuple(["MeetingAlderman"])
 
             if "propose_to_dg" not in itemTransitions:
                 itemTransitions.addTransition("propose_to_dg")
