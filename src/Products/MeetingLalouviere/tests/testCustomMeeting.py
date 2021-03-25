@@ -69,14 +69,14 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         """
         pass
 
-    def test_getCommissionCategoriesIds(self):
+    def test_get_commission_classifiers_ids(self):
         """
-        Test if commission categories are returned properly and accordingly with the meeting date.
+        Test if commission classifiers are returned properly and accordingly with the meeting date.
         """
 
         self.meetingConfig = self.meetingConfig2
 
-        categories = (
+        classifiers = (
             "commission-cadre-de-vie-et-logement",
             "commission-finances-et-patrimoine",
             "commission-ag",
@@ -105,8 +105,8 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
 
         self.changeUser("admin")
 
-        for cat in categories:
-            self.create("meetingcategory", id=cat, title="supplCat")
+        for classifier in classifiers:
+            self.create("meetingcategory", id=classifier, title="supplClf", is_classifier=True)
 
         self.changeUser("pmManager")
         meeting2009 = self.create("Meeting", date="2009/11/26 09:00:00")
@@ -119,7 +119,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         self.maxDiff = None
 
         self.assertTupleEqual(
-            meeting2009.adapted().getCommissionCategoriesIds(),
+            meeting2009.adapted().get_commission_classifiers_ids(),
             (
                 "commission-travaux",
                 "commission-enseignement",
@@ -132,7 +132,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         )
 
         self.assertTupleEqual(
-            meeting2014.adapted().getCommissionCategoriesIds(),
+            meeting2014.adapted().get_commission_classifiers_ids(),
             (
                 "commission-travaux",
                 (
@@ -150,7 +150,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         )
 
         self.assertTupleEqual(
-            meeting2019.adapted().getCommissionCategoriesIds(),
+            meeting2019.adapted().get_commission_classifiers_ids(),
             (
                 ("commission-travaux", "commission-finances"),
                 (
@@ -167,7 +167,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         )
 
         self.assertTupleEqual(
-            meeting2020.adapted().getCommissionCategoriesIds(),
+            meeting2020.adapted().get_commission_classifiers_ids(),
             (
                 ("commission-travaux", "commission-finances", "commission-patrimoine"),
                 (
@@ -184,7 +184,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         )
 
         self.assertTupleEqual(
-            meeting2050.adapted().getCommissionCategoriesIds(),
+            meeting2050.adapted().get_commission_classifiers_ids(),
             (
                 ("commission-travaux", "commission-finances", "commission-patrimoine"),
                 (
@@ -200,7 +200,7 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
             ),
         )
         self.assertTupleEqual(
-            meeting2060.adapted().getCommissionCategoriesIds(),
+            meeting2060.adapted().get_commission_classifiers_ids(),
             (
                 ("commission-travaux", "commission-finances", "commission-patrimoine"),
                 (

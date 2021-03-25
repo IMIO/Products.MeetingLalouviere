@@ -6,7 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.5.4 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Use classifiers instead of categories for commissions.
+  [odelaere]
+- Removed old DEF plug in because they use rest api endpoint now.
+  [odelaere]
 
 
 4.1.5.3 (2021-01-27)

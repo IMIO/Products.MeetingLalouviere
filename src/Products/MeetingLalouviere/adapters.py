@@ -637,20 +637,20 @@ class LLCustomMeeting(CustomMeeting):
 
     def getCommissionTitle(self, commissionNumber=1, roman_prefix=False):
         """
-          Given a commissionNumber, return the commission title depending on corresponding categories
+          Given a commissionNumber, return the commission title depending on corresponding classifiers
         """
         meeting = self.getSelf()
-        commissionCategories = meeting.getCommissionCategories()
-        if not len(commissionCategories) >= commissionNumber:
+        commission_classifiers = meeting.get_commission_classifiers()
+        if not len(commission_classifiers) >= commissionNumber:
             return ""
-        commissionCat = commissionCategories[commissionNumber - 1]
+        commission_clf = commission_classifiers[commissionNumber - 1]
         # build title
-        if isinstance(commissionCat, tuple):
+        if isinstance(commission_clf, tuple):
             res = "Commission " + "/".join(
-                [subcat.Title().replace("Commission ", "") for subcat in commissionCat]
+                [subclf.Title().replace("Commission ", "") for subclf in commission_clf]
             )
         else:
-            res = commissionCat.Title()
+            res = commission_clf.Title()
 
         if roman_prefix:
             roman_numbers = {1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI"}
@@ -660,12 +660,12 @@ class LLCustomMeeting(CustomMeeting):
 
         return res
 
-    security.declarePublic("getCommissionCategoriesIds")
+    security.declarePublic("get_commission_classifiers_ids")
 
-    def getCommissionCategoriesIds(self):
-        """Returns the list of categories used for Commissions.
-           Since june 2013, some commission are aggregating several categories, in this case,
-           a sublist of categories is returned...
+    def get_commission_classifiers_ids(self):
+        """Returns the list of classifiers used for Commissions.
+           Since june 2013, some commission are aggregating several classifiers, in this case,
+           a sublist of classifiers is returned...
            Since 2019, travaux commission is grouped with finance..."""
         meeting = self.getSelf()
         date = meeting.getDate()
@@ -673,45 +673,45 @@ class LLCustomMeeting(CustomMeeting):
             # since september 2020 commissions are grouped differently
             # patrimoine is grouped with travaux and finance
             # also police is moved to first place
-            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2020
+            commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2020
         elif date.year() >= 2019 and date.month() > 8:
             # since september 2019 commissions are grouped differently
             # finance is grouped with travaux
-            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2019
+            commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2019
         # creating a new Meeting or editing an existing meeting with date >= june 2013
         elif date.year() >= 2013 and date.month() > 5:
             # since 2013 commissions does NOT correspond to commission as MeetingItem.category
             # several MeetingItem.category are taken for one single commission...
-            commissionCategoryIds = COUNCIL_MEETING_COMMISSION_IDS_2013
+            commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2013
         else:
-            commissionCategoryIds = COUNCIL_COMMISSION_IDS
+            commission_classifier_ids = COUNCIL_COMMISSION_IDS
 
-        return commissionCategoryIds
+        return commission_classifier_ids
 
-    security.declarePublic("getCommissionCategories")
+    security.declarePublic("get_commission_classifiers")
 
-    def getCommissionCategories(self):
-        """Returns the list of categories used for Commissions.
-           Since june 2013, some commission are aggregating several categories, in this case,
-           a sublist of categories is returned...
+    def get_commission_classifiers(self):
+        """Returns the list of classifier used for Commissions.
+           Since june 2013, some commission are aggregating several classifiers, in this case,
+           a sublist of classifiers is returned...
            Since 2019, travaux commission is grouped with finance..."""
-        commissionCategoryIds = self.getSelf().adapted().getCommissionCategoriesIds()
+        commission_classifier_ids = self.getSelf().adapted().get_commission_classifiers_ids()
 
         tool = getToolByName(self, "portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
         res = []
-        for categoryId in commissionCategoryIds:
-            # check if we have subcategories, aka a commission made of several categories
-            if isinstance(categoryId, tuple):
+        for id in commission_classifier_ids:
+            # check if we have sub-classifiers, aka a commission made of several classifiers
+            if isinstance(id, tuple):
                 res2 = []
-                for subcatId in categoryId:
-                    res2.append(getattr(mc.categories, subcatId))
+                for subcls_id in id:
+                    res2.append(getattr(mc.classifiers, subcls_id))
                 res.append(tuple(res2))
             else:
-                res.append(getattr(mc.categories, categoryId))
+                res.append(getattr(mc.classifiers, id))
         return tuple(res)
 
-    Meeting.getCommissionCategories = getCommissionCategories
+    Meeting.get_commission_classifiers = get_commission_classifiers
 
     security.declarePrivate("getDefaultPreMeetingAssembly")
 
@@ -2102,16 +2102,16 @@ class SearchItemsOfMyCommissionsAdapter(CompoundCriterionBaseAdapter):
         # a commission groupId match a category but with an additional suffix (COMMISSION_EDITORS_SUFFIX)
         # so we remove that suffix
         groups = self.tool.get_plone_groups_for_user()
-        cats = []
+        clasifiers = []
         for group in groups:
             if group.endswith(COMMISSION_EDITORS_SUFFIX):
-                cat_id = group.split("_")[0]
-                cats.append(cat_id)
-                cats.append("{}-1er-supplement".format(cat_id))
+                clasifier_id = group.split("_")[0]
+                clasifiers.append(clasifier_id)
+                clasifiers.append("{}-1er-supplement".format(clasifier_id))
 
         return {
             "portal_type": {"query": self.cfg.getItemTypeName()},
-            "getCategory": {"query": sorted(cats)},
+            "getRawClassifier": {"query": sorted(clasifiers)},
         }
 
     # we may not ram.cache methods in same file with same name...
