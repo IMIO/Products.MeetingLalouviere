@@ -28,33 +28,33 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
         view()
         return view.get_generation_context_helper()
 
-    def _setup_commissions_categories(self, commission_version):
-        # add MEETING_COMMISSION's categories
+    def _setup_commissions_classifiers(self, commission_version):
+        # add MEETING_COMMISSION's classifiers
         self.changeUser("admin")
 
-        # wipe all previous cats
-        ids = self.meetingConfig.categories.keys()
+        # wipe all previous classifiers
+        ids = self.meetingConfig.classifiers.keys()
         if len(ids) > 0:
             ids = list(ids)
-            self.meetingConfig.categories.manage_delObjects(ids)
+            self.meetingConfig.classifiers.manage_delObjects(ids)
 
         # flatten commission_version
-        commission_categories = []
+        commission_classifiers = []
         for i in commission_version:
             if isinstance(i, tuple):
                 for j in i:
-                    commission_categories.append(j)
+                    commission_classifiers.append(j)
             else:
-                commission_categories.append(i)
+                commission_classifiers.append(i)
 
-        # create 1st-supplement for each cat
-        commission_categories = commission_categories + [
-            cat + "-1er-supplement" for cat in commission_categories
+        # create 1st-supplement for each classifier
+        commission_classifiers = commission_classifiers + [
+            classifier + "-1er-supplement" for classifier in commission_classifiers
         ]
 
-        # add categories to the meetingConfig
-        for cat in commission_categories:
-            self.create("meetingcategory", id=cat, title="commissionCat")
+        # add classifiers to the meetingConfig
+        for classifier in commission_classifiers:
+            self.create("meetingcategory", id=classifier, title="commissionClf", is_classifier=True)
 
     def _test_get_commission_items_by_date(self, year, month, day):
         # Create a meeting with a given year and month and the view
@@ -65,23 +65,23 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
         view = self._set_view(meeting)
         # Creates items needed for the test
         item = self.create("MeetingItem")
-        item.setCategory(view.get_categories_for_commission(1)[0])  # First commission
+        item.setClassifier(view.get_classifiers_for_commission(1)[0])  # First commission
         item2 = self.create("MeetingItem")
-        item2.setCategory(view.get_categories_for_commission(2)[0])  # Second commission
+        item2.setClassifier(view.get_classifiers_for_commission(2)[0])  # Second commission
         item3 = self.create("MeetingItem")
-        item3.setCategory(view.get_categories_for_commission(2)[0])  # Third commission
+        item3.setClassifier(view.get_classifiers_for_commission(2)[0])  # Third commission
 
         item_s = self.create("MeetingItem")
-        item_s.setCategory(
-            view.get_categories_for_commission(1)[0] + "-1er-supplement"
+        item_s.setClassifier(
+            view.get_classifiers_for_commission(1)[0] + "-1er-supplement"
         )  # First commission, 1st supp
         item2_s = self.create("MeetingItem")
-        item2_s.setCategory(
-            view.get_categories_for_commission(2)[0] + "-1er-supplement"
+        item2_s.setClassifier(
+            view.get_classifiers_for_commission(2)[0] + "-1er-supplement"
         )  # Second commission, 1st supp
         item3_s = self.create("MeetingItem")
-        item3_s.setCategory(
-            view.get_categories_for_commission(2)[0] + "-1er-supplement"
+        item3_s.setClassifier(
+            view.get_classifiers_for_commission(2)[0] + "-1er-supplement"
         )  # Second commission, 1st supp
 
         items = (item, item2, item3, item_s, item2_s, item3_s)
@@ -187,7 +187,7 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
             },
         ]
         for cv in commissions_versions:
-            self._setup_commissions_categories(cv["commissions"])
+            self._setup_commissions_classifiers(cv["commissions"])
             self._test_get_commission_items_by_date(cv["year"], cv["month"], cv["day"])
 
     def test_format_commission_pre_meeting_date(self):

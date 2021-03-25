@@ -125,14 +125,14 @@ class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):
 
 class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperView):
     """Specific printing methods used for meeting."""
-    def get_categories_for_commission(self, commission_num):
-        commissionCategoryIds = self.real_context.adapted().getCommissionCategoriesIds()
-        cat = commissionCategoryIds[commission_num - 1]
-        if isinstance(cat, tuple):
-            return list(cat)
+    def get_classifiers_for_commission(self, commission_num):
+        commission_classifier_ids = self.real_context.adapted().get_commission_classifiers_ids()
+        classifier = commission_classifier_ids[commission_num - 1]
+        if isinstance(classifier, tuple):
+            return list(classifier)
         else:
-            # single category as a string
-            return [cat]
+            # single classifier as a string
+            return [classifier]
 
     def get_commission_items(self, itemUids, commission_num, type='normal'):
         """
@@ -142,12 +142,19 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
         :param type: must be 'normal', 'supplement' or '*'
         :return: list of meetingItem
         """
-        cats = self.get_categories_for_commission(commission_num)
-        if type == 'supplement':  # If we want the supplements items only
-            cats = [cat + '-1er-supplement' for cat in cats]  # append supplement suffix to the categories
-        elif type == '*':  # If we want all items
-            cats = cats + [cat + '-1er-supplement' for cat in cats]
-        return self.real_context.adapted().getPrintableItems(itemUids, categories=cats)
+        classifiers = self.get_classifiers_for_commission(commission_num)
+        if type == 'supplement':
+            # If we want the supplements items only
+            # append supplement suffix to the classifiers
+            classifiers = [classifier + '-1er-supplement' for classifier in classifiers]
+        elif type == '*':
+            # If we want all items
+            classifiers = classifiers + [classifier + '-1er-supplement' for classifier in classifiers]
+
+        items = self.context.getItems(uids=itemUids,
+                                      ordered=True,
+                                      additional_catalog_query={"getRawClassifier": classifiers})
+        return items
 
     def format_commission_pre_meeting_date(self, commission_num):
         """
