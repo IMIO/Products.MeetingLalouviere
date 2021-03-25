@@ -12,22 +12,6 @@
       permission="zope2.View"
       />
 
-  <browser:page
-      for="*"
-      name="loguserfromdef"
-      class=".logUserFromDEF.LogUserFromDEFView"
-      template="logUserFromDEF.pt"
-      permission="zope2.View"
-      />
-
-  <browser:page
-      for="*"
-      name="createitemfromdef"
-      class=".createItemFromDEF.CreateItemFromDEFView"
-      template="createItemFromDEF.pt"
-      permission="zope2.View"
-      />
-
   <!-- the meetingadvice workflow conditions view -->
   <browser:view
       for="Products.PloneMeeting.content.advice.IMeetingAdvice"
@@ -45,4 +29,3 @@
       />
 
 </configure>
-

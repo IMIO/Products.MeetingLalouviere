@@ -122,9 +122,6 @@ LALOUVIERE_MEETING_STATES_ACCEPTING_ITEMS = (
 )
 PMconfig.MEETING_STATES_ACCEPTING_ITEMS = LALOUVIERE_MEETING_STATES_ACCEPTING_ITEMS
 
-# url of the DEF application
-DEFURL = os.environ.get("DEFURL", "http://192.168.1.106/def")
-
 # ids of commissions used as categories for MeetingItemCouncil
 # before 2013, commission ids were :
 COUNCIL_COMMISSION_IDS = (
