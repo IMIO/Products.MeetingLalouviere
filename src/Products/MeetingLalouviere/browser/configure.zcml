@@ -4,14 +4,6 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="urban">
 
-  <browser:page
-      for="*"
-      name="isloggedinfordef"
-      class=".isLoggedInForDEF.IsLoggedInForDEFView"
-      template="isLoggedInForDEF.pt"
-      permission="zope2.View"
-      />
-
   <!-- the meetingadvice workflow conditions view -->
   <browser:view
       for="Products.PloneMeeting.content.advice.IMeetingAdvice"
