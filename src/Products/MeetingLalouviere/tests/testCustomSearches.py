@@ -24,7 +24,7 @@ class testCustomSearches(MeetingLalouviereTestCase):
         self.changeUser("siteadmin")
         self.assertEqual(
             adapter.query,
-            {"portal_type": {"query": itemTypeName}, "getCategory": {"query": []}},
+            {"portal_type": {"query": itemTypeName}, "getRawClassifier": {"query": []}},
         )
 
         # commissioneditor is member of 'commission-ag'
@@ -36,7 +36,7 @@ class testCustomSearches(MeetingLalouviereTestCase):
             adapter.query,
             {
                 "portal_type": {"query": "MeetingItemCouncil"},
-                "getCategory": {
+                "getRawClassifier": {
                     "query": ["commission-ag", "commission-ag-1er-supplement"]
                 },
             },
@@ -50,7 +50,7 @@ class testCustomSearches(MeetingLalouviereTestCase):
             adapter.query,
             {
                 "portal_type": {"query": "MeetingItemCouncil"},
-                "getCategory": {
+                "getRawClassifier": {
                     "query": [
                         "commission-patrimoine",
                         "commission-patrimoine-1er-supplement"
@@ -67,7 +67,7 @@ class testCustomSearches(MeetingLalouviereTestCase):
             adapter.query,
             {
                 "portal_type": {"query": "MeetingItemCouncil"},
-                "getCategory": {
+                "getRawClassifier": {
                     "query": []
                 },
             },
