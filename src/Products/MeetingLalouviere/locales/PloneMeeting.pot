@@ -155,7 +155,7 @@ msgid "MeetingLalouviere_label_councildescription"
 msgstr ""
 
 #. Default: "Commission"
-msgid "MeetingLalouviere_label_councilcategory"
+msgid "MeetingLalouviere_label_councilclassifier"
 msgstr ""
 
 #. Default: "Deliberation"

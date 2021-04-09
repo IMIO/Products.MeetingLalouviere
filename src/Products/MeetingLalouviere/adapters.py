@@ -602,19 +602,19 @@ class LLCustomMeeting(CustomMeeting):
 
     MeetingItem.getLabelDescription = getLabelDescription
 
-    security.declarePublic("getLabelCategory")
+    security.declarePublic("getLabelClassifier")
 
-    def getLabelCategory(self):
+    def getLabelClassifier(self):
         """Returns the label to use for field MeetingItem.category
           The label is different between college and council"""
         if self.portal_type == "MeetingItemCouncil":
             return self.utranslate(
-                "MeetingLalouviere_label_councilcategory", domain="PloneMeeting"
+                "MeetingLalouviere_label_councilclassifier", domain="PloneMeeting"
             )
         else:
-            return self.utranslate("PloneMeeting_label_category", domain="PloneMeeting")
+            return self.utranslate("PloneMeeting_label_classifier", domain="PloneMeeting")
 
-    MeetingItem.getLabelCategory = getLabelCategory
+    MeetingItem.getLabelClassifier = getLabelClassifier
 
     security.declarePublic("getLabelObservations")
 
