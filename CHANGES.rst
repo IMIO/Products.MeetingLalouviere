@@ -3,7 +3,20 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.5.4 (unreleased)
+4.1.6.2 (unreleased)
+--------------------
+
+- Nothing changed yet.
+
+
+4.1.6.1 (2021-04-12)
+--------------------
+
+- Release migration to classifiers.
+  [odelaere]
+
+
+4.1.6.0 (2021-04-12)
 --------------------
 
 - Use classifiers instead of categories for commissions.

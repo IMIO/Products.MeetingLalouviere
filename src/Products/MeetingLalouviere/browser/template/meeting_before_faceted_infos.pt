@@ -219,7 +219,7 @@ field before and the 'attendees' now, if the field is not empty, we display it</
     </div>
 
     <div id="collapsible-premeetings" class="collapsible-content" style="display: none;">
-      <table class="listing nosort" tal:define="categories python: context.getCommissionCategories();">
+      <table class="listing nosort" tal:define="categories python: context.get_commission_classifiers();">
         <tr i18n:domain="PloneMeeting">
           <th i18n:translate="listingheader_premeeting_name"/>
           <th style="min-width: 115px;" i18n:translate="listingheader_premeeting_date"/>

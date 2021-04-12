@@ -224,7 +224,7 @@ councilMeeting.usedItemAttributes = (
     u"itemTags",
     u"itemIsSigned",
     u"commissionTranscript",
-    u"classifier",
+    # u"classifier",
 )
 
 agendaCouncilTemplate = PodTemplateDescriptor('agendaTemplate', 'Ordre du jour')

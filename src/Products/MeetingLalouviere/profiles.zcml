@@ -44,4 +44,12 @@
             destination="4.1.0"
             handler="Products.MeetingLalouviere.migrations.migrate_to_4_1.migrate"
             profile="Products.MeetingLalouviere:default"/>
+
+    <genericsetup:upgradeStep
+            title="Go to MeetingLalouviere council with Classifiers"
+            description=""
+            source="4.1.0"
+            destination="4161"
+            handler="Products.MeetingLalouviere.migrations.migrate_to_4161.migrate"
+            profile="Products.MeetingLalouviere:default"/>
 </configure>

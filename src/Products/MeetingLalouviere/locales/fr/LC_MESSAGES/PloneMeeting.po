@@ -65,7 +65,7 @@ msgid "MeetingLalouviere_label_commissionTranscript"
 msgstr "Procès-verbal de la commission"
 
 #. Default: "Commission"
-msgid "MeetingLalouviere_label_councilcategory"
+msgid "MeetingLalouviere_label_councilclassifier"
 msgstr "Commission"
 
 #. Default: "Deliberation"

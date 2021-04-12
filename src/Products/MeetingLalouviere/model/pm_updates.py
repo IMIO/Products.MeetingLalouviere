@@ -460,7 +460,8 @@ def update_item_schema(baseSchema):
     ),)
 
     baseSchema['description'].widget.label_method = "getLabelDescription"
-    baseSchema['category'].widget.label_method = "getLabelCategory"
+    # baseSchema['category'].widget.label_method = "getLabelCategory"
+    baseSchema['classifier'].widget.label_method = "getLabelClassifier"
     baseSchema['privacy'].widget.condition = "python: here.attributeIsUsed('privacy') and " \
                                              "portal.portal_plonemeeting.isManager(here)"
     baseSchema['decision'].default = '<p>DECIDE :</p>'
