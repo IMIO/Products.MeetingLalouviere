@@ -460,11 +460,9 @@ def update_item_schema(baseSchema):
 
     # Don't forget the label override in skins/meetinglalouviere_templates/meetingitem_view.pt
     baseSchema['description'].widget.label_method = "getLabelDescription"
-    baseSchema['classifier'].widget.label_method = "getLabelClassifier"
 
     baseSchema['privacy'].widget.condition = "python: here.attributeIsUsed('privacy') and " \
                                              "portal.portal_plonemeeting.isManager(here)"
-    baseSchema['decision'].default = '<p>DECIDE :</p>'
 
     baseSchema['observations'].write_permission = ModifyPortalContent
 

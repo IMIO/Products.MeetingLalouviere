@@ -8,6 +8,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 
 - Fix commission label.
   [odelaere]
+- Rollback Fix commission label. Finally we'll use the field real name and drop this customization.
+  [odelaere]
 
 
 4.1.6.1 (2021-04-12)

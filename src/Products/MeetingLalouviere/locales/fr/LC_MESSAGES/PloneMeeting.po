@@ -64,10 +64,6 @@ msgstr "Encodez une référence pour l'avis si nécessaire."
 msgid "MeetingLalouviere_label_commissionTranscript"
 msgstr "Procès-verbal de la commission"
 
-#. Default: "Commission"
-msgid "MeetingLalouviere_label_councilclassifier"
-msgstr "Commission"
-
 #. Default: "Deliberation"
 msgid "MeetingLalouviere_label_councildecision"
 msgstr "Délibération"
@@ -165,10 +161,6 @@ msgstr "Suivi apporté"
 msgid "MeetingLalouviere_label_signatures"
 msgstr "Délégation de signatures"
 
-#. Default: "Item classifiers"
-msgid "PloneMeeting_label_classifier"
-msgstr "Commission"
-
 # import what was done in MeetingCommunes
 # MeetingItem
 #. Default: "Decision"
@@ -263,10 +255,6 @@ msgstr "Attention, comme ce point provient du Collège communal, vous devez déf
 #. Default: "Please as you defined an item initiator, check if the linked category should not be 'Points conseillers'. If not, just ignore this message, it will not be displayed anymore when the item will be validated."
 msgid "check_intitiator_and_category"
 msgstr "Attention, en général si vous sélectionnez une personne 'A l'initative de ce point', la catégorie 'Points conseillers' doit être également sélectionnée.  Vérifiez vos données, si elles sont justes, ignorez cet avertissement, il disparaîtra une fois le point 'validé'."
-
-#. Default: "Please select a classifier."
-msgid "classifier_required"
-msgstr "Veuillez sélectionner une commission."
 
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
@@ -487,10 +475,6 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activ
 #. Default: "<span class='follow_up_provided'>The needed follow-up has been provided.</span>"
 msgid "provided_followup_not_printed_itemview"
 msgstr "<span class='follow_up_provided_not_printed'>Le suivi nécessaire a été apporté sur ce point (<img src='not_printed_in_dashboard.gif' /> pas imprimé dans le tableau de bord).</span>"
-
-#. Default: "A classifier must be selected on this item so it may evolve in the workflow"
-msgid "required_classifier_ko"
-msgstr "Une commission doit être sélectionnée sur ce point afin qu'il puisse continuer à évoluer dans le workflow"
 
 # Suffix
 #. Default: "reviewers"
