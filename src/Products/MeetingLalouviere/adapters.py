@@ -586,36 +586,6 @@ class LLCustomMeeting(CustomMeeting):
 
     Meeting.getItemsThirdSuppl = getItemsThirdSuppl
 
-    security.declarePublic("getLabelDescription")
-
-    def getLabelDescription(self):
-        """Returns the label to use for field MeetingItem.description
-          The label is different between college and council"""
-        if self.portal_type == "MeetingItemCouncil":
-            return self.utranslate(
-                "MeetingLalouviere_label_councildescription", domain="PloneMeeting"
-            )
-        else:
-            return self.utranslate(
-                "PloneMeeting_label_description", domain="PloneMeeting"
-            )
-
-    MeetingItem.getLabelDescription = getLabelDescription
-
-    security.declarePublic("getLabelClassifier")
-
-    def getLabelClassifier(self):
-        """Returns the label to use for field MeetingItem.category
-          The label is different between college and council"""
-        if self.portal_type == "MeetingItemCouncil":
-            return self.utranslate(
-                "MeetingLalouviere_label_councilclassifier", domain="PloneMeeting"
-            )
-        else:
-            return self.utranslate("PloneMeeting_label_classifier", domain="PloneMeeting")
-
-    MeetingItem.getLabelClassifier = getLabelClassifier
-
     security.declarePublic("getLabelObservations")
 
     def getLabelObservations(self):
@@ -813,6 +783,39 @@ class LLCustomMeetingItem(CustomMeetingItem):
     MeetingItem.meetingTransitionsAcceptingRecurringItems = (
         customMeetingTransitionsAcceptingRecurringItems
     )
+
+    security.declarePublic("getLabelDescription")
+
+    def getLabelDescription(self):
+        """Returns the label to use for field MeetingItem.description
+          The label is different between college and council"""
+        item = self.getSelf()
+        if item.portal_type == "MeetingItemCouncil":
+            return item.utranslate(
+                "MeetingLalouviere_label_councildescription", domain="PloneMeeting"
+            )
+        else:
+            return item.utranslate(
+                "PloneMeeting_label_description", domain="PloneMeeting"
+            )
+
+    MeetingItem.getLabelDescription = getLabelDescription
+
+    security.declarePublic("getLabelClassifier")
+
+    def getLabelClassifier(self):
+        """Returns the label to use for field MeetingItem.category
+          The label is different between college and council"""
+        item = self.getSelf()
+        if item.portal_type == "MeetingItemCouncil":
+
+            return item.utranslate(
+                "MeetingLalouviere_label_councilclassifier", domain="PloneMeeting"
+            )
+        else:
+            return item.utranslate("PloneMeeting_label_classifier", domain="PloneMeeting")
+
+    MeetingItem.getLabelClassifier = getLabelClassifier
 
     security.declarePublic("activateFollowUp")
 

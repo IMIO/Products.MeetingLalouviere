@@ -586,3 +586,15 @@ msgstr ""
 #. Default: "You can not unselect the 'Validation by CEO and Alderman' adaptation as there are still items in state 'proposed to CEO' or 'proposed to alderman'."
 msgid "wa_removed_validate_by_dg_and_alderman_error"
 msgstr ""
+
+#. Default: "Item classifiers"
+msgid "PloneMeeting_label_classifier"
+msgstr ""
+
+#. Default: "Please select a classifier."
+msgid "classifier_required"
+msgstr ""
+
+#. Default: "A classifier must be selected on this item so it may evolve in the workflow"
+msgid "required_classifier_ko"
+msgstr ""

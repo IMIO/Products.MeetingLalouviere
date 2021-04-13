@@ -165,6 +165,10 @@ msgstr "Suivi apporté"
 msgid "MeetingLalouviere_label_signatures"
 msgstr "Délégation de signatures"
 
+#. Default: "Item classifiers"
+msgid "PloneMeeting_label_classifier"
+msgstr "Commission"
+
 # import what was done in MeetingCommunes
 # MeetingItem
 #. Default: "Decision"
@@ -259,6 +263,10 @@ msgstr "Attention, comme ce point provient du Collège communal, vous devez déf
 #. Default: "Please as you defined an item initiator, check if the linked category should not be 'Points conseillers'. If not, just ignore this message, it will not be displayed anymore when the item will be validated."
 msgid "check_intitiator_and_category"
 msgstr "Attention, en général si vous sélectionnez une personne 'A l'initative de ce point', la catégorie 'Points conseillers' doit être également sélectionnée.  Vérifiez vos données, si elles sont justes, ignorez cet avertissement, il disparaîtra une fois le point 'validé'."
+
+#. Default: "Please select a classifier."
+msgid "classifier_required"
+msgstr "Veuillez sélectionner une commission."
 
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
@@ -480,6 +488,10 @@ msgstr "<br /><span class='discreet'>Actions disponibles : </span><a href='activ
 msgid "provided_followup_not_printed_itemview"
 msgstr "<span class='follow_up_provided_not_printed'>Le suivi nécessaire a été apporté sur ce point (<img src='not_printed_in_dashboard.gif' /> pas imprimé dans le tableau de bord).</span>"
 
+#. Default: "A classifier must be selected on this item so it may evolve in the workflow"
+msgid "required_classifier_ko"
+msgstr "Une commission doit être sélectionnée sur ce point afin qu'il puisse continuer à évoluer dans le workflow"
+
 # Suffix
 #. Default: "reviewers"
 msgid "reviewers"
@@ -550,6 +562,14 @@ msgstr "points suivi apporté"
 msgid "searchproposeditems"
 msgstr "points proposés"
 
+#. Default: "Items proposed to alderman"
+msgid "searchproposedtoalderman"
+msgstr "points proposés à l'échevin"
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtodg"
+msgstr "points proposés au DG"
+
 #. Default: "validated items"
 msgid "searchvalidateditems"
 msgstr "points validés"
@@ -562,6 +582,14 @@ msgstr "chefs de service"
 #. Default: "Please enter 12 lines for signatures delegations"
 msgid "signatures_length_error"
 msgstr "Renseignez 12 lignes pour les signatures.  Si une signature ne doit pas être surchargée (si la signature définie dans la configuration de séance dans le champ 'Signatures certifiées' doit être utilisée), renseignez un tiret (-)."
+
+#. Default: "You can not unselect the 'Validation by CEO and Alderman' adaptation as there are still items in state 'proposed to CEO' or 'proposed to alderman'."
+msgid "wa_removed_validate_by_dg_and_alderman_error"
+msgstr "Vous ne pouvez pas supprimer 'Validation par le DG et l'échevin' s'il y a encore de point dans les états 'proposé au DG' ou 'proposé à l'échevin'"
+
+#. Default: "Validation by CEO and Alderman"
+msgid "wa_validate_by_dg_and_alderman"
+msgstr "Validation par le DG et l'échevin"
 
 #. Default: "<a href='deactivateFollowUp'>Click here</a> if you want to deactivate the needed follow-up or <a href='confirmFollowUp'>click here</a> if you want to specify that needed follow-up has been provided.</span>"
 msgid "yes_followup_needed_actions_itemview"
