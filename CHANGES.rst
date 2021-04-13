@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.6.2 (unreleased)
+4.1.6.2 (2021-04-13)
 --------------------
 
 - Fix commission label.
