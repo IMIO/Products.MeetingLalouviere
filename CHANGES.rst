@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.6.3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Updated with latests MC backports.
+  [odelaere]
 
 
 4.1.6.2 (2021-04-13)
