@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.6.4 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fixed MeetingItem reference for council items.
+  [odelaere]
 
 
 4.1.6.3 (2021-04-16)
