@@ -761,8 +761,8 @@ class LLCustomMeeting(CustomMeeting):
     Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
 
     def getLateState(self):
-        if self.portal_type == "MeetingCouncil":
-            return "in_committee"
+        if self.getSelf().portal_type == "MeetingCouncil":
+            return "in_council"
         return super(CustomMeeting, self).getLateState()
 
 
@@ -939,7 +939,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
             secretnum = len(meeting.getItems(unrestricted=True)) - len(
                 meeting.getItems(
                     unrestricted=True,
-                    useCatalog=True,
+                    theObjects=False,
                     additional_catalog_query={"privacy": "public"},
                 )
             )
@@ -1725,11 +1725,6 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
             if msg is not None:
                 res = msg
         return res
-
-    security.declarePublic("isLateFor")
-
-    def isLateFor(self, meeting):
-        return meeting.queryState() == "in_council"
 
     security.declarePublic("maySetItemInCommittee")
 
