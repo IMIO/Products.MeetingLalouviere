@@ -11,12 +11,14 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
         Tests the Meeting adapted methods
     """
 
-    def test_getCategories(self):
+    def test_getClassifiers(self):
         """
           Check what are returned while getting different types of categories
           This method is used in "meeting-config-council"
         """
         self.meetingConfig = self.meetingConfig2
+        self._setup_commissions_classifiers()
+
         # add some "Suppl" categories
         self.changeUser("admin")
         supplCategories = [
@@ -35,33 +37,27 @@ class testCustomMeeting(mctcm, MeetingLalouviereTestCase):
             self.create("meetingcategory", id=supplCat, title="supplCat")
         self.changeUser("pmManager")
         m = self.create("Meeting", date="2009/11/26 09:00:00")
-        expectedNormal = [
-            "deployment",
-            "maintenance",
-            "development",
-            "events",
-            "research",
-            "projects",
-            "marketing",
-            "subproducts",
-        ]
-        self.assertEquals(m.getNormalCategories(), expectedNormal)
+        expectedNormal = ['commission-travaux',
+                          'commission-finances',
+                          'commission-patrimoine',
+                          'commission-ag',
+                          'commission-enseignement',
+                          'commission-culture',
+                          'commission-sport',
+                          'commission-sante',
+                          'commission-cadre-de-vie',
+                          'commission-police',
+                          'commission-speciale']
 
-        expectedFirstSuppl = [
-            "deployment-1er-supplement",
-            "maintenance-1er-supplement",
-            "development-1er-supplement",
-            "events-1er-supplement",
-            "research-1er-supplement",
-            "projects-1er-supplement",
-            "marketing-1er-supplement",
-            "subproducts-1er-supplement",
-        ]
-        self.assertEquals(m.getFirstSupplCategories(), expectedFirstSuppl)
+        self.assertEquals(m.adapted().get_normal_classifiers(), expectedNormal)
+
+        expectedFirstSuppl = [expected + "-1er-supplement" for expected in expectedNormal]
+
+        self.assertEquals(m.adapted().get_first_suppl_classifiers(), expectedFirstSuppl)
         expectedSecondSuppl = ["points-conseillers-2eme-supplement"]
-        self.assertEquals(m.getSecondSupplCategories(), expectedSecondSuppl)
+        self.assertEquals(m.adapted().get_second_suppl_classifiers(), expectedSecondSuppl)
         expectedThirdSuppl = ["points-conseillers-3eme-supplement"]
-        self.assertEquals(m.getThirdSupplCategories(), expectedThirdSuppl)
+        self.assertEquals(m.adapted().get_third_suppl_classifiers(), expectedThirdSuppl)
 
     def test_getAvailableItems(self):
         """

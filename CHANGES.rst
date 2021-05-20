@@ -8,6 +8,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 
 - Fixed MeetingItem reference for council items.
   [odelaere]
+- Fixed print method for commission.
+  [odelaere]
 
 
 4.1.6.3 (2021-04-16)

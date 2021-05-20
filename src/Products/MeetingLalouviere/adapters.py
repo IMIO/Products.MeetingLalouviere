@@ -453,138 +453,146 @@ class LLCustomMeeting(CustomMeeting):
 
     # helper methods used in templates
 
-    security.declarePublic("getNormalCategories")
+    security.declarePublic("get_normal_classifiers")
 
-    def getNormalCategories(self):
+    def get_normal_classifiers(self):
         """Returns the 'normal' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if not catId.endswith("supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if not classifier_id.endswith("supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getNormalCategories = getNormalCategories
+    security.declarePublic("get_first_suppl_classifiers")
 
-    security.declarePublic("getFirstSupplCategories")
-
-    def getFirstSupplCategories(self):
+    def get_first_suppl_classifiers(self):
         """Returns the '1er-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if catId.endswith("1er-supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if classifier_id.endswith("1er-supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getFirstSupplCategories = getFirstSupplCategories
+    security.declarePublic("get_second_suppl_classifiers")
 
-    security.declarePublic("getSecondSupplCategories")
-
-    def getSecondSupplCategories(self):
+    def get_second_suppl_classifiers(self):
         """Returns the '2eme-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if catId.endswith("2eme-supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if classifier_id.endswith("2eme-supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getSecondSupplCategories = getSecondSupplCategories
+    security.declarePublic("get_third_suppl_classifiers")
 
-    security.declarePublic("getThirdSupplCategories")
-
-    def getThirdSupplCategories(self):
+    def get_third_suppl_classifiers(self):
         """Returns the '3eme-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
         mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if catId.endswith("3eme-supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if classifier_id.endswith("3eme-supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getThirdSupplCategories = getThirdSupplCategories
+    def _get_renumbered_items(self, itemUids, privacy, listTypes, base_num_classifiers, item_list_classifiers):
+        number = (
+                self.getNumberOfItems(
+                    itemUids,
+                    listTypes=listTypes,
+                    privacy=privacy,
+                    classifiers=base_num_classifiers
+                )
+                + 1
+        )
+        items = self.getSelf().getItems(itemUids,
+                                        ordered=True,
+                                        listTypes=listTypes,
+                                        additional_catalog_query={
+                                            'privacy': privacy,
+                                            'getRawClassifier': item_list_classifiers
+                                        })
+        res = []
+        for item in items:
+            res.append([number, item])
+            number += 1
+        return items
 
-    def getItemsFirstSuppl(self, itemUids, privacy="public"):
+    security.declarePublic("get_normal_items")
+
+    def get_normal_items(self, itemUids, privacy="public", listTypes=['normal'], renumber=False):
         """Returns the items presented as first supplement"""
-        normalCategories = self.getNormalCategories()
-        firstSupplCategories = self.getFirstSupplCategories()
-        firstNumber = (
-            self.adapted().getNumberOfItems(
-                itemUids, privacy=privacy, categories=normalCategories
-            )
-            + 1
-        )
-        return self.adapted().getPrintableItems(
-            itemUids,
-            privacy=privacy,
-            categories=firstSupplCategories,
-            firstNumber=firstNumber,
-            renumber=True,
-        )
 
-    Meeting.getItemsFirstSuppl = getItemsFirstSuppl
+        items = self.getSelf().getItems(itemUids,
+                                        ordered=True,
+                                        listTypes=listTypes,
+                                        additional_catalog_query={
+                                            'privacy': privacy,
+                                            'getRawClassifier': self.get_normal_classifiers()
+                                        })
+        if renumber:
+            number = 1
+            res = []
+            for item in items:
+                res.append([number, item])
+                number += 1
+            return res
 
-    def getItemsSecondSuppl(self, itemUids, privacy="public"):
+        return items
+
+    security.declarePublic("get_items_first_suppl")
+
+    def get_items_first_suppl(self, itemUids, privacy="public", listTypes=['normal']):
+        """Returns the items presented as first supplement"""
+        normal_classifiers = self.get_normal_classifiers()
+        first_suppl_classifiers = self.get_first_suppl_classifiers()
+        return self._get_renumbered_items(itemUids,
+                                          privacy,
+                                          listTypes,
+                                          normal_classifiers,
+                                          first_suppl_classifiers)
+
+    security.declarePublic("get_items_second_suppl")
+
+    def get_items_second_suppl(self, itemUids, privacy="public", listTypes=['normal']):
         """Returns the items presented as second supplement"""
-        normalCategories = self.getNormalCategories()
-        firstSupplCategories = self.getFirstSupplCategories()
-        secondSupplCategories = self.getSecondSupplCategories()
-        firstNumber = (
-            self.adapted().getNumberOfItems(
-                itemUids,
-                privacy=privacy,
-                categories=normalCategories + firstSupplCategories,
-            )
-            + 1
-        )
-        return self.adapted().getPrintableItems(
-            itemUids,
-            privacy=privacy,
-            categories=secondSupplCategories,
-            firstNumber=firstNumber,
-            renumber=True,
-        )
 
-    Meeting.getItemsSecondSuppl = getItemsSecondSuppl
+        normal_classifiers = self.get_normal_classifiers()
+        first_suppl_classifiers = self.get_first_suppl_classifiers()
+        second_suppl_classifiers = self.get_second_suppl_classifiers()
+        return self._get_renumbered_items(itemUids,
+                                          privacy,
+                                          listTypes,
+                                          normal_classifiers + first_suppl_classifiers,
+                                          second_suppl_classifiers)
 
-    def getItemsThirdSuppl(self, itemUids, privacy="public"):
+    security.declarePublic("get_items_third_suppl")
+
+    def get_items_third_suppl(self, itemUids, privacy="public", listTypes=['normal']):
         """Returns the items presented as third supplement"""
-        normalCategories = self.getNormalCategories()
-        firstSupplCategories = self.getFirstSupplCategories()
-        secondSupplCategories = self.getSecondSupplCategories()
-        thirdSupplCategories = self.getThirdSupplCategories()
-        firstNumber = (
-            self.adapted().getNumberOfItems(
-                itemUids,
-                privacy=privacy,
-                categories=normalCategories
-                + firstSupplCategories
-                + secondSupplCategories,
-            )
-            + 1
-        )
-        return self.adapted().getPrintableItems(
-            itemUids,
-            privacy=privacy,
-            categories=thirdSupplCategories,
-            firstNumber=firstNumber,
-            renumber=True,
-        )
-
-    Meeting.getItemsThirdSuppl = getItemsThirdSuppl
+        normal_classifiers = self.get_normal_classifiers()
+        first_suppl_classifiers = self.get_first_suppl_classifiers()
+        second_suppl_classifiers = self.get_second_suppl_classifiers()
+        third_suppl_classifiers = self.get_third_suppl_classifiers()
+        return self._get_renumbered_items(itemUids,
+                                          privacy,
+                                          listTypes,
+                                          normal_classifiers + first_suppl_classifiers + second_suppl_classifiers,
+                                          third_suppl_classifiers)
 
     security.declarePublic("getLabelObservations")
 
