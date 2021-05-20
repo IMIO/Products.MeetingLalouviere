@@ -458,7 +458,7 @@ class LLCustomMeeting(CustomMeeting):
     def get_normal_classifiers(self):
         """Returns the 'normal' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
+        mc = tool.getMeetingConfig(self.getSelf())
         classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
         for classifier in classifiers:
@@ -472,7 +472,7 @@ class LLCustomMeeting(CustomMeeting):
     def get_first_suppl_classifiers(self):
         """Returns the '1er-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
+        mc = tool.getMeetingConfig(self.getSelf())
         classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
         for classifier in classifiers:
@@ -486,7 +486,7 @@ class LLCustomMeeting(CustomMeeting):
     def get_second_suppl_classifiers(self):
         """Returns the '2eme-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
+        mc = tool.getMeetingConfig(self.getSelf())
         classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
         for classifier in classifiers:
@@ -500,7 +500,7 @@ class LLCustomMeeting(CustomMeeting):
     def get_third_suppl_classifiers(self):
         """Returns the '3eme-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
+        mc = tool.getMeetingConfig(self.getSelf())
         classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
         for classifier in classifiers:
@@ -530,7 +530,7 @@ class LLCustomMeeting(CustomMeeting):
         for item in items:
             res.append([number, item])
             number += 1
-        return items
+        return res
 
     security.declarePublic("get_normal_items")
 
