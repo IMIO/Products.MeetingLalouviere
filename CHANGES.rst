@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.6.5 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix onItemLocalRolesUpdated for commissionTranscript.
+  [odelaere]
 
 
 4.1.6.4 (2021-05-20)
