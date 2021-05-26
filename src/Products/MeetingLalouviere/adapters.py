@@ -1657,7 +1657,7 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemCommunesWorkflowAct
         """
         if (
             hasattr(self.context, u"isRecurringItem") and self.context.isRecurringItem
-        ) or self.context.getCategory().endswith("-supplement"):
+        ) or self.context.getClassifier().endswith("-supplement"):
             return True
 
         return bool(

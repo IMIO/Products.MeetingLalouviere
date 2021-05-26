@@ -168,25 +168,9 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             creation of some items, and ends by closing a meeting.
         """
         self.changeUser("admin")
+        self._setup_commissions_classifiers()
         self.add_commission_plone_groups()
         self.setMeetingConfig(self.meetingConfig2.getId())
-        # commission categories
-        commission = self.create(
-            "meetingcategory", id="commission-ag", title="Commission AG"
-        )
-        commission_compl = self.create(
-            "meetingcategory",
-            id="commission-ag-1er-supplement",
-            title="Commissions AG 1er Complément",
-        )
-        commission2 = self.create(
-            "meetingcategory", id="commission-patrimoine", title="Commission Patrimoine"
-        )
-        commission2_compl = self.create(
-            "meetingcategory",
-            id="commission-patrimoine-1er-supplement",
-            title="Commission Patrimoine 1er Complément",
-        )
 
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
         self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
@@ -201,17 +185,18 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # pmCreator1 creates an item with 1 annex and proposes it
         self.changeUser("pmCreator1")
         item1 = self.create(
-            "MeetingItem", title="The first item", autoAddCategory=False
+            "MeetingItem",
+            title="The first item",
+            autoAddCategory=False,
+            category="deployment",
+            classifier="commission-ag"
         )
+
         self.assertTrue(item1.mayQuickEdit("observations"))
         item1.setProposingGroup(self.developers_uid)
         self.addAnnex(item1)
         # The creator can add a decision annex on created item
         self.addAnnex(item1, relatedTo="item_decision")
-        # the item is not proposable until it has a category
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        item1.setCategory(commission.id)
-        item1.at_post_edit_script()
         self.do(item1, "proposeToDirector")
         self.failIf(self.hasPermission(ModifyPortalContent, item1))
         # The creator cannot add a decision annex on proposed item
@@ -233,9 +218,12 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # pmCreator2 creates and proposes an item
         self.changeUser("pmCreator2")
         item2 = self.create(
-            "MeetingItem", title="The second item", preferredMeeting=meeting.UID()
+            "MeetingItem",
+            title="The second item",
+            preferredMeeting=meeting.UID(),
+            category="deployment",
+            classifier="commission-patrimoine"
         )
-        item2.setCategory(commission2.id)
         self.do(item2, "proposeToDirector")
         # pmManager inserts item1 into the meeting and freezes it
         self.changeUser("pmManager")
@@ -280,9 +268,12 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(item2, "present")
 
         item1_addition = self.create(
-            "MeetingItem", title="Addition to the first item", autoAddCategory=False
+            "MeetingItem",
+            title="Addition to the first item",
+            autoAddCategory=False,
+            category="deployment",
+            classifier="commission-ag-1er-supplement"
         )
-        item1_addition.setCategory(commission_compl.id)
         self.do(item1_addition, "proposeToDirector")
         item1_addition.setPreferredMeeting(meeting.UID())
         self.do(item1_addition, "validate")

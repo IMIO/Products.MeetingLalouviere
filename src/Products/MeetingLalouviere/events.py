@@ -73,7 +73,7 @@ def onItemLocalRolesUpdated(item, event):
     plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
     # now add the new local roles
     for group_id in plone_group_ids:
-        if item.getCategory().startswith(group_id):
+        if item.getClassifier().startswith(group_id):
             # we found the relevant group
             group_id = "{}_{}".format(group_id, COMMISSION_EDITORS_SUFFIX)
             item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
