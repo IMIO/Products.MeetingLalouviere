@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from Products.MeetingCommunes.Extensions.add_portal_categories import (
-    add_portal_category,
+from Products.MeetingCommunes.Extensions.add_portal_configuration import (
+    add_category, add_lisTypes
 )
 from Products.PloneMeeting.migrations import Migrator
 
@@ -126,7 +126,9 @@ class Migrate_To_4_1_5_4(Migrator):
         logger.info("Creating commission classifiers")
         self.create_classifiers()
         logger.info("Creating deliberation.be categories using MC script")
-        add_portal_category(self.portal)
+        add_category(self.portal)
+        logger.info("Creating deliberation.be listTypes using MC script")
+        add_lisTypes(self.portal)
         logger.info("Migrating council items")
         self.migrate_item_commissions_classifiers()
 

@@ -3,10 +3,42 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.1.6.2 (unreleased)
+4.1.6.6 (unreleased)
 --------------------
 
 - Nothing changed yet.
+
+
+4.1.6.5 (2021-05-27)
+--------------------
+
+- Fix onItemLocalRolesUpdated for commissionTranscript.
+  [odelaere]
+
+
+4.1.6.4 (2021-05-20)
+--------------------
+
+- Fixed MeetingItem reference for council items.
+  [odelaere]
+- Fixed print method for commission.
+  [odelaere]
+
+
+4.1.6.3 (2021-04-16)
+--------------------
+
+- Updated with latests MC backports.
+  [odelaere]
+
+
+4.1.6.2 (2021-04-13)
+--------------------
+
+- Fix commission label.
+  [odelaere]
+- Rollback Fix commission label. Finally we'll use the field real name and drop this customization.
+  [odelaere]
 
 
 4.1.6.1 (2021-04-12)

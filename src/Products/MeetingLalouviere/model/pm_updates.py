@@ -453,18 +453,16 @@ def update_item_schema(baseSchema):
             searchable=True,
             allowable_content_types=('text/html',),
             default_output_type="text/html",
-            write_permission = "MeetingLalouviere: Write providedFollowUp",
-            read_permission = "MeetingLalouviere: Read providedFollowUp",
+            write_permission="MeetingLalouviere: Write providedFollowUp",
+            read_permission="MeetingLalouviere: Read providedFollowUp",
         ),
-
     ),)
 
+    # Don't forget the label override in skins/meetinglalouviere_templates/meetingitem_view.pt
     baseSchema['description'].widget.label_method = "getLabelDescription"
-    # baseSchema['category'].widget.label_method = "getLabelCategory"
-    baseSchema['classifier'].widget.label_method = "getLabelClassifier"
+
     baseSchema['privacy'].widget.condition = "python: here.attributeIsUsed('privacy') and " \
                                              "portal.portal_plonemeeting.isManager(here)"
-    baseSchema['decision'].default = '<p>DECIDE :</p>'
 
     baseSchema['observations'].write_permission = ModifyPortalContent
 

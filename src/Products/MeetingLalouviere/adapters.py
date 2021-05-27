@@ -453,168 +453,146 @@ class LLCustomMeeting(CustomMeeting):
 
     # helper methods used in templates
 
-    security.declarePublic("getNormalCategories")
+    security.declarePublic("get_normal_classifiers")
 
-    def getNormalCategories(self):
+    def get_normal_classifiers(self):
         """Returns the 'normal' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        mc = tool.getMeetingConfig(self.getSelf())
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if not catId.endswith("supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if not classifier_id.endswith("supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getNormalCategories = getNormalCategories
+    security.declarePublic("get_first_suppl_classifiers")
 
-    security.declarePublic("getFirstSupplCategories")
-
-    def getFirstSupplCategories(self):
+    def get_first_suppl_classifiers(self):
         """Returns the '1er-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        mc = tool.getMeetingConfig(self.getSelf())
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if catId.endswith("1er-supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if classifier_id.endswith("1er-supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getFirstSupplCategories = getFirstSupplCategories
+    security.declarePublic("get_second_suppl_classifiers")
 
-    security.declarePublic("getSecondSupplCategories")
-
-    def getSecondSupplCategories(self):
+    def get_second_suppl_classifiers(self):
         """Returns the '2eme-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        mc = tool.getMeetingConfig(self.getSelf())
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if catId.endswith("2eme-supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if classifier_id.endswith("2eme-supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getSecondSupplCategories = getSecondSupplCategories
+    security.declarePublic("get_third_suppl_classifiers")
 
-    security.declarePublic("getThirdSupplCategories")
-
-    def getThirdSupplCategories(self):
+    def get_third_suppl_classifiers(self):
         """Returns the '3eme-supplement' categories"""
         tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
-        categories = mc.getCategories(onlySelectable=False)
+        mc = tool.getMeetingConfig(self.getSelf())
+        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
         res = []
-        for cat in categories:
-            catId = cat.getId()
-            if catId.endswith("3eme-supplement"):
-                res.append(catId)
+        for classifier in classifiers:
+            classifier_id = classifier.getId()
+            if classifier_id.endswith("3eme-supplement"):
+                res.append(classifier_id)
         return res
 
-    Meeting.getThirdSupplCategories = getThirdSupplCategories
+    def _get_renumbered_items(self, itemUids, privacy, listTypes, base_num_classifiers, item_list_classifiers):
+        number = (
+                self.getNumberOfItems(
+                    itemUids,
+                    listTypes=listTypes,
+                    privacy=privacy,
+                    classifiers=base_num_classifiers
+                )
+                + 1
+        )
+        items = self.getSelf().getItems(itemUids,
+                                        ordered=True,
+                                        listTypes=listTypes,
+                                        additional_catalog_query={
+                                            'privacy': privacy,
+                                            'getRawClassifier': item_list_classifiers
+                                        })
+        res = []
+        for item in items:
+            res.append([number, item])
+            number += 1
+        return res
 
-    def getItemsFirstSuppl(self, itemUids, privacy="public"):
+    security.declarePublic("get_normal_items")
+
+    def get_normal_items(self, itemUids, privacy="public", listTypes=['normal'], renumber=False):
         """Returns the items presented as first supplement"""
-        normalCategories = self.getNormalCategories()
-        firstSupplCategories = self.getFirstSupplCategories()
-        firstNumber = (
-            self.adapted().getNumberOfItems(
-                itemUids, privacy=privacy, categories=normalCategories
-            )
-            + 1
-        )
-        return self.adapted().getPrintableItems(
-            itemUids,
-            privacy=privacy,
-            categories=firstSupplCategories,
-            firstNumber=firstNumber,
-            renumber=True,
-        )
 
-    Meeting.getItemsFirstSuppl = getItemsFirstSuppl
+        items = self.getSelf().getItems(itemUids,
+                                        ordered=True,
+                                        listTypes=listTypes,
+                                        additional_catalog_query={
+                                            'privacy': privacy,
+                                            'getRawClassifier': self.get_normal_classifiers()
+                                        })
+        if renumber:
+            number = 1
+            res = []
+            for item in items:
+                res.append([number, item])
+                number += 1
+            return res
 
-    def getItemsSecondSuppl(self, itemUids, privacy="public"):
+        return items
+
+    security.declarePublic("get_items_first_suppl")
+
+    def get_items_first_suppl(self, itemUids, privacy="public", listTypes=['normal']):
+        """Returns the items presented as first supplement"""
+        normal_classifiers = self.get_normal_classifiers()
+        first_suppl_classifiers = self.get_first_suppl_classifiers()
+        return self._get_renumbered_items(itemUids,
+                                          privacy,
+                                          listTypes,
+                                          normal_classifiers,
+                                          first_suppl_classifiers)
+
+    security.declarePublic("get_items_second_suppl")
+
+    def get_items_second_suppl(self, itemUids, privacy="public", listTypes=['normal']):
         """Returns the items presented as second supplement"""
-        normalCategories = self.getNormalCategories()
-        firstSupplCategories = self.getFirstSupplCategories()
-        secondSupplCategories = self.getSecondSupplCategories()
-        firstNumber = (
-            self.adapted().getNumberOfItems(
-                itemUids,
-                privacy=privacy,
-                categories=normalCategories + firstSupplCategories,
-            )
-            + 1
-        )
-        return self.adapted().getPrintableItems(
-            itemUids,
-            privacy=privacy,
-            categories=secondSupplCategories,
-            firstNumber=firstNumber,
-            renumber=True,
-        )
 
-    Meeting.getItemsSecondSuppl = getItemsSecondSuppl
+        normal_classifiers = self.get_normal_classifiers()
+        first_suppl_classifiers = self.get_first_suppl_classifiers()
+        second_suppl_classifiers = self.get_second_suppl_classifiers()
+        return self._get_renumbered_items(itemUids,
+                                          privacy,
+                                          listTypes,
+                                          normal_classifiers + first_suppl_classifiers,
+                                          second_suppl_classifiers)
 
-    def getItemsThirdSuppl(self, itemUids, privacy="public"):
+    security.declarePublic("get_items_third_suppl")
+
+    def get_items_third_suppl(self, itemUids, privacy="public", listTypes=['normal']):
         """Returns the items presented as third supplement"""
-        normalCategories = self.getNormalCategories()
-        firstSupplCategories = self.getFirstSupplCategories()
-        secondSupplCategories = self.getSecondSupplCategories()
-        thirdSupplCategories = self.getThirdSupplCategories()
-        firstNumber = (
-            self.adapted().getNumberOfItems(
-                itemUids,
-                privacy=privacy,
-                categories=normalCategories
-                + firstSupplCategories
-                + secondSupplCategories,
-            )
-            + 1
-        )
-        return self.adapted().getPrintableItems(
-            itemUids,
-            privacy=privacy,
-            categories=thirdSupplCategories,
-            firstNumber=firstNumber,
-            renumber=True,
-        )
-
-    Meeting.getItemsThirdSuppl = getItemsThirdSuppl
-
-    security.declarePublic("getLabelDescription")
-
-    def getLabelDescription(self):
-        """Returns the label to use for field MeetingItem.description
-          The label is different between college and council"""
-        if self.portal_type == "MeetingItemCouncil":
-            return self.utranslate(
-                "MeetingLalouviere_label_councildescription", domain="PloneMeeting"
-            )
-        else:
-            return self.utranslate(
-                "PloneMeeting_label_description", domain="PloneMeeting"
-            )
-
-    MeetingItem.getLabelDescription = getLabelDescription
-
-    security.declarePublic("getLabelClassifier")
-
-    def getLabelClassifier(self):
-        """Returns the label to use for field MeetingItem.category
-          The label is different between college and council"""
-        if self.portal_type == "MeetingItemCouncil":
-            return self.utranslate(
-                "MeetingLalouviere_label_councilclassifier", domain="PloneMeeting"
-            )
-        else:
-            return self.utranslate("PloneMeeting_label_classifier", domain="PloneMeeting")
-
-    MeetingItem.getLabelClassifier = getLabelClassifier
+        normal_classifiers = self.get_normal_classifiers()
+        first_suppl_classifiers = self.get_first_suppl_classifiers()
+        second_suppl_classifiers = self.get_second_suppl_classifiers()
+        third_suppl_classifiers = self.get_third_suppl_classifiers()
+        return self._get_renumbered_items(itemUids,
+                                          privacy,
+                                          listTypes,
+                                          normal_classifiers + first_suppl_classifiers + second_suppl_classifiers,
+                                          third_suppl_classifiers)
 
     security.declarePublic("getLabelObservations")
 
@@ -791,8 +769,8 @@ class LLCustomMeeting(CustomMeeting):
     Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
 
     def getLateState(self):
-        if self.portal_type == "MeetingCouncil":
-            return "in_committee"
+        if self.getSelf().portal_type == "MeetingCouncil":
+            return "in_council"
         return super(CustomMeeting, self).getLateState()
 
 
@@ -813,6 +791,39 @@ class LLCustomMeetingItem(CustomMeetingItem):
     MeetingItem.meetingTransitionsAcceptingRecurringItems = (
         customMeetingTransitionsAcceptingRecurringItems
     )
+
+    security.declarePublic("getLabelDescription")
+
+    def getLabelDescription(self):
+        """Returns the label to use for field MeetingItem.description
+          The label is different between college and council"""
+        item = self.getSelf()
+        if item.portal_type == "MeetingItemCouncil":
+            return item.utranslate(
+                "MeetingLalouviere_label_councildescription", domain="PloneMeeting"
+            )
+        else:
+            return item.utranslate(
+                "PloneMeeting_label_description", domain="PloneMeeting"
+            )
+
+    MeetingItem.getLabelDescription = getLabelDescription
+
+    security.declarePublic("getLabelClassifier")
+
+    def getLabelClassifier(self):
+        """Returns the label to use for field MeetingItem.category
+          The label is different between college and council"""
+        item = self.getSelf()
+        if item.portal_type == "MeetingItemCouncil":
+
+            return item.utranslate(
+                "MeetingLalouviere_label_councilclassifier", domain="PloneMeeting"
+            )
+        else:
+            return item.utranslate("PloneMeeting_label_classifier", domain="PloneMeeting")
+
+    MeetingItem.getLabelClassifier = getLabelClassifier
 
     security.declarePublic("activateFollowUp")
 
@@ -936,7 +947,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
             secretnum = len(meeting.getItems(unrestricted=True)) - len(
                 meeting.getItems(
                     unrestricted=True,
-                    useCatalog=True,
+                    theObjects=False,
                     additional_catalog_query={"privacy": "public"},
                 )
             )
@@ -1646,7 +1657,7 @@ class MeetingItemCouncilLalouviereWorkflowActions(MeetingItemCommunesWorkflowAct
         """
         if (
             hasattr(self.context, u"isRecurringItem") and self.context.isRecurringItem
-        ) or self.context.getCategory().endswith("-supplement"):
+        ) or self.context.getClassifier().endswith("-supplement"):
             return True
 
         return bool(
@@ -1722,11 +1733,6 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
             if msg is not None:
                 res = msg
         return res
-
-    security.declarePublic("isLateFor")
-
-    def isLateFor(self, meeting):
-        return meeting.queryState() == "in_council"
 
     security.declarePublic("maySetItemInCommittee")
 

@@ -34,7 +34,7 @@ from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.utils import reviewersFor
 
 
-from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
+from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX, COUNCIL_MEETING_COMMISSION_IDS_2020
 
 from collective.contact.plonegroup.utils import get_plone_group_id
 
@@ -74,3 +74,33 @@ class MeetingLalouviereTestCase(
         groups = [group.replace(reviewers.keys()[1], reviewers.keys()[-1]) for group in groups]
         for group in groups:
             self._addPrincipalToGroup(member.getId(), group)
+
+    def _setup_commissions_classifiers(self, commission_version=COUNCIL_MEETING_COMMISSION_IDS_2020):
+        # add MEETING_COMMISSION's classifiers
+        self.changeUser("admin")
+
+        # wipe all previous classifiers
+        ids = self.meetingConfig.classifiers.keys()
+        if len(ids) > 0:
+            ids = list(ids)
+            self.meetingConfig.classifiers.manage_delObjects(ids)
+
+        # flatten commission_version
+        commission_classifiers = []
+        for i in commission_version:
+            if isinstance(i, tuple):
+                for j in i:
+                    commission_classifiers.append(j)
+            else:
+                commission_classifiers.append(i)
+
+        # create 1st-supplement for each classifier
+        commission_classifiers = commission_classifiers + [
+            classifier + "-1er-supplement" for classifier in commission_classifiers
+        ]
+        commission_classifiers += ["points-conseillers-2eme-supplement", "points-conseillers-3eme-supplement"]
+
+        # add classifiers to the meetingConfig
+        for classifier in commission_classifiers:
+            self.create("meetingcategory", id=classifier, title="commissionClf", is_classifier=True)
+

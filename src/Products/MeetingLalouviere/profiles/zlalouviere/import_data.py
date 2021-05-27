@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
 
+from Products.MeetingCommunes.config import PORTAL_CATEGORIES
 from Products.MeetingCommunes.profiles.examples_fr import import_data as mc_import_data
 from Products.PloneMeeting.profiles import (
     AnnexTypeDescriptor,
@@ -337,11 +338,10 @@ councilMeeting.usedMeetingAttributes = (
     u"preMeetingAssembly_7",
 )
 
-categories = [
+classifiers = [
     CategoryDescriptor(
-        "recurrent",
-        "Point récurrent",
-        category_id="recurrent",
+        "administration",
+        "Administration générale",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -350,43 +350,30 @@ categories = [
         ),
     ),
     CategoryDescriptor(
-        "commission-travaux", "Commission Travaux", category_id="commission-travaux",
-    ),
+        "commission-travaux", "Commission Travaux"),
     CategoryDescriptor(
         "commission-enseignement",
-        "Commission Enseignement",
-        category_id="commission-enseignement",
-    ),
+        "Commission Enseignement"),
     CategoryDescriptor(
-        "commission-culture", "Commission Culture", category_id="commission-culture"
-    ),
+        "commission-culture", "Commission Culture"),
     CategoryDescriptor(
-        "commission-sport", "Commission Sport", category_id="commission-sport"
-    ),
+        "commission-sport", "Commission Sport"),
     CategoryDescriptor(
-        "commission-sante", "Commission Santé", category_id="commission-sante"
-    ),
+        "commission-sante", "Commission Santé"),
     CategoryDescriptor(
         "commission-cadre-de-vie",
-        "Commission Cadre de Vie",
-        category_id="commission-cadre-de-vie",
-    ),
-    CategoryDescriptor("commission-ag", "Commission AG", category_id="commission-ag"),
+        "Commission Cadre de Vie"),
+    CategoryDescriptor("commission-ag", "Commission AG"),
     CategoryDescriptor(
-        "commission-finances", "Commission Finances", category_id="commission-finances"
-    ),
+        "commission-finances", "Commission Finances"),
     CategoryDescriptor(
         "commission-patrimoine",
-        "Commission Patrimoine",
-        category_id="commission-patrimoine",
-    ),
+        "Commission Patrimoine"),
     CategoryDescriptor(
-        "commission-police", "Commission Police", category_id="commission-police"
-    ),
+        "commission-police", "Commission Police"),
     CategoryDescriptor(
         "commission-speciale",
         "Commission Spéciale",
-        category_id="commission-speciale",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -397,7 +384,6 @@ categories = [
     CategoryDescriptor(
         "commission-travaux-1er-supplement",
         "Commission Travaux (1er supplément)",
-        category_id="commission-travaux-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -408,7 +394,6 @@ categories = [
     CategoryDescriptor(
         "commission-enseignement-1er-supplement",
         "Commission Enseignement (1er supplément)",
-        category_id="commission-enseignement-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -419,7 +404,6 @@ categories = [
     CategoryDescriptor(
         "commission-culture-1er-supplement",
         "Commission Culture (1er supplément)",
-        category_id="commission-culture-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -430,7 +414,6 @@ categories = [
     CategoryDescriptor(
         "commission-sport-1er-supplement",
         "Commission Sport (1er supplément)",
-        category_id="commission-travaux-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -441,7 +424,6 @@ categories = [
     CategoryDescriptor(
         "commission-sante-1er-supplement",
         "Commission Santé (1er supplément)",
-        category_id="commission-sante-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -452,7 +434,6 @@ categories = [
     CategoryDescriptor(
         "commission-cadre-de-vie-1er-supplement",
         "Commission Cadre de Vie (1er supplément)",
-        category_id="commission-cadre-de-vie-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -463,7 +444,6 @@ categories = [
     CategoryDescriptor(
         "commission-ag-1er-supplement",
         "Commission AG (1er supplément)",
-        category_id="commission-ag-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -474,7 +454,6 @@ categories = [
     CategoryDescriptor(
         "commission-finances-1er-supplement",
         "Commission Finances (1er supplément)",
-        category_id="commission-finances-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -485,7 +464,6 @@ categories = [
     CategoryDescriptor(
         "commission-patrimoine-1er-supplement",
         "Commission Patrimoine (1er supplément)",
-        category_id="commission-patrimoine-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -496,7 +474,6 @@ categories = [
     CategoryDescriptor(
         "commission-police-1er-supplement",
         "Commission Police (1er supplément)",
-        category_id="commission-police-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -507,7 +484,6 @@ categories = [
     CategoryDescriptor(
         "commission-speciale-1er-supplement",
         "Commission Spéciale (1er supplément)",
-        category_id="commission-speciale-1er-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -518,7 +494,6 @@ categories = [
     CategoryDescriptor(
         "points-conseillers-2eme-supplement",
         "Points conseillers (2ème supplément)",
-        category_id="points-conseillers-2eme-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -529,7 +504,6 @@ categories = [
     CategoryDescriptor(
         "points-conseillers-3eme-supplement",
         "Points conseillers (3ème supplément)",
-        category_id="points-conseillers-3eme-supplement",
         using_groups=(
             "secretaire-communal",
             "secretaire-communal-adj",
@@ -538,7 +512,8 @@ categories = [
         ),
     ),
 ]
-councilMeeting.categories = categories
+councilMeeting.classifiers = classifiers
+councilMeeting.categories = PORTAL_CATEGORIES
 councilMeeting.useGroupsAsCategories = False
 
 for recurringItem in councilMeeting.recurringItems:

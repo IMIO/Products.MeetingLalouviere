@@ -120,6 +120,12 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
             "backToValidated",
             "backToProposedToDirector",
         ),
+        "proposed": (
+            "backToItemFrozen",
+            "backToPresented",
+            "backToValidated",
+            "backToProposedToDirector",
+        ),
         "validated": ("backToItemFrozen", "backToPresented", "backToValidated",),
     }
 

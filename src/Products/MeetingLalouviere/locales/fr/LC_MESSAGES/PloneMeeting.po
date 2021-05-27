@@ -64,10 +64,6 @@ msgstr "Encodez une référence pour l'avis si nécessaire."
 msgid "MeetingLalouviere_label_commissionTranscript"
 msgstr "Procès-verbal de la commission"
 
-#. Default: "Commission"
-msgid "MeetingLalouviere_label_councilclassifier"
-msgstr "Commission"
-
 #. Default: "Deliberation"
 msgid "MeetingLalouviere_label_councildecision"
 msgstr "Délibération"
@@ -550,6 +546,14 @@ msgstr "points suivi apporté"
 msgid "searchproposeditems"
 msgstr "points proposés"
 
+#. Default: "Items proposed to alderman"
+msgid "searchproposedtoalderman"
+msgstr "points proposés à l'échevin"
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtodg"
+msgstr "points proposés au DG"
+
 #. Default: "validated items"
 msgid "searchvalidateditems"
 msgstr "points validés"
@@ -562,6 +566,14 @@ msgstr "chefs de service"
 #. Default: "Please enter 12 lines for signatures delegations"
 msgid "signatures_length_error"
 msgstr "Renseignez 12 lignes pour les signatures.  Si une signature ne doit pas être surchargée (si la signature définie dans la configuration de séance dans le champ 'Signatures certifiées' doit être utilisée), renseignez un tiret (-)."
+
+#. Default: "You can not unselect the 'Validation by CEO and Alderman' adaptation as there are still items in state 'proposed to CEO' or 'proposed to alderman'."
+msgid "wa_removed_validate_by_dg_and_alderman_error"
+msgstr "Vous ne pouvez pas supprimer 'Validation par le DG et l'échevin' s'il y a encore de point dans les états 'proposé au DG' ou 'proposé à l'échevin'"
+
+#. Default: "Validation by CEO and Alderman"
+msgid "wa_validate_by_dg_and_alderman"
+msgstr "Validation par le DG et l'échevin"
 
 #. Default: "<a href='deactivateFollowUp'>Click here</a> if you want to deactivate the needed follow-up or <a href='confirmFollowUp'>click here</a> if you want to specify that needed follow-up has been provided.</span>"
 msgid "yes_followup_needed_actions_itemview"
