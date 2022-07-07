@@ -76,10 +76,6 @@ msgstr "Note explicative"
 msgid "MeetingLalouviere_label_followUp"
 msgstr "Suivi"
 
-#. Default: "Initialize the item decision when deciding meeting"
-msgid "MeetingLalouviere_label_initItemDecisionIfEmptyOnDecide"
-msgstr "Initialiser le champ décision des points lorsque la séance passe 'En rédaction du PV'?"
-
 #. Default: "Interventions"
 msgid "MeetingLalouviere_label_interventions"
 msgstr "Interventions"

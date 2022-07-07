@@ -96,22 +96,14 @@ def update_config_schema(baseSchema):
                 i18n_domain='PloneMeeting',
             ),
         ),
-        BooleanField(
-            name='initItemDecisionIfEmptyOnDecide',
-            default=True,
-            widget=BooleanField._properties['widget'](
-                description="InitItemDecisionIfEmptyOnDecide",
-                description_msgid="init_item_decision_if_empty_on_decide",
-                label='Inititemdecisionifemptyondecide',
-                label_msgid='MeetingLaLouviere_label_initItemDecisionIfEmptyOnDecide',
-                i18n_domain='PloneMeeting'),
-            write_permission=WriteRiskyConfig,
-        ),
     ),)
 
     completeConfigSchema = baseSchema + specificSchema.copy()
     return completeConfigSchema
+
+
 MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
+
 
 def update_meeting_schema(baseSchema):
     specificSchema = Schema((
