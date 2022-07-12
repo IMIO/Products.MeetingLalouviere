@@ -22,18 +22,18 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingCommunes.tests.testMeeting import testMeetingType as mctm
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
 
 
-class testMeeting(MeetingLalouviereTestCase, mctm):
+class testMeetingType(MeetingLalouviereTestCase, mctm):
     """Tests the Meeting class methods."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeeting, prefix='test_'))
+    suite.addTest(makeSuite(testMeetingType, prefix='test_'))
     return suite
