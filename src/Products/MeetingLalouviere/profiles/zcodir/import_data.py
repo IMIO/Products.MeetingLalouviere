@@ -9,11 +9,6 @@ meetingConfig = data.meetingConfigs[0]
 meetingConfig.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
 meetingConfig.workflowAdaptations = ['refused']
 
-meetingConfig.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
 meetingConfig.transitionsForPresentingAnItem = (
     "proposeToServiceHead",
     "proposeToOfficeManager",

@@ -136,11 +136,6 @@ collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_
 # collegeMeeting.meetingActionsInterface = (
 #     "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"
 # )
-collegeMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
 collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 collegeMeeting.transitionsForPresentingAnItem = (
@@ -245,11 +240,6 @@ collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
 # councilMeeting.meetingActionsInterface = (
 #     "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"
 # )
-councilMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 councilMeeting.transitionsForPresentingAnItem = (

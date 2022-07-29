@@ -1981,7 +1981,7 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
 
         # add some icons specific for dashboard if we are actually on the dashboard...
         if (
-            itemState in cfg.itemDecidedStates
+            itemState in cfg.getItemDecidedStates()
             and item.REQUEST.form.get("topicId", "") == "searchitemsfollowupdashboard"
         ):
             itemFollowUp = item.getFollowUp()

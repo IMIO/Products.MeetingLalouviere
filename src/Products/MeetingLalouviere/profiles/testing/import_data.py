@@ -106,11 +106,6 @@ vendors.observers.append(pmFollowup2)
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
 
-collegeMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
 collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 collegeMeeting.transitionsForPresentingAnItem = (
@@ -141,11 +136,6 @@ collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
-councilMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 councilMeeting.transitionsForPresentingAnItem = (
