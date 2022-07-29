@@ -162,8 +162,8 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
         self.do(item, "return_to_proposing_group")
         self.do(meeting, "setInCommittee")
-        self.do(item, "backTo_item_in_committee_from_returned_to_proposing_group")
-        self.assertEquals(item.queryState(), "item_in_committee")
+        self.do(item, "backTo_itemfrozen_from_returned_to_proposing_group")
+        self.assertEquals(item.queryState(), "itemfrozen")
 
     def test_pm_WFA_hide_decisions_when_under_writing(self):
         """Only launch the test for meetingConfig not for meetingConfig2 as no

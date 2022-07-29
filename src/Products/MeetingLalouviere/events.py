@@ -67,7 +67,7 @@ def onItemLocalRolesUpdated(item, event):
     # this is only done for MeetingItemCouncil
 
     if not item.portal_type == 'MeetingItemCouncil' \
-            or not item.queryState() in ('item_in_committee', 'item_in_council'):
+            or not item.queryState() in ('itemfrozen', 'itempublished'):
         return
     # existing commission Plone groups
     plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))

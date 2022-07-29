@@ -3,6 +3,8 @@ from copy import deepcopy
 
 from Products.MeetingCommunes.config import PORTAL_CATEGORIES
 from Products.MeetingCommunes.profiles.examples_fr import import_data as mc_import_data
+from Products.MeetingLalouviere.config import LLO_ITEM_WF_VALIDATION_LEVELS
+from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles import (
     AnnexTypeDescriptor,
     ItemAnnexTypeDescriptor,
@@ -120,19 +122,20 @@ meetingAnnex = AnnexTypeDescriptor(
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.transitionsToConfirm = []
-collegeMeeting.itemWorkflow = "meetingitemcollegelalouviere_workflow"
-collegeMeeting.meetingWorkflow = "meetingcollegelalouviere_workflow"
-collegeMeeting.itemConditionsInterface = \
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
-collegeMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
-)
-collegeMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions"
-)
-collegeMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"
-)
+
+collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
+
+# collegeMeeting.itemConditionsInterface = \
+#     "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
+# collegeMeeting.itemActionsInterface = (
+#     "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
+# )
+# collegeMeeting.meetingConditionsInterface = (
+#     "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions"
+# )
+# collegeMeeting.meetingActionsInterface = (
+#     "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"
+# )
 collegeMeeting.itemDecidedStates = [
     "accepted",
     "delayed",
@@ -148,8 +151,8 @@ collegeMeeting.transitionsForPresentingAnItem = (
     # applied by WF adaptation
     "propose_to_dg",
     "propose_to_alderman",
-    "validate",
-    "present",
+    # "validate",
+    # "present",
 )
 collegeMeeting.itemAdviceViewStates = [
     "proposed_to_servicehead",
@@ -165,8 +168,9 @@ collegeMeeting.itemAdviceViewStates = [
 collegeMeeting.workflowAdaptations = [
     "refused",
     "removed",
+    "no_publication"
     # "return_to_proposing_group",
-    "validate_by_dg_and_alderman",
+    # "validate_by_dg_and_alderman",
 ]
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
@@ -229,19 +233,18 @@ collegeMeeting.useGroupsAsCategories = True
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.transitionsToConfirm = []
-councilMeeting.itemWorkflow = "meetingitemcouncillalouviere_workflow"
-councilMeeting.meetingWorkflow = "meetingcouncillalouviere_workflow"
-councilMeeting.itemConditionsInterface = \
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
-councilMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
-)
-councilMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions"
-)
-councilMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"
-)
+collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
+# councilMeeting.itemConditionsInterface = \
+#     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
+# councilMeeting.itemActionsInterface = (
+#     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
+# )
+# councilMeeting.meetingConditionsInterface = (
+#     "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions"
+# )
+# councilMeeting.meetingActionsInterface = (
+#     "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"
+# )
 councilMeeting.itemDecidedStates = [
     "accepted",
     "delayed",
@@ -251,10 +254,14 @@ councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 councilMeeting.transitionsForPresentingAnItem = (
     "proposeToDirector",
-    "validate",
-    "present",
+    # "validate",
+    # "present",
 )
-councilMeeting.workflowAdaptations = []
+councilMeeting.workflowAdaptations = [
+    "refused",
+    "removed",
+    "no_decide"
+]
 councilMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
@@ -262,8 +269,8 @@ councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 councilMeeting.itemCopyGroupsStates = [
     "proposed_to_director",
     "validated",
-    "item_in_committee",
-    "item_in_council",
+    "itemfrozen",
+    "itempublished",
 ]
 
 councilMeeting.onMeetingTransitionItemActionToExecute = (

@@ -319,14 +319,6 @@ msgstr "Un suivi est nécessaire"
 msgid "icon_help_follow_up_provided"
 msgstr "Un suivi a été apporté mais le point est encore imprimé dans le tableau de bord"
 
-#. Default: "Item in committee"
-msgid "icon_help_item_in_committee"
-msgstr "En commission"
-
-#. Default: "Item in council"
-msgid "icon_help_item_in_council"
-msgstr "En Conseil communal"
-
 #. Default: "Waiting advices"
 msgid "icon_help_itemcreated_waiting_advices"
 msgstr "En attente des avis"

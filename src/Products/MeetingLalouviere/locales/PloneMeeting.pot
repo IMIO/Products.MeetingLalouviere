@@ -450,14 +450,6 @@ msgstr ""
 msgid "icon_help_proposed_to_officemanager"
 msgstr ""
 
-#. Default: "Item in council"
-msgid "icon_help_item_in_council"
-msgstr ""
-
-#. Default: "Item in committee"
-msgid "icon_help_item_in_committee"
-msgstr ""
-
 #. Default: "Proposed to service head"
 msgid "icon_help_proposed_to_servicehead"
 msgstr ""

@@ -31,7 +31,6 @@ from Products.MeetingLalouviere.tests.helpers import MeetingLalouviereTestingHel
 # monkey patch the MeetingConfig.wfAdaptations again because it is done in
 # adapters.py but overrided by Products.PloneMeeting here in the tests...
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
-from Products.PloneMeeting.utils import reviewersFor
 
 
 from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX, COUNCIL_MEETING_COMMISSION_IDS_2020
