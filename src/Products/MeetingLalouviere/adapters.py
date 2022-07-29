@@ -451,7 +451,7 @@ class LLCustomMeeting(CustomMeeting):
           - 'decided' for MeetingCollege
         """
         meeting = self.getSelf()
-        return meeting.queryState() in ("in_council", "decided", "closed", "archived")
+        return meeting.query_state() in ("in_council", "decided", "closed", "archived")
 
     # helper methods used in templates
 
@@ -1439,7 +1439,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
             else:
                 # if the current item state is 'itemcreated', only the MeetingManager can validate
                 tool = getToolByName(self.context, "portal_plonemeeting")
-                if self.context.queryState() in ("itemcreated",) and not tool.isManager(
+                if self.context.query_state() in ("itemcreated",) and not tool.isManager(
                     self.context
                 ):
                     res = False
@@ -1746,7 +1746,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context) \
                 and self.context.hasMeeting() \
-                and self.context.getMeeting().queryState() \
+                and self.context.getMeeting().query_state() \
                 in ("in_committee", "in_council", "closed"):
             res = True
             msg = self._check_required_data()
@@ -1764,7 +1764,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context) \
                 and self.context.hasMeeting() \
-                and self.context.getMeeting().queryState() \
+                and self.context.getMeeting().query_state() \
                 in ("in_council", "closed"):
             res = True
             msg = self._check_required_data()
@@ -1975,7 +1975,7 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
         if item.isDefinedInTool():
             return icons
 
-        itemState = item.queryState()
+        itemState = item.query_state()
         tool = api.portal.get_tool("portal_plonemeeting")
         cfg = tool.getMeetingConfig(item)
 

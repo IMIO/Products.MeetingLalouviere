@@ -3,7 +3,7 @@
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
-from Products.MeetingCommunes.tests.testCustomMeeting import testCustomMeeting as mctcm
+from Products.MeetingCommunes.tests.testCustomMeeting import testCustomMeetingType as mctcm
 
 
 class testCustomMeeting(mctcm, MeetingLalouviereTestCase):

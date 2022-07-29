@@ -39,7 +39,7 @@ class MessagesViewlet(ViewletBase):
             return res
         if self.context.getItemInitiator() and \
            not self.context.getCategory() == 'points-conseillers-2eme-supplement' and \
-           self.context.queryState() in ['itemcreated', 'proposed_to_officemanager', ]:
+           self.context.query_state() in ['itemcreated', 'proposed_to_officemanager', ]:
             res.append({
                 'type': 'warning',
                 'msg': 'check_intitiator_and_category',

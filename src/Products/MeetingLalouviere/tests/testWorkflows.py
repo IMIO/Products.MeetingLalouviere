@@ -36,16 +36,16 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         annex1 = self.addAnnex(item1)
         self.addAnnex(item1, relatedTo="item_decision")
         self.do(item1, "ask_advices_by_itemcreator")
-        self.assertEqual("itemcreated_waiting_advices", item1.queryState())
+        self.assertEqual("itemcreated_waiting_advices", item1.query_state())
         self.do(item1, "backToItemCreated")
         self.do(item1, "proposeToBudgetImpactReviewer")
-        self.assertEqual("proposed_to_budgetimpact_reviewer", item1.queryState())
+        self.assertEqual("proposed_to_budgetimpact_reviewer", item1.query_state())
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
         self.changeUser("pmBudgetReviewer1")
         self.assertTrue(item1.mayQuickEdit("observations"))
         self.do(item1, "validateByBudgetImpactReviewer")
-        self.assertEqual("itemcreated", item1.queryState())
+        self.assertEqual("itemcreated", item1.query_state())
         self.changeUser("pmCreator1")
         self.do(item1, "proposeToServiceHead")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
@@ -138,12 +138,12 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
 
-        self.assertEquals(item2.queryState(), "itemfrozen")
+        self.assertEquals(item2.query_state(), "itemfrozen")
         self.assertTrue(item2.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
 
         self.do(item1, "accept")
-        self.assertEquals(item1.queryState(), "accepted")
+        self.assertEquals(item1.query_state(), "accepted")
         self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmFollowup1")
@@ -155,7 +155,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         item1.deactivateFollowUp()
         self.do(meeting, "close")
         # every items without a decision are automatically accepted
-        self.assertEquals(item2.queryState(), "accepted")
+        self.assertEquals(item2.query_state(), "accepted")
         self.assertFalse(item2.mayQuickEdit("neededFollowUp"))
         self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmFollowup2")
@@ -236,7 +236,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertRaises(Unauthorized, self.addAnnex, item1)
         self.changeUser("pmManager")
         self.do(meeting, "setInCommittee")
-        self.assertEqual(item1.queryState(), "itemfrozen")
+        self.assertEqual(item1.query_state(), "itemfrozen")
 
         self.changeUser("commissioneditor")
         self.assertTrue(item1.mayQuickEdit("commissionTranscript"))
@@ -295,19 +295,19 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.failIf(self.hasPermission(ModifyPortalContent, item1))
         # item state follow meeting state
         self.changeUser("pmManager")
-        self.assertEquals(item1.queryState(), "itempublished")
-        self.assertEquals(item2.queryState(), "itempublished")
+        self.assertEquals(item1.query_state(), "itempublished")
+        self.assertEquals(item2.query_state(), "itempublished")
         self.do(meeting, "backToInCommittee")
-        self.assertEquals(item1.queryState(), "itemfrozen")
-        self.assertEquals(item2.queryState(), "itemfrozen")
+        self.assertEquals(item1.query_state(), "itemfrozen")
+        self.assertEquals(item2.query_state(), "itemfrozen")
         self.do(meeting, "setInCouncil")
-        self.assertEquals(item1.queryState(), "itempublished")
-        self.assertEquals(item2.queryState(), "itempublished")
+        self.assertEquals(item1.query_state(), "itempublished")
+        self.assertEquals(item2.query_state(), "itempublished")
         # while closing a meeting, every no decided items are accepted
         self.do(item1, "accept_but_modify")
         self.do(meeting, "close")
-        self.assertEquals(item1.queryState(), "accepted_but_modified")
-        self.assertEquals(item2.queryState(), "accepted")
+        self.assertEquals(item1.query_state(), "accepted_but_modified")
+        self.assertEquals(item2.query_state(), "accepted")
 
     def _checkRecurringItemsCouncil(self):
         """Tests the recurring items system.
@@ -361,7 +361,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # 'pmManager' may propose the item and he will be able to validate it
         self.proposeItem(item)
         self.assertTrue(
-            item.queryState() == self.WF_ITEM_STATE_NAME_MAPPINGS_1["proposed"]
+            item.query_state() == self.WF_ITEM_STATE_NAME_MAPPINGS_1["proposed"]
         )
         # we have no avaialble transition, or just two
         availableTransitions = self.wfTool.getTransitionsFor(item)

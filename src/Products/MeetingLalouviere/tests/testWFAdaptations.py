@@ -156,14 +156,14 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         # when the creator send the item back to the meeting, it is in the right state depending
         # on the meeting state.  Here, when meeting is 'created', the item is back to 'presented'
         self.do(item, "backTo_presented_from_returned_to_proposing_group")
-        self.assertEquals(item.queryState(), "presented")
+        self.assertEquals(item.query_state(), "presented")
         # XXX changed by MeetingLalouviere
         # send the item back to proposing group, set the meeting in_committee then send the item back to the meeting
         # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
         self.do(item, "return_to_proposing_group")
         self.do(meeting, "setInCommittee")
         self.do(item, "backTo_itemfrozen_from_returned_to_proposing_group")
-        self.assertEquals(item.queryState(), "itemfrozen")
+        self.assertEquals(item.query_state(), "itemfrozen")
 
     def test_pm_WFA_hide_decisions_when_under_writing(self):
         """Only launch the test for meetingConfig not for meetingConfig2 as no
@@ -212,7 +212,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, "proposeToDivisionHead")
         self.do(item, "proposeToDirector")
         self.do(item, "propose_to_dg")
-        self.assertEquals(item.queryState(), "proposed_to_dg")
+        self.assertEquals(item.query_state(), "proposed_to_dg")
 
         self.changeUser("pmManager")
         self.failUnless(self.hasPermission("Modify portal content", item))
@@ -223,7 +223,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
 
         self.changeUser("pmManager")
         self.do(item, "propose_to_alderman")
-        self.assertEquals(item.queryState(), "proposed_to_alderman")
+        self.assertEquals(item.query_state(), "proposed_to_alderman")
 
         self.changeUser("pmAlderman")
         self.failUnless(self.hasPermission("Modify portal content", item))
@@ -234,7 +234,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
 
         self.changeUser("pmAlderman")
         self.validateItem(item)
-        self.assertEquals(item.queryState(), "validated")
+        self.assertEquals(item.query_state(), "validated")
         self.failUnless(self.hasPermission(View, item))
         self.failUnless(self.hasPermission("PloneMeeting: Read decision", item))
         self.failUnless(self.hasPermission("PloneMeeting: Read budget infos", item))
@@ -252,20 +252,20 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.changeUser("pmManager")
         meeting = self.create("Meeting", date="2007/12/11 09:00:00")
         self.presentItem(item)
-        self.assertEqual(item.queryState(), "presented")
+        self.assertEqual(item.query_state(), "presented")
         self.changeUser("pmAlderman")
         self.failUnless(self.hasPermission(View, item))
 
         self.changeUser("pmManager")
         self.do(meeting, "freeze")
-        self.assertEqual(item.queryState(), "itemfrozen")
+        self.assertEqual(item.query_state(), "itemfrozen")
         self.changeUser("pmAlderman")
         self.failUnless(self.hasPermission(View, item))
 
         self.changeUser("pmManager")
         self.do(meeting, "decide")
         self.do(item, "accept")
-        self.assertEqual(item.queryState(), "accepted")
+        self.assertEqual(item.query_state(), "accepted")
         self.changeUser("pmAlderman")
         self.failUnless(self.hasPermission(View, item))
 
@@ -275,13 +275,13 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, "backToPresented")
         self.do(item, "backToValidated")
         self.do(item, "backToProposedToAlderman")
-        self.assertEquals(item.queryState(), "proposed_to_alderman")
+        self.assertEquals(item.query_state(), "proposed_to_alderman")
         self.changeUser("pmAlderman")
         self.do(item, "backToProposedToDg")
-        self.assertEquals(item.queryState(), "proposed_to_dg")
+        self.assertEquals(item.query_state(), "proposed_to_dg")
         self.changeUser("pmManager")
         self.do(item, "backToProposedToDirector")
-        self.assertEquals(item.queryState(), "proposed_to_director")
+        self.assertEquals(item.query_state(), "proposed_to_director")
 
 
 def test_suite():

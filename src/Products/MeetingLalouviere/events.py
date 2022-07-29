@@ -41,7 +41,7 @@ def onItemAfterTransition(item, event):
     # do item state correspond to meeting state
     if item.portal_type == 'MeetingItemCouncil' and event.transition.id == 'present':
         meeting = item.getMeeting()
-        meetingState = meeting.queryState()
+        meetingState = meeting.query_state()
         if meetingState in ('in_committee', 'in_council'):
             wTool = api.portal.get_tool('portal_workflow')
             wTool.doActionFor(item, 'setItemInCommittee')
@@ -67,7 +67,7 @@ def onItemLocalRolesUpdated(item, event):
     # this is only done for MeetingItemCouncil
 
     if not item.portal_type == 'MeetingItemCouncil' \
-            or not item.queryState() in ('itemfrozen', 'itempublished'):
+            or not item.query_state() in ('itemfrozen', 'itempublished'):
         return
     # existing commission Plone groups
     plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))

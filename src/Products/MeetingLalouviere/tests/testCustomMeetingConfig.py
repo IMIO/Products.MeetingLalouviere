@@ -45,7 +45,7 @@ class testCustomMeetingConfig(MeetingLalouviereTestCase):
         meeting = self.create("Meeting", date=DateTime("2016/10/04"))
 
         # created, available for everyone
-        self.assertEqual(meeting.queryState(), "created")
+        self.assertEqual(meeting.query_state(), "created")
         self.assertEqual(
             [brain.UID for brain in cfg2.getMeetingsAcceptingItems()], [meeting.UID()]
         )
@@ -56,7 +56,7 @@ class testCustomMeetingConfig(MeetingLalouviereTestCase):
         # in_committee
         self.changeUser("pmManager")
         self.do(meeting, "setInCommittee")
-        self.assertEqual(meeting.queryState(), "in_committee")
+        self.assertEqual(meeting.query_state(), "in_committee")
         self.assertEqual(
             [brain.UID for brain in cfg2.getMeetingsAcceptingItems()], [meeting.UID()]
         )
@@ -68,7 +68,7 @@ class testCustomMeetingConfig(MeetingLalouviereTestCase):
         # in_council
         self.changeUser("pmManager")
         self.do(meeting, "setInCouncil")
-        self.assertEqual(meeting.queryState(), "in_council")
+        self.assertEqual(meeting.query_state(), "in_council")
         cleanRamCacheFor(
             "Products.PloneMeeting.MeetingConfig.getMeetingsAcceptingItems"
         )
@@ -86,7 +86,7 @@ class testCustomMeetingConfig(MeetingLalouviereTestCase):
         # closed
         self.changeUser("pmManager")
         self.do(meeting, "close")
-        self.assertEqual(meeting.queryState(), "closed")
+        self.assertEqual(meeting.query_state(), "closed")
         self.assertEqual([brain.UID for brain in cfg2.getMeetingsAcceptingItems()], [])
         cleanRamCacheFor(
             "Products.PloneMeeting.MeetingConfig.getMeetingsAcceptingItems"
