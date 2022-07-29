@@ -30,11 +30,9 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 from Products.MeetingCommunes.tests.testCustomMeetingItem import (
     testCustomMeetingItem as mctcm,
 )
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.MeetingLalouviere.adapters import customWfAdaptations
 
 from DateTime import DateTime
-from imio.helpers.testing import testing_logger
 from zope.annotation import IAnnotations
 
 
@@ -86,7 +84,6 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         meeting = self._createMeetingWithItems()
         self.assertGreater(len(meeting.getItems()), 5)
         self.meetingConfig.setWorkflowAdaptations(customWfAdaptations)
-        performWorkflowAdaptations(self.meetingConfig)
 
         for item in meeting.getItems():
             self.assertEqual(item.query_state(), 'presented')

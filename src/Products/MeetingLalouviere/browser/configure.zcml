@@ -12,12 +12,4 @@
       layer="Products.PloneMeeting.interfaces.IPloneMeetingLayer"
       permission="zope2.View" />
 
-  <browser:viewlet
-      name="plone.belowcontenttitle.messages"
-      manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
-      class=".viewlets.MessagesViewlet"
-      for="Products.PloneMeeting.interfaces.IMeetingItem"
-      permission="zope2.View"
-      />
-
 </configure>

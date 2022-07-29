@@ -6,7 +6,6 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 )
 
 from Products.CMFCore.permissions import ModifyPortalContent
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from plone.app.testing.helpers import setRoles
 
@@ -174,7 +173,6 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
 
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
         self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
-        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
         self.create(
             "MeetingItemRecurring",
             title="Rec item 1",
