@@ -151,7 +151,7 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
             # If we want all items
             classifiers = classifiers + [classifier + '-1er-supplement' for classifier in classifiers]
 
-        items = self.context.getItems(uids=itemUids,
+        items = self.context.get_items(uids=itemUids,
                                       ordered=True,
                                       additional_catalog_query={"getRawClassifier": classifiers})
         return items

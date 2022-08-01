@@ -323,13 +323,13 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         setRoles(self.portal, "pmManager", ["MeetingManager", "Manager"])
         self.changeUser("pmManager")
         meeting = self.create("Meeting", date="2007/12/11 09:00:00")
-        self.failUnless(len(meeting.getItems()) == 0)
+        self.failUnless(len(meeting.get_items()) == 0)
         self.do(meeting, "setInCommittee")
-        self.failUnless(len(meeting.getItems()) == 0)
+        self.failUnless(len(meeting.get_items()) == 0)
         self.do(meeting, "setInCouncil")
-        self.failUnless(len(meeting.getItems()) == 1)
+        self.failUnless(len(meeting.get_items()) == 1)
         self.do(meeting, "close")
-        self.failUnless(len(meeting.getItems()) == 1)
+        self.failUnless(len(meeting.get_items()) == 1)
 
     def test_pm_RecurringItemsBypassSecurity(self):
         """Tests that recurring items are addable by a MeetingManager even if by default,
@@ -366,9 +366,9 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         if availableTransitions:
             self.assertTrue(len(availableTransitions) == 2)
         # now, create a meeting, the item is correctly
-        meeting = self.create("Meeting", date=DateTime("2013/01/01"))
-        self.assertTrue(len(meeting.getItems()) == 1)
-        self.assertTrue(meeting.getItems()[0].getProposingGroup() == self.developers_uid)
+        meeting = self.create("Meeting")
+        self.assertTrue(len(meeting.get_items()) == 1)
+        self.assertTrue(meeting.get_items()[0].getProposingGroup() == self.developers_uid)
 
 
 def test_suite():

@@ -308,3 +308,22 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = tuple(
          },
     ]
 )
+
+LLO_APPLYED_COLLEGE_WFA = (
+    "accepted_but_modified",
+    "pre_accepted",
+    "refused",
+    "removed",
+    "delayed",
+    "no_publication",
+    "return_to_proposing_group",
+)
+LLO_APPLYED_COUNCIL_WFA = (
+    "accepted_but_modified",
+    "pre_accepted",
+    "refused",
+    "removed",
+    "delayed",
+    "no_decide",
+    "return_to_proposing_group",
+)

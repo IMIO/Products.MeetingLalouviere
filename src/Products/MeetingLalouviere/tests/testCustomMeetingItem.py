@@ -80,10 +80,9 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
     def test_showFollowUp(self):
         self.changeUser("pmManager")
         meeting = self._createMeetingWithItems()
-        self.assertGreater(len(meeting.getItems()), 5)
-        self.meetingConfig.setWorkflowAdaptations(customWfAdaptations)
+        self.assertGreater(len(meeting.get_items()), 5)
 
-        for item in meeting.getItems():
+        for item in meeting.get_items():
             self.assertEqual(item.query_state(), 'presented')
             self.assertTrue(item.adapted().showFollowUp())
             self.changeUser("pmFollowup1")
@@ -92,7 +91,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
 
         self.freezeMeeting(meeting)
 
-        for item in meeting.getItems():
+        for item in meeting.get_items():
             self.assertEqual(item.query_state(), 'itemfrozen')
             self.assertTrue(item.adapted().showFollowUp())
             self.changeUser("pmFollowup1")
@@ -100,7 +99,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
             self.changeUser("pmManager")
 
         self.decideMeeting(meeting)
-        item = meeting.getItems()[0]
+        item = meeting.get_items()[0]
         self.do(item, 'accept')
         self.assertEqual(item.query_state(), 'accepted')
         self.assertTrue(item.adapted().showFollowUp())
@@ -108,7 +107,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         self.assertTrue(item.adapted().showFollowUp())
 
         self.changeUser("pmManager")
-        item = meeting.getItems()[1]
+        item = meeting.get_items()[1]
         self.do(item, 'accept_but_modify')
         self.assertEqual(item.query_state(), 'accepted_but_modified')
         self.assertTrue(item.adapted().showFollowUp())
@@ -116,7 +115,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         self.assertTrue(item.adapted().showFollowUp())
 
         self.changeUser("pmManager")
-        item = meeting.getItems()[2]
+        item = meeting.get_items()[2]
         self.do(item, 'delay')
         self.assertEqual(item.query_state(), 'delayed')
         self.assertTrue(item.adapted().showFollowUp())
@@ -125,7 +124,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
 
         # returned_to_proposing_group items must not display followp
         self.changeUser("pmManager")
-        item = meeting.getItems()[3]
+        item = meeting.get_items()[3]
         self.do(item, 'return_to_proposing_group')
         self.assertEqual(item.query_state(), 'returned_to_proposing_group')
         self.assertFalse(item.adapted().showFollowUp())
@@ -133,7 +132,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         self.assertFalse(item.adapted().showFollowUp())
 
         self.changeUser("pmManager")
-        item = meeting.getItems()[4]
+        item = meeting.get_items()[4]
         self.do(item, 'refuse')
         self.assertEqual(item.query_state(), 'refused')
         self.assertTrue(item.adapted().showFollowUp())
@@ -141,7 +140,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         self.assertTrue(item.adapted().showFollowUp())
 
         self.changeUser("pmManager")
-        item = meeting.getItems()[5]
+        item = meeting.get_items()[5]
         self.do(item, 'remove')
         self.assertEqual(item.query_state(), 'removed')
         self.assertTrue(item.adapted().showFollowUp())

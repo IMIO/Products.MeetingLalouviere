@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
+import copy
 from copy import deepcopy
 
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
+
+from Products.MeetingLalouviere.config import LLO_APPLYED_COLLEGE_WFA
+from Products.MeetingLalouviere.config import LLO_APPLYED_COUNCIL_WFA
+
 from Products.MeetingLalouviere.config import LLO_ITEM_WF_VALIDATION_LEVELS
 from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
@@ -116,7 +121,7 @@ collegeMeeting.transitionsForPresentingAnItem = (
     "validate",
     "present",
 )
-collegeMeeting.workflowAdaptations = ["no_publication"]
+collegeMeeting.workflowAdaptations = []
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
@@ -143,7 +148,7 @@ councilMeeting.transitionsForPresentingAnItem = (
     "validate",
     "present",
 )
-councilMeeting.workflowAdaptations = ["no_decide",]
+councilMeeting.workflowAdaptations = []
 councilMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]

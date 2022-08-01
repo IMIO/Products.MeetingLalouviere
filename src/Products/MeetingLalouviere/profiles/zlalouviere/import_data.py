@@ -2,9 +2,9 @@
 from copy import deepcopy
 
 from Products.MeetingCommunes.config import PORTAL_CATEGORIES
+from Products.MeetingLalouviere.config import LLO_APPLYED_COLLEGE_WFA
+from Products.MeetingLalouviere.config import LLO_APPLYED_COUNCIL_WFA
 from Products.MeetingCommunes.profiles.examples_fr import import_data as mc_import_data
-from Products.MeetingLalouviere.config import LLO_ITEM_WF_VALIDATION_LEVELS
-from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles import (
     AnnexTypeDescriptor,
     ItemAnnexTypeDescriptor,
@@ -29,6 +29,7 @@ overheadAnalysisSubtype = ItemAnnexSubTypeDescriptor(
     other_mc_correspondences=("cfg2_-_annexes_types_-_item_annexes_-_budget-analysis",),
 )
 
+overheadAnalysis = ItemAnnexTypeDescriptor(
 overheadAnalysis = ItemAnnexTypeDescriptor(
     "overhead-analysis",
     "Administrative overhead analysis",
@@ -160,13 +161,7 @@ collegeMeeting.itemAdviceViewStates = [
     "presented",
     "itemfrozen",
 ]
-collegeMeeting.workflowAdaptations = [
-    "refused",
-    "removed",
-    "no_publication"
-    # "return_to_proposing_group",
-    # "validate_by_dg_and_alderman",
-]
+collegeMeeting.workflowAdaptations = copy.deepcopy(LLO_APPLYED_COLLEGE_WFA)
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
@@ -247,11 +242,7 @@ councilMeeting.transitionsForPresentingAnItem = (
     # "validate",
     # "present",
 )
-councilMeeting.workflowAdaptations = [
-    "refused",
-    "removed",
-    "no_decide"
-]
+councilMeeting.workflowAdaptations = copy.deepcopy(LLO_APPLYED_COUNCIL_WFA)
 councilMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]

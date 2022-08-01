@@ -475,7 +475,7 @@ class LLCustomMeeting(CustomMeeting):
                 )
                 + 1
         )
-        items = self.getSelf().getItems(itemUids,
+        items = self.getSelf().get_items(itemUids,
                                         ordered=True,
                                         listTypes=listTypes,
                                         additional_catalog_query={
@@ -493,7 +493,7 @@ class LLCustomMeeting(CustomMeeting):
     def get_normal_items(self, itemUids, privacy="public", listTypes=['normal'], renumber=False):
         """Returns the items presented as first supplement"""
 
-        items = self.getSelf().getItems(itemUids,
+        items = self.getSelf().get_items(itemUids,
                                         ordered=True,
                                         listTypes=listTypes,
                                         additional_catalog_query={
@@ -900,8 +900,8 @@ class LLCustomMeetingItem(CustomMeetingItem):
 
     def _get_council_item_ref(self, meeting, meeting_date, service, item_number):
         if self.context.getPrivacy() == "secret":
-            secretnum = len(meeting.getItems(unrestricted=True)) - len(
-                meeting.getItems(
+            secretnum = len(meeting.get_items(unrestricted=True)) - len(
+                meeting.get_items(
                     unrestricted=True,
                     theObjects=False,
                     additional_catalog_query={"privacy": "public"},
@@ -1733,165 +1733,6 @@ class LLCustomToolPloneMeeting(CustomToolPloneMeeting):
 
     implements(IToolPloneMeetingCustom)
     security = ClassSecurityInfo()
-
-    def performCustomWFAdaptations(
-        self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow
-    ):
-        """ """
-        super(CustomToolPloneMeeting, self).performCustomWFAdaptations(
-            meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow
-        )
-        if wfAdaptation == "validate_by_dg_and_alderman":
-            itemStates = itemWorkflow.states
-            itemTransitions = itemWorkflow.transitions
-            if "proposed_to_dg" not in itemStates:
-                itemStates.addState("proposed_to_dg")
-            proposed_to_dg = getattr(itemStates, "proposed_to_dg")
-            if "proposed_to_alderman" not in itemStates:
-                itemStates.addState("proposed_to_alderman")
-            proposed_to_alderman = getattr(itemStates, "proposed_to_alderman")
-
-            validated = getattr(itemStates, "validated")
-            proposed_to_dg.permission_roles = validated.permission_roles
-
-            cloned_permissions = dict(validated.permission_roles)
-            cloned_permissions_with_alderman = {}
-            # we need to use an intermediate dict because roles are stored as a tuple and we need a list...
-            for permission in cloned_permissions:
-                # the acquisition is defined like this : if permissions is a tuple, it is not acquired
-                # if it is a list, it is acquired...  WTF???  So make sure we store the correct type...
-                acquired = (
-                    isinstance(cloned_permissions[permission], list) and True or False
-                )
-                cloned_permissions_with_alderman[permission] = list(
-                    cloned_permissions[permission]
-                )
-                if "MeetingManager" in cloned_permissions[permission]:
-                    if (
-                        "Read" not in permission
-                        and "Access" not in permission
-                        and "View" != permission
-                    ):
-                        cloned_permissions_with_alderman[permission].remove(
-                            "MeetingManager"
-                        )
-
-                    cloned_permissions_with_alderman[permission].append(
-                        "MeetingAlderman"
-                    )
-
-                if not acquired:
-                    cloned_permissions_with_alderman[permission] = tuple(
-                        cloned_permissions_with_alderman[permission]
-                    )
-
-            proposed_to_alderman.permission_roles = cloned_permissions_with_alderman
-
-            for state in itemStates.values():
-                for permission in state.permission_roles:
-                    if "MeetingDirector" in state.permission_roles[permission] \
-                            and "MeetingAlderman" not in state.permission_roles[permission] \
-                            and ("Read" in permission or "Access" in permission or "View" in permission):
-
-                        state.permission_roles[permission] = \
-                            tuple(state.permission_roles[permission]) + tuple(["MeetingAlderman"])
-
-            if "propose_to_dg" not in itemTransitions:
-                itemTransitions.addTransition("propose_to_dg")
-
-            propose_to_dg = itemTransitions["propose_to_dg"]
-            # use same guard from ReturnToProposingGroup
-            propose_to_dg.setProperties(
-                title="propose_to_dg",
-                new_state_id="proposed_to_dg",
-                trigger_type=1,
-                script_name="",
-                actbox_name="propose_to_dg",
-                actbox_url="",
-                actbox_category="workflow",
-                actbox_icon="%(portal_url)s/proposeToDg.png",
-                props={"guard_expr": "python:here.wfConditions().mayProposeToDg()"},
-            )
-
-            if "propose_to_alderman" not in itemTransitions:
-                itemTransitions.addTransition("propose_to_alderman")
-
-            if "backToProposedToDg" not in itemTransitions:
-                itemTransitions.addTransition("backToProposedToDg")
-
-            backToProposedToDg = itemTransitions["backToProposedToDg"]
-            # use same guard from ReturnToProposingGroup
-            backToProposedToDg.setProperties(
-                title="backToProposedToDg",
-                new_state_id="proposed_to_dg",
-                trigger_type=1,
-                script_name="",
-                actbox_name="backToProposedToDg",
-                actbox_url="",
-                actbox_category="workflow",
-                actbox_icon="%(portal_url)s/backToProposedToDirector.png",
-                props={"guard_expr": "python:here.wfConditions().mayCorrect()"},
-            )
-
-            propose_to_alderman = itemTransitions["propose_to_alderman"]
-            # use same guard from ReturnToProposingGroup
-            propose_to_alderman.setProperties(
-                title="propose_to_alderman",
-                new_state_id="proposed_to_alderman",
-                trigger_type=1,
-                script_name="",
-                actbox_name="propose_to_alderman",
-                actbox_url="",
-                actbox_category="workflow",
-                actbox_icon="%(portal_url)s/proposeToAlderman.png",
-                props={
-                    "guard_expr": "python:here.wfConditions().mayProposeToAlderman()"
-                },
-            )
-
-            proposed_to_dg.setProperties(
-                title="proposed_to_dg",
-                description="",
-                transitions=("backToProposedToDirector", "propose_to_alderman",),
-            )
-
-            proposed_to_alderman.setProperties(
-                title="proposed_to_alderman",
-                description="",
-                transitions=("backToProposedToDg", "validate",),
-            )
-
-            proposed_to_director = getattr(itemStates, "proposed_to_director")
-            trx = list(proposed_to_director.transitions)
-            trx.remove("validate")
-            trx.append("propose_to_dg")
-            proposed_to_director.transitions = tuple(trx)
-
-            if "backToProposedToAlderman" not in itemTransitions:
-                itemTransitions.addTransition("backToProposedToAlderman")
-
-            backToProposedToAlderman = itemTransitions["backToProposedToAlderman"]
-            # use same guard from ReturnToProposingGroup
-            backToProposedToAlderman.setProperties(
-                title="backToProposedToAlderman",
-                new_state_id="proposed_to_alderman",
-                trigger_type=1,
-                script_name="",
-                actbox_name="backToProposedToAlderman",
-                actbox_url="",
-                actbox_category="workflow",
-                actbox_icon="%(portal_url)s/backToProposedToDirector.png",
-                props={"guard_expr": "python:here.wfConditions().mayCorrect()"},
-            )
-
-            validated = getattr(itemStates, "validated")
-            trx = list(validated.transitions)
-            trx.remove("backToProposedToDirector")
-            trx.append("backToProposedToAlderman")
-            validated.transitions = tuple(trx)
-
-            return True
-        return False
 
 
 # ------------------------------------------------------------------------------
