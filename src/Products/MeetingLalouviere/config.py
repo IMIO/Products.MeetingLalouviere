@@ -271,16 +271,6 @@ LLO_ITEM_WF_VALIDATION_LEVELS = (
      'enabled': '1',
      'extra_suffixes': [],
      },
-    {'state': 'proposed_to_director',
-     'state_title': 'proposed_to_director',
-     'leading_transition': 'proposeToDirector',
-     'leading_transition_title': 'proposeToDirector',
-     'back_transition': 'backToProposedToDirector',
-     'back_transition_title': 'backToProposedToDirector',
-     'suffix': 'directors',
-     'enabled': '1',
-     'extra_suffixes': [],
-     },
 )
 
 LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = tuple(
@@ -318,6 +308,7 @@ LLO_APPLYED_COLLEGE_WFA = (
     "no_publication",
     "return_to_proposing_group",
 )
+
 LLO_APPLYED_COUNCIL_WFA = (
     "accepted_but_modified",
     "pre_accepted",
