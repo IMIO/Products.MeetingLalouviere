@@ -79,9 +79,7 @@ from Products.PloneMeeting.interfaces import (
     IToolPloneMeetingCustom,
 )
 from Products.PloneMeeting.interfaces import IMeetingCustom
-from Products.PloneMeeting.interfaces import IMeetingGroupCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
-from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.utils import sendMailIfRelevant
 from Products.PloneMeeting.utils import org_id_to_uid
 
@@ -96,39 +94,7 @@ from plone.memoize import ram
 from zope.i18n import translate
 from zope.interface import implements
 
-# disable most of wfAdaptations
-customWfAdaptations = (
-    "refused",
-    "removed",
-    "return_to_proposing_group",
-    "validate_by_dg_and_alderman",
-    "waiting_advice_from_itemcreated",
-    "no_publication",
-    "no_decide",
-)
-MeetingConfig.wfAdaptations = customWfAdaptations
-CustomMeetingConfig.wfAdaptations = customWfAdaptations
 
-# configure parameters for the returned_to_proposing_group wfAdaptation
-# we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
-
-RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
-    "backTo_itemfrozen_from_returned_to_proposing_group": ["in_committee",],
-    "backTo_itempublished_from_returned_to_proposing_group": ["in_council",],
-}
-adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(
-    RETURN_TO_PROPOSING_GROUP_MAPPINGS
-)
-RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = (
-    "presented",
-    "itemfrozen",
-    "itempublished",
-    "itemfrozen",
-    "itempublished",
-)
-adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = (
-    RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES
-)
 RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     "meetingitemcollegelalouviere_workflow":
     # view permissions
@@ -413,18 +379,6 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
         "MeetingLalouviere: Write neededFollowUp": ["Manager",],
     },
 }
-
-adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = (
-    RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
-)
-
-RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {
-    "meetingitemcollegelalouviere_workflow": "meetingitemcollegelalouviere_workflow.itemcreated",
-    "meetingitemcouncillalouviere_workflow": "meetingitemcouncillalouviere_workflow.itemcreated",
-}
-adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = (
-    RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
-)
 
 
 class LLCustomMeeting(CustomMeeting):

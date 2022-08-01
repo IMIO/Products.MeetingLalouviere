@@ -30,8 +30,6 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 from Products.MeetingCommunes.tests.testCustomMeetingItem import (
     testCustomMeetingItem as mctcm,
 )
-from Products.MeetingLalouviere.adapters import customWfAdaptations
-
 from DateTime import DateTime
 from zope.annotation import IAnnotations
 

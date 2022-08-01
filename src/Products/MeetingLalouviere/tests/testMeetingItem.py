@@ -45,13 +45,13 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         )
         self.assertEqual(cloned_item.getMotivation(), expected_new_item_motivation)
 
-    def test_pm_SendItemToOtherMCUsingEmergencyInitializePreferredMeeting(self):
-        # by pass because college meeting items are never sent late
-        pass
-
-    def test_pm_SendItemToOtherMCUsingEmergency(self):
-        # by pass because college meeting items are never sent late
-        pass
+    # def test_pm_SendItemToOtherMCUsingEmergencyInitializePreferredMeeting(self):
+    #     # by pass because college meeting items are never sent late
+    #     pass
+    #
+    # def test_pm_SendItemToOtherMCUsingEmergency(self):
+    #     # by pass because college meeting items are never sent late
+    #     pass
 
 
 def test_suite():

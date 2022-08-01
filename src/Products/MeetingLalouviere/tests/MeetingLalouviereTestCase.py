@@ -24,7 +24,6 @@ from plone import api
 from Products.MeetingCommunes.tests.MeetingCommunesTestCase import (
     MeetingCommunesTestCase,
 )
-from Products.MeetingLalouviere.adapters import customWfAdaptations
 from Products.MeetingLalouviere.testing import MLL_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingLalouviere.tests.helpers import MeetingLalouviereTestingHelpers
 
@@ -36,9 +35,6 @@ from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX, COUNCIL_MEETING_COMMISSION_IDS_2020
 
 from collective.contact.plonegroup.utils import get_plone_group_id
-
-MeetingConfig.wfAdaptations = customWfAdaptations
-
 
 class MeetingLalouviereTestCase(
     MeetingCommunesTestCase, MeetingLalouviereTestingHelpers
@@ -62,17 +58,6 @@ class MeetingLalouviereTestCase(
         )
         self.pat = pat
         api.group.add_user(pat.id, username='commissioneditor2')
-
-    def _turnUserIntoPrereviewer(self, member):
-        """
-          Helper method for adding a given p_member to every '_prereviewers' group
-          corresponding to every '_reviewers' group he is in.
-        """
-        reviewers = reviewersFor(self.meetingConfig.getItemWorkflow())
-        groups = [group for group in member.getGroups() if group.endswith('_%s' % reviewers.keys()[1])]
-        groups = [group.replace(reviewers.keys()[1], reviewers.keys()[-1]) for group in groups]
-        for group in groups:
-            self._addPrincipalToGroup(member.getId(), group)
 
     def _setup_commissions_classifiers(self, commission_version=COUNCIL_MEETING_COMMISSION_IDS_2020):
         # add MEETING_COMMISSION's classifiers

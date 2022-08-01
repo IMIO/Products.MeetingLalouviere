@@ -24,288 +24,288 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
        in this way, we do not try to use the accessor to trigger an exception
        (self.assertRaise). Instead, we check that the user has the permission
        to do so (getSecurityManager().checkPermission)."""
-
-    def _testWholeDecisionProcessCollege(self):
-        """This test covers the whole decision workflow. It begins with the
-           creation of some items, and ends by closing a meeting."""
-        # pmCreator1 creates an item with 1 annex and proposes it
-        self.changeUser("pmCreator1")
-        item1 = self.create("MeetingItem", title="The first item")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        annex1 = self.addAnnex(item1)
-        self.addAnnex(item1, relatedTo="item_decision")
-        self.do(item1, "ask_advices_by_itemcreator")
-        self.assertEqual("itemcreated_waiting_advices", item1.query_state())
-        self.do(item1, "backToItemCreated")
-        self.do(item1, "proposeToBudgetImpactReviewer")
-        self.assertEqual("proposed_to_budgetimpact_reviewer", item1.query_state())
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
-        self.changeUser("pmBudgetReviewer1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.do(item1, "validateByBudgetImpactReviewer")
-        self.assertEqual("itemcreated", item1.query_state())
-        self.changeUser("pmCreator1")
-        self.do(item1, "proposeToServiceHead")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
-        # the ServiceHead validation level
-        self.changeUser("pmServiceHead1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
-        self.do(item1, "proposeToOfficeManager")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
-        # the OfficeManager validation level
-        self.changeUser("pmOfficeManager1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
-        self.do(item1, "proposeToDivisionHead")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
-        # the DivisionHead validation level
-        self.changeUser("pmDivisionHead1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
-        self.do(item1, "proposeToDirector")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
-        # the Director validation level
-        self.changeUser("pmDirector1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
-        self.do(item1, "validate")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
-        # pmManager creates a meeting
-        self.changeUser("pmManager")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        meeting = self.create("Meeting", date="2007/12/11 09:00:00")
-        self.addAnnex(item1, relatedTo="item_decision")
-        # pmCreator2 creates and proposes an item
-        self.changeUser("pmCreator2")
-        item2 = self.create(
-            "MeetingItem", title="The second item", preferredMeeting=meeting.UID()
-        )
-        self.do(item2, "proposeToServiceHead")
-        # pmReviewer1 can not validate the item has not in the same proposing group
-        self.changeUser("pmReviewer1")
-        self.failIf(self.hasPermission(ModifyPortalContent, item2))
-        # but pmReviwer2 can because its his own group
-        self.changeUser("pmReviewer2")
-        self.failUnless(self.hasPermission(ModifyPortalContent, item2))
-        # do the complete validation
-
-        self.proposeItem(item2)
-        # pmManager inserts item1 into the meeting and publishes it
-        self.changeUser("pmManager")
-        managerAnnex = self.addAnnex(item1)
-        self.portal.restrictedTraverse("@@delete_givenuid")(managerAnnex.UID())
-        self.do(item1, "present")
-        # Now reviewers can't add annexes anymore
-        self.changeUser("pmReviewer2")
-        self.assertRaises(Unauthorized, self.addAnnex, item1)
-        # freeze the meeting
-        self.changeUser("pmManager")
-        self.do(meeting, "freeze")
-        # validate item2 after meeting freeze
-        self.changeUser("pmReviewer2")
-        self.do(item2, "validate")
-        self.changeUser("pmManager")
-        self.do(item2, "present")
-        self.addAnnex(item2)
-        # So now we should have 3 normal item (no recurring items) and one late item in the meeting
-        self.assertEqual(len(meeting.getItems(listTypes=["normal"])), 3)
-        self.assertEqual(len(meeting.getItems(listTypes=["late"])), 1)
-        self.assertEqual(meeting.getItems(listTypes=["late"])[0], item2)
-        self.do(meeting, "decide")
-        item1.activateFollowUp()
-        self.assertEqual(item1.getDecision(), item1.getNeededFollowUp())
-        item2.activateFollowUp()
-        self.assertEqual(item2.getDecision(), item2.getNeededFollowUp())
-        # followup writer cannot edit follow up on frozen items
-        self.changeUser("pmFollowup1")
-        self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
-        self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
-        # manager can edit neededfollowup for frozen and decided items
-        self.changeUser("pmManager")
-        self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
-        self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
-
-        self.assertEquals(item2.query_state(), "itemfrozen")
-        self.assertTrue(item2.mayQuickEdit("neededFollowUp"))
-        self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
-
-        self.do(item1, "accept")
-        self.assertEquals(item1.query_state(), "accepted")
-        self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
-        self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
-        self.changeUser("pmFollowup1")
-        self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
-        self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
-        item1.setProvidedFollowUp("<p>Followed</p>")
-        self.changeUser("pmManager")
-        item1.confirmFollowUp()
-        item1.deactivateFollowUp()
-        self.do(meeting, "close")
-        # every items without a decision are automatically accepted
-        self.assertEquals(item2.query_state(), "accepted")
-        self.assertFalse(item2.mayQuickEdit("neededFollowUp"))
-        self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
-        self.changeUser("pmFollowup2")
-        self.assertFalse(item2.mayQuickEdit("neededFollowUp"))
-        self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
-
-    def _testWholeDecisionProcessCouncil(self):
-        """
-            This test covers the whole decision workflow. It begins with the
-            creation of some items, and ends by closing a meeting.
-        """
-        self.changeUser("admin")
-        self._setup_commissions_classifiers()
-        self.add_commission_plone_groups()
-        self.setMeetingConfig(self.meetingConfig2.getId())
-
-        # add a recurring item that is inserted when the meeting is 'setInCouncil'
-        self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
-        self.create(
-            "MeetingItemRecurring",
-            title="Rec item 1",
-            proposingGroup=self.developers_uid,
-            category="deployment",
-            meetingTransitionInsertingMe="setInCouncil",
-        )
-        # pmCreator1 creates an item with 1 annex and proposes it
-        self.changeUser("pmCreator1")
-        item1 = self.create(
-            "MeetingItem",
-            title="The first item",
-            autoAddCategory=False,
-            category="deployment",
-            classifier="commission-ag"
-        )
-
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        item1.setProposingGroup(self.developers_uid)
-        self.addAnnex(item1)
-        # The creator can add a decision annex on created item
-        self.addAnnex(item1, relatedTo="item_decision")
-        self.do(item1, "proposeToDirector")
-        self.failIf(self.hasPermission(ModifyPortalContent, item1))
-        # The creator cannot add a decision annex on proposed item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.changeUser("pmDirector1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.addAnnex(item1, relatedTo="item_decision")
-        self.do(item1, "validate")
-        self.failIf(self.hasPermission(ModifyPortalContent, item1))
-        # The reviewer cannot add a decision annex on validated item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        # pmManager creates a meeting
-        self.changeUser("pmManager")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        meeting = self.create("Meeting", date="2007/12/11 09:00:00")
-        # The meetingManager can add a decision annex
-        self.addAnnex(item1, relatedTo="item_decision")
-        # pmCreator2 creates and proposes an item
-        self.changeUser("pmCreator2")
-        item2 = self.create(
-            "MeetingItem",
-            title="The second item",
-            preferredMeeting=meeting.UID(),
-            category="deployment",
-            classifier="commission-patrimoine"
-        )
-        self.do(item2, "proposeToDirector")
-        # pmManager inserts item1 into the meeting and freezes it
-        self.changeUser("pmManager")
-        managerAnnex = self.addAnnex(item1)
-        self.portal.restrictedTraverse("@@delete_givenuid")(managerAnnex.UID())
-        self.presentItem(item1)
-        self.changeUser("pmCreator1")
-        # The creator cannot add any kind of annex on presented item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.assertRaises(Unauthorized, self.addAnnex, item1)
-        self.changeUser("pmManager")
-        self.do(meeting, "setInCommittee")
-        self.assertEqual(item1.query_state(), "itemfrozen")
-
-        self.changeUser("commissioneditor")
-        self.assertTrue(item1.mayQuickEdit("commissionTranscript"))
-
-        self.changeUser("commissioneditor2")
-        self.failIf(item1.mayQuickEdit("commissionTranscript"))
-
-        # pmReviewer2 validates item2
-        self.changeUser("pmDirector2")
-        item2.setPreferredMeeting(meeting.UID())
-
-        self.do(item2, "validate")
-        # pmManager inserts item2 into the meeting, as late item, and adds an
-        # annex to it
-        self.changeUser("pmManager")
-        self.presentItem(item2)
-        self.addAnnex(item2)
-        # An item is freely addable to a meeting if the meeting is 'open'
-        # so in states 'created', 'in_committee' and 'in_council'
-        # the 'late items' functionnality is not used
-        self.failIf(len(meeting.getItems()) != 2)
-        self.failIf(len(meeting.getItems(listTypes=["late"])) != 0)
-        # remove the item, set the meeting in council and add it again
-        self.backToState(item2, "validated")
-        self.failIf(len(meeting.getItems()) != 1)
-        self.do(meeting, "setInCouncil")
-        # remove published meeting to check that item is correctly presented in this cas as well
-        self.setCurrentMeeting(None)
-        self.do(item2, "present")
-
-        item1_addition = self.create(
-            "MeetingItem",
-            title="Addition to the first item",
-            autoAddCategory=False,
-            category="deployment",
-            classifier="commission-ag-1er-supplement"
-        )
-        self.do(item1_addition, "proposeToDirector")
-        item1_addition.setPreferredMeeting(meeting.UID())
-        self.do(item1_addition, "validate")
-        self.do(item1_addition, "present")
-        # setting the meeting in council (setInCouncil) add 1 recurring item...
-        self.assertEqual(len(meeting.getItems()), 4)
-        self.failUnless(item2.isLate())
-        self.failIf(item1_addition.isLate())
-        # an item can be send back to the service so MeetingMembers
-        # can edit it and send it back to the meeting
-        self.changeUser("pmCreator1")
-        self.failIf(self.hasPermission(ModifyPortalContent, item1))
-        self.changeUser("pmManager")
-        # send the item back to the service
-        self.do(item1, "return_to_proposing_group")
-        self.changeUser("pmCreator1")
-        self.failUnless(self.hasPermission(ModifyPortalContent, item1))
-        self.do(item1, "backTo_itempublished_from_returned_to_proposing_group")
-        self.failIf(self.hasPermission(ModifyPortalContent, item1))
-        # item state follow meeting state
-        self.changeUser("pmManager")
-        self.assertEquals(item1.query_state(), "itempublished")
-        self.assertEquals(item2.query_state(), "itempublished")
-        self.do(meeting, "backToInCommittee")
-        self.assertEquals(item1.query_state(), "itemfrozen")
-        self.assertEquals(item2.query_state(), "itemfrozen")
-        self.do(meeting, "setInCouncil")
-        self.assertEquals(item1.query_state(), "itempublished")
-        self.assertEquals(item2.query_state(), "itempublished")
-        # while closing a meeting, every no decided items are accepted
-        self.do(item1, "accept_but_modify")
-        self.do(meeting, "close")
-        self.assertEquals(item1.query_state(), "accepted_but_modified")
-        self.assertEquals(item2.query_state(), "accepted")
+    #
+    # def _testWholeDecisionProcessCollege(self):
+    #     """This test covers the whole decision workflow. It begins with the
+    #        creation of some items, and ends by closing a meeting."""
+    #     # pmCreator1 creates an item with 1 annex and proposes it
+    #     self.changeUser("pmCreator1")
+    #     item1 = self.create("MeetingItem", title="The first item")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     annex1 = self.addAnnex(item1)
+    #     self.addAnnex(item1, relatedTo="item_decision")
+    #     self.do(item1, "ask_advices_by_itemcreator")
+    #     self.assertEqual("itemcreated_waiting_advices", item1.query_state())
+    #     self.do(item1, "backToItemCreated")
+    #     self.do(item1, "proposeToBudgetImpactReviewer")
+    #     self.assertEqual("proposed_to_budgetimpact_reviewer", item1.query_state())
+    #     self.failIf(self.transitions(item1))  # He may trigger no more action
+    #     self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+    #     self.changeUser("pmBudgetReviewer1")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     self.do(item1, "validateByBudgetImpactReviewer")
+    #     self.assertEqual("itemcreated", item1.query_state())
+    #     self.changeUser("pmCreator1")
+    #     self.do(item1, "proposeToServiceHead")
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     self.failIf(self.transitions(item1))  # He may trigger no more action
+    #     self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+    #     # the ServiceHead validation level
+    #     self.changeUser("pmServiceHead1")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+    #     self.do(item1, "proposeToOfficeManager")
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     self.failIf(self.transitions(item1))  # He may trigger no more action
+    #     self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+    #     # the OfficeManager validation level
+    #     self.changeUser("pmOfficeManager1")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+    #     self.do(item1, "proposeToDivisionHead")
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     self.failIf(self.transitions(item1))  # He may trigger no more action
+    #     self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+    #     # the DivisionHead validation level
+    #     self.changeUser("pmDivisionHead1")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+    #     self.do(item1, "proposeToDirector")
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     self.failIf(self.transitions(item1))  # He may trigger no more action
+    #     self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+    #     # the Director validation level
+    #     self.changeUser("pmDirector1")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+    #     self.do(item1, "validate")
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     self.failIf(self.transitions(item1))  # He may trigger no more action
+    #     self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+    #     # pmManager creates a meeting
+    #     self.changeUser("pmManager")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     meeting = self.create("Meeting", date="2007/12/11 09:00:00")
+    #     self.addAnnex(item1, relatedTo="item_decision")
+    #     # pmCreator2 creates and proposes an item
+    #     self.changeUser("pmCreator2")
+    #     item2 = self.create(
+    #         "MeetingItem", title="The second item", preferredMeeting=meeting.UID()
+    #     )
+    #     self.do(item2, "proposeToServiceHead")
+    #     # pmReviewer1 can not validate the item has not in the same proposing group
+    #     self.changeUser("pmReviewer1")
+    #     self.failIf(self.hasPermission(ModifyPortalContent, item2))
+    #     # but pmReviwer2 can because its his own group
+    #     self.changeUser("pmReviewer2")
+    #     self.failUnless(self.hasPermission(ModifyPortalContent, item2))
+    #     # do the complete validation
+    #
+    #     self.proposeItem(item2)
+    #     # pmManager inserts item1 into the meeting and publishes it
+    #     self.changeUser("pmManager")
+    #     managerAnnex = self.addAnnex(item1)
+    #     self.portal.restrictedTraverse("@@delete_givenuid")(managerAnnex.UID())
+    #     self.do(item1, "present")
+    #     # Now reviewers can't add annexes anymore
+    #     self.changeUser("pmReviewer2")
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1)
+    #     # freeze the meeting
+    #     self.changeUser("pmManager")
+    #     self.do(meeting, "freeze")
+    #     # validate item2 after meeting freeze
+    #     self.changeUser("pmReviewer2")
+    #     self.do(item2, "validate")
+    #     self.changeUser("pmManager")
+    #     self.do(item2, "present")
+    #     self.addAnnex(item2)
+    #     # So now we should have 3 normal item (no recurring items) and one late item in the meeting
+    #     self.assertEqual(len(meeting.get_items(listTypes=["normal"])), 3)
+    #     self.assertEqual(len(meeting.get_items(listTypes=["late"])), 1)
+    #     self.assertEqual(meeting.get_items(listTypes=["late"])[0], item2)
+    #     self.do(meeting, "decide")
+    #     item1.activateFollowUp()
+    #     self.assertEqual(item1.getDecision(), item1.getNeededFollowUp())
+    #     item2.activateFollowUp()
+    #     self.assertEqual(item2.getDecision(), item2.getNeededFollowUp())
+    #     # followup writer cannot edit follow up on frozen items
+    #     self.changeUser("pmFollowup1")
+    #     self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
+    #     self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
+    #     # manager can edit neededfollowup for frozen and decided items
+    #     self.changeUser("pmManager")
+    #     self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
+    #     self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
+    #
+    #     self.assertEquals(item2.query_state(), "itemfrozen")
+    #     self.assertTrue(item2.mayQuickEdit("neededFollowUp"))
+    #     self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
+    #
+    #     self.do(item1, "accept")
+    #     self.assertEquals(item1.query_state(), "accepted")
+    #     self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
+    #     self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
+    #     self.changeUser("pmFollowup1")
+    #     self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
+    #     self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
+    #     item1.setProvidedFollowUp("<p>Followed</p>")
+    #     self.changeUser("pmManager")
+    #     item1.confirmFollowUp()
+    #     item1.deactivateFollowUp()
+    #     self.do(meeting, "close")
+    #     # every items without a decision are automatically accepted
+    #     self.assertEquals(item2.query_state(), "accepted")
+    #     self.assertFalse(item2.mayQuickEdit("neededFollowUp"))
+    #     self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
+    #     self.changeUser("pmFollowup2")
+    #     self.assertFalse(item2.mayQuickEdit("neededFollowUp"))
+    #     self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
+    #
+    # def _testWholeDecisionProcessCouncil(self):
+    #     """
+    #         This test covers the whole decision workflow. It begins with the
+    #         creation of some items, and ends by closing a meeting.
+    #     """
+    #     self.changeUser("admin")
+    #     self._setup_commissions_classifiers()
+    #     self.add_commission_plone_groups()
+    #     self.setMeetingConfig(self.meetingConfig2.getId())
+    #
+    #     # add a recurring item that is inserted when the meeting is 'setInCouncil'
+    #     self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
+    #     self.create(
+    #         "MeetingItemRecurring",
+    #         title="Rec item 1",
+    #         proposingGroup=self.developers_uid,
+    #         category="deployment",
+    #         meetingTransitionInsertingMe="setInCouncil",
+    #     )
+    #     # pmCreator1 creates an item with 1 annex and proposes it
+    #     self.changeUser("pmCreator1")
+    #     item1 = self.create(
+    #         "MeetingItem",
+    #         title="The first item",
+    #         autoAddCategory=False,
+    #         category="deployment",
+    #         classifier="commission-ag"
+    #     )
+    #
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     item1.setProposingGroup(self.developers_uid)
+    #     self.addAnnex(item1)
+    #     # The creator can add a decision annex on created item
+    #     self.addAnnex(item1, relatedTo="item_decision")
+    #     self.do(item1, "proposeToDirector")
+    #     self.failIf(self.hasPermission(ModifyPortalContent, item1))
+    #     # The creator cannot add a decision annex on proposed item
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     self.failIf(self.transitions(item1))  # He may trigger no more action
+    #     self.changeUser("pmDirector1")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     self.addAnnex(item1, relatedTo="item_decision")
+    #     self.do(item1, "validate")
+    #     self.failIf(self.hasPermission(ModifyPortalContent, item1))
+    #     # The reviewer cannot add a decision annex on validated item
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     # pmManager creates a meeting
+    #     self.changeUser("pmManager")
+    #     self.assertTrue(item1.mayQuickEdit("observations"))
+    #     meeting = self.create("Meeting", date="2007/12/11 09:00:00")
+    #     # The meetingManager can add a decision annex
+    #     self.addAnnex(item1, relatedTo="item_decision")
+    #     # pmCreator2 creates and proposes an item
+    #     self.changeUser("pmCreator2")
+    #     item2 = self.create(
+    #         "MeetingItem",
+    #         title="The second item",
+    #         preferredMeeting=meeting.UID(),
+    #         category="deployment",
+    #         classifier="commission-patrimoine"
+    #     )
+    #     self.do(item2, "proposeToDirector")
+    #     # pmManager inserts item1 into the meeting and freezes it
+    #     self.changeUser("pmManager")
+    #     managerAnnex = self.addAnnex(item1)
+    #     self.portal.restrictedTraverse("@@delete_givenuid")(managerAnnex.UID())
+    #     self.presentItem(item1)
+    #     self.changeUser("pmCreator1")
+    #     # The creator cannot add any kind of annex on presented item
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+    #     self.assertRaises(Unauthorized, self.addAnnex, item1)
+    #     self.changeUser("pmManager")
+    #     self.do(meeting, "setInCommittee")
+    #     self.assertEqual(item1.query_state(), "itemfrozen")
+    #
+    #     self.changeUser("commissioneditor")
+    #     self.assertTrue(item1.mayQuickEdit("commissionTranscript"))
+    #
+    #     self.changeUser("commissioneditor2")
+    #     self.failIf(item1.mayQuickEdit("commissionTranscript"))
+    #
+    #     # pmReviewer2 validates item2
+    #     self.changeUser("pmDirector2")
+    #     item2.setPreferredMeeting(meeting.UID())
+    #
+    #     self.do(item2, "validate")
+    #     # pmManager inserts item2 into the meeting, as late item, and adds an
+    #     # annex to it
+    #     self.changeUser("pmManager")
+    #     self.presentItem(item2)
+    #     self.addAnnex(item2)
+    #     # An item is freely addable to a meeting if the meeting is 'open'
+    #     # so in states 'created', 'in_committee' and 'in_council'
+    #     # the 'late items' functionnality is not used
+    #     self.failIf(len(meeting.get_items()) != 2)
+    #     self.failIf(len(meeting.get_items(listTypes=["late"])) != 0)
+    #     # remove the item, set the meeting in council and add it again
+    #     self.backToState(item2, "validated")
+    #     self.failIf(len(meeting.get_items()) != 1)
+    #     self.do(meeting, "setInCouncil")
+    #     # remove published meeting to check that item is correctly presented in this cas as well
+    #     self.setCurrentMeeting(None)
+    #     self.do(item2, "present")
+    #
+    #     item1_addition = self.create(
+    #         "MeetingItem",
+    #         title="Addition to the first item",
+    #         autoAddCategory=False,
+    #         category="deployment",
+    #         classifier="commission-ag-1er-supplement"
+    #     )
+    #     self.do(item1_addition, "proposeToDirector")
+    #     item1_addition.setPreferredMeeting(meeting.UID())
+    #     self.do(item1_addition, "validate")
+    #     self.do(item1_addition, "present")
+    #     # setting the meeting in council (setInCouncil) add 1 recurring item...
+    #     self.assertEqual(len(meeting.get_items()), 4)
+    #     self.failUnless(item2.isLate())
+    #     self.failIf(item1_addition.isLate())
+    #     # an item can be send back to the service so MeetingMembers
+    #     # can edit it and send it back to the meeting
+    #     self.changeUser("pmCreator1")
+    #     self.failIf(self.hasPermission(ModifyPortalContent, item1))
+    #     self.changeUser("pmManager")
+    #     # send the item back to the service
+    #     self.do(item1, "return_to_proposing_group")
+    #     self.changeUser("pmCreator1")
+    #     self.failUnless(self.hasPermission(ModifyPortalContent, item1))
+    #     self.do(item1, "backTo_itempublished_from_returned_to_proposing_group")
+    #     self.failIf(self.hasPermission(ModifyPortalContent, item1))
+    #     # item state follow meeting state
+    #     self.changeUser("pmManager")
+    #     self.assertEquals(item1.query_state(), "itempublished")
+    #     self.assertEquals(item2.query_state(), "itempublished")
+    #     self.do(meeting, "backToInCommittee")
+    #     self.assertEquals(item1.query_state(), "itemfrozen")
+    #     self.assertEquals(item2.query_state(), "itemfrozen")
+    #     self.do(meeting, "setInCouncil")
+    #     self.assertEquals(item1.query_state(), "itempublished")
+    #     self.assertEquals(item2.query_state(), "itempublished")
+    #     # while closing a meeting, every no decided items are accepted
+    #     self.do(item1, "accept_but_modify")
+    #     self.do(meeting, "close")
+    #     self.assertEquals(item1.query_state(), "accepted_but_modified")
+    #     self.assertEquals(item2.query_state(), "accepted")
 
     def _checkRecurringItemsCouncil(self):
         """Tests the recurring items system.
