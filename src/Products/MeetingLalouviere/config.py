@@ -16,7 +16,7 @@
 # If you wish to perform custom configuration, you may put a file
 # AppConfig.py in your product's root directory. The items in there
 # will be included (by importing) in this file if found.
-
+import copy
 import os
 from collections import OrderedDict
 
@@ -52,66 +52,52 @@ PMconfig.EXTRA_GROUP_SUFFIXES = [
         "fct_title": u"Correspondants Financier",
         "fct_orgs": [],
         "enabled": True,
+        "fct_management": False,
     },
     {
         "fct_id": u"serviceheads",
         "fct_title": u"Chef de Service",
         "fct_orgs": [],
         "enabled": True,
+        "fct_management": False,
     },
     {
         "fct_id": u"officemanagers",
         "fct_title": u"Chef de Bureau",
         "fct_orgs": [],
         "enabled": True,
+        "fct_management": False,
     },
     {
         "fct_id": u"divisionheads",
         "fct_title": u"Chef de Division",
         "fct_orgs": [],
         "enabled": True,
+        "fct_management": False,
     },
     {
         "fct_id": u"directors",
         "fct_title": u"Directeur",
         "fct_orgs": [],
         "enabled": True,
+        "fct_management": False,
     },
     {
         "fct_id": u"followupwriters",
         "fct_title": u"Rédacteur de Suivi",
         "fct_orgs": [],
         "enabled": True,
+        "fct_management": False,
     },
-    {"fct_id": u"alderman", "fct_title": u"Échevin", "fct_orgs": [], "enabled": True},
+    {
+        "fct_id": u"alderman",
+        "fct_title": u"Échevin",
+        "fct_orgs": [],
+        "enabled": True,
+        "fct_management": False,
+    },
 ]
 
-LALOUVIEREROLES = {
-    "serviceheads": "MeetingServiceHead",
-    "officemanagers": "MeetingOfficeManager",
-    "divisionheads": "MeetingDivisionHead",
-    "directors": "MeetingDirector",
-    "alderman": "MeetingAlderman",
-    "followupwriters": "MeetingFollowUpWriter",
-    "budgetimpactreviewers": "MeetingBudgetImpactReviewer",
-}
-PMconfig.MEETINGROLES.update(LALOUVIEREROLES)
-
-LALOUVIEREMEETINGREVIEWERS = {
-    "meetingitemcollegelalouviere_workflow": OrderedDict(
-        [
-            ("alderman", ["proposed_to_alderman"]),
-            ("directors", ["proposed_to_director"]),
-            ("divisionheads", ["proposed_to_divisionhead"]),
-            ("officemanagers", ["proposed_to_officemanager"]),
-            ("serviceheads", ["proposed_to_servicehead"]),
-        ]
-    ),
-    "meetingitemcouncillalouviere_workflow": OrderedDict(
-        [("directors", ["proposed_to_director"]),]
-    ),
-}
-PMconfig.MEETINGREVIEWERS = LALOUVIEREMEETINGREVIEWERS
 LALOUVIERE_MEETING_STATES_ACCEPTING_ITEMS = (
     "created",
     "frozen",
@@ -231,4 +217,94 @@ COUNCIL_DEFAULT_MOTIVATION = (
     "<p>Vu l'article 117 de la nouvelle Loi Communale;</p>"
     "<p>&nbsp;</p>"
     "<p>Vu l'article L 1122-30 du Code de Démocratie Locale et de la Décentralisation;</p>"
+)
+
+LLO_ITEM_WF_VALIDATION_LEVELS = (
+    {'state': 'itemcreated',
+     'state_title': 'itemcreated',
+     'leading_transition': '-',
+     'leading_transition_title': '-',
+     'back_transition': 'backToItemCreated',
+     'back_transition_title': 'backToItemCreated',
+     'suffix': 'creators',
+     # only creators may manage itemcreated item
+     'extra_suffixes': [],
+     'enabled': '1',
+     },
+    {'state': 'proposed_to_servicehead',
+     'state_title': 'proposed_to_servicehead',
+     'leading_transition': 'proposeToServiceHead',
+     'leading_transition_title': 'proposeToServiceHead',
+     'back_transition': 'backToProposedToServiceHead',
+     'back_transition_title': 'backToProposedToServiceHead',
+     'suffix': 'serviceheads',
+     'extra_suffixes': [],
+     'enabled': '1',
+     },
+    {'state': 'proposed_to_officemanager',
+     'state_title': 'proposed_to_officemanager',
+     'leading_transition': 'proposeToOfficeManager',
+     'leading_transition_title': 'proposeToOfficeManager',
+     'back_transition': 'backToProposedToOfficeManager',
+     'back_transition_title': 'backToProposedToOfficeManager',
+     'suffix': 'officemanagers',
+     'enabled': '1',
+     'extra_suffixes': [],
+     },
+    {'state': 'proposed_to_divisionhead',
+     'state_title': 'proposed_to_divisionhead',
+     'leading_transition': 'proposeToDivisionHead',
+     'leading_transition_title': 'proposeToDivisionHead',
+     'back_transition': 'backToProposedToDivisionHead',
+     'back_transition_title': 'backToProposedToDivisionHead',
+     'suffix': 'divisionheads',
+     'enabled': '1',
+     'extra_suffixes': [],
+     },
+    {'state': 'proposed_to_director',
+     'state_title': 'proposed_to_director',
+     'leading_transition': 'proposeToDirector',
+     'leading_transition_title': 'proposeToDirector',
+     'back_transition': 'backToProposedToDirector',
+     'back_transition_title': 'backToProposedToDirector',
+     'suffix': 'directors',
+     'enabled': '1',
+     'extra_suffixes': [],
+     },
+    {'state': 'proposed_to_director',
+     'state_title': 'proposed_to_director',
+     'leading_transition': 'proposeToDirector',
+     'leading_transition_title': 'proposeToDirector',
+     'back_transition': 'backToProposedToDirector',
+     'back_transition_title': 'backToProposedToDirector',
+     'suffix': 'directors',
+     'enabled': '1',
+     'extra_suffixes': [],
+     },
+)
+
+LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = tuple(
+    list(copy.deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)) +
+    [
+        {'state': 'proposed_to_dg',
+         'state_title': 'proposed_to_dg',
+         'leading_transition': 'proposeToDg',
+         'leading_transition_title': 'proposeToDg',
+         'back_transition': 'backToProposedToDg',
+         'back_transition_title': 'backToProposedToDg',
+         'suffix': '',
+         'enabled': '0',
+         'extra_suffixes': [],
+         },
+        {'state': 'proposed_to_alderman',
+         'state_title': 'proposed_to_alderman',
+         'leading_transition': 'proposeToAlderman',
+         'leading_transition_title': 'proposeToAlderman',
+         'back_transition': 'backToProposedToAlderman',
+         'back_transition_title': 'backToProposedToAlderman',
+         'suffix': 'alderman',
+         'enabled': '0',
+         'extra_suffixes': [],
+         },
+    ]
 )

@@ -142,7 +142,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "proposed": "proposed_to_director",
         "validated": "validated",
         "presented": "presented",
-        "itemfrozen": "item_in_committee",
+        "itemfrozen": "itemfrozen",
     }
 
     WF_MEETING_TRANSITION_NAME_MAPPINGS_2 = {"frozen": "in_committee"}

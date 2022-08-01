@@ -2,6 +2,8 @@
 from copy import deepcopy
 
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
+from Products.MeetingLalouviere.config import LLO_ITEM_WF_VALIDATION_LEVELS
+from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 
 from Products.PloneMeeting.profiles import UserDescriptor, PodTemplateDescriptor
@@ -102,23 +104,8 @@ vendors.observers.append(pmFollowup2)
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
-collegeMeeting.itemWorkflow = "meetingitemcollegelalouviere_workflow"
-collegeMeeting.meetingWorkflow = "meetingcollegelalouviere_workflow"
-collegeMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
-collegeMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
-)
-collegeMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions"
-)
-collegeMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"
-)
-collegeMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
+collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
+
 collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 collegeMeeting.transitionsForPresentingAnItem = (
@@ -129,7 +116,7 @@ collegeMeeting.transitionsForPresentingAnItem = (
     "validate",
     "present",
 )
-collegeMeeting.workflowAdaptations = []
+collegeMeeting.workflowAdaptations = ["no_publication"]
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
@@ -148,23 +135,7 @@ collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
-councilMeeting.itemWorkflow = "meetingitemcouncillalouviere_workflow"
-councilMeeting.meetingWorkflow = "meetingcouncillalouviere_workflow"
-councilMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
-councilMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
-)
-councilMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions"
-)
-councilMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"
-)
-councilMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
+councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 councilMeeting.transitionsForPresentingAnItem = (
@@ -172,7 +143,7 @@ councilMeeting.transitionsForPresentingAnItem = (
     "validate",
     "present",
 )
-councilMeeting.workflowAdaptations = []
+councilMeeting.workflowAdaptations = ["no_decide",]
 councilMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
@@ -180,8 +151,8 @@ councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 councilMeeting.itemCopyGroupsStates = [
     "proposed_to_director",
     "validated",
-    "item_in_committee",
-    "item_in_council",
+    "itemfrozen",
+    "itempublished",
 ]
 
 councilMeeting.onMeetingTransitionItemActionToExecute = (
@@ -232,7 +203,7 @@ agendaCouncilTemplate.odt_file = 'council-oj.odt'
 agendaCouncilTemplate.pod_formats = ['odt', 'pdf', ]
 agendaCouncilTemplate.pod_portal_types = ['Meeting']
 agendaCouncilTemplate.tal_condition = u'python:tool.isManager(here)'
-agendaCouncilTemplate.style_template = ['styles1']
+agendaCouncilTemplate.style_template = []
 
 councilMeeting.podTemplates.append(agendaCouncilTemplate)
 

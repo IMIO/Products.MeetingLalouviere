@@ -121,10 +121,10 @@ class AdviceWFConditionsView(BrowserView):
             # except if it is 'negative_finance'
             if POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER:
                 if self.context.advice_type == 'negative_finance' and \
-                   not self.context.queryState() == 'proposed_to_financial_manager':
+                   not self.context.query_state() == 'proposed_to_financial_manager':
                     res = False
             else:
-                if not self.context.queryState() == 'proposed_to_financial_manager':
+                if not self.context.query_state() == 'proposed_to_financial_manager':
                     res = False
         return res
 

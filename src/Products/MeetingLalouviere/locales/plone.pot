@@ -42,14 +42,6 @@ msgstr ""
 msgid "in_council"
 msgstr ""
 
-#. Default: "In committee"
-msgid "item_in_committee"
-msgstr ""
-
-#. Default: "In council"
-msgid "item_in_council"
-msgstr ""
-
 # Workflow transitions
 #. Default: "Ask advices"
 msgid "ask_advices_by_itemcreator"

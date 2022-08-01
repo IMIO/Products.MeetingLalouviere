@@ -180,14 +180,6 @@ msgstr "En commission"
 msgid "in_council"
 msgstr "En Conseil communal"
 
-#. Default: "In committee"
-msgid "item_in_committee"
-msgstr "En commission"
-
-#. Default: "In council"
-msgid "item_in_council"
-msgstr "En Conseil communal"
-
 # Workflow states
 #. Default: "Waiting advices"
 msgid "itemcreated_waiting_advices"

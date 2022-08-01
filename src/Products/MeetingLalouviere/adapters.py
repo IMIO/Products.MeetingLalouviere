@@ -102,17 +102,19 @@ customWfAdaptations = (
     "removed",
     "return_to_proposing_group",
     "validate_by_dg_and_alderman",
+    "waiting_advice_from_itemcreated",
+    "no_publication",
+    "no_decide",
 )
 MeetingConfig.wfAdaptations = customWfAdaptations
 CustomMeetingConfig.wfAdaptations = customWfAdaptations
-originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
 # configure parameters for the returned_to_proposing_group wfAdaptation
 # we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
 
 RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
-    "backTo_item_in_committee_from_returned_to_proposing_group": ["in_committee",],
-    "backTo_item_in_council_from_returned_to_proposing_group": ["in_council",],
+    "backTo_itemfrozen_from_returned_to_proposing_group": ["in_committee",],
+    "backTo_itempublished_from_returned_to_proposing_group": ["in_council",],
 }
 adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(
     RETURN_TO_PROPOSING_GROUP_MAPPINGS
@@ -121,8 +123,8 @@ RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = (
     "presented",
     "itemfrozen",
     "itempublished",
-    "item_in_committee",
-    "item_in_council",
+    "itemfrozen",
+    "itempublished",
 )
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = (
     RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES
@@ -449,7 +451,7 @@ class LLCustomMeeting(CustomMeeting):
           - 'decided' for MeetingCollege
         """
         meeting = self.getSelf()
-        return meeting.queryState() in ("in_council", "decided", "closed", "archived")
+        return meeting.query_state() in ("in_council", "decided", "closed", "archived")
 
     # helper methods used in templates
 
@@ -1271,7 +1273,7 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "review_state",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["item_in_committee"],
+                                "v": ["itemfrozen"],
                             },
                             {
                                 "i": "CompoundCriterion",
@@ -1437,7 +1439,7 @@ class MeetingItemCollegeLalouviereWorkflowConditions(
             else:
                 # if the current item state is 'itemcreated', only the MeetingManager can validate
                 tool = getToolByName(self.context, "portal_plonemeeting")
-                if self.context.queryState() in ("itemcreated",) and not tool.isManager(
+                if self.context.query_state() in ("itemcreated",) and not tool.isManager(
                     self.context
                 ):
                     res = False
@@ -1581,7 +1583,7 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingCommunesWorkflowActions):
 
     def doSetInCommittee(self, stateChange):
         """When setting the meeting in committee, every items must be
-           automatically set to "item_in_committee", it is done using
+           automatically set to "itemfrozen", it is done using
            Meetingconfig.onMeetingTransitionItemTransitionToTrigger."""
         # manage meeting number
         self.initSequenceNumber()
@@ -1590,7 +1592,7 @@ class MeetingCouncilLalouviereWorkflowActions(MeetingCommunesWorkflowActions):
 
     def doSetInCouncil(self, stateChange):
         """When setting the meeting in council, every items must be automatically
-           set to "item_in_council", it is done using
+           set to "itempublished", it is done using
            Meetingconfig.onMeetingTransitionItemTransitionToTrigger."""
         pass
 
@@ -1744,7 +1746,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context) \
                 and self.context.hasMeeting() \
-                and self.context.getMeeting().queryState() \
+                and self.context.getMeeting().query_state() \
                 in ("in_committee", "in_council", "closed"):
             res = True
             msg = self._check_required_data()
@@ -1762,7 +1764,7 @@ class MeetingItemCouncilLalouviereWorkflowConditions(
         res = False
         if _checkPermission(ReviewPortalContent, self.context) \
                 and self.context.hasMeeting() \
-                and self.context.getMeeting().queryState() \
+                and self.context.getMeeting().query_state() \
                 in ("in_council", "closed"):
             res = True
             msg = self._check_required_data()
@@ -1973,13 +1975,13 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
         if item.isDefinedInTool():
             return icons
 
-        itemState = item.queryState()
+        itemState = item.query_state()
         tool = api.portal.get_tool("portal_plonemeeting")
         cfg = tool.getMeetingConfig(item)
 
         # add some icons specific for dashboard if we are actually on the dashboard...
         if (
-            itemState in cfg.itemDecidedStates
+            itemState in cfg.getItemDecidedStates()
             and item.REQUEST.form.get("topicId", "") == "searchitemsfollowupdashboard"
         ):
             itemFollowUp = item.getFollowUp()
@@ -2022,12 +2024,12 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
                     ),
                 )
             )
-        elif itemState == "item_in_council":
+        elif itemState == "itempublished":
             icons.append(
                 (
-                    "item_in_council.png",
+                    "itempublished.png",
                     translate(
-                        "icon_help_item_in_council",
+                        "icon_help_itempublished",
                         domain="PloneMeeting",
                         context=self.request,
                     ),
@@ -2044,12 +2046,12 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
                     ),
                 )
             )
-        elif itemState == "item_in_committee":
+        elif itemState == "itemfrozen":
             icons.append(
                 (
-                    "item_in_committee.png",
+                    "itemfrozen.png",
                     translate(
-                        "icon_help_item_in_committee",
+                        "icon_help_itemfrozen",
                         domain="PloneMeeting",
                         context=self.request,
                     ),
