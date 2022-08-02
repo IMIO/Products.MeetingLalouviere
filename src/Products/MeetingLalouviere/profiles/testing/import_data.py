@@ -125,13 +125,14 @@ collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
-collegeMeeting.itemAdviceStates = [
+councilMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
-collegeMeeting.itemAdviceEditStates = [
+councilMeeting.itemAdviceEditStates = [
     "proposed_to_director",
     "validated"
 ]
+councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
 usedItemAttributes = list(councilMeeting.usedItemAttributes) + [u"commissionTranscript",]
 councilMeeting.usedItemAttributes = tuple(usedItemAttributes)
 
