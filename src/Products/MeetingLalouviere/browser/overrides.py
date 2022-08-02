@@ -7,14 +7,13 @@
 # GNU General Public License (GPL)
 #
 
-from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from imio.history.utils import getLastWFAction
 
 from Products.CMFPlone.utils import safe_unicode
 from plone import api
 
 from Products.MeetingCommunes.browser.overrides import MCItemDocumentGenerationHelperView, \
-    MCMeetingDocumentGenerationHelperView, MCFolderDocumentGenerationHelperView
+    MCMeetingDocumentGenerationHelperView
 
 
 class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):
@@ -209,7 +208,3 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
             return getattr(meeting, "getPreMeetingAssembly_" + str(commission_num))()
         else:
             return meeting.getPreMeetingAssembly()
-
-
-class MLLFolderDocumentGenerationHelperView(MCFolderDocumentGenerationHelperView):
-    """"""
