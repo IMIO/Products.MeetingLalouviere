@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
@@ -322,7 +323,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         )
         setRoles(self.portal, "pmManager", ["MeetingManager", "Manager"])
         self.changeUser("pmManager")
-        meeting = self.create("Meeting", date="2007/12/11 09:00:00")
+        meeting = self.create("Meeting", date=datetime(2007, 12, 11, 9, 0))
         self.failUnless(len(meeting.get_items()) == 0)
         self.do(meeting, "setInCommittee")
         self.failUnless(len(meeting.get_items()) == 0)

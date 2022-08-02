@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from Products.MeetingCommunes.tests.testCustomViews import testCustomViews as mctcv
 from Products.MeetingLalouviere.config import (
@@ -195,7 +196,7 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
         self.meetingConfig = self.meetingConfig2
         # Create the meeting and the view
         self.changeUser("pmManager")
-        meeting = self.create("Meeting", date="2019/09/1 18:00:00")
+        meeting = self.create("Meeting", date=datetime(2019, 9, 1, 18, 0))
         view = self._set_view(meeting)
         # Set pre-meeting date and place
         meeting.setPreMeetingDate(DateTime(2019, 9, 1, 4, 20, 0))
@@ -219,8 +220,8 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
         self.changeUser("pmManager")
 
         for date in (
-            "2019/09/1 18:00:00",
-            "2020/09/1 18:00:00",
+            datetime(2019, 9, 1, 18, 0),
+            datetime(2020, 9, 1, 18, 0),
         ):
             meeting = self.create("Meeting", date=date)
             view = self._set_view(meeting)

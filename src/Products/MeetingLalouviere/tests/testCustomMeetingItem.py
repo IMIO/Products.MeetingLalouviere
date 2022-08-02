@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
+from datetime import datetime
+
 from Products.MeetingLalouviere.config import COLLEGE_DEFAULT_MOTIVATION
 from Products.MeetingLalouviere.config import COUNCIL_DEFAULT_MOTIVATION
 
@@ -61,7 +63,7 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         item.setDecision("<p>A decision</p>")
         item.setOtherMeetingConfigsClonableTo((destMeetingConfigId,))
         self.assertTrue(item.getMotivation() == COLLEGE_DEFAULT_MOTIVATION)
-        meeting = self.create("Meeting", date=DateTime("2013/05/05"))
+        meeting = self.create("Meeting", date=datetime(2013, 5, 5))
         self.presentItem(item)
         # now close the meeting so the item is automatically accepted and sent to meetingConfig2
         self.closeMeeting(meeting)

@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
+from datetime import datetime
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
@@ -42,7 +43,7 @@ class testCustomMeetingConfig(MeetingLalouviereTestCase):
         cfg2 = self.meetingConfig2
         self.changeUser("pmManager")
         self.setMeetingConfig(cfg2.getId())
-        meeting = self.create("Meeting", date=DateTime("2016/10/04"))
+        meeting = self.create("Meeting", date=datetime(2016, 10, 4))
 
         # created, available for everyone
         self.assertEqual(meeting.query_state(), "created")

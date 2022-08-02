@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
@@ -36,7 +37,7 @@ class testCustomMeetingType(mctcm, MeetingLalouviereTestCase):
         for supplCat in supplCategories:
             self.create("meetingcategory", id=supplCat, title="supplCat")
         self.changeUser("pmManager")
-        m = self.create("Meeting", date="2009/11/26 09:00:00")
+        m = self.create("Meeting", date=datetime(2009, 11, 26, 9, 0))
         expectedNormal = ['commission-travaux',
                           'commission-finances',
                           'commission-patrimoine',
@@ -105,12 +106,12 @@ class testCustomMeetingType(mctcm, MeetingLalouviereTestCase):
             self.create("meetingcategory", id=classifier, title="supplClf", is_classifier=True)
 
         self.changeUser("pmManager")
-        meeting2009 = self.create("Meeting", date="2009/11/26 09:00:00")
-        meeting2014 = self.create("Meeting", date="2014/11/26 09:00:00")
-        meeting2019 = self.create("Meeting", date="2019/11/26 09:00:00")
-        meeting2020 = self.create("Meeting", date="2020/11/26 09:00:00")
-        meeting2050 = self.create("Meeting", date="2050/01/26 09:00:00")
-        meeting2060 = self.create("Meeting", date="2060/12/26 09:00:00")
+        meeting2009 = self.create("Meeting", date=datetime(2009, 11, 26, 9, 0))
+        meeting2014 = self.create("Meeting", date=datetime(2014, 11, 26, 9, 0))
+        meeting2019 = self.create("Meeting", date=datetime(2019, 11, 26, 9, 0))
+        meeting2020 = self.create("Meeting", date=datetime(2020, 11, 26, 9, 0))
+        meeting2050 = self.create("Meeting", date=datetime(2050, 1, 26, 9, 0))
+        meeting2060 = self.create("Meeting", date=datetime(2060, 12, 26, 9, 0))
 
         self.maxDiff = None
 
