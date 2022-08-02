@@ -32,7 +32,10 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "proposeToDivisionHead",
         "proposeToDirector",
     )
-    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ("proposeToDirector",)
+    TRANSITIONS_FOR_PROPOSING_ITEM_2 = (
+        "proposeToDirector",
+    )
+
     TRANSITIONS_FOR_VALIDATING_ITEM_1 = (
         "proposeToServiceHead",
         "proposeToOfficeManager",
@@ -44,6 +47,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "proposeToDirector",
         "validate",
     )
+
     TRANSITIONS_FOR_PRESENTING_ITEM_1 = (
         "proposeToServiceHead",
         "proposeToOfficeManager",
@@ -57,13 +61,14 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "validate",
         "present",
     )
+
     TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = (
         "freeze",
         "decide",
     )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = (
-        "setItemInCommittee",
-        "setItemInCouncil",
+        "freeze",
+        "publish",
     )
 
     TRANSITIONS_FOR_DECIDING_MEETING_1 = (
@@ -71,8 +76,8 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "decide",
     )
     TRANSITIONS_FOR_DECIDING_MEETING_2 = (
-        "setInCommittee",
-        "setInCouncil",
+        "freeze",
+        "publish",
     )
     TRANSITIONS_FOR_CLOSING_MEETING_1 = (
         "freeze",
@@ -80,8 +85,8 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "close",
     )
     TRANSITIONS_FOR_CLOSING_MEETING_2 = (
-        "setInCommittee",
-        "setInCouncil",
+        "freeze",
+        "publish",
         "close",
     )
     BACK_TO_WF_PATH_1 = {
@@ -145,7 +150,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "itemfrozen": "itemfrozen",
     }
 
-    WF_MEETING_TRANSITION_NAME_MAPPINGS_2 = {"frozen": "in_committee"}
+    # WF_MEETING_TRANSITION_NAME_MAPPINGS_2 = {"frozen": "in_committee"}
 
     # in which state an item must be after an particular meeting transition?
     ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {
@@ -156,9 +161,12 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_1 = (
         "freeze",
     )
-    TRANSITIONS_FOR_FREEZING_MEETING_2 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = (
-        "setInCommittee",
-        "setInCouncil",
+    TRANSITIONS_FOR_FREEZING_MEETING_2 = (
+        "freeze",
+    )
+    TRANSITIONS_FOR_PUBLISHING_MEETING_2 = (
+        "freeze",
+        "publish",
     )
 
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = (
@@ -166,6 +174,6 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "decide",
     )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = (
-        "setInCommittee",
-        "setInCouncil",
+        "freeze",
+        "publish",
     )

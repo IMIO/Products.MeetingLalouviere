@@ -223,7 +223,7 @@ collegeMeeting.useGroupsAsCategories = True
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.transitionsToConfirm = []
-collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
+collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
 # councilMeeting.itemConditionsInterface = \
 #     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
 # councilMeeting.itemActionsInterface = (

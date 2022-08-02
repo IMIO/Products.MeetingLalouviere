@@ -2,11 +2,11 @@
 from copy import deepcopy
 
 from Products.MeetingCommunes.profiles.zcodir import import_data as mc_import_data
-from Products.MeetingLalouviere.config import LLO_ITEM_WF_VALIDATION_LEVELS
+from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 
 data = deepcopy(mc_import_data.data)
 meetingConfig = data.meetingConfigs[0]
-meetingConfig.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
+meetingConfig.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
 meetingConfig.workflowAdaptations = ['refused']
 
 meetingConfig.transitionsForPresentingAnItem = (

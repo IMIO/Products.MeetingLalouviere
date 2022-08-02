@@ -219,7 +219,31 @@ COUNCIL_DEFAULT_MOTIVATION = (
     "<p>Vu l'article L 1122-30 du Code de Démocratie Locale et de la Décentralisation;</p>"
 )
 
-LLO_ITEM_WF_VALIDATION_LEVELS = (
+LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS = (
+    {'state': 'itemcreated',
+     'state_title': 'itemcreated',
+     'leading_transition': '-',
+     'leading_transition_title': '-',
+     'back_transition': 'backToItemCreated',
+     'back_transition_title': 'backToItemCreated',
+     'suffix': 'creators',
+     # only creators may manage itemcreated item
+     'extra_suffixes': [],
+     'enabled': '1',
+     },
+    {'state': 'proposed_to_director',
+     'state_title': 'proposed_to_director',
+     'leading_transition': 'proposeToDirector',
+     'leading_transition_title': 'proposeToDirector',
+     'back_transition': 'backToProposedToDirector',
+     'back_transition_title': 'backToProposedToDirector',
+     'suffix': 'directors',
+     'enabled': '1',
+     'extra_suffixes': [],
+     },
+)
+
+LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
     {'state': 'itemcreated',
      'state_title': 'itemcreated',
      'leading_transition': '-',
@@ -271,32 +295,26 @@ LLO_ITEM_WF_VALIDATION_LEVELS = (
      'enabled': '1',
      'extra_suffixes': [],
      },
-)
-
-LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = tuple(
-    list(copy.deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)) +
-    [
-        {'state': 'proposed_to_dg',
-         'state_title': 'proposed_to_dg',
-         'leading_transition': 'proposeToDg',
-         'leading_transition_title': 'proposeToDg',
-         'back_transition': 'backToProposedToDg',
-         'back_transition_title': 'backToProposedToDg',
-         'suffix': '',
-         'enabled': '0',
-         'extra_suffixes': [],
-         },
-        {'state': 'proposed_to_alderman',
-         'state_title': 'proposed_to_alderman',
-         'leading_transition': 'proposeToAlderman',
-         'leading_transition_title': 'proposeToAlderman',
-         'back_transition': 'backToProposedToAlderman',
-         'back_transition_title': 'backToProposedToAlderman',
-         'suffix': 'alderman',
-         'enabled': '0',
-         'extra_suffixes': [],
-         },
-    ]
+    {'state': 'proposed_to_dg',
+     'state_title': 'proposed_to_dg',
+     'leading_transition': 'proposeToDg',
+     'leading_transition_title': 'proposeToDg',
+     'back_transition': 'backToProposedToDg',
+     'back_transition_title': 'backToProposedToDg',
+     'suffix': '',
+     'enabled': '0',
+     'extra_suffixes': [],
+     },
+    {'state': 'proposed_to_alderman',
+     'state_title': 'proposed_to_alderman',
+     'leading_transition': 'proposeToAlderman',
+     'leading_transition_title': 'proposeToAlderman',
+     'back_transition': 'backToProposedToAlderman',
+     'back_transition_title': 'backToProposedToAlderman',
+     'suffix': 'alderman',
+     'enabled': '0',
+     'extra_suffixes': [],
+     },
 )
 
 LLO_APPLYED_COLLEGE_WFA = (

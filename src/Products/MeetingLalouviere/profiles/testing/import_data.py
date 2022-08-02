@@ -7,7 +7,7 @@ from Products.MeetingCommunes.profiles.testing import import_data as mc_import_d
 from Products.MeetingLalouviere.config import LLO_APPLYED_COLLEGE_WFA
 from Products.MeetingLalouviere.config import LLO_APPLYED_COUNCIL_WFA
 
-from Products.MeetingLalouviere.config import LLO_ITEM_WF_VALIDATION_LEVELS
+from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 
@@ -56,12 +56,11 @@ pmBudgetReviewer1 = UserDescriptor("pmBudgetReviewer1", [])
 pmBudgetReviewer2 = UserDescriptor("pmBudgetReviewer2", [])
 
 # Inherited users
-pmCreator1 = deepcopy(pm_import_data.pmCreator1)
-pmReviewer1 = deepcopy(pm_import_data.pmReviewer1)
-pmReviewer2 = deepcopy(pm_import_data.pmReviewer2)
-pmReviewerLevel1 = deepcopy(pm_import_data.pmReviewerLevel1)
-pmReviewerLevel2 = deepcopy(pm_import_data.pmReviewerLevel2)
-pmManager = deepcopy(pm_import_data.pmManager)
+pmReviewer1 = pm_import_data.pmReviewer1
+pmReviewer2 = pm_import_data.pmReviewer2
+pmReviewerLevel1 = pm_import_data.pmReviewerLevel1
+pmReviewerLevel2 = pm_import_data.pmReviewerLevel2
+pmManager = pm_import_data.pmManager
 
 # GROUPS
 developers = data.orgs[0]
@@ -109,107 +108,31 @@ vendors.observers.append(pmFollowup2)
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
+
 collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
-
-collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
-
-collegeMeeting.transitionsForPresentingAnItem = (
-    "proposeToServiceHead",
-    "proposeToOfficeManager",
-    "proposeToDivisionHead",
-    "proposeToDirector",
-    "validate",
-    "present",
-)
-collegeMeeting.workflowAdaptations = []
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
-
-collegeMeeting.usedItemAttributes = (
-    u"description",
-    u"observations",
-    u"toDiscuss",
-    u"itemTags",
-    u"itemIsSigned",
-    u"neededFollowUp",
-    u"providedFollowUp",
-)
-
-collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
+collegeMeeting.itemAdviceEditStates = [
+    "proposed_to_director",
+#     "proposed_to_dg",
+#     "proposed_to_alderman",
+    "validated"
+]
+usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"neededFollowUp", u"providedFollowUp",]
+collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
-councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_WF_VALIDATION_LEVELS)
-councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
-
-councilMeeting.transitionsForPresentingAnItem = (
-    "proposeToDirector",
-    "validate",
-    "present",
-)
-councilMeeting.workflowAdaptations = []
-councilMeeting.itemAdviceStates = [
+councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
+collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
-councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
-councilMeeting.itemCopyGroupsStates = [
+collegeMeeting.itemAdviceEditStates = [
     "proposed_to_director",
-    "validated",
-    "itemfrozen",
-    "itempublished",
+    "validated"
 ]
-
-councilMeeting.onMeetingTransitionItemActionToExecute = (
-    {
-        "meeting_transition": "setInCommittee",
-        "item_action": "setItemInCommittee",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "setInCouncil",
-        "item_action": "setItemInCouncil",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "backToCreated",
-        "item_action": "backToPresented",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "backToInCommittee",
-        "item_action": "backToItemInCouncil",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "backToInCommittee",
-        "item_action": "backToItemInCommittee",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "close",
-        "item_action": "accept",
-        "tal_expression": "",
-    },
-)
-
-councilMeeting.usedItemAttributes = (
-    u"description",
-    u"observations",
-    u"toDiscuss",
-    u"itemTags",
-    u"itemIsSigned",
-    u"commissionTranscript",
-    # u"classifier",
-)
-
-agendaCouncilTemplate = PodTemplateDescriptor('agendaTemplate', 'Ordre du jour')
-agendaCouncilTemplate.odt_file = 'council-oj.odt'
-agendaCouncilTemplate.pod_formats = ['odt', 'pdf', ]
-agendaCouncilTemplate.pod_portal_types = ['Meeting']
-agendaCouncilTemplate.tal_condition = u'python:tool.isManager(here)'
-agendaCouncilTemplate.style_template = []
-
-councilMeeting.podTemplates.append(agendaCouncilTemplate)
+usedItemAttributes = list(councilMeeting.usedItemAttributes) + [u"commissionTranscript",]
+councilMeeting.usedItemAttributes = tuple(usedItemAttributes)
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
