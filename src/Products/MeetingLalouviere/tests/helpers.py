@@ -25,6 +25,9 @@ from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     """Override some values of PloneMeetingTestingHelpers."""
+    TRANSITIONS_FOR_PROPOSING_ITEM_FIRST_LEVEL_1 = ("proposeToServiceHead",)
+
+    TRANSITIONS_FOR_PROPOSING_ITEM_FIRST_LEVEL_2 = ("proposeToDirector",)
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = (
         "proposeToServiceHead",
