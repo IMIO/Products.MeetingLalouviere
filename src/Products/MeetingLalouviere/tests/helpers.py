@@ -66,33 +66,6 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "present",
     )
 
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = (
-        "freeze",
-        "decide",
-    )
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = (
-        "freeze",
-        "publish",
-    )
-
-    TRANSITIONS_FOR_DECIDING_MEETING_1 = (
-        "freeze",
-        "decide",
-    )
-    TRANSITIONS_FOR_DECIDING_MEETING_2 = (
-        "freeze",
-        "publish",
-    )
-    TRANSITIONS_FOR_CLOSING_MEETING_1 = (
-        "freeze",
-        "decide",
-        "close",
-    )
-    TRANSITIONS_FOR_CLOSING_MEETING_2 = (
-        "freeze",
-        "publish",
-        "close",
-    )
     BACK_TO_WF_PATH_1 = {
         # Meeting
         "created": ("backToDecided", "backToPublished", "backToFrozen", "backToCreated",),
@@ -153,34 +126,6 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "presented": "presented",
         "itemfrozen": "itemfrozen",
     }
-
-    # WF_MEETING_TRANSITION_NAME_MAPPINGS_2 = {"frozen": "in_committee"}
-
-    # in which state an item must be after an particular meeting transition?
-    ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {
-        "publish_decisions": "accepted",
-        "close": "accepted",
-    }
-
-    TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_1 = (
-        "freeze",
-    )
-    TRANSITIONS_FOR_FREEZING_MEETING_2 = (
-        "freeze",
-    )
-    TRANSITIONS_FOR_PUBLISHING_MEETING_2 = (
-        "freeze",
-        "publish",
-    )
-
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = (
-        "freeze",
-        "decide",
-    )
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = (
-        "freeze",
-        "publish",
-    )
 
     def _setUpDefaultItemWFValidationLevels(self, cfg):
         """Setup default itemWFValidationLevels for given p_cfg,
