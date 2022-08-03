@@ -25,7 +25,7 @@
              provides="imio.prettylink.interfaces.IPrettyLink" />
 
     <!-- Customizations for every Meetings -->
-    <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+    <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
            factory="Products.MeetingLalouviere.adapters.LLCustomMeeting"
            provides="Products.PloneMeeting.interfaces.IMeetingCustom"/>
 

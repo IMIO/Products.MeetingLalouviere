@@ -19,9 +19,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
+from copy import deepcopy
 
 from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
-
+from Products.PloneMeeting.profiles import MeetingConfigDescriptor
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     """Override some values of PloneMeetingTestingHelpers."""
@@ -180,3 +181,23 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "freeze",
         "publish",
     )
+
+    def _setUpDefaultItemWFValidationLevels(self, cfg):
+        """Setup default itemWFValidationLevels for given p_cfg,
+           used to avoid a custom profile breaking the tests."""
+        # make sure we use default itemWFValidationLevels,
+        # useful when test executed with custom profile
+        defValues = deepcopy(MeetingConfigDescriptor.get().itemWFValidationLevels)
+        suffix_mapping = {
+            'creators': 'creators',
+            'level1reviewers': 'serviceheads',
+            'level2reviewers': 'officemanagers',
+            'level3reviewers': 'divisionheads',
+            'level4reviewers': 'directors',
+            'level5reviewers': 'directors',
+            'reviewers': 'directors',
+        }
+        for value in defValues:
+            value['suffix'] = suffix_mapping[value['suffix']]
+        cfg.setItemWFValidationLevels(defValues)
+        cfg.at_post_edit_script()

@@ -579,18 +579,18 @@ class LLCustomMeeting(CustomMeeting):
            a sublist of classifiers is returned...
            Since 2019, travaux commission is grouped with finance..."""
         meeting = self.getSelf()
-        date = meeting.getDate()
-        if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
+        date = meeting.date
+        if not date or date.year > 2020 or (date.year == 2020 and date.month > 8):
             # since september 2020 commissions are grouped differently
             # patrimoine is grouped with travaux and finance
             # also police is moved to first place
             commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2020
-        elif date.year() >= 2019 and date.month() > 8:
+        elif date.year >= 2019 and date.month > 8:
             # since september 2019 commissions are grouped differently
             # finance is grouped with travaux
             commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2019
         # creating a new Meeting or editing an existing meeting with date >= june 2013
-        elif date.year() >= 2013 and date.month() > 5:
+        elif date.year >= 2013 and date.month > 5:
             # since 2013 commissions does NOT correspond to commission as MeetingItem.category
             # several MeetingItem.category are taken for one single commission...
             commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2013
@@ -624,88 +624,6 @@ class LLCustomMeeting(CustomMeeting):
 
     Meeting.get_commission_classifiers = get_commission_classifiers
 
-    security.declarePrivate("getDefaultPreMeetingAssembly")
-
-    def getDefaultPreMeetingAssembly(self):
-        """Returns the default value for field 'preMeetingAssembly."""
-        if self.attributeIsUsed("preMeetingAssembly"):
-            tool = getToolByName(self, "portal_plonemeeting")
-            return tool.getMeetingConfig(self).getPreMeetingAssembly_default()
-        return ""
-
-    Meeting.getDefaultPreMeetingAssembly = getDefaultPreMeetingAssembly
-
-    security.declarePrivate("getDefaultPreMeetingAssembly_2")
-
-    def getDefaultPreMeetingAssembly_2(self):
-        """Returns the default value for field 'preMeetingAssembly."""
-        if self.attributeIsUsed("preMeetingAssembly"):
-            tool = getToolByName(self, "portal_plonemeeting")
-            return tool.getMeetingConfig(self).getPreMeetingAssembly_2_default()
-        return ""
-
-    Meeting.getDefaultPreMeetingAssembly_2 = getDefaultPreMeetingAssembly_2
-
-    security.declarePrivate("getDefaultPreMeetingAssembly_3")
-
-    def getDefaultPreMeetingAssembly_3(self):
-        """Returns the default value for field 'preMeetingAssembly."""
-        if self.attributeIsUsed("preMeetingAssembly"):
-            tool = getToolByName(self, "portal_plonemeeting")
-            return tool.getMeetingConfig(self).getPreMeetingAssembly_3_default()
-        return ""
-
-    Meeting.getDefaultPreMeetingAssembly_3 = getDefaultPreMeetingAssembly_3
-
-    security.declarePrivate("getDefaultPreMeetingAssembly_4")
-
-    def getDefaultPreMeetingAssembly_4(self):
-        """Returns the default value for field 'preMeetingAssembly."""
-        if self.attributeIsUsed("preMeetingAssembly"):
-            tool = getToolByName(self, "portal_plonemeeting")
-            return tool.getMeetingConfig(self).getPreMeetingAssembly_4_default()
-        return ""
-
-    Meeting.getDefaultPreMeetingAssembly_4 = getDefaultPreMeetingAssembly_4
-
-    security.declarePrivate("getDefaultPreMeetingAssembly_5")
-
-    def getDefaultPreMeetingAssembly_5(self):
-        """Returns the default value for field 'preMeetingAssembly."""
-        if self.attributeIsUsed("preMeetingAssembly"):
-            tool = getToolByName(self, "portal_plonemeeting")
-            return tool.getMeetingConfig(self).getPreMeetingAssembly_5_default()
-        return ""
-
-    Meeting.getDefaultPreMeetingAssembly_5 = getDefaultPreMeetingAssembly_5
-
-    security.declarePrivate("getDefaultPreMeetingAssembly_6")
-
-    def getDefaultPreMeetingAssembly_6(self):
-        """Returns the default value for field 'preMeetingAssembly."""
-        if self.attributeIsUsed("preMeetingAssembly"):
-            tool = getToolByName(self, "portal_plonemeeting")
-            return tool.getMeetingConfig(self).getPreMeetingAssembly_6_default()
-        return ""
-
-    Meeting.getDefaultPreMeetingAssembly_6 = getDefaultPreMeetingAssembly_6
-
-    security.declarePrivate("getDefaultPreMeetingAssembly_7")
-
-    def getDefaultPreMeetingAssembly_7(self):
-        """Returns the default value for field 'preMeetingAssembly."""
-        if self.attributeIsUsed("preMeetingAssembly"):
-            tool = getToolByName(self, "portal_plonemeeting")
-            return tool.getMeetingConfig(self).getPreMeetingAssembly_7_default()
-        return ""
-
-    Meeting.getDefaultPreMeetingAssembly_7 = getDefaultPreMeetingAssembly_7
-
-    def getLateState(self):
-        if self.getSelf().portal_type == "MeetingCouncil":
-            return "in_council"
-        return super(CustomMeeting, self).getLateState()
-
 
 class LLCustomMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -717,9 +635,8 @@ class LLCustomMeetingItem(CustomMeetingItem):
     customMeetingTransitionsAcceptingRecurringItems = (
         "_init_",
         "freeze",
+        "publish",
         "decide",
-        "setInCommittee",
-        "setInCouncil",
     )
     MeetingItem.meetingTransitionsAcceptingRecurringItems = (
         customMeetingTransitionsAcceptingRecurringItems
@@ -904,10 +821,10 @@ class LLCustomMeetingItem(CustomMeetingItem):
             return ""
 
         meeting = self.context.getMeeting()
-        if meeting.getStartDate():
-            meeting_date = meeting.getStartDate()
+        if meeting.start_date:
+            meeting_date = meeting.start_date
         else:
-            meeting_date = meeting.getDate()
+            meeting_date = meeting.date()
 
         date_str = meeting_date.strftime("%Y%m%d")
         service = (
