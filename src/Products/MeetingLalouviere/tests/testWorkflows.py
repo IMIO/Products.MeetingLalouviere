@@ -308,68 +308,69 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
     #     self.assertEquals(item1.query_state(), "accepted_but_modified")
     #     self.assertEquals(item2.query_state(), "accepted")
 
-    def _checkRecurringItemsCouncil(self):
-        """Tests the recurring items system.
-           Recurring items are added when the meeting is setInCouncil."""
-        # First, define a recurring item in the meeting config
-        # that will be added when the meeting is set to 'in_council'
-        self.changeUser("admin")
-        self.create(
-            "MeetingItemRecurring",
-            title="Rec item 1",
-            proposingGroup=self.developers_uid,
-            category="deployment",
-            meetingTransitionInsertingMe="setInCouncil",
-        )
-        setRoles(self.portal, "pmManager", ["MeetingManager", "Manager"])
-        self.changeUser("pmManager")
-        meeting = self.create("Meeting", date=datetime(2007, 12, 11, 9, 0))
-        self.failUnless(len(meeting.get_items()) == 0)
-        self.do(meeting, "setInCommittee")
-        self.failUnless(len(meeting.get_items()) == 0)
-        self.do(meeting, "setInCouncil")
-        self.failUnless(len(meeting.get_items()) == 1)
-        self.do(meeting, "close")
-        self.failUnless(len(meeting.get_items()) == 1)
+    # TODO use in test custom WF or delete
+    # def _checkCustomRecurringItemsCouncil(self):
+    #     """Tests the recurring items system.
+    #        Recurring items are added when the meeting is setInCouncil."""
+    #     # First, define a recurring item in the meeting config
+    #     # that will be added when the meeting is set to 'in_council'
+    #     self.changeUser("admin")
+    #     self.create(
+    #         "MeetingItemRecurring",
+    #         title="Rec item 1",
+    #         proposingGroup=self.developers_uid,
+    #         category="deployment",
+    #         meetingTransitionInsertingMe="setInCouncil",
+    #     )
+    #     setRoles(self.portal, "pmManager", ["MeetingManager", "Manager"])
+    #     self.changeUser("pmManager")
+    #     meeting = self.create("Meeting", date=datetime(2007, 12, 11, 9, 0))
+    #     self.failUnless(len(meeting.get_items()) == 0)
+    #     self.do(meeting, "setInCommittee")
+    #     self.failUnless(len(meeting.get_items()) == 0)
+    #     self.do(meeting, "setInCouncil")
+    #     self.failUnless(len(meeting.get_items()) == 1)
+    #     self.do(meeting, "close")
+    #     self.failUnless(len(meeting.get_items()) == 1)
 
-    def test_pm_RecurringItemsBypassSecurity(self):
-        """Tests that recurring items are addable by a MeetingManager even if by default,
-           one of the transition to trigger for the item to be presented should not be triggerable
-           by the MeetingManager inserting the recurring item.
-           For example here, we will add a recurring item for group 'developers' and
-           we create a 'pmManagerRestricted' that will not be able to propose the item."""
-        self.changeUser("pmManager")
-        self._removeConfigObjectsFor(self.meetingConfig)
-        # just one recurring item added for 'developers'
-        self.changeUser("admin")
-        self.create(
-            "MeetingItemRecurring",
-            title="Rec item developers",
-            proposingGroup=self.developers_uid,
-            meetingTransitionInsertingMe="_init_",
-        )
-        self.createUser("pmManagerRestricted", ("MeetingManager",))
-        developers_creators = '{}_creators'.format(self.developers_uid)
-        self.portal.portal_groups.addPrincipalToGroup(
-            "pmManagerRestricted", developers_creators
-        )
-        self.changeUser("pmManagerRestricted")
-        # first check that current 'pmManager' may not 'propose'
-        # an item created with proposing group 'vendors'
-        item = self.create("MeetingItem")
-        # 'pmManager' may propose the item and he will be able to validate it
-        self.proposeItem(item)
-        self.assertTrue(
-            item.query_state() == self.WF_ITEM_STATE_NAME_MAPPINGS_1["proposed"]
-        )
-        # we have no avaialble transition, or just two
-        availableTransitions = self.wfTool.getTransitionsFor(item)
-        if availableTransitions:
-            self.assertTrue(len(availableTransitions) == 2)
-        # now, create a meeting, the item is correctly
-        meeting = self.create("Meeting")
-        self.assertTrue(len(meeting.get_items()) == 1)
-        self.assertTrue(meeting.get_items()[0].getProposingGroup() == self.developers_uid)
+    # def test_pm_RecurringItemsBypassSecurity(self):
+    #     """Tests that recurring items are addable by a MeetingManager even if by default,
+    #        one of the transition to trigger for the item to be presented should not be triggerable
+    #        by the MeetingManager inserting the recurring item.
+    #        For example here, we will add a recurring item for group 'developers' and
+    #        we create a 'pmManagerRestricted' that will not be able to propose the item."""
+    #     self.changeUser("pmManager")
+    #     self._removeConfigObjectsFor(self.meetingConfig)
+    #     # just one recurring item added for 'developers'
+    #     self.changeUser("admin")
+    #     self.create(
+    #         "MeetingItemRecurring",
+    #         title="Rec item developers",
+    #         proposingGroup=self.developers_uid,
+    #         meetingTransitionInsertingMe="_init_",
+    #     )
+    #     self.createUser("pmManagerRestricted", ("MeetingManager",))
+    #     developers_creators = '{}_creators'.format(self.developers_uid)
+    #     self.portal.portal_groups.addPrincipalToGroup(
+    #         "pmManagerRestricted", developers_creators
+    #     )
+    #     self.changeUser("pmManagerRestricted")
+    #     # first check that current 'pmManager' may not 'propose'
+    #     # an item created with proposing group 'vendors'
+    #     item = self.create("MeetingItem")
+    #     # 'pmManager' may propose the item and he will be able to validate it
+    #     self.proposeItem(item)
+    #     self.assertTrue(
+    #         item.query_state() == self.WF_ITEM_STATE_NAME_MAPPINGS_1["proposed"]
+    #     )
+    #     # we have no avaialble transition, or just two
+    #     availableTransitions = self.wfTool.getTransitionsFor(item)
+    #     if availableTransitions:
+    #         self.assertTrue(len(availableTransitions) == 2)
+    #     # now, create a meeting, the item is correctly
+    #     meeting = self.create("Meeting")
+    #     self.assertTrue(len(meeting.get_items()) == 1)
+    #     self.assertTrue(meeting.get_items()[0].getProposingGroup() == self.developers_uid)
 
 
 def test_suite():
