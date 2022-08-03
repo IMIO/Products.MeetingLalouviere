@@ -121,6 +121,7 @@ collegeMeeting.itemAdviceEditStates = [
 ]
 usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"neededFollowUp", u"providedFollowUp",]
 collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
+collegeMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COLLEGE_WFA)
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
