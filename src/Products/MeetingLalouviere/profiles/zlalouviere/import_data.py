@@ -126,18 +126,8 @@ collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.transitionsToConfirm = []
 
 collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
+collegeMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COLLEGE_WFA)
 
-# collegeMeeting.itemConditionsInterface = \
-#     "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
-# collegeMeeting.itemActionsInterface = (
-#     "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
-# )
-# collegeMeeting.meetingConditionsInterface = (
-#     "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions"
-# )
-# collegeMeeting.meetingActionsInterface = (
-#     "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"
-# )
 collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 collegeMeeting.transitionsForPresentingAnItem = (
@@ -145,26 +135,24 @@ collegeMeeting.transitionsForPresentingAnItem = (
     "proposeToOfficeManager",
     "proposeToDivisionHead",
     "proposeToDirector",
-    # applied by WF adaptation
     "propose_to_dg",
     "propose_to_alderman",
-    # "validate",
-    # "present",
+    "validate",
+    "present",
 )
 collegeMeeting.itemAdviceViewStates = [
-    "proposed_to_servicehead",
-    "proposed_to_officemanager",
-    "proposed_to_divisionhead",
     "proposed_to_director",
-    "proposed_to_dg",
-    "proposed_to_alderman",
+    # "proposed_to_dg", # TODO wtf
+    # "proposed_to_alderman", # TODO wtf
     "validated",
     "presented",
     "itemfrozen",
 ]
-collegeMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COLLEGE_WFA)
+
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
+    # "proposed_to_dg", # TODO wtf
+    # "proposed_to_alderman", # TODO wtf
 ]
 
 collegeMeeting.usedItemAttributes = (
@@ -179,8 +167,8 @@ collegeMeeting.usedItemAttributes = (
 )
 
 collegeMeeting.usedMeetingAttributes = (
-    u"startDate",
-    u"endDate",
+    u"start_date",
+    u"end_date",
     u"signatures",
     u"assembly",
     u"place",
@@ -201,7 +189,7 @@ collegeMeeting.annexTypes = [
     meetingAnnex,
 ]
 
-collegeMeeting.itemBudgetInfosStates = ("proposed_to_budgetimpact_reviewer",)
+collegeMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budgetimpact_reviewer",)
 collegeMeeting.meetingAppDefaultView = "searchallitems"
 
 collegeMeeting.onMeetingTransitionItemActionToExecute = (
@@ -219,37 +207,23 @@ collegeMeeting.onMeetingTransitionItemActionToExecute = (
     {"meeting_transition": "close", "item_action": "accept", "tal_expression": ""},
 )
 
-collegeMeeting.useGroupsAsCategories = True
-
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.transitionsToConfirm = []
 collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
-# councilMeeting.itemConditionsInterface = \
-#     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
-# councilMeeting.itemActionsInterface = (
-#     "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
-# )
-# councilMeeting.meetingConditionsInterface = (
-#     "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions"
-# )
-# councilMeeting.meetingActionsInterface = (
-#     "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"
-# )
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 councilMeeting.transitionsForPresentingAnItem = (
     "proposeToDirector",
-    # "validate",
-    # "present",
+    "validate",
+    "present",
 )
 councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
 councilMeeting.itemAdviceStates = [
-    "proposed_to_director",
+    # "proposed_to_director",  # TODO wtf
 ]
-councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
+councilMeeting.itemAdviceEditStates = ["validated"]
 councilMeeting.itemCopyGroupsStates = [
-    "proposed_to_director",
     "validated",
     "itemfrozen",
     "itempublished",
@@ -298,33 +272,12 @@ councilMeeting.usedItemAttributes = (
 )
 
 councilMeeting.usedMeetingAttributes = (
-    u"startDate",
-    u"endDate",
+    u"start_date",
+    u"end_date",
     u"signatures",
     u"assembly",
     u"place",
     u"observations",
-    u"preMeetingDate",
-    u"preMeetingPlace",
-    u"preMeetingAssembly",
-    u"preMeetingDate_2",
-    u"preMeetingPlace_2",
-    u"preMeetingAssembly_2",
-    u"preMeetingDate_3",
-    u"preMeetingPlace_3",
-    u"preMeetingAssembly_3",
-    u"preMeetingDate_4",
-    u"preMeetingPlace_4",
-    u"preMeetingAssembly_4",
-    u"preMeetingDate_5",
-    u"preMeetingPlace_5",
-    u"preMeetingAssembly_5",
-    u"preMeetingDate_6",
-    u"preMeetingPlace_6",
-    u"preMeetingAssembly_6",
-    u"preMeetingDate_7",
-    u"preMeetingPlace_7",
-    u"preMeetingAssembly_7",
 )
 
 classifiers = [
@@ -544,7 +497,6 @@ councilMeeting.itemColumns = [
     "review_state",
     "getProposingGroup",
     "getCategory",
-    "linkedMeetingDate",
     "actions",
 ]
 

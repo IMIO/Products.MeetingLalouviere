@@ -115,8 +115,8 @@ collegeMeeting.itemAdviceStates = [
 ]
 collegeMeeting.itemAdviceEditStates = [
     "proposed_to_director",
-#     "proposed_to_dg",
-#     "proposed_to_alderman",
+#     "proposed_to_dg", # TODO WTF MeetingConfig validation fails ?
+#     "proposed_to_alderman", # TODO WTF MeetingConfig validation fails ?
     "validated"
 ]
 usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"neededFollowUp", u"providedFollowUp",]
