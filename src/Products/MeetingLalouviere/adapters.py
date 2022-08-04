@@ -365,25 +365,10 @@ class LLCustomMeeting(CustomMeeting):
     implements(IMeetingCustom)
     security = ClassSecurityInfo()
 
-    # define same validator for every preMeetingDate_X than the one used for preMeetingDate
-    Meeting.validate_preMeetingDate_2 = Meeting.validate_preMeetingDate
-    Meeting.validate_preMeetingDate_3 = Meeting.validate_preMeetingDate
-    Meeting.validate_preMeetingDate_4 = Meeting.validate_preMeetingDate
-    Meeting.validate_preMeetingDate_5 = Meeting.validate_preMeetingDate
-    Meeting.validate_preMeetingDate_6 = Meeting.validate_preMeetingDate
-    Meeting.validate_preMeetingDate_7 = Meeting.validate_preMeetingDate
-
-    security.declarePublic("isDecided")
-
-    def isDecided(self):
-        """
-          The meeting is supposed 'decided', if at least in state :
-          - 'in_council' for MeetingCouncil
-          - 'decided' for MeetingCollege
-        """
-        meeting = self.getSelf()
-        return meeting.query_state() in ("in_council", "decided", "closed", "archived")
-
+    def get_late_state(self):
+        if self.getSelf().portal_type == "MeetingCouncil":
+            return "decided"
+        return super(CustomMeeting, self).get_late_state()
     # helper methods used in templates
 
     security.declarePublic("get_normal_classifiers")
@@ -632,16 +617,6 @@ class LLCustomMeetingItem(CustomMeetingItem):
     implements(IMeetingItemCustom)
     security = ClassSecurityInfo()
 
-    customMeetingTransitionsAcceptingRecurringItems = (
-        "_init_",
-        "freeze",
-        "publish",
-        "decide",
-    )
-    MeetingItem.meetingTransitionsAcceptingRecurringItems = (
-        customMeetingTransitionsAcceptingRecurringItems
-    )
-
     security.declarePublic("getLabelDescription")
 
     def getLabelDescription(self):
@@ -726,18 +701,18 @@ class LLCustomMeetingItem(CustomMeetingItem):
 
     MeetingItem.followUpNotPrinted = followUpNotPrinted
 
-    security.declarePublic("getCollegeItem")
+    # security.declarePublic("getCollegeItem")
 
-    def getCollegeItem(self):
-        """Returns the predecessor item that was in the college."""
-        item = self.getSelf()
-        predecessor = item.getPredecessor()
-        collegeItem = None
-        while predecessor:
-            if predecessor.portal_type == "MeetingItemCollege":
-                collegeItem = predecessor
-                break
-        return collegeItem
+    # def getCollegeItem(self):
+    #     """Returns the predecessor item that was in the college."""
+    #     item = self.getSelf()
+    #     predecessor = item.getPredecessor()
+    #     collegeItem = None
+    #     while predecessor:
+    #         if predecessor.portal_type == "MeetingItemCollege":
+    #             collegeItem = predecessor
+    #             break
+    #     return collegeItem
 
     def mayGenerateFinanceAdvice(self):
         """
@@ -747,20 +722,17 @@ class LLCustomMeetingItem(CustomMeetingItem):
         if (
             finance_group_uid in self.context.adviceIndex
             and self.context.adviceIndex[finance_group_uid]["delay"]
-            and self.context.adviceIndex[finance_group_uid]["type"]
-            != NOT_GIVEN_ADVICE_VALUE
+            and self.context.adviceIndex[finance_group_uid]["type"] != NOT_GIVEN_ADVICE_VALUE
         ):
             return True
         return False
 
-    def getExtraFieldsToCopyWhenCloning(
-        self, cloned_to_same_mc, cloned_from_item_template
-    ):
+    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc, cloned_from_item_template):
         """
           Keep some new fields when item is cloned (to another mc or from itemtemplate).
         """
         res = []
-        if cloned_to_same_mc:
+        if cloned_to_same_mc and not cloned_from_item_template:
             res = ["interventions", "commissionTranscript"]
         return res
 
@@ -824,7 +796,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
         if meeting.start_date:
             meeting_date = meeting.start_date
         else:
-            meeting_date = meeting.date()
+            meeting_date = meeting.date
 
         date_str = meeting_date.strftime("%Y%m%d")
         service = (
@@ -854,18 +826,6 @@ class LLMeetingConfig(CustomMeetingConfig):
 
     implements(IMeetingConfigCustom)
     security = ClassSecurityInfo()
-
-    def getMeetingStatesAcceptingItems(self):
-        """See doc in interfaces.py."""
-        return (
-            "created",
-            "frozen",
-            "published",
-            "decided",
-            "decisions_published",
-            "in_committee",
-            "in_council",
-        )
 
     def _extraSearchesInfo(self, infos):
         """Add some specific searches."""
@@ -1168,22 +1128,6 @@ class LLMeetingConfig(CustomMeetingConfig):
         )
         infos.update(extra_infos)
         return infos
-
-    def custom_validate_workflowAdaptations(self, values, added, removed):
-        super(CustomMeetingConfig, self).custom_validate_workflowAdaptations(
-            values, added, removed
-        )
-        catalog = api.portal.get_tool("portal_catalog")
-        if "validate_by_dg_and_alderman" in removed:
-            if catalog(
-                portal_type=self.context.getItemTypeName(),
-                review_state=("proposed_to_dg", "proposed_to_alderman"),
-            ):
-                return translate(
-                    "wa_removed_validate_by_dg_and_alderman_error",
-                    domain="PloneMeeting",
-                    context=self.context.REQUEST,
-                )
 
 
 # ------------------------------------------------------------------------------

@@ -61,7 +61,7 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
         # Create a meeting with a given year and month and the view
         self.changeUser("pmManager")
         meeting = self.create(
-            "Meeting", date="{}/{}/{} 18:00:00".format(year, month, day)
+            "Meeting", date=datetime(year, month, day, 18, 0)
         )
         view = self._set_view(meeting)
         # Creates items needed for the test
@@ -212,28 +212,6 @@ class testCustomViews(mctcv, MeetingLalouviereTestCase):
             view.format_commission_pre_meeting_date(2),
             "(Monday 02 september 2019 (04H20), Pays des merveilles)",
         )
-
-    def test_get_commission_assembly(self):
-        # Commissions are only present in council so we use it instead of college
-        self.meetingConfig = self.meetingConfig2
-        # Create the meeting and the view
-        self.changeUser("pmManager")
-
-        for date in (
-            datetime(2019, 9, 1, 18, 0),
-            datetime(2020, 9, 1, 18, 0),
-        ):
-            meeting = self.create("Meeting", date=date)
-            view = self._set_view(meeting)
-            # Set pre-meeting assembly
-            meeting.setPreMeetingAssembly("myAssembly")
-            meeting.setPreMeetingAssembly_2("myAssembly 2")
-            self.assertEqual(
-                meeting.getPreMeetingAssembly(), view.get_commission_assembly(1)
-            )
-            self.assertEqual(
-                meeting.getPreMeetingAssembly_2(), view.get_commission_assembly(2)
-            )
 
 
 def test_suite():
