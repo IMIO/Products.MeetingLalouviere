@@ -21,19 +21,4 @@
             provides="Products.GenericSetup.interfaces.EXTENSION"
             for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
-    <genericsetup:upgradeStep
-            title="Go to MeetingLalouviere 4.1"
-            description=""
-            source="4.0"
-            destination="4.1.0"
-            handler="Products.MeetingLalouviere.migrations.migrate_to_4_1.migrate"
-            profile="Products.MeetingLalouviere:default"/>
-
-    <genericsetup:upgradeStep
-            title="Go to MeetingLalouviere council with Classifiers"
-            description=""
-            source="4.1.0"
-            destination="4161"
-            handler="Products.MeetingLalouviere.migrations.migrate_to_4161.migrate"
-            profile="Products.MeetingLalouviere:default"/>
 </configure>

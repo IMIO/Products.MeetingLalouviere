@@ -16,7 +16,6 @@ from Products.PloneMeeting.profiles import (
 )
 
 data = deepcopy(mc_import_data.data)
-
 # Users and groups -------------------------------------------------------------
 # no user
 data.orgs.append(OrgDescriptor("secretaire-communal", "Secrétaire Communal", u"Sec"))
@@ -124,22 +123,11 @@ meetingAnnex = AnnexTypeDescriptor(
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.transitionsToConfirm = []
-
 collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
 collegeMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COLLEGE_WFA)
 
 collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
-collegeMeeting.transitionsForPresentingAnItem = (
-    "proposeToServiceHead",
-    "proposeToOfficeManager",
-    "proposeToDivisionHead",
-    "proposeToDirector",
-    "propose_to_dg",
-    "propose_to_alderman",
-    "validate",
-    "present",
-)
 collegeMeeting.itemAdviceViewStates = [
     "proposed_to_director",
     # "proposed_to_dg", # TODO wtf
@@ -210,14 +198,9 @@ collegeMeeting.onMeetingTransitionItemActionToExecute = (
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.transitionsToConfirm = []
-collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
+councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
-councilMeeting.transitionsForPresentingAnItem = (
-    "proposeToDirector",
-    "validate",
-    "present",
-)
 councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
 councilMeeting.itemAdviceStates = [
     # "proposed_to_director",  # TODO wtf

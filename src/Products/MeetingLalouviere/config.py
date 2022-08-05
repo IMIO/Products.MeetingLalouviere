@@ -251,7 +251,6 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'back_transition': 'backToItemCreated',
      'back_transition_title': 'backToItemCreated',
      'suffix': 'creators',
-     # only creators may manage itemcreated item
      'extra_suffixes': [],
      'enabled': '1',
      },
