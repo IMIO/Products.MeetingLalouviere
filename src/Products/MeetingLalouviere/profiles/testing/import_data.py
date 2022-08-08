@@ -4,14 +4,11 @@ from copy import deepcopy
 
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
 
-from Products.MeetingLalouviere.config import LLO_APPLYED_COLLEGE_WFA
-from Products.MeetingLalouviere.config import LLO_APPLYED_COUNCIL_WFA
-
 from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 
-from Products.PloneMeeting.profiles import UserDescriptor, PodTemplateDescriptor
+from Products.PloneMeeting.profiles import UserDescriptor
 
 data = deepcopy(mc_import_data.data)
 

@@ -130,8 +130,8 @@ collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 collegeMeeting.itemAdviceViewStates = [
     "proposed_to_director",
-    # "proposed_to_dg", # TODO wtf
-    # "proposed_to_alderman", # TODO wtf
+    "proposed_to_dg",
+    "proposed_to_alderman",
     "validated",
     "presented",
     "itemfrozen",
@@ -139,8 +139,8 @@ collegeMeeting.itemAdviceViewStates = [
 
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
-    # "proposed_to_dg", # TODO wtf
-    # "proposed_to_alderman", # TODO wtf
+    "proposed_to_dg",
+    "proposed_to_alderman",
 ]
 
 collegeMeeting.usedItemAttributes = (
@@ -163,7 +163,8 @@ collegeMeeting.usedMeetingAttributes = (
     u"observations",
 )
 
-collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
+collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "proposed_to_dg", "proposed_to_alderman", "validated"]
+collegeMeeting.itemAdvicesStates = ["proposed_to_director"]
 
 collegeMeeting.annexTypes = [
     financialAnalysis,
@@ -202,10 +203,8 @@ councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
-councilMeeting.itemAdviceStates = [
-    # "proposed_to_director",  # TODO wtf
-]
-councilMeeting.itemAdviceEditStates = ["validated"]
+councilMeeting.itemAdviceStates = ["proposed_to_director",]
+councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 councilMeeting.itemCopyGroupsStates = [
     "validated",
     "itemfrozen",

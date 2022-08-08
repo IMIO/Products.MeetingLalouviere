@@ -301,7 +301,7 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'back_transition': 'backToProposedToDg',
      'back_transition_title': 'backToProposedToDg',
      'suffix': '',
-     'enabled': '0',
+     'enabled': '1',
      'extra_suffixes': [],
      },
     {'state': 'proposed_to_alderman',
@@ -311,7 +311,7 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'back_transition': 'backToProposedToAlderman',
      'back_transition_title': 'backToProposedToAlderman',
      'suffix': 'alderman',
-     'enabled': '0',
+     'enabled': '1',
      'extra_suffixes': [],
      },
 )
