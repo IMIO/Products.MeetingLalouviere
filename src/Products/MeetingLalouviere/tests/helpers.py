@@ -24,6 +24,9 @@ from copy import deepcopy
 from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 from Products.PloneMeeting.profiles import MeetingConfigDescriptor
 
+from Products.MimetypesRegistry.mime_types.magic import magicTest
+
+
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     """Override some values of PloneMeetingTestingHelpers."""
     TRANSITIONS_FOR_PROPOSING_ITEM_FIRST_LEVEL_1 = ("proposeToServiceHead",)
@@ -146,3 +149,11 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
             value['suffix'] = suffix_mapping[value['suffix']]
         cfg.setItemWFValidationLevels(defValues)
         cfg.at_post_edit_script()
+
+    def apply_meeting_transition_to_late_state(self, meeting, as_manager=False, clean_memoize=True):
+        if meeting.portal_type == "MeetingCouncil":
+            self.decideMeeting(meeting, as_manager, clean_memoize)
+        else:
+            super(MeetingLalouviereTestingHelpers, self).apply_meeting_transition_to_late_state(meeting,
+                                                                                          as_manager,
+                                                                                          clean_memoize)
