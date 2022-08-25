@@ -38,6 +38,8 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "proposeToOfficeManager",
         "proposeToDivisionHead",
         "proposeToDirector",
+        "proposeToDg",
+        "proposeToAlderman",
     )
     TRANSITIONS_FOR_PROPOSING_ITEM_2 = (
         "proposeToDirector",
@@ -116,7 +118,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     WF_ITEM_STATE_NAME_MAPPINGS_1 = {
         "itemcreated": "itemcreated",
-        "proposed": "proposed_to_director",
+        "proposed": "proposed_to_alderman",
         "validated": "validated",
         "presented": "presented",
         "itemfrozen": "itemfrozen",

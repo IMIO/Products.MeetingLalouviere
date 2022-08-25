@@ -300,7 +300,7 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'leading_transition_title': 'proposeToDg',
      'back_transition': 'backToProposedToDg',
      'back_transition_title': 'backToProposedToDg',
-     'suffix': '',
+     'suffix': 'alderman',
      'enabled': '1',
      'extra_suffixes': [],
      },

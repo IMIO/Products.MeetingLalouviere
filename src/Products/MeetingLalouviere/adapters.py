@@ -28,11 +28,6 @@ from collections import OrderedDict
 from Products.MeetingCommunes.adapters import (
     CustomMeeting,
     CustomMeetingConfig,
-    MeetingCommunesWorkflowActions,
-    MeetingCommunesWorkflowConditions,
-    MeetingItemCommunesWorkflowActions,
-    MeetingItemCommunesWorkflowConditions,
-    CustomToolPloneMeeting,
 )
 from Products.MeetingCommunes.adapters import CustomMeetingItem
 from Products.MeetingCommunes.config import FINANCE_ADVICES_COLLECTION_ID
@@ -42,9 +37,8 @@ from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_201
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2019
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2020
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
-
+from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.Meeting import Meeting
-from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.adapters import (
     ItemPrettyLinkAdapter,
@@ -53,19 +47,15 @@ from Products.PloneMeeting.adapters import (
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.interfaces import (
     IMeetingConfigCustom,
-    IToolPloneMeetingCustom,
 )
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
-from Products.PloneMeeting.utils import sendMailIfRelevant
 from Products.PloneMeeting.utils import org_id_to_uid
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from appy.gen import No
 from plone import api
 from plone.memoize import ram
 from zope.i18n import translate
@@ -1135,6 +1125,75 @@ InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeeting)
 InitializeClass(LLMeetingConfig)
 # ------------------------------------------------------------------------------
+
+LLO_WAITING_ADVICES_FROM_STATES = {
+    '*':
+    (
+        {'from_states': ('itemcreated', ),
+         'back_states': ('itemcreated', ),
+         'perm_cloned_state': 'validated',
+         'use_custom_icon': False,
+         # default to "validated", this avoid using the backToValidated title that
+         # is translated to "Remove from meeting"
+         'use_custom_back_transition_title_for': ("validated", ),
+         # we can define some back transition id for some back_to_state
+         # if not, a generated transition is used, here we could have for example
+         # 'defined_back_transition_ids': {"validated": "validate"}
+         'defined_back_transition_ids': {},
+         # if () given, a custom transition icon is used for every back transitions
+         'only_use_custom_back_transition_icon_for': ("validated", ),
+         'use_custom_state_title': True,
+         'use_custom_transition_title_for': {},
+         'remove_modify_access': True,
+         'adviser_may_validate': False,
+         # must end with _waiting_advices
+         'new_state_id': None,
+         },
+        {'from_states': ('proposed_to_director',),
+         'back_states': ('proposed_to_director',),
+         'perm_cloned_state': 'validated',
+         'use_custom_icon': False,
+         # is translated to "Remove from meeting"
+         'use_custom_back_transition_title_for': ("validated", ),
+         # we can define some back transition id for some back_to_state
+         # if not, a generated transition is used, here we could have for example
+         # 'defined_back_transition_ids': {"validated": "validate"}
+         'defined_back_transition_ids': {},
+         # if () given, a custom transition icon is used for every back transitions
+         'only_use_custom_back_transition_icon_for': ("validated", ),
+         'use_custom_state_title': True,
+         'use_custom_transition_title_for': {},
+         'remove_modify_access': True,
+         'adviser_may_validate': False,
+         # must end with _waiting_advices
+         'new_state_id': None,
+         },
+    ),
+    'meeting-config-college': (
+        {'from_states': ('proposed_to_servicehead', 'proposed_to_officemanager',
+                         'proposed_to_divisionhead', 'proposed_to_dg', 'proposed_to_alderman'),
+         'back_states': ('proposed_to_servicehead', 'proposed_to_officemanager',
+                         'proposed_to_divisionhead', 'proposed_to_dg', 'proposed_to_alderman'),
+         'perm_cloned_state': 'validated',
+         'use_custom_icon': False,
+         # is translated to "Remove from meeting"
+         'use_custom_back_transition_title_for': ("validated",),
+         # we can define some back transition id for some back_to_state
+         # if not, a generated transition is used, here we could have for example
+         # 'defined_back_transition_ids': {"validated": "validate"}
+         'defined_back_transition_ids': {},
+         # if () given, a custom transition icon is used for every back transitions
+         'only_use_custom_back_transition_icon_for': ("validated",),
+         'use_custom_state_title': True,
+         'use_custom_transition_title_for': {},
+         'remove_modify_access': True,
+         'adviser_may_validate': False,
+         # must end with _waiting_advices
+         'new_state_id': None,
+         },
+    ),
+}
+adaptations.WAITING_ADVICES_FROM_STATES.update(LLO_WAITING_ADVICES_FROM_STATES)
 
 
 class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
