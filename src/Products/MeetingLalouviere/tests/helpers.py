@@ -118,6 +118,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     WF_ITEM_STATE_NAME_MAPPINGS_1 = {
         "itemcreated": "itemcreated",
+        'proposed_first_level': 'proposed_to_servicehead',
         "proposed": "proposed_to_alderman",
         "validated": "validated",
         "presented": "presented",
@@ -126,6 +127,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     WF_ITEM_STATE_NAME_MAPPINGS_2 = {
         "itemcreated": "itemcreated",
+        'proposed_first_level': 'proposed_to_director',
         "proposed": "proposed_to_director",
         "validated": "validated",
         "presented": "presented",

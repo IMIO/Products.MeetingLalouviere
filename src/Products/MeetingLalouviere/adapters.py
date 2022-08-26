@@ -1149,10 +1149,11 @@ LLO_WAITING_ADVICES_FROM_STATES = {
          # must end with _waiting_advices
          'new_state_id': None,
          },
-        {'from_states': ('proposed_to_director',),
-         'back_states': ('proposed_to_director',),
+        {'from_states': ('proposed_to_alderman', ),
+         'back_states': ('proposed_to_alderman', ),
          'perm_cloned_state': 'validated',
          'use_custom_icon': False,
+         # default to "validated", this avoid using the backToValidated title that
          # is translated to "Remove from meeting"
          'use_custom_back_transition_title_for': ("validated", ),
          # we can define some back transition id for some back_to_state
@@ -1161,29 +1162,6 @@ LLO_WAITING_ADVICES_FROM_STATES = {
          'defined_back_transition_ids': {},
          # if () given, a custom transition icon is used for every back transitions
          'only_use_custom_back_transition_icon_for': ("validated", ),
-         'use_custom_state_title': True,
-         'use_custom_transition_title_for': {},
-         'remove_modify_access': True,
-         'adviser_may_validate': False,
-         # must end with _waiting_advices
-         'new_state_id': None,
-         },
-    ),
-    'meeting-config-college': (
-        {'from_states': ('proposed_to_servicehead', 'proposed_to_officemanager',
-                         'proposed_to_divisionhead', 'proposed_to_dg', 'proposed_to_alderman'),
-         'back_states': ('proposed_to_servicehead', 'proposed_to_officemanager',
-                         'proposed_to_divisionhead', 'proposed_to_dg', 'proposed_to_alderman'),
-         'perm_cloned_state': 'validated',
-         'use_custom_icon': False,
-         # is translated to "Remove from meeting"
-         'use_custom_back_transition_title_for': ("validated",),
-         # we can define some back transition id for some back_to_state
-         # if not, a generated transition is used, here we could have for example
-         # 'defined_back_transition_ids': {"validated": "validate"}
-         'defined_back_transition_ids': {},
-         # if () given, a custom transition icon is used for every back transitions
-         'only_use_custom_back_transition_icon_for': ("validated",),
          'use_custom_state_title': True,
          'use_custom_transition_title_for': {},
          'remove_modify_access': True,
