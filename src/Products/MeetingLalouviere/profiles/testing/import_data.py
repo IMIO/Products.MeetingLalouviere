@@ -111,11 +111,13 @@ collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
+    "proposed_to_dg",
+    "proposed_to_alderman",
 ]
 collegeMeeting.itemAdviceEditStates = [
     "proposed_to_director",
-#     "proposed_to_dg", # TODO WTF MeetingConfig validation fails ?
-#     "proposed_to_alderman", # TODO WTF MeetingConfig validation fails ?
+    "proposed_to_dg",
+    "proposed_to_alderman",
     "validated"
 ]
 usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"neededFollowUp", u"providedFollowUp",]
