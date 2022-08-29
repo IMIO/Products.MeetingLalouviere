@@ -29,6 +29,8 @@ from Products.MimetypesRegistry.mime_types.magic import magicTest
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     """Override some values of PloneMeetingTestingHelpers."""
+    TRANSITIONS_FOR_FREEZING_MEETING_2 = ("freeze", "publish", "decide",)
+
     TRANSITIONS_FOR_PROPOSING_ITEM_FIRST_LEVEL_1 = ("proposeToServiceHead",)
 
     TRANSITIONS_FOR_PROPOSING_ITEM_FIRST_LEVEL_2 = ("proposeToDirector",)
