@@ -29,16 +29,17 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 
 class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
     """Call testMeetingConfig tests."""
-    
-    # def _usersToRemoveFromGroupsForUpdatePersonalLabels(self):
-    #     return ['pmDirector1',
-    #             'pmDivisionHead1',
-    #             'pmDivisionHead1',
-    #             'pmOfficeManager1',
-    #             'pmServiceHead1',
-    #             'pmReviewerLevel1',
-    #             'pmFollowup1',
-    #             'pmBudgetReviewer1']
+
+    def _usersToRemoveFromGroupsForUpdatePersonalLabels(self):
+        return ['pmAlderman',
+                'pmDirector1',
+                'pmDivisionHead1',
+                'pmDivisionHead1',
+                'pmOfficeManager1',
+                'pmServiceHead1',
+                'pmReviewerLevel1',
+                'pmFollowup1',
+                'pmBudgetReviewer1']
 
 
 def test_suite():
