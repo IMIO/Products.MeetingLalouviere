@@ -45,6 +45,14 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         )
         self.assertEqual(cloned_item.getMotivation(), expected_new_item_motivation)
 
+    def _get_developers_all_reviewers_groups(self):
+        return [self.developers_officemanagers,
+                self.developers_serviceheads,
+                self.developers_divisionheads,
+                self.developers_directors,
+                self.developers_reviewers,
+                self.developers_alderman]
+
     # def test_pm_SendItemToOtherMCUsingEmergencyInitializePreferredMeeting(self):
     #     # by pass because college meeting items are never sent late
     #     pass
