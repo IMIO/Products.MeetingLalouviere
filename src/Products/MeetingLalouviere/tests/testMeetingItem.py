@@ -53,14 +53,6 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
                 self.developers_reviewers,
                 self.developers_alderman]
 
-    # def test_pm_SendItemToOtherMCUsingEmergencyInitializePreferredMeeting(self):
-    #     # by pass because college meeting items are never sent late
-    #     pass
-    #
-    # def test_pm_SendItemToOtherMCUsingEmergency(self):
-    #     # by pass because college meeting items are never sent late
-    #     pass
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

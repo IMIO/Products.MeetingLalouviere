@@ -133,5 +133,6 @@ councilMeeting.itemAdviceEditStates = [
 # councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
 usedItemAttributes = list(councilMeeting.usedItemAttributes) + [u"commissionTranscript",]
 councilMeeting.usedItemAttributes = tuple(usedItemAttributes)
+councilMeeting.itemPreferredMeetingStates += ('decided',)
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
