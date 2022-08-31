@@ -64,6 +64,8 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "proposeToOfficeManager",
         "proposeToDivisionHead",
         "proposeToDirector",
+        "proposeToDg",
+        "proposeToAlderman",
         "validate",
         "present",
     )
