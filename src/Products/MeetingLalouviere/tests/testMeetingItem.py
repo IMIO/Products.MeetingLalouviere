@@ -53,6 +53,22 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
                 self.developers_reviewers,
                 self.developers_alderman]
 
+    def _users_to_remove_for_mailling_list(self):
+        return ['pmAlderman',
+                'pmDirector1',
+                'pmDivisionHead1',
+                'pmDivisionHead1',
+                'pmOfficeManager1',
+                'pmServiceHead1',
+                'pmFollowup1',
+                'pmBudgetReviewer1',
+                'pmBudgetReviewer2',
+                'pmDirector2',
+                'pmDivisionHead2',
+                'pmFollowup2',
+                'pmOfficeManager2',
+                'pmServiceHead2',
+                ]
 
 def test_suite():
     from unittest import TestSuite, makeSuite
