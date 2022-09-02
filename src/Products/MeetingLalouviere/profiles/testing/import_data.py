@@ -58,22 +58,23 @@ pmReviewer2 = pm_import_data.pmReviewer2
 pmReviewerLevel1 = pm_import_data.pmReviewerLevel1
 pmReviewerLevel2 = pm_import_data.pmReviewerLevel2
 pmManager = pm_import_data.pmManager
+pmManager2 = pm_import_data.pmManager2
 
 # GROUPS
 developers = data.orgs[0]
 # custom groups
-developers.serviceheads.append(pmReviewer1)
+# developers.serviceheads.append(pmReviewer1)
 developers.serviceheads.append(pmServiceHead1)
 developers.serviceheads.append(pmReviewerLevel1)
 developers.serviceheads.append(pmManager)
 developers.officemanagers.append(pmOfficeManager1)
-developers.officemanagers.append(pmReviewer1)
+# developers.officemanagers.append(pmReviewer1)
 developers.officemanagers.append(pmManager)
 developers.divisionheads.append(pmDivisionHead1)
-developers.divisionheads.append(pmReviewer1)
+# developers.divisionheads.append(pmReviewer1)
 developers.divisionheads.append(pmManager)
 developers.directors.append(pmDirector1)
-developers.directors.append(pmReviewer1)
+# developers.directors.append(pmReviewer1)
 developers.directors.append(pmReviewerLevel2)
 developers.directors.append(pmManager)
 developers.budgetimpactreviewers.append(pmManager)
@@ -85,20 +86,20 @@ developers.followupwriters.append(pmFollowup1)
 developers.observers.append(pmFollowup1)
 
 vendors = data.orgs[1]
-vendors.serviceheads.append(pmReviewer2)
+# vendors.serviceheads.append(pmReviewer2)
 vendors.serviceheads.append(pmServiceHead2)
 vendors.officemanagers.append(pmOfficeManager2)
-vendors.officemanagers.append(pmReviewer2)
+# vendors.officemanagers.append(pmReviewer2)
 vendors.divisionheads.append(pmDivisionHead2)
-vendors.divisionheads.append(pmReviewer2)
+# vendors.divisionheads.append(pmReviewer2)
 vendors.directors.append(pmDirector2)
-vendors.directors.append(pmReviewer2)
+# vendors.directors.append(pmReviewer2)
 vendors.directors.append(pmReviewerLevel2)
-vendors.directors.append(pmManager)
-vendors.budgetimpactreviewers.append(pmManager)
+vendors.directors.append(pmManager2)
+vendors.budgetimpactreviewers.append(pmManager2)
 vendors.budgetimpactreviewers.append(pmBudgetReviewer2)
 vendors.alderman.append(pmReviewer2)
-vendors.alderman.append(pmManager)
+vendors.alderman.append(pmManager2)
 vendors.alderman.append(pmAlderman)
 vendors.followupwriters.append(pmFollowup1)
 vendors.followupwriters.append(pmFollowup2)
