@@ -43,6 +43,13 @@ class MeetingLalouviereTestCase(
 
     layer = MLL_TESTING_PROFILE_FUNCTIONAL
 
+    def setUp(self):
+        super(MeetingCommunesTestCase, self).setUp()
+        self.developers_prereviewers = self.developers_directors
+        self.developers_reviewers = self.developers_alderman
+        self.vendors_prereviewers = self.vendors_directors
+        self.vendors_reviewers = self.vendors_alderman
+
     def add_commission_plone_groups(self):
         self.changeUser("admin")
         ag = api.group.create(
