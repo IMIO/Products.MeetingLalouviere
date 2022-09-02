@@ -58,7 +58,6 @@ pmReviewer2 = pm_import_data.pmReviewer2
 pmReviewerLevel1 = pm_import_data.pmReviewerLevel1
 pmReviewerLevel2 = pm_import_data.pmReviewerLevel2
 pmManager = pm_import_data.pmManager
-pmManager2 = pm_import_data.pmManager2
 
 # GROUPS
 developers = data.orgs[0]
@@ -96,11 +95,8 @@ vendors.divisionheads.append(pmDivisionHead2)
 vendors.directors.append(pmDirector2)
 # vendors.directors.append(pmReviewer2)
 vendors.directors.append(pmReviewerLevel2)
-vendors.directors.append(pmManager2)
-vendors.budgetimpactreviewers.append(pmManager2)
 vendors.budgetimpactreviewers.append(pmBudgetReviewer2)
 vendors.alderman.append(pmReviewer2)
-vendors.alderman.append(pmManager2)
 vendors.alderman.append(pmAlderman)
 vendors.alderman.append(pmReviewerLevel2)
 vendors.followupwriters.append(pmFollowup1)
