@@ -38,6 +38,10 @@ from Products.PloneMeeting.adapters import _find_nothing_query
 class testSearches(MeetingLalouviereTestCase, mcts):
     """Test searches."""
 
+    def setUp(self):
+        super(testSearches, self).setUp()
+        self.switch_reviewer_groups()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -43,12 +43,24 @@ class MeetingLalouviereTestCase(
 
     layer = MLL_TESTING_PROFILE_FUNCTIONAL
 
-    def setUp(self):
-        super(MeetingCommunesTestCase, self).setUp()
+    def switch_reviewer_groups(self):
+        self.developers_prereviewers_old = self.developers_prereviewers
         self.developers_prereviewers = self.developers_directors
+
+        self.developers_reviewers_old = self.developers_reviewers
         self.developers_reviewers = self.developers_alderman
+
+        self.vendors_prereviewers_old = self.vendors_prereviewers
         self.vendors_prereviewers = self.vendors_directors
+
+        self.vendors_reviewers_old = self.vendors_reviewers
         self.vendors_reviewers = self.vendors_alderman
+
+    def switch_back_reviewer_groups(self):
+        self.developers_prereviewers = self.developers_prereviewers_old
+        self.developers_reviewers = self.developers_reviewers_old
+        self.vendors_prereviewers = self.vendors_prereviewers_old
+        self.vendors_reviewers = self.vendors_prereviewers_old
 
     def add_commission_plone_groups(self):
         self.changeUser("admin")
