@@ -1119,6 +1119,35 @@ class LLMeetingConfig(CustomMeetingConfig):
         infos.update(extra_infos)
         return infos
 
+    def _custom_reviewersFor(self):
+        '''Manage reviewersFor Bourgmestre because as some 'creators' suffixes are
+           used after reviewers levels, this break the _highestReviewerLevel and other
+           related hierarchic level functionalities.'''
+        cfg = self.getSelf()
+
+        reviewers = [('directors', ['proposed_to_director', ])]
+
+        if cfg.getId() == 'meeting-config-college':
+            reviewers = [
+                ('alderman', ['proposed_to_alderman', ]),
+                ('directors',
+                 ['proposed_to_dg',
+                  'proposed_to_director',
+                  'proposed_to_divisionhead',
+                  'proposed_to_officemanager',
+                  'proposed_to_servicehead']),
+                ('divisionheads',
+                 ['proposed_to_divisionhead',
+                  'proposed_to_officemanager',
+                  'proposed_to_servicehead']),
+                ('officemanagers',
+                 ['proposed_to_officemanager',
+                  'proposed_to_servicehead']),
+                ('serviceheads',
+                 ['proposed_to_servicehead']),
+            ]
+        return OrderedDict(reviewers)
+
 
 # ------------------------------------------------------------------------------
 InitializeClass(CustomMeetingItem)
