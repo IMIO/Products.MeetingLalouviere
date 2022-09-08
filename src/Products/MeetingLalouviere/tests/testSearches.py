@@ -28,6 +28,7 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 )
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
+from Products.CMFCore.permissions import ModifyPortalContent
 from collective.compoundcriterion.interfaces import ICompoundCriterionFilter
 from imio.helpers.cache import cleanRamCacheFor
 from zope.component import getAdapter
@@ -50,6 +51,63 @@ class testSearches(MeetingLalouviereTestCase, mcts):
 
     def test_pm_SearchItemsToCorrectToValidateOfHighestHierarchicLevel(self):
         pass
+
+    def _test_reviewer_groups(self, developersItem, vendorsItem, collection):
+        use_cases = [
+            {'transition_user_1': 'pmCreator1',
+             'transition_user_2': 'pmCreator2',
+             'transition': 'goTo_returned_to_proposing_group_proposed_to_servicehead',
+             'check_user_1': 'pmServiceHead1',
+             'check_user_2': 'pmServiceHead2'},
+            {'transition_user_1': 'pmServiceHead1',
+             'transition_user_2': 'pmServiceHead2',
+             'transition': 'goTo_returned_to_proposing_group_proposed_to_officemanager',
+             'check_user_1': 'pmOfficeManager1',
+             'check_user_2': 'pmOfficeManager2'},
+            {'transition_user_1': 'pmOfficeManager1',
+             'transition_user_2': 'pmOfficeManager2',
+             'transition': 'goTo_returned_to_proposing_group_proposed_to_divisionhead',
+             'check_user_1': 'pmDivisionHead1',
+             'check_user_2': 'pmDivisionHead2'},
+            {'transition_user_1': 'pmDivisionHead1',
+             'transition_user_2': 'pmDivisionHead2',
+             'transition': 'goTo_returned_to_proposing_group_proposed_to_director',
+             'check_user_1': 'pmDirector1',
+             'check_user_2': 'pmDirector2'},
+            {'transition_user_1': 'pmDirector1',
+             'transition_user_2': 'pmDirector2',
+             'transition': 'goTo_returned_to_proposing_group_proposed_to_dg',
+             'check_user_1': 'pmDirector1',
+             'check_user_2': 'pmDirector2'},
+            {'transition_user_1': 'pmDirector1',
+             'transition_user_2': 'pmDirector2',
+             'transition': 'goTo_returned_to_proposing_group_proposed_to_alderman',
+             'check_user_1': 'pmAlderman1',
+             'check_user_2': 'pmAlderman2'},
+        ]
+        for use_case in use_cases:
+            self.changeUser(use_case['transition_user_1'])
+            self.do(developersItem, use_case['transition'])
+            self.changeUser(use_case['transition_user_2'])
+            self.do(vendorsItem, use_case['transition'])
+
+            # pmReviewer 1 may only edit developersItem
+            self.changeUser(use_case['check_user_1'])
+            self.assertTrue(self.hasPermission(ModifyPortalContent, developersItem))
+            cleanRamCacheFor(
+                'Products.PloneMeeting.adapters.query_itemstocorrecttovalidateofeveryreviewerlevelsandlowerlevels')
+            res = collection.results()
+            self.assertEqual(res.length, 1)
+            self.assertEqual(res[0].UID, developersItem.UID())
+
+            # pmReviewer 2 may only edit vendorsItem
+            self.changeUser(use_case['check_user_2'])
+            self.assertTrue(self.hasPermission(ModifyPortalContent, vendorsItem))
+            cleanRamCacheFor(
+                'Products.PloneMeeting.adapters.query_itemstocorrecttovalidateofeveryreviewerlevelsandlowerlevels')
+            res = collection.results()
+            self.assertEqual(res.length, 1)
+            self.assertEqual(res[0].UID, vendorsItem.UID())
 
 
 def test_suite():

@@ -54,7 +54,7 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
                 self.developers_alderman]
 
     def _users_to_remove_for_mailling_list(self):
-        return ['pmAlderman',
+        return ['pmAlderman1',
                 'pmDirector1',
                 'pmDivisionHead1',
                 'pmDivisionHead1',
@@ -63,6 +63,7 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
                 'pmFollowup1',
                 'pmBudgetReviewer1',
                 'pmBudgetReviewer2',
+                'pmAlderman2',
                 'pmDirector2',
                 'pmDivisionHead2',
                 'pmFollowup2',

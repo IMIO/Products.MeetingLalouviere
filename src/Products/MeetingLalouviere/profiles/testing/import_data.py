@@ -43,8 +43,12 @@ commissioneditor2 = UserDescriptor(
 data.usersOutsideGroups.append(commissioneditor)
 data.usersOutsideGroups.append(commissioneditor2)
 
-pmAlderman = UserDescriptor(
-    "pmAlderman", [], email="pmalderman@plonemeeting.org", fullname="M. PMAlderman One"
+pmAlderman1 = UserDescriptor(
+    "pmAlderman1", [], email="pmalderman1@plonemeeting.org", fullname="M. PMAlderman One"
+)
+
+pmAlderman2 = UserDescriptor(
+    "pmAlderman2", [], email="pmalderman2@plonemeeting.org", fullname="M. PMAlderman One"
 )
 
 pmFollowup1 = UserDescriptor("pmFollowup1", [])
@@ -62,18 +66,14 @@ pmManager = pm_import_data.pmManager
 # GROUPS
 developers = data.orgs[0]
 # custom groups
-# developers.serviceheads.append(pmReviewer1)
 developers.serviceheads.append(pmServiceHead1)
 developers.serviceheads.append(pmReviewerLevel1)
 developers.serviceheads.append(pmManager)
 developers.officemanagers.append(pmOfficeManager1)
-# developers.officemanagers.append(pmReviewer1)
 developers.officemanagers.append(pmManager)
 developers.divisionheads.append(pmDivisionHead1)
-# developers.divisionheads.append(pmReviewer1)
 developers.divisionheads.append(pmManager)
 developers.directors.append(pmDirector1)
-# developers.directors.append(pmReviewer1)
 developers.directors.append(pmReviewerLevel2)
 developers.directors.append(pmReviewer1)
 developers.directors.append(pmManager)
@@ -82,23 +82,20 @@ developers.budgetimpactreviewers.append(pmBudgetReviewer1)
 developers.alderman.append(pmReviewerLevel2)
 developers.alderman.append(pmReviewer1)
 developers.alderman.append(pmManager)
-developers.alderman.append(pmAlderman)
+developers.alderman.append(pmAlderman1)
 developers.followupwriters.append(pmFollowup1)
 developers.observers.append(pmFollowup1)
 
 vendors = data.orgs[1]
-# vendors.serviceheads.append(pmReviewer2)
 vendors.serviceheads.append(pmServiceHead2)
 vendors.officemanagers.append(pmOfficeManager2)
-# vendors.officemanagers.append(pmReviewer2)
 vendors.divisionheads.append(pmDivisionHead2)
-# vendors.divisionheads.append(pmReviewer2)
 vendors.directors.append(pmDirector2)
 vendors.directors.append(pmReviewer2)
 vendors.directors.append(pmReviewerLevel2)
 vendors.budgetimpactreviewers.append(pmBudgetReviewer2)
 vendors.alderman.append(pmReviewer2)
-vendors.alderman.append(pmAlderman)
+vendors.alderman.append(pmAlderman2)
 vendors.alderman.append(pmReviewerLevel2)
 vendors.followupwriters.append(pmFollowup1)
 vendors.followupwriters.append(pmFollowup2)

@@ -31,7 +31,7 @@ class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
     """Call testMeetingConfig tests."""
 
     def _usersToRemoveFromGroupsForUpdatePersonalLabels(self):
-        return ['pmAlderman',
+        return ['pmAlderman1',
                 'pmDirector1',
                 'pmDivisionHead1',
                 'pmDivisionHead1',

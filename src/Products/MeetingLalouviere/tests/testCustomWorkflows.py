@@ -35,8 +35,6 @@ from DateTime import DateTime
 class testCustomWorkflows(mctcw, MeetingLalouviereTestCase):
     """Tests the default workflows implemented in PloneMeeting."""
 
-    def _enablePrevalidation(self, cfg, enable_extra_suffixes=False):
-        pass
 
 def test_suite():
     from unittest import TestSuite, makeSuite

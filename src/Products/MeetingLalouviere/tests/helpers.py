@@ -175,3 +175,6 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
             super(MeetingLalouviereTestingHelpers, self).apply_meeting_transition_to_late_state(meeting,
                                                                                           as_manager,
                                                                                           clean_memoize)
+
+    def _enablePrevalidation(self, cfg, enable_extra_suffixes=False):
+        cfg.at_post_edit_script()
