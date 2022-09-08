@@ -38,7 +38,7 @@ class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
                 'pmOfficeManager1',
                 'pmServiceHead1',
                 'pmReviewerLevel1',
-                'pmFollowup1',
+                # 'pmFollowup1',
                 'pmBudgetReviewer1']
 
 
