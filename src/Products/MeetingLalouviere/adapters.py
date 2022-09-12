@@ -39,6 +39,7 @@ from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_202
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.Meeting import Meeting
+from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.adapters import (
     ItemPrettyLinkAdapter,
@@ -346,6 +347,45 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
         "MeetingLalouviere: Write neededFollowUp": ["Manager",],
     },
 }
+
+
+# disable waiting advice
+customWfAdaptations = ('item_validation_shortcuts',
+                       'item_validation_no_validate_shortcuts',
+                       'only_creator_may_delete',
+                       # first define meeting workflow state removal
+                       'no_freeze',
+                       'no_publication',
+                       'no_decide',
+                       # then define added item decided states
+                       'accepted_but_modified',
+                       'postpone_next_meeting',
+                       'mark_not_applicable',
+                       'removed',
+                       'removed_and_duplicated',
+                       'refused',
+                       'delayed',
+                       'pre_accepted',
+                       # then other adaptations
+                       'reviewers_take_back_validated_item',
+                       'presented_item_back_to_validation_state',
+                       'return_to_proposing_group',
+                       'return_to_proposing_group_with_last_validation',
+                       'return_to_proposing_group_with_all_validations',
+                       'decide_item_when_back_to_meeting_from_returned_to_proposing_group',
+                       'hide_decisions_when_under_writing',
+                       'waiting_advices_adviser_send_back',
+                       'waiting_advices_proposing_group_send_back',
+                       'accepted_out_of_meeting',
+                       'accepted_out_of_meeting_and_duplicated',
+                       'accepted_out_of_meeting_emergency',
+                       'accepted_out_of_meeting_emergency_and_duplicated',
+                       'transfered',
+                       'transfered_and_duplicated',
+                       'meetingmanager_correct_closed_meeting')
+
+MeetingConfig.wfAdaptations = customWfAdaptations
+CustomMeetingConfig.wfAdaptations = customWfAdaptations
 
 
 class LLCustomMeeting(CustomMeeting):

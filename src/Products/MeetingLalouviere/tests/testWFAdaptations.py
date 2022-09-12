@@ -29,6 +29,7 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 )
 
 from Products.CMFCore.permissions import ModifyPortalContent, DeleteObjects, View
+from Products.PloneMeeting.config import WriteBudgetInfos, WriteInternalNotes
 from zope.event import notify
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -77,14 +78,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                           'reviewers_take_back_validated_item',
                           'transfered',
                           'transfered_and_duplicated',
-                          'waiting_advices',
-                          'waiting_advices_adviser_may_validate',
                           'waiting_advices_adviser_send_back',
-                          'waiting_advices_from_before_last_val_level',
-                          'waiting_advices_from_every_val_levels',
-                          'waiting_advices_from_last_val_level',
-                          'waiting_advices_given_advices_required_to_validate',
-                          'waiting_advices_given_and_signed_advices_required_to_validate',
                           'waiting_advices_proposing_group_send_back'
                           ])
 
@@ -229,6 +223,104 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
     def _item_validation_shortcuts_inactive(self):
         self._enable_mc_Prevalidation(self.meetingConfig)
         super(testWFAdaptations, self)._item_validation_shortcuts_inactive()
+
+    def test_pm_WFA_pre_validation(self):
+        pass
+
+    def _waiting_advices_active(self):
+        '''Tests while 'waiting_advices' wfAdaptation is active.'''
+        cfg = self.meetingConfig
+        # by default it is linked to the 'proposed' state
+        itemWF = cfg.getItemWorkflow(True)
+        waiting_state_name = '{0}_waiting_advices'.format(self._stateMappingFor('proposed_first_level'))
+        waiting_transition_name = 'wait_advices_from_{0}'.format(self._stateMappingFor('proposed_first_level'))
+        self.assertIn(waiting_state_name, itemWF.states.keys())
+
+        # the budget impact editors functionnality still works even if 'remove_modify_access': True
+        cfg.setItemBudgetInfosStates((waiting_state_name, ))
+        # check that the internalNotes functionnality works as well
+        # enable field internalNotes
+        self._enableField('internalNotes', reload=True)
+        # make internal notes editable by copyGroups
+        self._activate_config('itemInternalNotesEditableBy',
+                              'reader_copy_groups')
+        cfg.setItemCopyGroupsStates((waiting_state_name, ))
+
+        # right, create an item and set it to 'waiting_advices'
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem', copyGroups=[self.vendors_reviewers])
+        self.proposeItem(item, first_level=True)
+        # 'pmCreator1' is not able to set item to 'waiting_advices'
+        self.assertFalse(self.transitions(item))
+        # 'pmReviewer1' may do it but by default is not able to edit it
+        self.changeUser('pmManager')
+        # no advice asked so a No() instance is returned for now
+        self.assertNotIn(waiting_transition_name, self.transitions(item))
+        advice_required_to_ask_advices = translate('advice_required_to_ask_advices',
+                                                   domain='PloneMeeting',
+                                                   context=self.request)
+        proposed_state = self._stateMappingFor('proposed_first_level')
+        self.assertEqual(
+            translate(item.wfConditions().mayWait_advices(
+                proposed_state, waiting_state_name).msg, context=self.request),
+            advice_required_to_ask_advices)
+        # ask an advice so transition is available
+        item.setOptionalAdvisers((self.vendors_uid, ))
+        item._update_after_edit()
+        # still not available because no advice may be asked in state waiting_state_name
+        self.assertNotIn(waiting_state_name, self.vendors.item_advice_states)
+        self.assertNotIn(waiting_transition_name, self.transitions(item))
+
+        # do things work
+        self.vendors.item_advice_states = ("{0}__state__{1}".format(
+            cfg.getId(), waiting_state_name), )
+        # clean MeetingConfig.getItemAdviceStatesForOrg
+        notify(ObjectModifiedEvent(self.vendors))
+
+        self.assertIn(waiting_transition_name, self.transitions(item))
+        self._setItemToWaitingAdvices(item, waiting_transition_name)
+        self.assertEqual(item.query_state(), waiting_state_name)
+        self.assertFalse(self.hasPermission(ModifyPortalContent, item))
+        self.assertFalse(self.hasPermission(DeleteObjects, item))
+
+        # pmCreator1 may view but not edit
+        self.changeUser('pmCreator1')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertFalse(self.hasPermission(ModifyPortalContent, item))
+        self.assertFalse(self.hasPermission(DeleteObjects, item))
+        self.assertFalse(self.transitions(item))
+
+        # budget impact editors access are correct even when 'remove_modify_access': True
+        self.changeUser('budgetimpacteditor')
+        self.assertTrue(self.hasPermission(WriteBudgetInfos, item))
+
+        # check internalNotes editable by copyGroups
+        self.changeUser('pmReviewer2')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertTrue(self.hasPermission(WriteInternalNotes, item))
+        # change text and add image
+        text = '<p>Internal note with image <img src="%s"/>.</p>' % self.external_image1
+        item.setInternalNotes(text)
+        item.at_post_edit_script()
+
+        # right come back to 'proposed'
+        self.changeUser('pmReviewerLevel1')
+        self.do(item, 'backTo_%s_from_waiting_advices' % self._stateMappingFor('proposed_first_level'))
+        self.assertEqual(item.query_state(), self._stateMappingFor('proposed_first_level'))
+
+    def test_pm_Validate_workflowAdaptations_dependencies(self):
+        """Test MeetingConfig.validate_workflowAdaptations that manage dependencies
+           between wfAdaptations, a base WFA must be selected and other will complete it."""
+        wa_dependencies = translate('wa_dependencies', domain='PloneMeeting', context=self.request)
+        cfg = self.meetingConfig
+
+        # item_validation_shortcuts alone is ok
+        self.failIf(cfg.validate_workflowAdaptations(('item_validation_shortcuts', )))
+        # but item_validation_no_validate_shortcuts depends on it
+        self.assertEqual(
+            cfg.validate_workflowAdaptations(
+                ('item_validation_no_validate_shortcuts', )),
+            wa_dependencies)
 
 
 def test_suite():
