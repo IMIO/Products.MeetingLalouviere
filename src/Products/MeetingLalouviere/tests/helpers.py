@@ -178,3 +178,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     def _enablePrevalidation(self, cfg, enable_extra_suffixes=False):
         cfg.at_post_edit_script()
+
+    def _enable_mc_Prevalidation(self, cfg, enable_extra_suffixes=False):
+        self._setUpDefaultItemWFValidationLevels(cfg)
+        super(MeetingLalouviereTestingHelpers, self)._enablePrevalidation(cfg, enable_extra_suffixes)

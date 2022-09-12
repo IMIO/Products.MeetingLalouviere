@@ -226,6 +226,10 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         # back to original configuration
         adaptations.WAITING_ADVICES_FROM_STATES = original_WAITING_ADVICES_FROM_STATES
 
+    def _item_validation_shortcuts_inactive(self):
+        self._enable_mc_Prevalidation(self.meetingConfig)
+        super(testWFAdaptations, self)._item_validation_shortcuts_inactive()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
