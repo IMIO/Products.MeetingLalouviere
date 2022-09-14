@@ -37,6 +37,8 @@ setDefaultRoles(DEFAULT_ADD_CONTENT_PERMISSION, ("Manager", "Owner", "Contributo
 
 product_globals = globals()
 
+DG_GROUP_ID = "direction-generale"
+
 # Dependencies of Products to be installed by quick-installer
 # override in custom configuration
 DEPENDENCIES = []
@@ -228,7 +230,7 @@ LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS = (
      'back_transition_title': 'backToItemCreated',
      'suffix': 'creators',
      # only creators may manage itemcreated item
-     'extra_suffixes': [],
+     'extra_suffixes': ['directors'],
      'enabled': '1',
      },
     {'state': 'proposed_to_director',
@@ -251,7 +253,7 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'back_transition': 'backToItemCreated',
      'back_transition_title': 'backToItemCreated',
      'suffix': 'creators',
-     'extra_suffixes': [],
+     'extra_suffixes': ['serviceheads', 'officemanagers', 'divisionheads', 'directors'],
      'enabled': '1',
      },
     {'state': 'proposed_to_servicehead',
@@ -261,7 +263,7 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'back_transition': 'backToProposedToServiceHead',
      'back_transition_title': 'backToProposedToServiceHead',
      'suffix': 'serviceheads',
-     'extra_suffixes': [],
+     'extra_suffixes': ['officemanagers', 'divisionheads', 'directors'],
      'enabled': '1',
      },
     {'state': 'proposed_to_officemanager',
@@ -272,7 +274,7 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'back_transition_title': 'backToProposedToOfficeManager',
      'suffix': 'officemanagers',
      'enabled': '1',
-     'extra_suffixes': [],
+     'extra_suffixes': ['divisionheads', 'directors'],
      },
     {'state': 'proposed_to_divisionhead',
      'state_title': 'proposed_to_divisionhead',
@@ -282,7 +284,7 @@ LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS = (
      'back_transition_title': 'backToProposedToDivisionHead',
      'suffix': 'divisionheads',
      'enabled': '1',
-     'extra_suffixes': [],
+     'extra_suffixes': ['directors'],
      },
     {'state': 'proposed_to_director',
      'state_title': 'proposed_to_director',

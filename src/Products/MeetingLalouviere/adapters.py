@@ -36,6 +36,7 @@ from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2013
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2019
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2020
+from Products.MeetingLalouviere.config import DG_GROUP_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.Meeting import Meeting
@@ -57,6 +58,7 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
+from imio.helpers.content import uuidsToObjects
 from plone import api
 from plone.memoize import ram
 from zope.i18n import translate
@@ -730,6 +732,34 @@ class LLCustomMeetingItem(CustomMeetingItem):
         return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
 
     MeetingItem.followUpNotPrinted = followUpNotPrinted
+
+    def _getGroupManagingItem(self, review_state, theObject=False):
+        '''See doc in interfaces.py.'''
+        item = self.getSelf()
+        if item.portal_type == 'MeetingItemCollege' and review_state == "proposed_to_dg":
+            dg_group_uid = org_id_to_uid(DG_GROUP_ID)
+            if theObject:
+                return uuidsToObjects(dg_group_uid, unrestricted=True)[0]
+            else:
+                return dg_group_uid
+        else:
+            return item.getProposingGroup(theObject=theObject)
+
+    def _getAllGroupsManagingItem(self, review_state, theObjects=False):
+        '''See doc in interfaces.py.'''
+        res = []
+        item = self.getSelf()
+        if item.portal_type == 'MeetingItemCollege' and review_state == "proposed_to_dg":
+            dg_group_uid = org_id_to_uid(DG_GROUP_ID)
+            if theObjects:
+                res += uuidsToObjects(dg_group_uid, unrestricted=True)
+            else:
+                res.append(dg_group_uid)
+        else:
+            proposingGroup = item.getProposingGroup(theObject=theObjects)
+            if proposingGroup:
+                res.append(proposingGroup)
+        return res
 
     # security.declarePublic("getCollegeItem")
 

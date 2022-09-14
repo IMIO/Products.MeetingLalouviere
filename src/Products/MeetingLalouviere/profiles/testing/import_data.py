@@ -5,10 +5,10 @@ from copy import deepcopy
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
 
 from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
-from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
+from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS, DG_GROUP_ID
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 
-from Products.PloneMeeting.profiles import UserDescriptor
+from Products.PloneMeeting.profiles import UserDescriptor, OrgDescriptor
 
 data = deepcopy(mc_import_data.data)
 
@@ -21,6 +21,7 @@ pmDivisionHead1 = UserDescriptor("pmDivisionHead1", [])
 pmDivisionHead2 = UserDescriptor("pmDivisionHead2", [])
 pmDirector1 = UserDescriptor("pmDirector1", [])
 pmDirector2 = UserDescriptor("pmDirector2", [])
+pmDg = UserDescriptor("pmDg", [])
 pmCreator2 = UserDescriptor("pmCreator2", [])
 pmAdviser1 = UserDescriptor("pmAdviser1", [])
 pmAdviser2 = UserDescriptor("pmAdviser2", [])
@@ -101,6 +102,33 @@ vendors.alderman.append(pmReviewerLevel2)
 # vendors.followupwriters.append(pmFollowup2)
 # vendors.observers.append(pmFollowup1)
 # vendors.observers.append(pmFollowup2)
+
+dg = OrgDescriptor(DG_GROUP_ID, 'Dg', u'Dg')
+data.orgs += (dg,)
+
+dg.creators.append(pmDg)
+dg.creators.append(pmManager)
+dg.prereviewers.append(pmDg)
+dg.prereviewers.append(pmManager)
+dg.reviewers.append(pmDg)
+dg.reviewers.append(pmManager)
+dg.observers.append(pmDg)
+dg.observers.append(pmManager)
+dg.advisers.append(pmDg)
+dg.advisers.append(pmManager)
+dg.serviceheads.append(pmDg)
+dg.serviceheads.append(pmManager)
+dg.officemanagers.append(pmDg)
+dg.officemanagers.append(pmManager)
+dg.divisionheads.append(pmDg)
+dg.divisionheads.append(pmManager)
+dg.directors.append(pmDg)
+dg.directors.append(pmManager)
+dg.budgetimpactreviewers.append(pmManager)
+dg.budgetimpactreviewers.append(pmDg)
+dg.alderman.append(pmDg)
+dg.alderman.append(pmManager)
+
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
