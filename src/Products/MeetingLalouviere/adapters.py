@@ -755,10 +755,9 @@ class LLCustomMeetingItem(CustomMeetingItem):
                 res += uuidsToObjects(dg_group_uid, unrestricted=True)
             else:
                 res.append(dg_group_uid)
-        else:
-            proposingGroup = item.getProposingGroup(theObject=theObjects)
-            if proposingGroup:
-                res.append(proposingGroup)
+        proposingGroup = item.getProposingGroup(theObject=theObjects)
+        if proposingGroup:
+            res.append(proposingGroup)
         return res
 
     # security.declarePublic("getCollegeItem")
@@ -1217,6 +1216,22 @@ class LLMeetingConfig(CustomMeetingConfig):
                  ['proposed_to_servicehead']),
             ]
         return OrderedDict(reviewers)
+
+    # def get_item_corresponding_state_to_assign_local_roles(self, item_state):
+    #     '''See doc in interfaces.py.'''
+    #     cfg = self.getSelf()
+    #     corresponding_item_state = None
+    #     item_val_levels_states = cfg.getItemWFValidationLevels(data='state', only_enabled=True)
+    #     # return_to_proposing_group WFAdaptation
+    #     if item_state.startswith('returned_to_proposing_group'):
+    #         if item_state == 'returned_to_proposing_group':
+    #             corresponding_item_state = item_val_levels_states[0] if item_val_levels_states else 'itemcreated'
+    #         else:
+    #             corresponding_item_state = item_state.split('returned_to_proposing_group_')[1]
+    #     # waiting_advices WFAdaptation
+    #     elif item_state.endswith('_waiting_advices'):
+    #         corresponding_item_state = item_state.split('_waiting_advices')[0]
+    #     return corresponding_item_state
 
 
 # ------------------------------------------------------------------------------
