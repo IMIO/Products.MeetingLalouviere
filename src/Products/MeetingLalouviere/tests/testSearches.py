@@ -109,6 +109,41 @@ class testSearches(MeetingLalouviereTestCase, mcts):
             self.assertEqual(res.length, 1)
             self.assertEqual(res[0].UID, vendorsItem.UID())
 
+    def test_pm_SearchAllItemsToValidateOfEveryReviewerGroups(self):
+        '''Test the 'all-items-to-validate-of-every-reviewer-groups'
+           CompoundCriterion adapter. This should return every items the user is able to validate
+           so items that are 'proposed' and items that are 'returned_to_proposing_group_proposed'.'''
+        cfg = self.meetingConfig
+        if 'return_to_proposing_group_with_all_validations' not in cfg.listWorkflowAdaptations():
+            pm_logger.info(
+                "Bypassing test test_pm_SearchAllItemsToValidateOfEveryReviewerGroups because it "
+                "needs the 'return_to_proposing_group_with_all_validations' wfAdaptation.")
+            return
+
+        itemTypeName = cfg.getItemTypeName()
+        self._enablePrevalidation(cfg)
+
+        self.changeUser('pmManager')
+        adapter = getAdapter(cfg,
+                             ICompoundCriterionFilter,
+                             name='all-items-to-validate-of-every-reviewer-groups')
+        states = self._get_query_review_process(cfg)[1:]
+        query = ['{0}__reviewprocess__{1}'.format(self.developers_uid, state) for state in states]
+        query += ['{0}__reviewprocess__{1}'.format(self.direction_generale_uid, state) for state in states]
+        query += ['{0}__reviewprocess__returned_to_proposing_group_{1}'.format(self.developers_uid, state)
+                  for state in states]
+        query += ['{0}__reviewprocess__returned_to_proposing_group_{1}'.format(self.direction_generale_uid, state)
+                  for state in states]
+
+        adapter.query['reviewProcessInfo']['query'] = sorted(adapter.query['reviewProcessInfo']['query'])
+        self.assertDictEqual(
+            {
+                'portal_type': {'query': [itemTypeName]},
+                'reviewProcessInfo': {'query': sorted(query)}
+            },
+            adapter.query
+        )
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

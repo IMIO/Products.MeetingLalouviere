@@ -34,7 +34,6 @@ from plone import api
 from plone.app.testing.bbb import _createMemberarea
 
 
-
 class testMeetingItem(MeetingLalouviereTestCase, mctmi):
     """
         Tests the MeetingItem class methods.
@@ -75,6 +74,7 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
                 # 'pmFollowup2',
                 'pmOfficeManager2',
                 'pmServiceHead2',
+                'pmDg'
                 ]
 
     def test_pm_AssociatedGroupsVocabulary(self):
@@ -177,6 +177,10 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         cfg.at_post_edit_script()
         self.assertListEqual([term.value for term in vocab(item)._terms],
                          [self.developers_uid, self.vendors_uid, self.direction_generale_uid, self.endUsers_uid])
+
+    def _reviewers_may_edit_itemcreated(self):
+        return True
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
