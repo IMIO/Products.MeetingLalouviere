@@ -39,9 +39,9 @@ from Products.PloneMeeting.adapters import _find_nothing_query
 class testSearches(MeetingLalouviereTestCase, mcts):
     """Test searches."""
 
-    # def setUp(self):
-    #     super(testSearches, self).setUp()
-    #     self.switch_reviewer_groups()
+    def setUp(self):
+        super(testSearches, self).setUp()
+        self._removePrincipalFromGroups('pmManager', [self.direction_generale_directors])
 
     def test_pm_SearchItemsToValidateOfHighestHierarchicLevelReturnsEveryLevels(self):
         pass
