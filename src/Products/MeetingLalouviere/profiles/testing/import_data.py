@@ -108,10 +108,7 @@ data.orgs += (dg,)
 
 dg.creators.append(pmDg)
 dg.directors.append(pmDg)
-dg.directors.append(pmManager)
-dg.budgetimpactreviewers.append(pmManager)
 dg.budgetimpactreviewers.append(pmDg)
-dg.alderman.append(pmManager)
 
 
 # COLLEGE
