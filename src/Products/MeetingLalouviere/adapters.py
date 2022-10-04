@@ -376,6 +376,7 @@ customWfAdaptations = ('item_validation_shortcuts',
                        'return_to_proposing_group_with_all_validations',
                        'decide_item_when_back_to_meeting_from_returned_to_proposing_group',
                        'hide_decisions_when_under_writing',
+                       'waiting_advices',
                        'waiting_advices_adviser_send_back',
                        'waiting_advices_proposing_group_send_back',
                        'accepted_out_of_meeting',
@@ -1245,7 +1246,7 @@ LLO_WAITING_ADVICES_FROM_STATES = {
     (
         {'from_states': ('itemcreated', ),
          'back_states': ('itemcreated', ),
-         'perm_cloned_state': 'validated',
+         'perm_cloned_state': 'itemcreated',
          'use_custom_icon': False,
          # default to "validated", this avoid using the backToValidated title that
          # is translated to "Remove from meeting"
@@ -1256,10 +1257,10 @@ LLO_WAITING_ADVICES_FROM_STATES = {
          'defined_back_transition_ids': {},
          # if () given, a custom transition icon is used for every back transitions
          'only_use_custom_back_transition_icon_for': ("validated", ),
-         'use_custom_state_title': True,
+         'use_custom_state_title': False,
          'use_custom_transition_title_for': {},
          'remove_modify_access': True,
-         'adviser_may_validate': False,
+         'adviser_may_validate': True,
          # must end with _waiting_advices
          'new_state_id': None,
          },

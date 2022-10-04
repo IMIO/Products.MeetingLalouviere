@@ -460,6 +460,8 @@ def update_item_schema(baseSchema):
 
     completeItemSchema = baseSchema + specificSchema.copy()
     return completeItemSchema
+
+
 MeetingItem.schema = update_item_schema(MeetingItem.schema)
 
 

@@ -78,6 +78,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                           'reviewers_take_back_validated_item',
                           'transfered',
                           'transfered_and_duplicated',
+                          'waiting_advices',
                           'waiting_advices_adviser_send_back',
                           'waiting_advices_proposing_group_send_back'
                           ])
