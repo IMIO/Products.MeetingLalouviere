@@ -3,6 +3,12 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone">
 
+
+    <adapter
+        for="Products.PloneMeeting.interfaces.IMeetingItem"
+        factory="Products.MeetingLalouviere.adapters.MeetingItemMLLWorkflowActions"
+        provides="Products.MeetingCommunes.interfaces.IMeetingItemCommunesWorkflowActions"/>
+
     <!-- collective.documentgenerator helper view for MeetingItem -->
     <browser:page
         for="Products.PloneMeeting.interfaces.IMeetingItem"
@@ -44,4 +50,5 @@
            factory="Products.MeetingLalouviere.adapters.SearchItemsOfMyCommissionsAdapter"
            provides="collective.compoundcriterion.interfaces.ICompoundCriterionFilter"
            name="items-of-my-commissions" />
+
 </configure>

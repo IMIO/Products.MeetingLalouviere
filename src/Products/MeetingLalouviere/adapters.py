@@ -27,10 +27,11 @@ from collections import OrderedDict
 
 from Products.MeetingCommunes.adapters import (
     CustomMeeting,
-    CustomMeetingConfig,
+    CustomMeetingConfig, CustomToolPloneMeeting, MeetingItemCommunesWorkflowActions,
 )
 from Products.MeetingCommunes.adapters import CustomMeetingItem
 from Products.MeetingCommunes.config import FINANCE_ADVICES_COLLECTION_ID
+from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActions
 from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
 from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2013
@@ -39,6 +40,7 @@ from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_202
 from Products.MeetingLalouviere.config import DG_GROUP_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.PloneMeeting.model import adaptations
+from Products.PloneMeeting.model.adaptations import _addIsolatedState
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
@@ -48,7 +50,7 @@ from Products.PloneMeeting.adapters import (
 )
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.interfaces import (
-    IMeetingConfigCustom,
+    IMeetingConfigCustom, IToolPloneMeetingCustom,
 )
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
@@ -58,6 +60,7 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
+from collective.contact.plonegroup.utils import get_all_suffixes
 from imio.helpers.content import uuidsToObjects
 from plone import api
 from plone.memoize import ram
@@ -385,7 +388,9 @@ customWfAdaptations = ('item_validation_shortcuts',
                        'accepted_out_of_meeting_emergency_and_duplicated',
                        'transfered',
                        'transfered_and_duplicated',
-                       'meetingmanager_correct_closed_meeting')
+                       'propose_to_budget_reviewer',
+                       'meetingmanager_correct_closed_meeting',
+                       )
 
 MeetingConfig.wfAdaptations = customWfAdaptations
 CustomMeetingConfig.wfAdaptations = customWfAdaptations
@@ -1218,6 +1223,17 @@ class LLMeetingConfig(CustomMeetingConfig):
             ]
         return OrderedDict(reviewers)
 
+    def get_item_custom_suffix_roles(self, item, item_state):
+        '''See doc in interfaces.py.'''
+        suffix_roles = {}
+        if item_state == 'proposed_to_budget_reviewer':
+            for suffix in get_all_suffixes(item.getProposingGroup()):
+                suffix_roles[suffix] = ['Reader']
+                if suffix == 'budgetimpactreviewers':
+                    suffix_roles[suffix] += ['Contributor', 'Editor', 'Reviewer']
+
+        return True, suffix_roles
+
     # def get_item_corresponding_state_to_assign_local_roles(self, item_state):
     #     '''See doc in interfaces.py.'''
     #     cfg = self.getSelf()
@@ -1235,7 +1251,45 @@ class LLMeetingConfig(CustomMeetingConfig):
     #     return corresponding_item_state
 
 
+class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
+    '''Adapter that adapts portal_plonemeeting.'''
+
+    implements(IToolPloneMeetingCustom)
+    security = ClassSecurityInfo()
+
+    def performCustomWFAdaptations(
+            self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow):
+        ''' '''
+        if wfAdaptation == 'propose_to_budget_reviewer':
+            _addIsolatedState(
+                new_state_id='proposed_to_budget_reviewer',
+                origin_state_id='itemcreated',
+                origin_transition_id='proposeToBudgetImpactReviewer',
+                origin_transition_title=translate("proposeToBudgetImpactReviewer", "imio.actionspanel"),
+                # origin_transition_icon=None,
+                origin_transition_guard_expr_name='mayCorrect()',
+                back_transition_guard_expr_name="mayCorrect()",
+                back_transition_id='backTo_itemcreated_from_proposed_to_budget_reviewer',
+                back_transition_title=translate("validateByBudgetImpactReviewer_done_descr", "imio.actionspanel"),
+                # back_transition_icon=None
+                itemWorkflow=itemWorkflow)
+            return True
+        return False
+
+
+class MeetingItemMLLWorkflowActions(MeetingItemCommunesWorkflowActions):
+    '''Adapter that adapts a meeting item implementing IMeetingItem to the
+       interface IMeetingItemCommunesWorkflowActions'''
+
+    implements(IMeetingItemCommunesWorkflowActions)
+    security = ClassSecurityInfo()
+
+    def doProposeToBudgetImpactReviewer(self, stateChange):
+        pass
+
+
 # ------------------------------------------------------------------------------
+InitializeClass(MLLCustomToolPloneMeeting)
 InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeeting)
 InitializeClass(LLMeetingConfig)

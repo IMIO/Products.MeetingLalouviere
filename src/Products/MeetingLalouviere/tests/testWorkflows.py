@@ -5,13 +5,10 @@ from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
-
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
-from plone.app.testing.helpers import setRoles
+from Products.PloneMeeting.config import AddAnnex
 
 from AccessControl import Unauthorized
-from DateTime import DateTime
+from Products.CMFCore.permissions import ModifyPortalContent
 
 
 class testWorkflows(MeetingLalouviereTestCase, mctw):
@@ -26,64 +23,101 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
        (self.assertRaise). Instead, we check that the user has the permission
        to do so (getSecurityManager().checkPermission)."""
 
+    def _check_users_can_modify(self, item, users, annex):
+        for user_id in users:
+            self.changeUser(user_id)
+            self.assertTrue(item.mayQuickEdit("observations"))
+            self.failUnless(self.hasPermission(ModifyPortalContent, (item, annex)))
+
     def _testWholeDecisionProcessCollege(self):
         """This test covers the whole decision workflow. It begins with the
            creation of some items, and ends by closing a meeting."""
         # pmCreator1 creates an item with 1 annex and proposes it
         self._enableField("observations")
-        self._activate_wfas(('waiting_advices', 'waiting_advices_adviser_send_back',), keep_existing=True)
+        self._activate_wfas(('waiting_advices',
+                             # 'waiting_advices_adviser_send_back',
+                             'waiting_advices_proposing_group_send_back',
+                             'propose_to_budget_reviewer'),
+                            keep_existing=True)
+        self.meetingConfig.setItemAdviceStates(("itemcreated_waiting_advices", ))
         self.changeUser("pmCreator1")
-        item1 = self.create("MeetingItem", title="The first item")
+        item1 = self.create("MeetingItem", title="The first item", optionalAdvisers=(self.vendors_uid, ))
         self.assertTrue(item1.mayQuickEdit("observations"))
         annex1 = self.addAnnex(item1)
         self.addAnnex(item1, relatedTo="item_decision")
         item1.setOptionalAdvisers((self.vendors_uid, ))
-        import ipdb
-        ipdb.set_trace()
-        self.do(item1, "ask_advices_by_itemcreator")
+        self.do(item1, "wait_advices_from_itemcreated")
         self.assertEqual("itemcreated_waiting_advices", item1.query_state())
-        self.do(item1, "backToItemCreated")
+        self.do(item1, "backTo_itemcreated_from_waiting_advices")
         self.do(item1, "proposeToBudgetImpactReviewer")
-        self.assertEqual("proposed_to_budgetimpact_reviewer", item1.query_state())
+        self.assertEqual("proposed_to_budget_reviewer", item1.query_state())
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
         self.changeUser("pmBudgetReviewer1")
         self.assertTrue(item1.mayQuickEdit("observations"))
-        self.do(item1, "validateByBudgetImpactReviewer")
+        self.do(item1, "backTo_itemcreated_from_proposed_to_budget_reviewer")
         self.assertEqual("itemcreated", item1.query_state())
         self.changeUser("pmCreator1")
         self.do(item1, "proposeToServiceHead")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
+        self.assertRaises(Unauthorized, self.addAnnex, item1)
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+        self.failIf(self.hasPermission(AddAnnex, item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the ServiceHead validation level
+        self._check_users_can_modify(item1,
+                                     ['pmServiceHead1',
+                                      'pmOfficeManager1',
+                                      'pmDivisionHead1',
+                                      'pmDirector1',
+                                      ],
+                                     annex1)
         self.changeUser("pmServiceHead1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         self.do(item1, "proposeToOfficeManager")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+        self.failIf(self.hasPermission(AddAnnex, item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the OfficeManager validation level
+        self._check_users_can_modify(item1,
+                                     ['pmOfficeManager1',
+                                      'pmDivisionHead1',
+                                      'pmDirector1',
+                                      ],
+                                     annex1)
         self.changeUser("pmOfficeManager1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         self.do(item1, "proposeToDivisionHead")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+        self.failIf(self.hasPermission(AddAnnex, item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the DivisionHead validation level
+        self._check_users_can_modify(item1,
+                                     ['pmDivisionHead1',
+                                      'pmDirector1',
+                                      ],
+                                     annex1)
         self.changeUser("pmDivisionHead1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         self.do(item1, "proposeToDirector")
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+        self.failIf(self.hasPermission(AddAnnex, item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the Director validation level
+        self._check_users_can_modify(item1,
+                                     ['pmDirector1'],
+                                     annex1)
         self.changeUser("pmDirector1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        self.failUnless(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+        self.do(item1, 'proposeToDg')
+        self.failIf(self.transitions(item1))  # He may trigger no more action
+        self.failIf(self.hasPermission(AddAnnex, item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+        self._check_users_can_modify(item1,
+                                     ['pmDg'],
+                                     annex1)
+        self.do(item1, 'proposeToAlderman')
+        self.failIf(self.transitions(item1))  # He may trigger no more action
+        self.failIf(self.hasPermission(AddAnnex, item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+        self._check_users_can_modify(item1,
+                                     ['pmAlderman1'],
+                                     annex1)
         self.do(item1, "validate")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
@@ -91,7 +125,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # pmManager creates a meeting
         self.changeUser("pmManager")
         self.assertTrue(item1.mayQuickEdit("observations"))
-        meeting = self.create("Meeting", date="2007/12/11 09:00:00")
+        meeting = self.create("Meeting", date=datetime(2007, 12, 11, 9))
         self.addAnnex(item1, relatedTo="item_decision")
         # pmCreator2 creates and proposes an item
         self.changeUser("pmCreator2")
@@ -126,9 +160,9 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(item2, "present")
         self.addAnnex(item2)
         # So now we should have 3 normal item (no recurring items) and one late item in the meeting
-        self.assertEqual(len(meeting.get_items(listTypes=["normal"])), 3)
-        self.assertEqual(len(meeting.get_items(listTypes=["late"])), 1)
-        self.assertEqual(meeting.get_items(listTypes=["late"])[0], item2)
+        self.assertEqual(len(meeting.get_items(list_types=["normal"])), 3)
+        self.assertEqual(len(meeting.get_items(list_types=["late"])), 1)
+        self.assertEqual(meeting.get_items(list_types=["late"])[0], item2)
         self.do(meeting, "decide")
         item1.activateFollowUp()
         self.assertEqual(item1.getDecision(), item1.getNeededFollowUp())
@@ -262,7 +296,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # so in states 'created', 'in_committee' and 'in_council'
         # the 'late items' functionnality is not used
         self.failIf(len(meeting.get_items()) != 2)
-        self.failIf(len(meeting.get_items(listTypes=["late"])) != 0)
+        self.failIf(len(meeting.get_items(list_types=["late"])) != 0)
         # remove the item, set the meeting in council and add it again
         self.backToState(item2, "validated")
         self.failIf(len(meeting.get_items()) != 1)

@@ -15,4 +15,9 @@
   <include file="events.zcml" />
   <include file="profiles.zcml" />
   <include file="vocabularies.zcml"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
+     factory="Products.MeetingLalouviere.adapters.MLLCustomToolPloneMeeting"
+     provides="Products.PloneMeeting.interfaces.IToolPloneMeetingCustom"/>
+
 </configure>
