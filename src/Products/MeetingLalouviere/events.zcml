@@ -5,13 +5,6 @@
            i18n_domain="PloneMeeting">
 
   <subscriber for="Products.PloneMeeting.interfaces.IMeetingItem
-                   zope.lifecycleevent.interfaces.IObjectAddedEvent"
-              handler=".events.onItemAdded" />
-
-  <subscriber for="Products.PloneMeeting.interfaces.IMeetingItem
-                   Products.PloneMeeting.interfaces.IItemDuplicatedEvent"
-              handler=".events.onItemDuplicated"/>
-  <subscriber for="Products.PloneMeeting.interfaces.IMeetingItem
                    Products.PloneMeeting.interfaces.IItemAfterTransitionEvent"
               handler=".events.onItemAfterTransition"/>
 

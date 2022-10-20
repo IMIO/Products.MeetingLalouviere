@@ -1,36 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from plone import api
-from Products.PloneMeeting.utils import forceHTMLContentTypeForEmptyRichFields
-
 from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
 from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS_2013
-from Products.MeetingLalouviere.config import COLLEGE_DEFAULT_MOTIVATION
-from Products.MeetingLalouviere.config import COUNCIL_DEFAULT_MOTIVATION
-from collective.contact.plonegroup.utils import get_organization
-from Products.PloneMeeting.utils import org_id_to_uid
 
-
-def onItemAdded(item, event):
-    if not item.getMotivation():
-        if item.portal_type == 'MeetingItemCouncil':
-            item.setMotivation(COUNCIL_DEFAULT_MOTIVATION)
-        elif item.portal_type == 'MeetingItemCollege':
-            item.setMotivation(COLLEGE_DEFAULT_MOTIVATION)
-
-
-def onItemDuplicated(original, event):
-    '''After item's cloning, we removed decision annexe.'''
-    newItem = event.newItem
-    # only apply if we are actually creating a MeetingItemCouncil from another MeetingConfig
-    if not (newItem.portal_type == 'MeetingItemCouncil' and original.portal_type != 'MeetingItemCouncil'):
-        return
-    existingMotivation = original.getMotivation()
-
-    newItem.setMotivation('{}<p>&nbsp;</p><p>&nbsp;</p>{}'.format(COUNCIL_DEFAULT_MOTIVATION, existingMotivation))
-    # Make sure we have 'text/html' for every Rich fields
-    forceHTMLContentTypeForEmptyRichFields(newItem)
+from plone import api
 
 
 def onItemAfterTransition(item, event):
@@ -47,12 +21,6 @@ def onItemAfterTransition(item, event):
             wTool.doActionFor(item, 'setItemInCommittee')
             if meetingState in ('in_council', ):
                 wTool.doActionFor(item, 'setItemInCouncil')
-
-
-def _removeTypistNote(field):
-    ''' Remove typist's note find with highlight-purple class'''
-    import re
-    return re.sub('<span class="highlight-purple">.*?</span>', '', field)
 
 
 def onItemLocalRolesUpdated(item, event):
