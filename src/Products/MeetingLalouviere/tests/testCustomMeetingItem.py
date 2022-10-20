@@ -21,9 +21,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-from Products.MeetingLalouviere.config import COLLEGE_DEFAULT_MOTIVATION
-from Products.MeetingLalouviere.config import COUNCIL_DEFAULT_MOTIVATION
-
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
@@ -64,7 +61,6 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         item = self.create("MeetingItem")
         item.setDecision("<p>A decision</p>")
         item.setOtherMeetingConfigsClonableTo((destMeetingConfigId,))
-        self.assertTrue(item.getMotivation() == COLLEGE_DEFAULT_MOTIVATION)
         meeting = self.create("Meeting", date=DateTime("2013/05/05"))
         self.presentItem(item)
         # now close the meeting so the item is automatically accepted and sent to meetingConfig2
@@ -76,10 +72,6 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         newItem = self.portal.uid_catalog(UID=IAnnotations(item)[annotation_key])[
             0
         ].getObject()
-        expected_new_item_motivation = "{}<p>&nbsp;</p><p>&nbsp;</p>{}".format(
-            COUNCIL_DEFAULT_MOTIVATION, item.getMotivation()
-        )
-        self.assertEqual(newItem.getMotivation(), expected_new_item_motivation)
 
     def test_showFollowUp(self):
         self.changeUser("pmManager")

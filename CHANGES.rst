@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.1.6.6 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Removed custom automatic motivation.
+  [odelaere]
 
 
 4.1.6.5 (2021-05-27)
