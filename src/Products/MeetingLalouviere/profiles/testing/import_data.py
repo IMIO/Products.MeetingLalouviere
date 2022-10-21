@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-import copy
 from copy import deepcopy
 
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
-
-from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS, DG_GROUP_ID
-from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
-
+from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles import UserDescriptor, OrgDescriptor
+from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 
 data = deepcopy(mc_import_data.data)
 
@@ -84,8 +81,8 @@ developers.alderman.append(pmReviewerLevel2)
 developers.alderman.append(pmReviewer1)
 developers.alderman.append(pmManager)
 developers.alderman.append(pmAlderman1)
-# developers.followupwriters.append(pmFollowup1)
-# developers.observers.append(pmFollowup1)
+developers.followupwriters.append(pmFollowup1)
+developers.observers.append(pmFollowup1)
 
 vendors = data.orgs[1]
 vendors.serviceheads.append(pmServiceHead2)
@@ -98,10 +95,8 @@ vendors.budgetimpactreviewers.append(pmBudgetReviewer2)
 vendors.alderman.append(pmReviewer2)
 vendors.alderman.append(pmAlderman2)
 vendors.alderman.append(pmReviewerLevel2)
-# vendors.followupwriters.append(pmFollowup1)
-# vendors.followupwriters.append(pmFollowup2)
-# vendors.observers.append(pmFollowup1)
-# vendors.observers.append(pmFollowup2)
+vendors.followupwriters.append(pmFollowup2)
+vendors.observers.append(pmFollowup2)
 
 dg = OrgDescriptor(DG_GROUP_ID, 'Dg', u'Dg')
 data.orgs += (dg,)
@@ -125,7 +120,6 @@ collegeMeeting.itemAdviceEditStates = [
 ]
 usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"neededFollowUp", u"providedFollowUp",]
 collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
-# collegeMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COLLEGE_WFA)
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)

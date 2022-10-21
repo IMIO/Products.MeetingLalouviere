@@ -882,7 +882,9 @@ class LLCustomMeetingItem(CustomMeetingItem):
     security.declarePublic("showFollowUp")
 
     def showFollowUp(self):
-        return _checkPermission("MeetingLalouviere: Read followUp", self.context)
+        tool = api.portal.get_tool('portal_plonemeeting')
+        cfg = tool.getMeetingConfig(self.getSelf())
+        return (not tool.isPowerObserverForCfg(cfg)) and self.getSelf().hasMeeting()
 
 
 class LLMeetingConfig(CustomMeetingConfig):
@@ -1232,9 +1234,8 @@ class LLMeetingConfig(CustomMeetingConfig):
                 if suffix == 'budgetimpactreviewers':
                     suffix_roles[suffix] += ['Contributor', 'Editor', 'Reviewer']
 
-        if item_state in self.cfg.getItemDecidedStates():
-
-
+        if item_state in self.getSelf().getItemDecidedStates():
+            suffix_roles['followupwriters'] = ['MeetingFollowUpWriter']
 
         return True, suffix_roles
 

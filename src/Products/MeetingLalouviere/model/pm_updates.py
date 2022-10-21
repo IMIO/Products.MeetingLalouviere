@@ -113,7 +113,7 @@ def update_meeting_schema(baseSchema):
             allowable_content_types="text/plain",
             optional=True,
             widget=TextAreaWidget(
-                condition="python: here.attributeIsUsed('preMeetingAssembly')",
+                condition="python: here.attribute_is_used('preMeetingAssembly')",
                 description="PreMeetingAssembly",
                 description_msgid="premeeting_assembly_descr",
                 label='Premeetingassembly',
@@ -127,7 +127,7 @@ def update_meeting_schema(baseSchema):
         DateTimeField(
             name='preMeetingDate_2',
             widget=DateTimeField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingDate_2')",
+                condition="python: here.attribute_is_used('preMeetingDate_2')",
                 label='Premeetingdate_2',
                 label_msgid='PloneMeeting_label_preMeetingDate_2',
                 i18n_domain='PloneMeeting',
@@ -137,7 +137,7 @@ def update_meeting_schema(baseSchema):
         StringField(
             name='preMeetingPlace_2',
             widget=StringField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingPlace_2')",
+                condition="python: here.attribute_is_used('preMeetingPlace_2')",
                 label='Premeetingplace_2',
                 label_msgid='PloneMeeting_label_preMeetingPlace_2',
                 i18n_domain='PloneMeeting',
@@ -149,7 +149,7 @@ def update_meeting_schema(baseSchema):
             allowable_content_types="text/plain",
             optional=True,
             widget=TextAreaWidget(
-                condition="python: here.attributeIsUsed('preMeetingAssembly_2')",
+                condition="python: here.attribute_is_used('preMeetingAssembly_2')",
                 description="PreMeetingAssembly_2",
                 description_msgid="premeeting_assembly_2_descr",
                 label='Premeetingassembly_2',
@@ -163,7 +163,7 @@ def update_meeting_schema(baseSchema):
         DateTimeField(
             name='preMeetingDate_3',
             widget=DateTimeField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingDate_3')",
+                condition="python: here.attribute_is_used('preMeetingDate_3')",
                 label='Premeetingdate_3',
                 label_msgid='PloneMeeting_label_preMeetingDate_3',
                 i18n_domain='PloneMeeting',
@@ -173,7 +173,7 @@ def update_meeting_schema(baseSchema):
         StringField(
             name='preMeetingPlace_3',
             widget=StringField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingPlace_3')",
+                condition="python: here.attribute_is_used('preMeetingPlace_3')",
                 label='Premeetingplace_3',
                 label_msgid='PloneMeeting_label_preMeetingPlace_3',
                 i18n_domain='PloneMeeting',
@@ -185,7 +185,7 @@ def update_meeting_schema(baseSchema):
             allowable_content_types="text/plain",
             optional=True,
             widget=TextAreaWidget(
-                condition="python: here.attributeIsUsed('preMeetingAssembly_3')",
+                condition="python: here.attribute_is_used('preMeetingAssembly_3')",
                 description="PreMeetingAssembly_3",
                 description_msgid="premeeting_assembly_3_descr",
                 label='Premeetingassembly_3',
@@ -199,7 +199,7 @@ def update_meeting_schema(baseSchema):
         DateTimeField(
             name='preMeetingDate_4',
             widget=DateTimeField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingDate_4')",
+                condition="python: here.attribute_is_used('preMeetingDate_4')",
                 label='Premeetingdate_4',
                 label_msgid='PloneMeeting_label_preMeetingDate_4',
                 i18n_domain='PloneMeeting',
@@ -209,7 +209,7 @@ def update_meeting_schema(baseSchema):
         StringField(
             name='preMeetingPlace_4',
             widget=StringField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingPlace_4')",
+                condition="python: here.attribute_is_used('preMeetingPlace_4')",
                 label='Premeetingplace_4',
                 label_msgid='PloneMeeting_label_preMeetingPlace_4',
                 i18n_domain='PloneMeeting',
@@ -221,7 +221,7 @@ def update_meeting_schema(baseSchema):
             allowable_content_types="text/plain",
             optional=True,
             widget=TextAreaWidget(
-                condition="python: here.attributeIsUsed('preMeetingAssembly_4')",
+                condition="python: here.attribute_is_used('preMeetingAssembly_4')",
                 description="PreMeetingAssembly_4",
                 description_msgid="premeeting_assembly_4_descr",
                 label='Premeetingassembly_4',
@@ -235,7 +235,7 @@ def update_meeting_schema(baseSchema):
         DateTimeField(
             name='preMeetingDate_5',
             widget=DateTimeField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingDate_5')",
+                condition="python: here.attribute_is_used('preMeetingDate_5')",
                 label='Premeetingdate_5',
                 label_msgid='PloneMeeting_label_preMeetingDate_5',
                 i18n_domain='PloneMeeting',
@@ -245,7 +245,7 @@ def update_meeting_schema(baseSchema):
         StringField(
             name='preMeetingPlace_5',
             widget=StringField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingPlace_5')",
+                condition="python: here.attribute_is_used('preMeetingPlace_5')",
                 label='Premeetingplace_5',
                 label_msgid='PloneMeeting_label_preMeetingPlace_5',
                 i18n_domain='PloneMeeting',
@@ -257,7 +257,7 @@ def update_meeting_schema(baseSchema):
             allowable_content_types="text/plain",
             optional=True,
             widget=TextAreaWidget(
-                condition="python: here.attributeIsUsed('preMeetingAssembly_5')",
+                condition="python: here.attribute_is_used('preMeetingAssembly_5')",
                 description="PreMeetingAssembly_5",
                 description_msgid="premeeting_assembly_5_descr",
                 label='Premeetingassembly_5',
@@ -271,7 +271,7 @@ def update_meeting_schema(baseSchema):
         DateTimeField(
             name='preMeetingDate_6',
             widget=DateTimeField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingDate_6')",
+                condition="python: here.attribute_is_used('preMeetingDate_6')",
                 label='Premeetingdate_6',
                 label_msgid='PloneMeeting_label_preMeetingDate_6',
                 i18n_domain='PloneMeeting',
@@ -281,7 +281,7 @@ def update_meeting_schema(baseSchema):
         StringField(
             name='preMeetingPlace_6',
             widget=StringField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingPlace_6')",
+                condition="python: here.attribute_is_used('preMeetingPlace_6')",
                 label='Premeetingplace_6',
                 label_msgid='PloneMeeting_label_preMeetingPlace_6',
                 i18n_domain='PloneMeeting',
@@ -293,7 +293,7 @@ def update_meeting_schema(baseSchema):
             allowable_content_types="text/plain",
             optional=True,
             widget=TextAreaWidget(
-                condition="python: here.attributeIsUsed('preMeetingAssembly_6')",
+                condition="python: here.attribute_is_used('preMeetingAssembly_6')",
                 description="PreMeetingAssembly_6",
                 description_msgid="premeeting_assembly_6_descr",
                 label='Premeetingassembly_6',
@@ -307,7 +307,7 @@ def update_meeting_schema(baseSchema):
         DateTimeField(
             name='preMeetingDate_7',
             widget=DateTimeField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingDate_7')",
+                condition="python: here.attribute_is_used('preMeetingDate_7')",
                 label='Premeetingdate_7',
                 label_msgid='PloneMeeting_label_preMeetingDate_7',
                 i18n_domain='PloneMeeting',
@@ -317,7 +317,7 @@ def update_meeting_schema(baseSchema):
         StringField(
             name='preMeetingPlace_7',
             widget=StringField._properties['widget'](
-                condition="python: here.attributeIsUsed('preMeetingPlace_7')",
+                condition="python: here.attribute_is_used('preMeetingPlace_7')",
                 label='Premeetingplace_7',
                 label_msgid='PloneMeeting_label_preMeetingPlace_7',
                 i18n_domain='PloneMeeting',
@@ -329,7 +329,7 @@ def update_meeting_schema(baseSchema):
             allowable_content_types="text/plain",
             optional=True,
             widget=TextAreaWidget(
-                condition="python: here.attributeIsUsed('preMeetingAssembly_7')",
+                condition="python: here.attribute_is_used('preMeetingAssembly_7')",
                 description="PreMeetingAssembly_7",
                 description_msgid="premeeting_assembly_7_descr",
                 label='Premeetingassembly_7',
@@ -377,7 +377,7 @@ def update_item_schema(baseSchema):
             widget=RichWidget(
                 rows=15,
                 condition="python: here.portal_type == 'MeetingItemCouncil' and "
-                          "here.attributeIsUsed('commissionTranscript')",
+                          "here.attribute_is_used('commissionTranscript')",
                 label='CommissionTranscript',
                 label_msgid='MeetingLalouviere_label_commissionTranscript',
                 description='Transcription of commission',
@@ -398,7 +398,7 @@ def update_item_schema(baseSchema):
             name='followUp',
             default="follow_up_no",
             widget=SelectionWidget(
-                condition="python: here.attributeIsUsed('neededFollowUp') and here.adapted().showFollowUp()",
+                condition="python: here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
                 description="A follow up is needed : no, yes, provided?",
                 description_msgid="MeetingLalouviere_descr_followUp",
                 label='FollowUp',
@@ -414,7 +414,7 @@ def update_item_schema(baseSchema):
             optional=True,
             widget=RichWidget(
                 rows=15,
-                condition="python: here.attributeIsUsed('neededFollowUp') and here.adapted().showFollowUp()",
+                condition="python: here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
                 label='NeededFollowUp',
                 label_msgid='MeetingLalouviere_label_neededFollowUp',
                 description='Follow-up needed for this item',
@@ -433,7 +433,7 @@ def update_item_schema(baseSchema):
             optional=True,
             widget=RichWidget(
                 rows=15,
-                condition="python: here.attributeIsUsed('providedFollowUp') and here.adapted().showFollowUp()",
+                condition="python: here.attribute_is_used('providedFollowUp') and here.adapted().showFollowUp()",
                 label='ProvidedFollowUp',
                 label_msgid='MeetingLalouviere_label_providedFollowUp',
                 description='Follow-up provided for this item',
@@ -453,7 +453,7 @@ def update_item_schema(baseSchema):
     # Don't forget the label override in skins/meetinglalouviere_templates/meetingitem_view.pt
     baseSchema['description'].widget.label_method = "getLabelDescription"
 
-    baseSchema['privacy'].widget.condition = "python: here.attributeIsUsed('privacy') and " \
+    baseSchema['privacy'].widget.condition = "python: here.attribute_is_used('privacy') and " \
                                              "portal.portal_plonemeeting.isManager(here)"
 
     baseSchema['observations'].write_permission = ModifyPortalContent

@@ -68,6 +68,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                           'presented_item_back_to_proposed_to_divisionhead',
                           'presented_item_back_to_proposed_to_officemanager',
                           'presented_item_back_to_proposed_to_servicehead',
+                          'propose_to_budget_reviewer',
                           # End of custom
                           'refused',
                           'removed',

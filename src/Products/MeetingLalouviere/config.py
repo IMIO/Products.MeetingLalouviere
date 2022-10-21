@@ -32,8 +32,14 @@ __docformat__ = "plaintext"
 PROJECTNAME = "MeetingLalouviere"
 
 # Permissions
-DEFAULT_ADD_CONTENT_PERMISSION = "Add portal content"
-setDefaultRoles(DEFAULT_ADD_CONTENT_PERMISSION, ("Manager", "Owner", "Contributor"))
+DEFAULT_WRITE_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write followUp"
+setDefaultRoles(DEFAULT_WRITE_FOLLOWUP_PERMISSION, ('Manager', 'MeetingManager'))
+
+DEFAULT_WRITE_NEEDED_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write neededFollowUp"
+setDefaultRoles(DEFAULT_WRITE_NEEDED_FOLLOWUP_PERMISSION, ('Manager', 'MeetingManager'))
+
+DEFAULT_WRITE_PROVIDED_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write providedFollowUp"
+setDefaultRoles(DEFAULT_WRITE_PROVIDED_FOLLOWUP_PERMISSION, ('Manager', 'MeetingManager', 'MeetingFollowUpWriter'))
 
 product_globals = globals()
 
