@@ -1232,6 +1232,10 @@ class LLMeetingConfig(CustomMeetingConfig):
                 if suffix == 'budgetimpactreviewers':
                     suffix_roles[suffix] += ['Contributor', 'Editor', 'Reviewer']
 
+        if item_state in self.cfg.getItemDecidedStates():
+
+
+
         return True, suffix_roles
 
     # def get_item_corresponding_state_to_assign_local_roles(self, item_state):
