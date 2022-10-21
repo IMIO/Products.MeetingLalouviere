@@ -23,9 +23,6 @@
 #
 from datetime import datetime
 
-from Products.MeetingLalouviere.config import COLLEGE_DEFAULT_MOTIVATION
-from Products.MeetingLalouviere.config import COUNCIL_DEFAULT_MOTIVATION
-
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
@@ -40,44 +37,6 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
     """
         Tests the MeetingItem adapted methods
     """
-
-    def test_onDuplicated(self):
-        """
-          When a college item is duplicated to the council meetingConfig,
-          the motivation field for the new item (council item) is populated like this :
-          Default value for motivation field of the new item + value of motivation that was
-          defined on original item (college item)
-        """
-        cfg = self.meetingConfig
-        cfg.setItemAutoSentToOtherMCStates(("accepted",))
-        cfg2 = self.meetingConfig2
-        # by default, college items are sendable to council
-        destMeetingConfigId = cfg2.getId()
-        self.assertTrue(
-            destMeetingConfigId
-            in [config["meeting_config"] for config in cfg.getMeetingConfigsToCloneTo()]
-        )
-        # create an item in college, set a motivation, send it to council and check
-        self.changeUser("pmManager")
-        item = self.create("MeetingItem")
-        item.setDecision("<p>A decision</p>")
-        item.setOtherMeetingConfigsClonableTo((destMeetingConfigId,))
-        self.assertTrue(item.getMotivation() == COLLEGE_DEFAULT_MOTIVATION)
-        meeting = self.create("Meeting", date=datetime(2013, 5, 5))
-        self.presentItem(item)
-        # now close the meeting so the item is automatically accepted and sent to meetingConfig2
-        self.closeMeeting(meeting)
-        self.assertTrue(item.query_state() in cfg.getItemAutoSentToOtherMCStates())
-        self.assertTrue(item._checkAlreadyClonedToOtherMC(destMeetingConfigId))
-        # get the item that was sent to meetingConfig2 and check his motivation field
-        annotation_key = item._getSentToOtherMCAnnotationKey(destMeetingConfigId)
-        newItem = self.portal.uid_catalog(UID=IAnnotations(item)[annotation_key])[
-            0
-        ].getObject()
-        expected_new_item_motivation = "{}<p>&nbsp;</p><p>&nbsp;</p>{}".format(
-            COUNCIL_DEFAULT_MOTIVATION, item.getMotivation()
-        )
-        self.assertEqual(newItem.getMotivation(), expected_new_item_motivation)
 
     def test_showFollowUp(self):
         self.changeUser("pmManager")
