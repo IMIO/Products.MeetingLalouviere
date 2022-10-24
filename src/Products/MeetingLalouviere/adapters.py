@@ -389,6 +389,7 @@ customWfAdaptations = ('item_validation_shortcuts',
                        'transfered',
                        'transfered_and_duplicated',
                        'propose_to_budget_reviewer',
+                       'apply_council_state_label',
                        'meetingmanager_correct_closed_meeting',
                        )
 
@@ -1278,6 +1279,10 @@ class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
                 back_transition_title=translate("validateByBudgetImpactReviewer_done_descr", "imio.actionspanel"),
                 # back_transition_icon=None
                 itemWorkflow=itemWorkflow)
+            return True
+        if wfAdaptation == 'apply_council_state_label':
+            meetingWorkflow.states['frozen'].title = translate("in_committee", "plone")
+            meetingWorkflow.states['decided'].title = translate("in_council", "plone")
             return True
         return False
 

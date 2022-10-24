@@ -207,10 +207,17 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             creation of some items, and ends by closing a meeting.
         """
         self.changeUser("admin")
+        self.setMeetingConfig(self.meetingConfig2.getId())
+        self._enableField("observations")
+        self._enableField("commissionTranscript")
+        self._activate_wfas(('waiting_advices',
+                             # 'waiting_advices_adviser_send_back',
+                             'waiting_advices_proposing_group_send_back',
+                             'propose_to_budget_reviewer',
+                             'apply_council_state_label'),
+                            keep_existing=True)
         self._setup_commissions_classifiers()
         self.add_commission_plone_groups()
-        self.setMeetingConfig(self.meetingConfig2.getId())
-
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
         self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
         self.create(
@@ -229,19 +236,26 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             category="deployment",
             classifier="commission-ag"
         )
-
-        self.assertTrue(item1.mayQuickEdit("observations"))
-        item1.setProposingGroup(self.developers_uid)
-        self.addAnnex(item1)
+        annex1 = self.addAnnex(item1)
+        self._check_users_can_modify(item1,
+                                     ['pmCreator1',
+                                      'pmServiceHead1',
+                                      'pmOfficeManager1',
+                                      'pmDivisionHead1',
+                                      'pmDirector1',
+                                      ],
+                                     annex1)
+        self.changeUser("pmCreator1")
         # The creator can add a decision annex on created item
         self.addAnnex(item1, relatedTo="item_decision")
         self.do(item1, "proposeToDirector")
-        self.failIf(self.hasPermission(ModifyPortalContent, item1))
-        # The creator cannot add a decision annex on proposed item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.changeUser("pmDirector1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
+        self.failIf(self.hasPermission(AddAnnex, item1))
+        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+        # the Director validation level
+        self._check_users_can_modify(item1,
+                                     ['pmDirector1'],
+                                     annex1)
         self.addAnnex(item1, relatedTo="item_decision")
         self.do(item1, "validate")
         self.failIf(self.hasPermission(ModifyPortalContent, item1))
@@ -250,7 +264,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # pmManager creates a meeting
         self.changeUser("pmManager")
         self.assertTrue(item1.mayQuickEdit("observations"))
-        meeting = self.create("Meeting", date="2007/12/11 09:00:00")
+        meeting = self.create("Meeting", date=datetime(2007, 12, 11, 9, 0, 0))
         # The meetingManager can add a decision annex
         self.addAnnex(item1, relatedTo="item_decision")
         # pmCreator2 creates and proposes an item
@@ -273,7 +287,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.assertRaises(Unauthorized, self.addAnnex, item1)
         self.changeUser("pmManager")
-        self.do(meeting, "setInCommittee")
+        self.do(meeting, "freeze")
         self.assertEqual(item1.query_state(), "itemfrozen")
 
         self.changeUser("commissioneditor")
@@ -300,7 +314,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # remove the item, set the meeting in council and add it again
         self.backToState(item2, "validated")
         self.failIf(len(meeting.get_items()) != 1)
-        self.do(meeting, "setInCouncil")
+        self.do(meeting, "decide")
         # remove published meeting to check that item is correctly presented in this cas as well
         self.setCurrentMeeting(None)
         self.do(item2, "present")
@@ -335,10 +349,10 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser("pmManager")
         self.assertEquals(item1.query_state(), "itempublished")
         self.assertEquals(item2.query_state(), "itempublished")
-        self.do(meeting, "backToInCommittee")
+        self.do(meeting, "backToFrozen")
         self.assertEquals(item1.query_state(), "itemfrozen")
         self.assertEquals(item2.query_state(), "itemfrozen")
-        self.do(meeting, "setInCouncil")
+        self.do(meeting, "decide")
         self.assertEquals(item1.query_state(), "itempublished")
         self.assertEquals(item2.query_state(), "itempublished")
         # while closing a meeting, every no decided items are accepted

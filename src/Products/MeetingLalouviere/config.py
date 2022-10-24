@@ -211,7 +211,7 @@ LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS = (
      'back_transition_title': 'backToItemCreated',
      'suffix': 'creators',
      # only creators may manage itemcreated item
-     'extra_suffixes': ['directors'],
+     'extra_suffixes': ['serviceheads', 'officemanagers', 'divisionheads', 'directors'],
      'enabled': '1',
      },
     {'state': 'proposed_to_director',

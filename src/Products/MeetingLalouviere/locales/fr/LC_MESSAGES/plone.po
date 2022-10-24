@@ -174,11 +174,11 @@ msgstr "Gelée"
 
 #. Default: "In committee"
 msgid "in_committee"
-msgstr "En commission"
+msgstr "En commission (Gelée)"
 
 #. Default: "In council"
 msgid "in_council"
-msgstr "En Conseil communal"
+msgstr "En Conseil communal (En rédaction du PV)"
 
 # Workflow states
 #. Default: "Waiting advices"
