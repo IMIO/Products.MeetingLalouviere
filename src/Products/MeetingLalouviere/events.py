@@ -24,21 +24,24 @@ def onItemAfterTransition(item, event):
 
 
 def onItemLocalRolesUpdated(item, event):
-    """Depending on the selected Council commission (category),
-       give the 'MeetingCommissionEditor' role to the relevant Plone group"""
-    # if the current category id startswith a given Plone group, this is the correspondance
-    # for example, category 'commission-travaux' correspond to Plone
-    # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
-    # category 'commission-travaux-1er-supplement' correspond to Plone
-    # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
-    # first, remove previously set local roles for the Plone group commission
-    # this is only done for MeetingItemCouncil
+    """
+    Add MeetingFollowUpWriter localrole?
+    Depending on the selected Council commission (category),
+    give the 'MeetingCommissionEditor' role to the relevant Plone group
+       """
     tool = api.portal.get_tool('portal_plonemeeting')
     cfg = tool.getMeetingConfig(item)
     if item.query_state() in cfg.getItemDecidedStates():
         group_id = "{}_followupwriters".format(item.getProposingGroup(theObject=False))
         item.manage_addLocalRoles(group_id, ('MeetingFollowUpWriter',))
     elif item.portal_type == 'MeetingItemCouncil' and item.query_state() in ('itemfrozen', 'itempublished'):
+        # if the current category id startswith a given Plone group, this is the correspondance
+        # for example, category 'commission-travaux' correspond to Plone
+        # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
+        # category 'commission-travaux-1er-supplement' correspond to Plone
+        # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
+        # first, remove previously set local roles for the Plone group commission
+        # this is only done for MeetingItemCouncil
         # existing commission Plone groups
         plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
         # now add the new local roles

@@ -45,6 +45,9 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                           'accepted_out_of_meeting_and_duplicated',
                           'accepted_out_of_meeting_emergency',
                           'accepted_out_of_meeting_emergency_and_duplicated',
+                          # Custom
+                          'apply_council_state_label',
+                          # End of custom
                           'decide_item_when_back_to_meeting_from_returned_to_proposing_group',
                           'delayed',
                           'hide_decisions_when_under_writing',
@@ -69,7 +72,6 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                           'presented_item_back_to_proposed_to_officemanager',
                           'presented_item_back_to_proposed_to_servicehead',
                           'propose_to_budget_reviewer',
-                          'apply_council_state_label',
                           # End of custom
                           'refused',
                           'removed',
