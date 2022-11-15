@@ -33,16 +33,18 @@ def onItemLocalRolesUpdated(item, event):
     # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
     # first, remove previously set local roles for the Plone group commission
     # this is only done for MeetingItemCouncil
-
-    if not item.portal_type == 'MeetingItemCouncil' \
-            or not item.query_state() in ('itemfrozen', 'itempublished'):
-        return
-    # existing commission Plone groups
-    plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
-    # now add the new local roles
-    for group_id in plone_group_ids:
-        if item.getClassifier().startswith(group_id):
-            # we found the relevant group
-            group_id = "{}_{}".format(group_id, COMMISSION_EDITORS_SUFFIX)
-            item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
-            return
+    tool = api.portal.get_tool('portal_plonemeeting')
+    cfg = tool.getMeetingConfig(item)
+    if item.query_state() in cfg.getItemDecidedStates():
+        group_id = "{}_followupwriters".format(item.getProposingGroup(theObject=False))
+        item.manage_addLocalRoles(group_id, ('MeetingFollowUpWriter',))
+    elif item.portal_type == 'MeetingItemCouncil' and item.query_state() in ('itemfrozen', 'itempublished'):
+        # existing commission Plone groups
+        plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
+        # now add the new local roles
+        for group_id in plone_group_ids:
+            if item.getClassifier().startswith(group_id):
+                # we found the relevant group
+                group_id = "{}_{}".format(group_id, COMMISSION_EDITORS_SUFFIX)
+                item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
+                return
