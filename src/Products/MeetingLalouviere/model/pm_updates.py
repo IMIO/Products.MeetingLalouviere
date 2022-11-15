@@ -358,7 +358,8 @@ def update_item_schema(baseSchema):
             name='interventions',
             widget=RichWidget(
                 rows=15,
-                condition="python: here.portal_type == 'MeetingItemCouncil' and here.portal_plonemeeting.isManager(here)",
+                condition="python: here.portal_type == 'MeetingItemCouncil' "
+                          "and here.showMeetingManagerReservedField('privacy')",
                 label='Interventions',
                 label_msgid='MeetingLalouviere_label_interventions',
                 description='Transcription of interventions',
@@ -453,8 +454,7 @@ def update_item_schema(baseSchema):
     # Don't forget the label override in skins/meetinglalouviere_templates/meetingitem_view.pt
     baseSchema['description'].widget.label_method = "getLabelDescription"
 
-    baseSchema['privacy'].widget.condition = "python: here.attribute_is_used('privacy') and " \
-                                             "portal.portal_plonemeeting.isManager(here)"
+    baseSchema['privacy'].widget.condition = "python: here.showMeetingManagerReservedField('privacy')"
 
     baseSchema['observations'].write_permission = ModifyPortalContent
 

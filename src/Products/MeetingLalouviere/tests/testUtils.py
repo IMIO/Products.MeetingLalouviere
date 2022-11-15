@@ -42,6 +42,7 @@ class testUtils(MeetingLalouviereTestCase, mctu):
                 u'Site administrator <siteadmin@plonemeeting.org>',
                 u'pmDirector1 <user@plonemeeting.org>',
                 u'pmDivisionHead1 <user@plonemeeting.org>',
+                u'pmFollowup1 <user@plonemeeting.org>',
                 u'pmOfficeManager1 <user@plonemeeting.org>',
                 u'pmServiceHead1 <user@plonemeeting.org>']
 
