@@ -38,6 +38,10 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
         Tests the MeetingItem adapted methods
     """
 
+    def setUp(self):
+        super(testCustomMeetingItem, self).setUp()
+        self._activate_wfas(('return_to_proposing_group_with_last_validation', 'removed'), keep_existing=True)
+
     def test_showFollowUp(self):
         self.changeUser("pmManager")
         meeting = self._createMeetingWithItems()

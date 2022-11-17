@@ -883,9 +883,20 @@ class LLCustomMeetingItem(CustomMeetingItem):
     security.declarePublic("showFollowUp")
 
     def showFollowUp(self):
+        """
+        Final state, every member of the proposing group and the MeetingManager may view.
+        presented and itemfrozen, only MeetingManager
+        otherwise, only for Manager
+        """
         tool = api.portal.get_tool('portal_plonemeeting')
         cfg = tool.getMeetingConfig(self.getSelf())
-        return (not tool.isPowerObserverForCfg(cfg)) and self.getSelf().hasMeeting()
+        if not self.getSelf().query_state().startswith("returned_") and self.getSelf().hasMeeting():
+            if self.getSelf().query_state() in ('presented', 'itemfrozen'):
+                return tool.isManager(cfg)
+            else:
+                return not tool.isPowerObserverForCfg(cfg)
+        else:
+            return tool.isManager(realManagers=True)
 
 
 class LLMeetingConfig(CustomMeetingConfig):
