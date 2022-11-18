@@ -391,8 +391,6 @@ def update_item_schema(baseSchema):
             searchable=True,
             allowable_content_types=('text/html',),
             default_output_type="text/html",
-            write_permission="MeetingLalouviere: Write commission transcript",
-            read_permission="MeetingLalouviere: Read commission transcript",
         ),
         #here above are 3 specific fields for managing item follow-up
         StringField(
@@ -407,8 +405,6 @@ def update_item_schema(baseSchema):
                 i18n_domain='PloneMeeting',
             ),
             vocabulary_factory='Products.MeetingLalouviere.vocabularies.listFollowUps',
-            write_permission="MeetingLalouviere: Write followUp",
-            read_permission="MeetingLalouviere: Read followUp",
         ),
         TextField(
             name='neededFollowUp',
@@ -426,8 +422,6 @@ def update_item_schema(baseSchema):
             searchable=True,
             allowable_content_types=('text/html',),
             default_output_type="text/html",
-            write_permission = "MeetingLalouviere: Write neededFollowUp",
-            read_permission = "MeetingLalouviere: Read neededFollowUp",
         ),
         TextField(
             name='providedFollowUp',
@@ -446,8 +440,6 @@ def update_item_schema(baseSchema):
             searchable=True,
             allowable_content_types=('text/html',),
             default_output_type="text/html",
-            write_permission="MeetingLalouviere: Write providedFollowUp",
-            read_permission="MeetingLalouviere: Read providedFollowUp",
         ),
     ),)
 
