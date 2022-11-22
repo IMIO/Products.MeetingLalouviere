@@ -377,7 +377,7 @@ def update_item_schema(baseSchema):
             name='commissionTranscript',
             widget=RichWidget(
                 rows=15,
-                condition="python: here.portal_type == 'MeetingItemCouncil' and "
+                condition="python: here.attribute_is_used('commissionTranscript') and "
                           "here.attribute_is_used('commissionTranscript')",
                 label='CommissionTranscript',
                 label_msgid='MeetingLalouviere_label_commissionTranscript',
@@ -393,12 +393,14 @@ def update_item_schema(baseSchema):
             default_output_type="text/html",
             write_permission="MeetingLalouviere: Write commission transcript",
         ),
-        #here above are 3 specific fields for managing item follow-up
+        # here above are 3 specific fields for managing item follow-up
         StringField(
             name='followUp',
             default="follow_up_no",
             widget=SelectionWidget(
-                condition="python: here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
+                condition="python: here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()"
+                          "and (tool.isManager(cfg) "
+                          "or tool.user_is_in_org(org_uid=here.getProposingGroup(theObject=False)))",
                 description="A follow up is needed : no, yes, provided?",
                 description_msgid="MeetingLalouviere_descr_followUp",
                 label='FollowUp',
@@ -424,7 +426,7 @@ def update_item_schema(baseSchema):
             searchable=True,
             allowable_content_types=('text/html',),
             default_output_type="text/html",
-            write_permission = "MeetingLalouviere: Write neededFollowUp",
+            write_permission="MeetingLalouviere: Write neededFollowUp",
         ),
         TextField(
             name='providedFollowUp',

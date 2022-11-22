@@ -894,7 +894,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
             if self.getSelf().query_state() in ('presented', 'itemfrozen'):
                 return tool.isManager(cfg)
             else:
-                return not tool.isPowerObserverForCfg(cfg)
+                return tool.user_is_in_org(org_uid=self.getSelf().getProposingGroup(theObject=False))
         else:
             return tool.isManager(realManagers=True)
 
