@@ -21,16 +21,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-from datetime import datetime
-
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
 from Products.MeetingCommunes.tests.testCustomMeetingItem import (
     testCustomMeetingItem as mctcm,
 )
-from DateTime import DateTime
-from zope.annotation import IAnnotations
+from zope.globalrequest import getRequest
 
 
 class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
@@ -45,74 +42,93 @@ class testCustomMeetingItem(mctcm, MeetingLalouviereTestCase):
     def test_showFollowUp(self):
         self.changeUser("pmManager")
         meeting = self._createMeetingWithItems()
-        self.assertGreater(len(meeting.get_items()), 5)
+        ordered_items = meeting.get_items(ordered=True)
+        self.assertGreater(len(ordered_items), 5)
 
-        for item in meeting.get_items():
+        def get_showFollowUp_and_purge_cache(item):
+            showFollowUp = item.adapted().showFollowUp()
+            getRequest().set('Products.MeetingLalouviere.showFollowUp_cachekey', None)
+            return showFollowUp
+
+        for item in ordered_items:
             self.assertEqual(item.query_state(), 'presented')
-            self.assertTrue(item.adapted().showFollowUp())
+            self.assertTrue(get_showFollowUp_and_purge_cache(item))
             self.changeUser("pmFollowup1")
-            self.assertFalse(item.adapted().showFollowUp())
+            self.assertFalse(get_showFollowUp_and_purge_cache(item))
+            self.changeUser("pmFollowup2")
+            self.assertFalse(get_showFollowUp_and_purge_cache(item))
             self.changeUser("pmManager")
 
         self.freezeMeeting(meeting)
 
-        for item in meeting.get_items():
+        for item in ordered_items:
             self.assertEqual(item.query_state(), 'itemfrozen')
-            self.assertTrue(item.adapted().showFollowUp())
+            self.assertTrue(get_showFollowUp_and_purge_cache(item))
             self.changeUser("pmFollowup1")
-            self.assertFalse(item.adapted().showFollowUp())
+            self.assertFalse(get_showFollowUp_and_purge_cache(item))
+            self.changeUser("pmFollowup2")
+            self.assertFalse(get_showFollowUp_and_purge_cache(item))
             self.changeUser("pmManager")
 
         self.decideMeeting(meeting)
-        item = meeting.get_items()[0]
+        item = ordered_items[0]
         self.do(item, 'accept')
         self.assertEqual(item.query_state(), 'accepted')
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
         self.changeUser("pmFollowup1")
-        self.assertTrue(item.adapted().showFollowUp())
-
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
+        self.changeUser("pmFollowup2")
+        self.assertFalse(get_showFollowUp_and_purge_cache(item))
         self.changeUser("pmManager")
-        item = meeting.get_items()[1]
+        item = ordered_items[1]
         self.do(item, 'accept_but_modify')
         self.assertEqual(item.query_state(), 'accepted_but_modified')
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
         self.changeUser("pmFollowup1")
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
+        self.changeUser("pmFollowup2")
+        self.assertFalse(get_showFollowUp_and_purge_cache(item))
 
         self.changeUser("pmManager")
-        item = meeting.get_items()[2]
+        item = ordered_items[2]
         self.do(item, 'delay')
         self.assertEqual(item.query_state(), 'delayed')
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
         self.changeUser("pmFollowup1")
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
 
         # returned_to_proposing_group items must not display followp
         self.changeUser("pmManager")
-        item = meeting.get_items()[3]
+        item = ordered_items[3]
         self.do(item, 'return_to_proposing_group')
         self.assertEqual(item.query_state(), 'returned_to_proposing_group')
-        self.assertFalse(item.adapted().showFollowUp())
+        self.assertFalse(get_showFollowUp_and_purge_cache(item))
         self.changeUser("pmFollowup1")
-        self.assertFalse(item.adapted().showFollowUp())
+        self.assertFalse(get_showFollowUp_and_purge_cache(item))
+        self.changeUser("pmFollowup2")
+        self.assertFalse(get_showFollowUp_and_purge_cache(item))
 
         self.changeUser("pmManager")
-        item = meeting.get_items()[4]
+        item = ordered_items[4]
         self.do(item, 'refuse')
         self.assertEqual(item.query_state(), 'refused')
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
         self.changeUser("pmFollowup1")
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertFalse(get_showFollowUp_and_purge_cache(item))
+        self.changeUser("pmFollowup2")
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
 
         self.changeUser("pmManager")
-        item = meeting.get_items()[5]
+        item = ordered_items[5]
         self.do(item, 'remove')
         self.assertEqual(item.query_state(), 'removed')
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
         self.changeUser("pmFollowup1")
-        self.assertTrue(item.adapted().showFollowUp())
+        self.assertFalse(get_showFollowUp_and_purge_cache(item))
+        self.changeUser("pmFollowup2")
+        self.assertTrue(get_showFollowUp_and_purge_cache(item))
 
-        
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

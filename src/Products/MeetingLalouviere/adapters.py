@@ -58,12 +58,12 @@ from Products.PloneMeeting.utils import org_id_to_uid
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from collective.contact.plonegroup.utils import get_all_suffixes
 from imio.helpers.content import uuidsToObjects
 from plone import api
 from plone.memoize import ram
+from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import implements
 
@@ -888,15 +888,21 @@ class LLCustomMeetingItem(CustomMeetingItem):
         presented and itemfrozen, only MeetingManager
         otherwise, only for Manager
         """
-        tool = api.portal.get_tool('portal_plonemeeting')
-        cfg = tool.getMeetingConfig(self.getSelf())
-        if not self.getSelf().query_state().startswith("returned_") and self.getSelf().hasMeeting():
-            if self.getSelf().query_state() in ('presented', 'itemfrozen'):
-                return tool.isManager(cfg)
+        showfollowUp = getRequest().get('Products.MeetingLalouviere.showFollowUp_cachekey', None)
+        if showfollowUp is None:
+            tool = api.portal.get_tool('portal_plonemeeting')
+            if not self.getSelf().query_state().startswith("returned_") and self.getSelf().hasMeeting():
+                if self.getSelf().query_state() in ('presented', 'itemfrozen'):
+                    cfg = tool.getMeetingConfig(self.getSelf())
+                    showfollowUp = tool.isManager(cfg)
+                else:
+                    org_uid = self.getSelf().getProposingGroup(theObject=False)
+                    showfollowUp = tool.user_is_in_org(org_uid=org_uid)
             else:
-                return tool.user_is_in_org(org_uid=self.getSelf().getProposingGroup(theObject=False))
-        else:
-            return tool.isManager(realManagers=True)
+                showfollowUp = tool.isManager(realManagers=True)
+
+            getRequest().set('Products.MeetingLalouviere.showFollowUp_cachekey', showfollowUp)
+        return showfollowUp
 
 
 class LLMeetingConfig(CustomMeetingConfig):
