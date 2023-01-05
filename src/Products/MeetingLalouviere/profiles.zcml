@@ -24,7 +24,7 @@
     <genericsetup:upgradeStep
             title="Go to MeetingLalouviere 4.2"
             description=""
-            source="4.1"
+            source="4161"
             destination="4200"
             handler="Products.MeetingLalouviere.migrations.migrate_to_4200.migrate"
             profile="Products.MeetingLalouviere:default"/>
