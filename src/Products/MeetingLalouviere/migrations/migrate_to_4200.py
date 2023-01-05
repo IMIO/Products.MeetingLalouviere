@@ -3,7 +3,8 @@
 from DateTime import DateTime
 from plone import api
 from Products.MeetingCommunes.migrations.migrate_to_4200 import Migrate_To_4200 as MCMigrate_To_4200
-from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
+from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS, LLO_APPLYED_COUNCIL_WFA, \
+    LLO_APPLYED_COLLEGE_WFA
 from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 import logging
 
@@ -17,21 +18,15 @@ class Migrate_To_4200(MCMigrate_To_4200):
            we use meeting_workflow/meetingitem_workflow."""
         logger.info("Adapting 'meetingWorkflow/meetingItemWorkflow' for every MeetingConfigs...")
         for cfg in self.tool.objectValues('MeetingConfig'):
-            if cfg.getMeetingWorkflow() in (
-                    'meetingcollegelalouviere_workflow',
-                    'meetingcouncillalouviere_workflow'
-            ):
-                cfg.setMeetingWorkflow('meeting_workflow')
-            if cfg.getItemWorkflow() in (
-                    'meetingitemcollegelalouviere_workflow',
-                    'meetingitemcouncillalouviere_workflow'
-            ):
-                cfg.setItemWorkflow('meetingitem_workflow')
+            cfg.setMeetingWorkflow('meeting_workflow')
+            cfg.setItemWorkflow('meetingitem_workflow')
         # delete old unused workflows
         wfs_to_delete = [wfId for wfId in self.wfTool.listWorkflows()
                          if any(x in wfId for x in (
                 'meetingcollegelalouviere_workflow',
-                'meetingcouncillalouviere_workflow','meetingitemcollegelalouviere_workflow', 'meetingitemcouncillalouviere_workflow'))]
+                'meetingcouncillalouviere_workflow',
+                'meetingitemcollegelalouviere_workflow',
+                'meetingitemcouncillalouviere_workflow'))]
         if wfs_to_delete:
             self.wfTool.manage_delObjects(wfs_to_delete)
         logger.info('Done.')
@@ -75,7 +70,13 @@ class Migrate_To_4200(MCMigrate_To_4200):
 
     def _doConfigureItemWFValidationLevels(self, cfg):
         """Apply correct itemWFValidationLevels and fix WFAs."""
-        # TODO
+        cfg.setItemWFValidationLevels(cfg.getId() == 'meeting-config-council' and
+                                      LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS or
+                                      LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
+
+        cfg.setWorkflowAdaptations(cfg.getId() == 'meeting-config-council' and
+                                   LLO_APPLYED_COUNCIL_WFA or
+                                   LLO_APPLYED_COLLEGE_WFA)
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
@@ -90,7 +91,6 @@ class Migrate_To_4200(MCMigrate_To_4200):
 # The migration function -------------------------------------------------------
 def migrate(context):
     '''This migration function:
-
        1) Change MeetingConfig workflows to use meeting_workflow/meetingitem_workflow;
        2) Call PloneMeeting migration to 4200 and 4201;
        3) In _after_reinstall hook, adapt items and meetings workflow_history
