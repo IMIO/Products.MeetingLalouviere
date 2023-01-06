@@ -20,6 +20,14 @@ class Migrate_To_4200(MCMigrate_To_4200):
         for cfg in self.tool.objectValues('MeetingConfig'):
             cfg.setMeetingWorkflow('meeting_workflow')
             cfg.setItemWorkflow('meetingitem_workflow')
+            cfg.setItemConditionsInterface(
+                'Products.MeetingCommunes.interfaces.IMeetingItemCommunesWorkflowConditions')
+            cfg.setItemActionsInterface(
+                'Products.MeetingCommunes.interfaces.IMeetingItemCommunesWorkflowActions')
+            cfg.setMeetingConditionsInterface(
+                'Products.MeetingCommunes.interfaces.IMeetingCommunesWorkflowConditions')
+            cfg.setMeetingActionsInterface(
+                'Products.MeetingCommunes.interfaces.IMeetingCommunesWorkflowActions')
         # delete old unused workflows
         wfs_to_delete = [wfId for wfId in self.wfTool.listWorkflows()
                          if any(x in wfId for x in (
