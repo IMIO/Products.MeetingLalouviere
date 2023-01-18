@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-
-from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
-from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
-from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS_2013
-
 from plone import api
 
 
@@ -34,20 +29,20 @@ def onItemLocalRolesUpdated(item, event):
     if item.query_state() in cfg.getItemDecidedStates():
         group_id = "{}_followupwriters".format(item.getProposingGroup(theObject=False))
         item.manage_addLocalRoles(group_id, ('MeetingFollowUpWriter',))
-    elif item.portal_type == 'MeetingItemCouncil' and item.query_state() in ('itemfrozen', 'itempublished'):
-        # if the current category id startswith a given Plone group, this is the correspondance
-        # for example, category 'commission-travaux' correspond to Plone
-        # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
-        # category 'commission-travaux-1er-supplement' correspond to Plone
-        # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
-        # first, remove previously set local roles for the Plone group commission
-        # this is only done for MeetingItemCouncil
-        # existing commission Plone groups
-        plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
-        # now add the new local roles
-        for group_id in plone_group_ids:
-            if item.getClassifier().startswith(group_id):
-                # we found the relevant group
-                group_id = "{}_{}".format(group_id, COMMISSION_EDITORS_SUFFIX)
-                item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
-                return
+    # elif item.portal_type == 'MeetingItemCouncil' and item.query_state() in ('itemfrozen', 'itempublished'):
+    #     # if the current category id startswith a given Plone group, this is the correspondance
+    #     # for example, category 'commission-travaux' correspond to Plone
+    #     # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
+    #     # category 'commission-travaux-1er-supplement' correspond to Plone
+    #     # group 'commission-travaux_COMMISSION_EDITORS_SUFFIX'
+    #     # first, remove previously set local roles for the Plone group commission
+    #     # this is only done for MeetingItemCouncil
+    #     # existing commission Plone groups
+    #     plone_group_ids = set(COUNCIL_COMMISSION_IDS).union(set(COUNCIL_COMMISSION_IDS_2013))
+    #     # now add the new local roles
+    #     for group_id in plone_group_ids:
+    #         if item.getClassifier().startswith(group_id):
+    #             # we found the relevant group
+    #             group_id = "{}_{}".format(group_id, COMMISSION_EDITORS_SUFFIX)
+    #             item.manage_addLocalRoles(group_id, ('MeetingCommissionEditor',))
+    #             return

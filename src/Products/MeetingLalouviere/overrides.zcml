@@ -14,11 +14,6 @@
              provides="imio.prettylink.interfaces.IPrettyLink" />
 
     <!-- Searches adapters -->
-    <adapter for="*"
-           factory="Products.MeetingLalouviere.adapters.SearchItemsOfMyCommissionsAdapter"
-           provides="collective.compoundcriterion.interfaces.ICompoundCriterionFilter"
-           name="items-of-my-commissions" />
-
     <configure package="Products.MeetingCommunes">
         <!-- Customizations for every Meetings -->
         <adapter for="Products.PloneMeeting.content.meeting.IMeeting"

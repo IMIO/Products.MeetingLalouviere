@@ -27,14 +27,6 @@ from Products.MeetingCommunes.tests.MeetingCommunesTestCase import (
 from Products.MeetingLalouviere.testing import MLL_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingLalouviere.tests.helpers import MeetingLalouviereTestingHelpers
 
-# monkey patch the MeetingConfig.wfAdaptations again because it is done in
-# adapters.py but overrided by Products.PloneMeeting here in the tests...
-from Products.PloneMeeting.MeetingConfig import MeetingConfig
-
-
-from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX, COUNCIL_MEETING_COMMISSION_IDS_2020
-
-from collective.contact.plonegroup.utils import get_plone_group_id
 
 class MeetingLalouviereTestCase(
     MeetingCommunesTestCase, MeetingLalouviereTestingHelpers
@@ -61,49 +53,3 @@ class MeetingLalouviereTestCase(
         self.developers_reviewers = self.developers_reviewers_old
         self.vendors_prereviewers = self.vendors_prereviewers_old
         self.vendors_reviewers = self.vendors_prereviewers_old
-
-    def add_commission_plone_groups(self):
-        self.changeUser("admin")
-        ag = api.group.create(
-            groupname="commission-ag_{}".format(COMMISSION_EDITORS_SUFFIX),
-            title='AG Commission Editors',
-        )
-        self.ag = ag
-        api.group.add_user(ag.id, username='commissioneditor')
-
-        pat = api.group.create(
-            groupname="commission-patrimoine_{}".format(COMMISSION_EDITORS_SUFFIX),
-            title="Commission Patrimoine",
-        )
-        self.pat = pat
-        api.group.add_user(pat.id, username='commissioneditor2')
-
-    def _setup_commissions_classifiers(self, commission_version=COUNCIL_MEETING_COMMISSION_IDS_2020):
-        # add MEETING_COMMISSION's classifiers
-        self.changeUser("admin")
-
-        # wipe all previous classifiers
-        ids = self.meetingConfig.classifiers.keys()
-        if len(ids) > 0:
-            ids = list(ids)
-            self.meetingConfig.classifiers.manage_delObjects(ids)
-
-        # flatten commission_version
-        commission_classifiers = []
-        for i in commission_version:
-            if isinstance(i, tuple):
-                for j in i:
-                    commission_classifiers.append(j)
-            else:
-                commission_classifiers.append(i)
-
-        # create 1st-supplement for each classifier
-        commission_classifiers = commission_classifiers + [
-            classifier + "-1er-supplement" for classifier in commission_classifiers
-        ]
-        commission_classifiers += ["points-conseillers-2eme-supplement", "points-conseillers-3eme-supplement"]
-
-        # add classifiers to the meetingConfig
-        for classifier in commission_classifiers:
-            self.create("meetingcategory", id=classifier, title="commissionClf", is_classifier=True)
-

@@ -32,12 +32,8 @@ from Products.MeetingCommunes.adapters import (
 from Products.MeetingCommunes.adapters import CustomMeetingItem
 from Products.MeetingCommunes.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActions
-from Products.MeetingLalouviere.config import COMMISSION_EDITORS_SUFFIX
-from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS
-from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2013
-from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2019
-from Products.MeetingLalouviere.config import COUNCIL_MEETING_COMMISSION_IDS_2020
 from Products.MeetingLalouviere.config import DG_GROUP_ID
+from Products.MeetingLalouviere.config import FALLBACK_DG_GROUP_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import _addIsolatedState
@@ -568,86 +564,6 @@ class LLCustomMeeting(CustomMeeting):
 
     Meeting.getLabelObservations = getLabelObservations
 
-    security.declarePublic("getCommissionTitle")
-
-    def getCommissionTitle(self, commissionNumber=1, roman_prefix=False):
-        """
-          Given a commissionNumber, return the commission title depending on corresponding classifiers
-        """
-        meeting = self.getSelf()
-        commission_classifiers = meeting.get_commission_classifiers()
-        if not len(commission_classifiers) >= commissionNumber:
-            return ""
-        commission_clf = commission_classifiers[commissionNumber - 1]
-        # build title
-        if isinstance(commission_clf, tuple):
-            res = "Commission " + "/".join(
-                [subclf.Title().replace("Commission ", "") for subclf in commission_clf]
-            )
-        else:
-            res = commission_clf.Title()
-
-        if roman_prefix:
-            roman_numbers = {1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI"}
-            res = "{roman}. {res}".format(
-                roman=roman_numbers[commissionNumber], res=res
-            )
-
-        return res
-
-    security.declarePublic("get_commission_classifiers_ids")
-
-    def get_commission_classifiers_ids(self):
-        """Returns the list of classifiers used for Commissions.
-           Since june 2013, some commission are aggregating several classifiers, in this case,
-           a sublist of classifiers is returned...
-           Since 2019, travaux commission is grouped with finance..."""
-        meeting = self.getSelf()
-        date = meeting.date
-        if not date or date.year > 2020 or (date.year == 2020 and date.month > 8):
-            # since september 2020 commissions are grouped differently
-            # patrimoine is grouped with travaux and finance
-            # also police is moved to first place
-            commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2020
-        elif date.year >= 2019 and date.month > 8:
-            # since september 2019 commissions are grouped differently
-            # finance is grouped with travaux
-            commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2019
-        # creating a new Meeting or editing an existing meeting with date >= june 2013
-        elif date.year >= 2013 and date.month > 5:
-            # since 2013 commissions does NOT correspond to commission as MeetingItem.category
-            # several MeetingItem.category are taken for one single commission...
-            commission_classifier_ids = COUNCIL_MEETING_COMMISSION_IDS_2013
-        else:
-            commission_classifier_ids = COUNCIL_COMMISSION_IDS
-
-        return commission_classifier_ids
-
-    security.declarePublic("get_commission_classifiers")
-
-    def get_commission_classifiers(self):
-        """Returns the list of classifier used for Commissions.
-           Since june 2013, some commission are aggregating several classifiers, in this case,
-           a sublist of classifiers is returned...
-           Since 2019, travaux commission is grouped with finance..."""
-        commission_classifier_ids = self.getSelf().adapted().get_commission_classifiers_ids()
-
-        tool = getToolByName(self, "portal_plonemeeting")
-        mc = tool.getMeetingConfig(self)
-        res = []
-        for id in commission_classifier_ids:
-            # check if we have sub-classifiers, aka a commission made of several classifiers
-            if isinstance(id, tuple):
-                res2 = []
-                for subcls_id in id:
-                    res2.append(getattr(mc.classifiers, subcls_id))
-                res.append(tuple(res2))
-            else:
-                res.append(getattr(mc.classifiers, id))
-        return tuple(res)
-
-    Meeting.get_commission_classifiers = get_commission_classifiers
-
 
 class LLCustomMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1111,59 +1027,6 @@ class LLMeetingConfig(CustomMeetingConfig):
                         ],
                         "sort_on": u"created",
                         "sort_reversed": True,
-                        "showNumberOfItems": False,
-                        "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager",],
-                    },
-                ),
-                (
-                    "searchitemsofmycommissions",
-                    {
-                        "subFolderId": "searches_items",
-                        "active": True,
-                        "query": [
-                            {
-                                "i": "portal_type",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
-                            },
-                            {
-                                "i": "CompoundCriterion",
-                                "o": "plone.app.querystring.operation.compound.is",
-                                "v": "items-of-my-commissions",
-                            },
-                        ],
-                        "sort_on": u"created",
-                        "sort_reversed": False,
-                        "showNumberOfItems": False,
-                        "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager",],
-                    },
-                ),
-                (
-                    "searchitemsofmycommissionstoedit",
-                    {
-                        "subFolderId": "searches_items",
-                        "active": True,
-                        "query": [
-                            {
-                                "i": "portal_type",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
-                            },
-                            {
-                                "i": "review_state",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["itemfrozen"],
-                            },
-                            {
-                                "i": "CompoundCriterion",
-                                "o": "plone.app.querystring.operation.compound.is",
-                                "v": "items-of-my-commissions",
-                            },
-                        ],
-                        "sort_on": u"created",
-                        "sort_reversed": False,
                         "showNumberOfItems": False,
                         "tal_condition": "",
                         "roles_bypassing_talcondition": ["Manager",],
