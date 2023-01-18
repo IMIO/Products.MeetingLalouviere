@@ -16,6 +16,7 @@ from Products.PloneMeeting.profiles import (
 )
 
 data = deepcopy(mc_import_data.data)
+
 # Users and groups -------------------------------------------------------------
 # no user
 data.orgs.append(OrgDescriptor("secretaire-communal", "Secrétaire Communal", u"Sec"))

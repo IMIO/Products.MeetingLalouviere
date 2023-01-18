@@ -7,20 +7,20 @@ from Products.MeetingLalouviere.config import COUNCIL_COMMISSION_IDS_2013
 from plone import api
 
 
-def onItemAfterTransition(item, event):
-    '''Called after the transition event called by default in PloneMeeting.
-       Here, we are sure that code done in the onItemTransition event is finished.'''
-
-    # if it is an item Council in state 'presented' (for which last transition was 'present'),
-    # do item state correspond to meeting state
-    if item.portal_type == 'MeetingItemCouncil' and event.transition.id == 'present':
-        meeting = item.getMeeting()
-        meetingState = meeting.query_state()
-        if meetingState in ('in_committee', 'in_council'):
-            wTool = api.portal.get_tool('portal_workflow')
-            wTool.doActionFor(item, 'setItemInCommittee')
-            if meetingState in ('in_council', ):
-                wTool.doActionFor(item, 'setItemInCouncil')
+# def onItemAfterTransition(item, event):
+#     '''Called after the transition event called by default in PloneMeeting.
+#        Here, we are sure that code done in the onItemTransition event is finished.'''
+#
+#     # if it is an item Council in state 'presented' (for which last transition was 'present'),
+#     # do item state correspond to meeting state
+#     if item.portal_type == 'MeetingItemCouncil' and event.transition.id == 'present':
+#         meeting = item.getMeeting()
+#         meetingState = meeting.query_state()
+#         if meetingState in ('in_committee', 'in_council'):
+#             wTool = api.portal.get_tool('portal_workflow')
+#             wTool.doActionFor(item, 'setItemInCommittee')
+#             if meetingState in ('in_council', ):
+#                 wTool.doActionFor(item, 'setItemInCouncil')
 
 
 def onItemLocalRolesUpdated(item, event):

@@ -757,7 +757,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
         res = []
         item = self.getSelf()
         if item.portal_type == 'MeetingItemCollege' and "proposed_to_dg" in review_state:
-            dg_group_uid = org_id_to_uid(DG_GROUP_ID)
+            dg_group_uid = org_id_to_uid(DG_GROUP_ID) or org_id_to_uid(FALLBACK_DG_GROUP_ID)
             if theObjects:
                 res += uuidsToObjects(dg_group_uid, unrestricted=True)
             else:
@@ -767,18 +767,6 @@ class LLCustomMeetingItem(CustomMeetingItem):
             res.append(proposingGroup)
         return res
 
-    # security.declarePublic("getCollegeItem")
-
-    # def getCollegeItem(self):
-    #     """Returns the predecessor item that was in the college."""
-    #     item = self.getSelf()
-    #     predecessor = item.getPredecessor()
-    #     collegeItem = None
-    #     while predecessor:
-    #         if predecessor.portal_type == "MeetingItemCollege":
-    #             collegeItem = predecessor
-    #             break
-    #     return collegeItem
 
     def mayGenerateFinanceAdvice(self):
         """
@@ -1253,22 +1241,6 @@ class LLMeetingConfig(CustomMeetingConfig):
                     suffix_roles[suffix] += ['Contributor', 'Editor', 'Reviewer']
 
         return True, suffix_roles
-
-    # def get_item_corresponding_state_to_assign_local_roles(self, item_state):
-    #     '''See doc in interfaces.py.'''
-    #     cfg = self.getSelf()
-    #     corresponding_item_state = None
-    #     item_val_levels_states = cfg.getItemWFValidationLevels(data='state', only_enabled=True)
-    #     # return_to_proposing_group WFAdaptation
-    #     if item_state.startswith('returned_to_proposing_group'):
-    #         if item_state == 'returned_to_proposing_group':
-    #             corresponding_item_state = item_val_levels_states[0] if item_val_levels_states else 'itemcreated'
-    #         else:
-    #             corresponding_item_state = item_state.split('returned_to_proposing_group_')[1]
-    #     # waiting_advices WFAdaptation
-    #     elif item_state.endswith('_waiting_advices'):
-    #         corresponding_item_state = item_state.split('_waiting_advices')[0]
-    #     return corresponding_item_state
 
 
 class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
