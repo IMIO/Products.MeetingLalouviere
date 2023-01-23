@@ -10,6 +10,158 @@ import logging
 
 logger = logging.getLogger('MeetingLalouviere')
 
+# ids of commissions used as categories for MeetingItemCouncil
+# before 2013, commission ids were :
+COUNCIL_COMMISSION_IDS = (
+    "commission-travaux",
+    "commission-enseignement",
+    "commission-cadre-de-vie-et-logement",
+    "commission-ag",
+    "commission-finances-et-patrimoine",
+    "commission-police",
+    "commission-speciale",
+)
+# until 2013, commission ids are :
+# changes are about 'commission-enseignement', 'commission-cadre-de-vie-et-logement' and
+# 'commission-finances-et-patrimoine' that are splitted in smaller commissions
+COUNCIL_COMMISSION_IDS_2013 = (
+    "commission-ag",
+    "commission-finances",
+    "commission-enseignement",
+    "commission-culture",
+    "commission-sport",
+    "commission-sante",
+    "commission-police",
+    "commission-cadre-de-vie",
+    "commission-patrimoine",
+    "commission-travaux",
+    "commission-speciale",
+)
+# commissions taken into account on the Meeting
+# since 2013, some commissions are made of several categories...
+COUNCIL_MEETING_COMMISSION_IDS_2013 = (
+    "commission-travaux",
+    (
+        "commission-ag",
+        "commission-finances",
+        "commission-enseignement",
+        "commission-culture",
+        "commission-sport",
+        "commission-sante",
+    ),
+    ("commission-cadre-de-vie", "commission-patrimoine",),
+    "commission-police",
+    "commission-speciale",
+)
+
+# commissions taken into account on the Meeting
+# since 2019, travaux and finance are merge. ag and enseignement are merged
+COUNCIL_MEETING_COMMISSION_IDS_2019 = (
+    ("commission-travaux", "commission-finances"),
+    (
+        "commission-ag",
+        "commission-enseignement",
+        "commission-culture",
+        "commission-sport",
+        "commission-sante",
+    ),
+    ("commission-cadre-de-vie", "commission-patrimoine",),
+    "commission-police",
+    "commission-speciale",
+)
+
+# commissions taken into account on the Meeting
+# since 2020, patrimoine is moved with travaux and finance
+COUNCIL_MEETING_COMMISSION_IDS_2020 = (
+    ("commission-travaux", "commission-finances", "commission-patrimoine"),
+    (
+        "commission-ag",
+        "commission-enseignement",
+        "commission-culture",
+        "commission-sport",
+        "commission-sante",
+    ),
+    "commission-cadre-de-vie",
+    "commission-police",
+    "commission-speciale",
+)
+
+# suffix of specific groups containing commission transcript editors
+COMMISSION_EDITORS_SUFFIX = "commissioneditors"
+
+COMMITTEE_TO_APPLY = ({'acronym': '',
+  'auto_from': [],
+  'default_assembly': 'Monsieur J-C WARGNIE, Pr\xc3\xa9sident,\r\nMadame L. ANCIAUX, Vice-pr\xc3\xa9sidente,\r\n'
+                      'Messieurs F. ROMEO, J. CHRISTIAENS, A. FAGBEMI, Madame M. MULA, Messieurs M. PRIVITERA,\r\n'
+                      'S. ARNONE, Madame L. RUSSO, Monsieur C. BAISE, Madame P. TREMERIE,\r\n'
+                      'Messieurs A. HERMANT, M. PUDDU, X. PAPIER, Conseillers communaux',
+  'default_attendees': [],
+  'default_place': 'Salle du Conseil, 1er \xc3\xa9tage',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enabled': '1',
+  'label': 'Commission Travaux/Finances/Patrimoine',
+  'row_id': 'committee_2023-01-23.1146059833',
+  'supplements': '2',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': 'Madame M. SPANO, Pr\xc3\xa9sidente, Monsieur A. AYCIK, Vice-pr\xc3\xa9sident, '
+                      'Monsieur J-C WARGNIE, Madame D. STAQUET, Monsieur M. BURY, Madame M. MULA, '
+                      'Monsieur M. DI MATTIA, Mesdames \xc3\x96. KAZANCI, L. LEONI, Monsieur M. SIASSIA-BULA, '
+                      'Mesdames A. LECOCQ, L. LUMIA, Messieurs O. DESTREBECQ, O. LAMAND, Conseillers communaux',
+  'default_attendees': [],
+  'default_place': 'Salle du Coll\xc3\xa8ge, 2\xc3\xa8me \xc3\xa9tage',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enabled': '1',
+  'label': 'Commission AG/Enseignement/Culture/Sport/Sant\xc3\xa9',
+  'row_id': 'committee_2023-01-23.1146059532',
+  'supplements': '2',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': 'Madame L. RUSSO, Pr\xc3\xa9sidente, Monsieur M. DI MATTIA, Vice-pr\xc3\xa9sident, '
+                      'Madame O. ZRIHEN, Monsieur A. AYCIK, Mesdames M. SPANO, \xc3\x96. KAZANCI, Messieurs S. ARNONE, '
+                      'J. CHRISTIAENS, M. BURY, O. DESTREBECQ, Messieurs M. SIASSIA-BULA, A. CLEMENT, Madame A. '
+                      'SOMMEREYNS, Monsieur L. RESINELLI, Conseillers communaux',
+  'default_attendees': [],
+  'default_place': 'Salle du Conseil, 1er \xc3\xa9tage',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enabled': '1',
+  'label': 'Commission Cadre de Vie',
+  'row_id': 'committee_2023-01-23.1146069051',
+  'supplements': '2',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': 'Monsieur A. FAGBEMI, Pr\xc3\xa9sident, Madame D. STAQUET, Vice-pr\xc3\xa9sidente, '
+                      'Messieurs F. ROMEO, M. PRIVITERA, Mesdames \xc3\x96. KAZANCI, L. ANCIAUX, M. SPANO, '
+                      'Messieurs J. CHRISTIAENS, M. BURY, M. BAISE, Madame P. TREMERIE, Monsieur A. CLEMENT, '
+                      'Madame A. SOMMEREYNS, Monsieur M. VAN HOOLAND, Conseillers communaux',
+  'default_attendees': [],
+  'default_place': 'Salle du Coll\xc3\xa8ge, 2\xc3\xa8me \xc3\xa9tage',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enabled': '1',
+  'label': 'Commission Police',
+  'row_id': 'committee_2023-01-23.1146062191',
+  'supplements': '2',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enabled': '1',
+  'label': 'Commission Sp\xc3\xa9ciale',
+  'row_id': 'committee_2023-01-23.1146069731',
+  'supplements': '0',
+  'using_groups': []})
+
 
 class Migrate_To_4200(MCMigrate_To_4200):
 
