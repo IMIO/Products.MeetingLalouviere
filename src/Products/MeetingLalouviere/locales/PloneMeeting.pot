@@ -154,10 +154,6 @@ msgstr ""
 msgid "MeetingLalouviere_label_councildescription"
 msgstr ""
 
-#. Default: "Commission"
-msgid "MeetingLalouviere_label_councilclassifier"
-msgstr ""
-
 #. Default: "Deliberation"
 msgid "MeetingLalouviere_label_councildecision"
 msgstr ""
