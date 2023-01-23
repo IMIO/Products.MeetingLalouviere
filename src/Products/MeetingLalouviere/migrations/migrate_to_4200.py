@@ -21,6 +21,15 @@ class Migrate_To_4200(MCMigrate_To_4200):
             # Force init some fields
             cfg.getItemCommitteesStates()
             cfg.getItemCommitteesViewStates()
+            # remove old attrs
+            delattr(cfg, 'preMeetingAssembly_default')
+            delattr(cfg, 'preMeetingAssembly_2_default')
+            delattr(cfg, 'preMeetingAssembly_3_default')
+            delattr(cfg, 'preMeetingAssembly_4_default')
+            delattr(cfg, 'preMeetingAssembly_5_default')
+            delattr(cfg, 'preMeetingAssembly_6_default')
+            delattr(cfg, 'preMeetingAssembly_7_default')
+
             cfg.setMeetingWorkflow('meeting_workflow')
             cfg.setItemWorkflow('meetingitem_workflow')
             cfg.setItemConditionsInterface(
