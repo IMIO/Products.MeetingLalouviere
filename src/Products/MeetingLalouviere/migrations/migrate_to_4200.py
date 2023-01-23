@@ -18,6 +18,9 @@ class Migrate_To_4200(MCMigrate_To_4200):
            we use meeting_workflow/meetingitem_workflow."""
         logger.info("Adapting 'meetingWorkflow/meetingItemWorkflow' for every MeetingConfigs...")
         for cfg in self.tool.objectValues('MeetingConfig'):
+            # Force init some fields
+            cfg.getItemCommitteesStates()
+            cfg.getItemCommitteesViewStates()
             cfg.setMeetingWorkflow('meeting_workflow')
             cfg.setItemWorkflow('meetingitem_workflow')
             cfg.setItemConditionsInterface(
