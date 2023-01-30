@@ -174,11 +174,11 @@ msgstr "Gelée"
 
 #. Default: "In committee"
 msgid "in_committee"
-msgstr "En commission (Gelée)"
+msgstr "En commission"
 
 #. Default: "In council"
 msgid "in_council"
-msgstr "En Conseil communal (En rédaction du PV)"
+msgstr "En Conseil communal"
 
 # Workflow states
 #. Default: "Waiting advices"
@@ -195,6 +195,10 @@ msgstr "Description dans l'ordre du jour"
 
 msgid "proposeToBudgetImpactReviewer"
 msgstr "Proposer au correspondant financier"
+
+#. Default: "validateByBudgetImpactReviewer"
+msgid "validateByBudgetImpactReviewer"
+msgstr "Valider les infos budgétaires"
 
 msgid "proposeToDirector"
 msgstr "Proposer au directeur"
@@ -231,7 +235,7 @@ msgid "proposeToServiceHead"
 msgstr "Proposer au chef de service"
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "proposed_to_budgetimpact_reviewer"
+msgid "proposed_to_budget_reviewer"
 msgstr "Proposé au correspondant financier"
 
 #. Default: "Proposed to dg"
@@ -332,9 +336,6 @@ msgstr "Certains points sont toujours dans des services pour corrections"
 #. Default: "Validate"
 msgid "validate"
 msgstr "Valider"
-
-msgid "validateByBudgetImpactReviewer"
-msgstr "Valider les infos budgétaires"
 
 #. Default: "Validated"
 msgid "validated"

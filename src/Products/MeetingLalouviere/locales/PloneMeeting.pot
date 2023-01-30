@@ -451,7 +451,7 @@ msgid "icon_help_proposed_to_servicehead"
 msgstr ""
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "icon_help_proposed_to_budgetimpact_reviewer"
+msgid "icon_help_proposed_to_budget_reviewer"
 msgstr ""
 
 #. Default: "Proposed to DG"

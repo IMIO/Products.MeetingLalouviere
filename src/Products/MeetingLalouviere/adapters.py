@@ -64,292 +64,6 @@ from zope.i18n import translate
 from zope.interface import implements
 
 
-RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
-    "meetingitemcollegelalouviere_workflow":
-    # view permissions
-    {
-        "Access contents information": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "View": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "PloneMeeting: Read budget infos": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "PloneMeeting: Read decision": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "PloneMeeting: Read item observations": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "MeetingLalouviere: Read commission transcript": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "MeetingLalouviere: Read providedFollowUp": ["Manager",],
-        "MeetingLalouviere: Read followUp": ["Manager",],
-        "MeetingLalouviere: Read neededFollowUp": ["Manager",],
-        # edit permissions
-        "Modify portal content": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Write budget infos": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-            "MeetingBudgetImpactEditor",
-        ],
-        "PloneMeeting: Write decision": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "Review portal content": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "Add portal content": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Add annex": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Add annexDecision": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Write decision annex": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        # MeetingManagers edit permissions
-        "Delete objects": ["Manager", "MeetingManager",],
-        "PloneMeeting: Write item MeetingManager reserved fields": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "MeetingLalouviere: Write commission transcript": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Write marginal notes": ["Manager", "MeetingManager",],
-        "MeetingLalouviere: Write providedFollowUp": ["Manager",],
-        "MeetingLalouviere: Write followUp": ["Manager",],
-        "MeetingLalouviere: Write neededFollowUp": ["Manager",],
-    },
-    "meetingitemcouncillalouviere_workflow":
-    # view permissions
-    {
-        "Access contents information": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "View": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "PloneMeeting: Read budget infos": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "PloneMeeting: Read decision": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "PloneMeeting: Read item observations": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "MeetingLalouviere: Read commission transcript": [
-            "Manager",
-            "MeetingManager",
-            "MeetingMember",
-            "MeetingServiceHead",
-            "MeetingOfficeManager",
-            "MeetingDivisionHead",
-            "MeetingDirector",
-            "MeetingObserverLocal",
-            "Reader",
-        ],
-        "MeetingLalouviere: Read providedFollowUp": ["Manager",],
-        "MeetingLalouviere: Read followUp": ["Manager",],
-        "MeetingLalouviere: Read neededFollowUp": ["Manager",],
-        # edit permissions
-        "Modify portal content": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Write budget infos": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-            "MeetingBudgetImpactEditor",
-        ],
-        "PloneMeeting: Write decision": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "Review portal content": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "Add portal content": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Add annex": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Add annexDecision": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Write decision annex": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        # MeetingManagers edit permissions
-        "Delete objects": ["Manager", "MeetingManager",],
-        "PloneMeeting: Write item MeetingManager reserved fields": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "MeetingLalouviere: Write commission transcript": [
-            "Manager",
-            "MeetingMember",
-            "MeetingOfficeManager",
-            "MeetingManager",
-        ],
-        "PloneMeeting: Write marginal notes": ["Manager", "MeetingManager",],
-        "MeetingLalouviere: Write providedFollowUp": ["Manager",],
-        "MeetingLalouviere: Write followUp": ["Manager",],
-        "MeetingLalouviere: Write neededFollowUp": ["Manager",],
-    },
-}
-
-
 # disable waiting advice
 customWfAdaptations = ('item_validation_shortcuts',
                        'item_validation_no_validate_shortcuts',
@@ -1120,18 +834,25 @@ class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
                 new_state_id='proposed_to_budget_reviewer',
                 origin_state_id='itemcreated',
                 origin_transition_id='proposeToBudgetImpactReviewer',
-                origin_transition_title=translate("proposeToBudgetImpactReviewer", "imio.actionspanel"),
+                origin_transition_title=translate("proposeToBudgetImpactReviewer", "plone"),
                 # origin_transition_icon=None,
                 origin_transition_guard_expr_name='mayCorrect()',
                 back_transition_guard_expr_name="mayCorrect()",
                 back_transition_id='backTo_itemcreated_from_proposed_to_budget_reviewer',
-                back_transition_title=translate("validateByBudgetImpactReviewer_done_descr", "imio.actionspanel"),
+                back_transition_title=translate("validateByBudgetImpactReviewer", "plone"),
                 # back_transition_icon=None
                 itemWorkflow=itemWorkflow)
             return True
         if wfAdaptation == 'apply_council_state_label':
             meetingWorkflow.states['frozen'].title = translate("in_committee", "plone")
-            meetingWorkflow.states['decided'].title = translate("in_council", "plone")
+            meetingWorkflow.transitions['freeze'].title = translate("setInCommittee", "plone")
+            meetingWorkflow.states['published'].title = translate("in_council", "plone")
+            meetingWorkflow.transitions['publish'].title = translate("setInCouncil", "plone")
+
+            itemWorkflow.states['itemfrozen'].title = translate("in_committee", "plone")
+            itemWorkflow.transitions['itemfreeze'].title = translate("setItemInCommittee", "plone")
+            itemWorkflow.states['itempublished'].title = translate("in_council", "plone")
+            itemWorkflow.transitions['itempublish'].title = translate("setItemInCouncil", "plone")
             return True
         return False
 

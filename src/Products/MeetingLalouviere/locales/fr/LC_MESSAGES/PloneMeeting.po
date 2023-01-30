@@ -320,7 +320,7 @@ msgid "icon_help_itemcreated_waiting_advices"
 msgstr "En attente des avis"
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "icon_help_proposed_to_budgetimpact_reviewer"
+msgid "icon_help_proposed_to_budget_reviewer"
 msgstr "Proposé au correspondant financier"
 
 #. Default: "Proposed to DG"

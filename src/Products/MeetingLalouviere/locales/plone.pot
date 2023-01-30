@@ -123,6 +123,10 @@ msgstr ""
 msgid "proposeToBudgetImpactReviewer"
 msgstr ""
 
+#. Default: "validateByBudgetImpactReviewer"
+msgid "validateByBudgetImpactReviewer"
+msgstr ""
+
 msgid "proposeToDirector"
 msgstr ""
 
@@ -142,7 +146,7 @@ msgid "proposeToServiceHead"
 msgstr ""
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "proposed_to_budgetimpact_reviewer"
+msgid "proposed_to_budget_reviewer"
 msgstr ""
 
 #. Default: "Proposed to dg"
@@ -178,9 +182,6 @@ msgstr ""
 
 #. Default: "Validate"
 msgid "validate"
-msgstr ""
-
-msgid "validateByBudgetImpactReviewer"
 msgstr ""
 
 #. Default: "Validated"

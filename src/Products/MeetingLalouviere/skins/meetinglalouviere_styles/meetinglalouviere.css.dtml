@@ -15,10 +15,10 @@
 
 /* Colors on states */
 /* Items */
-.state-proposed_to_budgetimpact_reviewer, .label-state-proposed_to_budgetimpact_reviewer {
+.state-proposed_to_budget_reviewer, .label-state-proposed_to_budget_reviewer {
     color: red !important;
 }
-#plone-contentmenu-workflow .state-proposed_to_budgetimpact_reviewer {
+#plone-contentmenu-workflow .state-proposed_to_budget_reviewer {
     border-radius: 0.5em 0.5em 0.5em 0.5em;
     background-color: red;
     padding: 0 0.5em;
