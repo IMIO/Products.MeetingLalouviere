@@ -8,11 +8,6 @@
         factory="Products.MeetingLalouviere.adapters.MeetingItemMLLWorkflowActions"
         provides="Products.MeetingCommunes.interfaces.IMeetingItemCommunesWorkflowActions"/>
 
-    <!-- IPrettyLink for MeetingItem -->
-    <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-             factory=".adapters.MLItemPrettyLinkAdapter"
-             provides="imio.prettylink.interfaces.IPrettyLink" />
-
     <!-- Searches adapters -->
     <configure package="Products.MeetingCommunes">
         <!-- Customizations for every Meetings -->
