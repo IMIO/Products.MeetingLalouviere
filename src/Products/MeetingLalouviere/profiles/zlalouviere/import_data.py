@@ -179,7 +179,7 @@ collegeMeeting.annexTypes = [
     meetingAnnex,
 ]
 
-collegeMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budgetimpact_reviewer",)
+collegeMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budget_reviewer",)
 collegeMeeting.meetingAppDefaultView = "searchallitems"
 
 collegeMeeting.onMeetingTransitionItemActionToExecute = (
@@ -251,7 +251,7 @@ councilMeeting.usedItemAttributes = (
     u"privacy",
     u"itemTags",
     u"interventions",
-    u"commissionTranscript",
+    u"committeeTranscript",
 )
 
 councilMeeting.usedMeetingAttributes = (

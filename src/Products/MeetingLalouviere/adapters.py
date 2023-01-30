@@ -417,7 +417,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
         """
         res = []
         if cloned_to_same_mc and not cloned_from_item_template:
-            res = ["interventions", "commissionTranscript"]
+            res = ["interventions", "committeeTranscript"]
         return res
 
     def adviceDelayIsTimedOutWithRowId(self, groupId, rowIds=[]):

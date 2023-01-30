@@ -122,14 +122,6 @@ msgstr ""
 msgid "Send to council"
 msgstr ""
 
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_label_commissionTranscript"
-msgstr ""
-
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_descr_commissionTranscript"
-msgstr ""
-
 #. Default: "Interventions"
 msgid "MeetingLalouviere_label_interventions"
 msgstr ""

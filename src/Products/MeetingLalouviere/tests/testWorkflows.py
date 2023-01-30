@@ -209,13 +209,14 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser("admin")
         self.setMeetingConfig(self.meetingConfig2.getId())
         self._enableField("observations")
-        self._enableField("commissionTranscript")
+        self._enableField("committeeTranscript")
         self._activate_wfas(('waiting_advices',
                              # 'waiting_advices_adviser_send_back',
                              'waiting_advices_proposing_group_send_back',
                              'propose_to_budget_reviewer',
                              'apply_council_state_label'),
                             keep_existing=True)
+        # TODO setup committee and committee editors using 4.2 new committees feature.
         self._setup_commissions_classifiers()
         self.add_commission_plone_groups()
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
@@ -291,10 +292,10 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEqual(item1.query_state(), "itemfrozen")
 
         self.changeUser("commissioneditor")
-        self.assertTrue(item1.mayQuickEdit("commissionTranscript"))
+        self.assertTrue(item1.mayQuickEdit("committeeTranscript"))
 
         self.changeUser("commissioneditor2")
-        self.failIf(item1.mayQuickEdit("commissionTranscript"))
+        self.failIf(item1.mayQuickEdit("committeeTranscript"))
 
         # pmReviewer2 validates item2
         self.changeUser("pmDirector2")

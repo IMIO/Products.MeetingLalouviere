@@ -32,10 +32,6 @@ msgstr "Conseil communal"
 msgid "MeetingLalouviere_descr_assembly"
 msgstr "Laissez ce champ vide pour utiliser l'assemblée qui sera définie sur la séance"
 
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_descr_commissionTranscript"
-msgstr " "
-
 #. Default: "Follow-up"
 msgid "MeetingLalouviere_descr_followUp"
 msgstr " "
@@ -59,10 +55,6 @@ msgstr "Référence"
 #. Default: "Enter a reference for this advice if necessary."
 msgid "MeetingLalouviere_label_advice_reference_descr"
 msgstr "Encodez une référence pour l'avis si nécessaire."
-
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_label_commissionTranscript"
-msgstr "Procès-verbal de la commission"
 
 #. Default: "Deliberation"
 msgid "MeetingLalouviere_label_councildecision"
