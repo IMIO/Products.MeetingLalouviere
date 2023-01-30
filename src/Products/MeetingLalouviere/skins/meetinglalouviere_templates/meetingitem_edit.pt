@@ -105,6 +105,9 @@
     <tal:field define="fieldName python: 'committeeObservations'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
+    <tal:field define="fieldName python: 'committeeTranscript'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
     <tal:field define="fieldName python: 'votesObservations'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
@@ -129,10 +132,6 @@
 
     <tal:comment replace="nothing">XXX Interventions</tal:comment>
     <tal:field define="fieldName python: 'interventions'">
-      <metal:f use-macro="context/@@pm-macros/editContentField"/>
-    </tal:field>
-    <tal:comment replace="nothing">XXX Commission transcript</tal:comment>
-    <tal:field define="fieldName python: 'commissionTranscript'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
 
