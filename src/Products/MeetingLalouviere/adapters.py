@@ -35,34 +35,27 @@ from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActi
 from Products.MeetingLalouviere.config import DG_GROUP_ID
 from Products.MeetingLalouviere.config import FALLBACK_DG_GROUP_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
-from Products.PloneMeeting.model import adaptations
-from Products.PloneMeeting.model.adaptations import _addIsolatedState
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
-from Products.PloneMeeting.adapters import (
-    ItemPrettyLinkAdapter,
-    CompoundCriterionBaseAdapter,
-)
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.interfaces import (
     IMeetingConfigCustom, IToolPloneMeetingCustom,
 )
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
+from Products.PloneMeeting.model import adaptations
+from Products.PloneMeeting.model.adaptations import _addIsolatedState
 from Products.PloneMeeting.utils import org_id_to_uid
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from Products.CMFCore.utils import getToolByName
 from collective.contact.plonegroup.utils import get_all_suffixes
 from imio.helpers.content import uuidsToObjects
 from plone import api
-from plone.memoize import ram
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import implements
-
 
 # disable waiting advice
 customWfAdaptations = ('item_validation_shortcuts',
@@ -374,7 +367,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
         '''See doc in interfaces.py.'''
         item = self.getSelf()
         if item.portal_type == 'MeetingItemCollege' and "proposed_to_dg" in review_state:
-            dg_group_uid = org_id_to_uid(DG_GROUP_ID)
+            dg_group_uid = org_id_to_uid(DG_GROUP_ID) or org_id_to_uid(FALLBACK_DG_GROUP_ID)
             if theObject:
                 return uuidsToObjects(dg_group_uid, unrestricted=True)[0]
             else:

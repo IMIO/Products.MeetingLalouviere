@@ -89,65 +89,19 @@ COUNCIL_MEETING_COMMISSION_IDS_2020 = (
 # suffix of specific groups containing commission transcript editors
 COMMISSION_EDITORS_SUFFIX = "commissioneditors"
 
-COMMITTEE_TO_APPLY = ({'acronym': '',
-  'auto_from': [],
-  'default_assembly': 'Monsieur J-C WARGNIE, Pr\xc3\xa9sident,\r\nMadame L. ANCIAUX, Vice-pr\xc3\xa9sidente,\r\n'
-                      'Messieurs F. ROMEO, J. CHRISTIAENS, A. FAGBEMI, Madame M. MULA, Messieurs M. PRIVITERA,\r\n'
-                      'S. ARNONE, Madame L. RUSSO, Monsieur C. BAISE, Madame P. TREMERIE,\r\n'
-                      'Messieurs A. HERMANT, M. PUDDU, X. PAPIER, Conseillers communaux',
-  'default_attendees': [],
-  'default_place': 'Salle du Conseil, 1er \xc3\xa9tage',
-  'default_signatories': [],
-  'default_signatures': '',
-  'enabled': '1',
-  'label': 'Commission Travaux/Finances/Patrimoine',
-  'row_id': 'committee_2023-01-23.1146059833',
-  'supplements': '2',
-  'using_groups': []},
+COMMITTEES_TO_APPLY = (
  {'acronym': '',
   'auto_from': [],
-  'default_assembly': 'Madame M. SPANO, Pr\xc3\xa9sidente, Monsieur A. AYCIK, Vice-pr\xc3\xa9sident, '
-                      'Monsieur J-C WARGNIE, Madame D. STAQUET, Monsieur M. BURY, Madame M. MULA, '
-                      'Monsieur M. DI MATTIA, Mesdames \xc3\x96. KAZANCI, L. LEONI, Monsieur M. SIASSIA-BULA, '
-                      'Mesdames A. LECOCQ, L. LUMIA, Messieurs O. DESTREBECQ, O. LAMAND, Conseillers communaux',
+  'default_assembly': '',
   'default_attendees': [],
-  'default_place': 'Salle du Coll\xc3\xa8ge, 2\xc3\xa8me \xc3\xa9tage',
+  'default_place': '',
   'default_signatories': [],
   'default_signatures': '',
+  'enable_editors': '1',
   'enabled': '1',
-  'label': 'Commission AG/Enseignement/Culture/Sport/Sant\xc3\xa9',
-  'row_id': 'committee_2023-01-23.1146059532',
-  'supplements': '2',
-  'using_groups': []},
- {'acronym': '',
-  'auto_from': [],
-  'default_assembly': 'Madame L. RUSSO, Pr\xc3\xa9sidente, Monsieur M. DI MATTIA, Vice-pr\xc3\xa9sident, '
-                      'Madame O. ZRIHEN, Monsieur A. AYCIK, Mesdames M. SPANO, \xc3\x96. KAZANCI, Messieurs S. ARNONE, '
-                      'J. CHRISTIAENS, M. BURY, O. DESTREBECQ, Messieurs M. SIASSIA-BULA, A. CLEMENT, Madame A. '
-                      'SOMMEREYNS, Monsieur L. RESINELLI, Conseillers communaux',
-  'default_attendees': [],
-  'default_place': 'Salle du Conseil, 1er \xc3\xa9tage',
-  'default_signatories': [],
-  'default_signatures': '',
-  'enabled': '1',
-  'label': 'Commission Cadre de Vie',
-  'row_id': 'committee_2023-01-23.1146069051',
-  'supplements': '2',
-  'using_groups': []},
- {'acronym': '',
-  'auto_from': [],
-  'default_assembly': 'Monsieur A. FAGBEMI, Pr\xc3\xa9sident, Madame D. STAQUET, Vice-pr\xc3\xa9sidente, '
-                      'Messieurs F. ROMEO, M. PRIVITERA, Mesdames \xc3\x96. KAZANCI, L. ANCIAUX, M. SPANO, '
-                      'Messieurs J. CHRISTIAENS, M. BURY, M. BAISE, Madame P. TREMERIE, Monsieur A. CLEMENT, '
-                      'Madame A. SOMMEREYNS, Monsieur M. VAN HOOLAND, Conseillers communaux',
-  'default_attendees': [],
-  'default_place': 'Salle du Coll\xc3\xa8ge, 2\xc3\xa8me \xc3\xa9tage',
-  'default_signatories': [],
-  'default_signatures': '',
-  'enabled': '1',
-  'label': 'Commission Police',
-  'row_id': 'committee_2023-01-23.1146062191',
-  'supplements': '2',
+  'label': 'Travaux/Finances/Patrimoine',
+  'row_id': 'committee_2020-01-01.2501162132',
+  'supplements': '3',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -156,23 +110,187 @@ COMMITTEE_TO_APPLY = ({'acronym': '',
   'default_place': '',
   'default_signatories': [],
   'default_signatures': '',
+  'enable_editors': '1',
   'enabled': '1',
-  'label': 'Commission Sp\xc3\xa9ciale',
-  'row_id': 'committee_2023-01-23.1146069731',
-  'supplements': '0',
-  'using_groups': []})
+  'label': 'AG/Enseignement/Culture/Sport/Sant\xc3\xa9',
+  'row_id': 'committee_2019-01-01.2501153343',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '1',
+  'enabled': '1',
+  'label': 'Cadre de Vie',
+  'row_id': 'committee_2013-01-01.2501163335',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '1',
+  'enabled': '1',
+  'label': 'Police',
+  'row_id': 'committee_2012-01-01.9920407131',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '1',
+  'enabled': '1',
+  'label': 'Sp\xc3\xa9ciale',
+  'row_id': 'committee_2012-01-01.5810485069',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'Travaux',
+  'row_id': 'committee_old_2012.5267121837',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'Enseignement',
+  'row_id': 'committee_old_2012.5810478389',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'Cadre de Vie et Logement',
+  'row_id': 'committee_old_2012.5810479936',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'AG',
+  'row_id': 'committee_old_2012.5810473741',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'Finances et Patrimoine',
+  'row_id': 'committee_old_2012.9920391524',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'AG/Finances/Enseignement/Culture/Sport/Sant\xc3\xa9',
+  'row_id': 'committee_old_2013.2501155949',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'Cadre de Vie/Patrimoine',
+  'row_id': 'committee_old_2013.2501159941',
+  'supplements': '3',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': '0',
+  'label': 'Travaux/Finances',
+  'row_id': 'committee_old_2019.2501156983',
+  'supplements': '3',
+  'using_groups': []},
+)
 
 
 class Migrate_To_4200(MCMigrate_To_4200):
 
-    def _fixUsedWFs(self):
+    def _fixCfgs(self):
+        def _replace_columns(columns_tuple):
+            columns = list(columns_tuple)
+            if 'actions' in columns:
+                columns.remove('actions')
+                columns.append('actions_async')
+            if 'council' in cfg.getId() and 'review_state' in columns:
+                columns.remove('review_state')
+                columns.append('review_state_title')
+            return tuple(columns)
+
         """meetingseraing_workflow/meetingitemseraing_workflow do not exist anymore,
            we use meeting_workflow/meetingitem_workflow."""
         logger.info("Adapting 'meetingWorkflow/meetingItemWorkflow' for every MeetingConfigs...")
         for cfg in self.tool.objectValues('MeetingConfig'):
+            if 'council' in cfg.getId():
+                cfg.setCommittees(COMMITTEES_TO_APPLY)
+            # replace action and review_state column by async actions
+            cfg.setItemColumns(_replace_columns(cfg.getItemColumns()))
+            cfg.setAvailableItemsListVisibleColumns(_replace_columns(cfg.getAvailableItemsListVisibleColumns()))
+            cfg.setItemsListVisibleColumns(_replace_columns(cfg.getItemsListVisibleColumns()))
+            cfg.setMeetingColumns(_replace_columns(cfg.getMeetingColumns()))
             # Force init some fields
-            cfg.getItemCommitteesStates()
-            cfg.getItemCommitteesViewStates()
+            cfg.setItemCommitteesStates(('presented', 'itemfrozen', 'itempublished'))
+            cfg.setItemCommitteesViewStates(('presented', 'itemfrozen', 'itempublished', 'accepted',
+                                             'accepted_but_modified', 'pre_accepted', 'refused', 'delayed', 'removed',
+                                             'returned_to_proposing_group'))
             # remove old attrs
             delattr(cfg, 'preMeetingAssembly_default')
             delattr(cfg, 'preMeetingAssembly_2_default')
@@ -279,7 +397,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
-        self._fixUsedWFs()
+        self._fixCfgs()
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
         self._adaptWFHistoryForItemsAndMeetings()
 
