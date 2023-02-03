@@ -101,6 +101,8 @@ Finances_Patrimoine = 'committee_old_2012.9920391524'
 AG_Finances_Enseignement_Culture_Sport_Sante = 'committee_old_2013.2501155949'
 Travaux_Finances = 'committee_old_2019.2501156983'
 Cadre_Vie_Patrimoine = 'committee_old_2013.2501159941'
+Conseillers2 = 'points-conseillers-2eme-supplement'
+Conseillers3 = 'points-conseillers-3eme-supplement'
 
 COMMITTEES_TO_APPLY = (
  {'acronym': 'Trav',
@@ -117,7 +119,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '1',
   'label': 'Travaux/Finances/Patrimoine',
   'row_id': Travaux_Finances_Patrimoine,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': 'AG',
   'auto_from': [],
@@ -133,7 +135,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '1',
   'label': 'AG/Enseignement/Culture/Sport/Sant\xc3\xa9',
   'row_id': AG_Enseignement_Culture_Sport_Sante,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': 'Vie',
   'auto_from': [],
@@ -151,7 +153,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '1',
   'label': 'Cadre de Vie',
   'row_id': Cadre_Vie,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': 'Police',
   'auto_from': [],
@@ -168,7 +170,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '1',
   'label': 'Police',
   'row_id': Police,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': 'Spe',
   'auto_from': [],
@@ -181,7 +183,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '1',
   'label': 'Sp\xc3\xa9ciale',
   'row_id': Speciale,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -194,7 +196,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'Travaux',
   'row_id': Travaux,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -207,7 +209,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'Enseignement',
   'row_id': Enseignement,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -220,7 +222,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'Cadre de Vie et Logement',
   'row_id': Cadre_Vie_Logement,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -233,7 +235,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'AG',
   'row_id': AG,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -246,7 +248,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'Finances et Patrimoine',
   'row_id': Finances_Patrimoine,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -259,7 +261,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'AG/Finances/Enseignement/Culture/Sport/Sant\xc3\xa9',
   'row_id': AG_Finances_Enseignement_Culture_Sport_Sante,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -272,7 +274,7 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'Cadre de Vie/Patrimoine',
   'row_id': Cadre_Vie_Patrimoine,
-  'supplements': '3',
+  'supplements': '1',
   'using_groups': []},
  {'acronym': '',
   'auto_from': [],
@@ -285,14 +287,40 @@ COMMITTEES_TO_APPLY = (
   'enabled': '0',
   'label': 'Travaux/Finances',
   'row_id': Travaux_Finances,
-  'supplements': '3',
+  'supplements': '1',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': 'item_only',
+  'label': 'Points conseillers (2ème supplément)',
+  'row_id': Conseillers2,
+  'supplements': '0',
+  'using_groups': []},
+ {'acronym': '',
+  'auto_from': [],
+  'default_assembly': '',
+  'default_attendees': [],
+  'default_place': '',
+  'default_signatories': [],
+  'default_signatures': '',
+  'enable_editors': '0',
+  'enabled': 'item_only',
+  'label': 'Points conseillers (3ème supplément)',
+  'row_id': Conseillers3,
+  'supplements': '0',
   'using_groups': []},
 )
 
-COMMISSIONS_2020 = [Travaux_Finances_Patrimoine, AG_Enseignement_Culture_Sport_Sante, Cadre_Vie, Police, Speciale]
-COMMISSIONS_2019 = [Travaux_Finances, AG_Enseignement_Culture_Sport_Sante, Cadre_Vie_Patrimoine, Police, Speciale]
-COMMISSIONS_2013 = [Travaux, AG_Finances_Enseignement_Culture_Sport_Sante, Cadre_Vie_Patrimoine, Police, Speciale]
-COMMISSIONS_2012 = [Travaux, Enseignement, Cadre_Vie_Logement, AG, Finances_Patrimoine, Police, Speciale]
+COMMITTEES_2020 = [Travaux_Finances_Patrimoine, AG_Enseignement_Culture_Sport_Sante, Cadre_Vie, Police, Speciale]
+COMMITTEES_2019 = [Travaux_Finances, AG_Enseignement_Culture_Sport_Sante, Cadre_Vie_Patrimoine, Police, Speciale]
+COMMITTEES_2013 = [Travaux, AG_Finances_Enseignement_Culture_Sport_Sante, Cadre_Vie_Patrimoine, Police, Speciale]
+COMMITTEES_2012 = [Travaux, Enseignement, Cadre_Vie_Logement, AG, Finances_Patrimoine, Police, Speciale]
 
 
 class Migrate_To_4200(MCMigrate_To_4200):
@@ -504,25 +532,99 @@ class Migrate_To_4200(MCMigrate_To_4200):
 
     def find_committee_row_id(self, number, date):
         if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
-            return COMMISSIONS_2020[number]
+            return COMMITTEES_2020[number]
         elif date.year() >= 2019 and date.month() > 8:
-            return COMMISSIONS_2019[number]
+            return COMMITTEES_2019[number]
         elif date.year() >= 2013 and date.month() > 5:
-            return COMMISSIONS_2013[number]
+            return COMMITTEES_2013[number]
         else:
-            return COMMISSIONS_2012[number]
+            return COMMITTEES_2012[number]
+
+    def find_item_committee_row_id(self, date, item_lassifier):
+        if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
+            binding = {
+                "commission-travaux": Travaux_Finances_Patrimoine,
+                "commission-sport": AG_Enseignement_Culture_Sport_Sante,
+                "commission-speciale": Speciale,
+                "commission-sante": AG_Enseignement_Culture_Sport_Sante,
+                "commission-police": Police,
+                "commission-patrimoine": Travaux_Finances_Patrimoine,
+                "commission-finances": Travaux_Finances_Patrimoine,
+                "commission-enseignement": AG_Enseignement_Culture_Sport_Sante,
+                "commission-cadre-de-vie": Cadre_Vie,
+                "commission-ag": AG_Enseignement_Culture_Sport_Sante,
+                "commission-culture": AG_Enseignement_Culture_Sport_Sante,
+            }
+        elif date.year() >= 2019 and date.month() > 8:
+            binding = {
+                "commission-travaux": Travaux_Finances,
+                "commission-sport": AG_Enseignement_Culture_Sport_Sante,
+                "commission-speciale": Speciale,
+                "commission-sante": AG_Enseignement_Culture_Sport_Sante,
+                "commission-police": Police,
+                "commission-patrimoine": Cadre_Vie_Patrimoine,
+                "commission-finances": Travaux_Finances,
+                "commission-enseignement": AG_Enseignement_Culture_Sport_Sante,
+                "commission-cadre-de-vie": Cadre_Vie_Patrimoine,
+                "commission-ag": AG_Enseignement_Culture_Sport_Sante,
+                "commission-culture": AG_Enseignement_Culture_Sport_Sante,
+            }
+        elif date.year() >= 2013 and date.month() > 5:
+            binding = {
+                "commission-travaux": Travaux,
+                "commission-sport": AG_Finances_Enseignement_Culture_Sport_Sante,
+                "commission-speciale": Speciale,
+                "commission-sante": AG_Finances_Enseignement_Culture_Sport_Sante,
+                "commission-police": Police,
+                "commission-patrimoine": Travaux_Finances_Patrimoine,
+                "commission-finances": AG_Finances_Enseignement_Culture_Sport_Sante,
+                "commission-enseignement": AG_Finances_Enseignement_Culture_Sport_Sante,
+                "commission-cadre-de-vie": Cadre_Vie,
+                "commission-ag": AG_Finances_Enseignement_Culture_Sport_Sante,
+                "commission-culture": AG_Finances_Enseignement_Culture_Sport_Sante,
+            }
+        else:
+            binding = {
+                "commission-travaux": Travaux,
+                "commission-sport": AG,
+                "commission-speciale": Speciale,
+                "commission-sante": AG,
+                "commission-police": Police,
+                "commission-patrimoine": Finances_Patrimoine,
+                "commission-finances": Finances_Patrimoine,
+                "commission-enseignement": Enseignement,
+                "commission-cadre-de-vie": Cadre_Vie_Logement,
+                "commission-ag": AG,
+                "commission-culture": AG,
+                "commission-cadre-de-vie-et-logement": Cadre_Vie_Logement,
+                "commission-finances-et-patrimoine": Finances_Patrimoine
+            }
+        return binding.get(item_lassifier, None)
+
+    def _adapt_council_items(self):
+        brains = self.catalog(portal_type='MeetingItemCouncil', sort_on=['meeting_date', 'getRawClassifier'])
+        for brain in brains:
+            committee_id = self.find_item_committee_row_id(brain.meeting_date, brain.getRawClassifier)
+            if committee_id:
+                item = brain.getObject()
+                item.setClassifier(None)
+                item.setCommittee((committee_id, ))
+            else:
+                raise ValueError("committee not found for item " + brain.id)
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
         self._adaptWFHistoryForItemsAndMeetings()
+        self._adapt_council_items()
         logger.info('Done migrating to MeetingLalouviere 4200...')
 
 
 # The migration function -------------------------------------------------------
 def migrate(context):
-    '''This migration function:
+    '''
+    This migration function:
        1) Change MeetingConfig workflows to use meeting_workflow/meetingitem_workflow;
        2) Call PloneMeeting migration to 4200 and 4201;
        3) In _after_reinstall hook, adapt items and meetings workflow_history
