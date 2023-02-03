@@ -8,6 +8,8 @@ from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEV
 from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 import logging
 
+from plone.app.textfield import RichTextValue
+
 logger = logging.getLogger('MeetingLalouviere')
 
 # ids of commissions used as categories for MeetingItemCouncil
@@ -86,63 +88,89 @@ COUNCIL_MEETING_COMMISSION_IDS_2020 = (
     "commission-speciale",
 )
 
-# suffix of specific groups containing commission transcript editors
-COMMISSION_EDITORS_SUFFIX = "commissioneditors"
+Travaux_Finances_Patrimoine = "committee_2020-01-01.2501162132"
+AG_Enseignement_Culture_Sport_Sante = "committee_2019-01-01.2501153343"
+Cadre_Vie = "committee_2013-01-01.2501163335"
+Police = "committee_2012-01-01.9920407131"
+Speciale = "committee_2012-01-01.5810485069"
+Travaux = 'committee_old_2012.5267121837'
+Enseignement = 'committee_old_2012.5810478389'
+Cadre_Vie_Logement = 'committee_old_2012.5810479936'
+AG = 'committee_old_2012.5810473741'
+Finances_Patrimoine = 'committee_old_2012.9920391524'
+AG_Finances_Enseignement_Culture_Sport_Sante = 'committee_old_2013.2501155949'
+Travaux_Finances = 'committee_old_2019.2501156983'
+Cadre_Vie_Patrimoine = 'committee_old_2013.2501159941'
 
 COMMITTEES_TO_APPLY = (
- {'acronym': '',
+ {'acronym': 'Trav',
   'auto_from': [],
-  'default_assembly': '',
+  'default_assembly': "Monsieur J-C WARGNIE, Président,\nMadame L. ANCIAUX, Vice-présidente,\n"
+                      "Messieurs F. ROMEO, J. CHRISTIAENS, G. CALUCCI, Madame M. MULA, Messieurs M. PRIVITERA,\n"
+                      "S. ARNONE, Madame L. RUSSO, Monsieur C. BAISE, Madame P. TREMERIE,\n"
+                      "Messieurs A. HERMANT, M. PUDDU, X. PAPIER, Conseillers communaux",
   'default_attendees': [],
-  'default_place': '',
+  'default_place': 'Salle du Conseil, 1er étage',
   'default_signatories': [],
   'default_signatures': '',
   'enable_editors': '1',
   'enabled': '1',
   'label': 'Travaux/Finances/Patrimoine',
-  'row_id': 'committee_2020-01-01.2501162132',
+  'row_id': Travaux_Finances_Patrimoine,
   'supplements': '3',
   'using_groups': []},
- {'acronym': '',
+ {'acronym': 'AG',
   'auto_from': [],
-  'default_assembly': '',
+  'default_assembly': 'Madame M. SPANO, Présidente,\nMonsieur A. AYCIK, Vice-président,\n'
+                      'Monsieur J-C WARGNIE, Madame D. STAQUET, Monsieur M. BURY, Madame M. MULA, Monsieur M. DI MATTIA,\n'
+                      'Mesdames Ö. KAZANCI, L. LEONI, Monsieur M. SIASSIA-BULA,\n'
+                      'Mesdames A. LECOCQ, L. LUMIA, Messieurs O. DESTREBECQ, O. LAMAND, Conseillers communaux',
   'default_attendees': [],
-  'default_place': '',
+  'default_place': 'Salle du Collège, 2ème étage',
   'default_signatories': [],
   'default_signatures': '',
   'enable_editors': '1',
   'enabled': '1',
   'label': 'AG/Enseignement/Culture/Sport/Sant\xc3\xa9',
-  'row_id': 'committee_2019-01-01.2501153343',
+  'row_id': AG_Enseignement_Culture_Sport_Sante,
   'supplements': '3',
   'using_groups': []},
- {'acronym': '',
+ {'acronym': 'Vie',
   'auto_from': [],
-  'default_assembly': '',
+  'default_assembly': 'Madame L. RUSSO, Présidente,\n'
+                      'Monsieur M. DI MATTIA, Vice-président,\n'
+                      'Madame O. ZRIHEN, Monsieur A. AYCIK, Mesdames M. SPANO, Ö. KAZANCI,\n'
+                      'Messieurs S. ARNONE, J. CHRISTIAENS, M. BURY, O. DESTREBECQ,\n'
+                      'Messieurs M. SIASSIA-BULA, A. CLEMENT,\n'
+                      'Madame A. SOMMEREYNS, Monsieur L. RESINELLI, Conseillers communaux',
   'default_attendees': [],
-  'default_place': '',
+  'default_place': 'Salle du Conseil,1er étage',
   'default_signatories': [],
   'default_signatures': '',
   'enable_editors': '1',
   'enabled': '1',
   'label': 'Cadre de Vie',
-  'row_id': 'committee_2013-01-01.2501163335',
+  'row_id': Cadre_Vie,
   'supplements': '3',
   'using_groups': []},
- {'acronym': '',
+ {'acronym': 'Police',
   'auto_from': [],
-  'default_assembly': '',
+  'default_assembly': 'Madame D. STAQUET, Présidente,\n'
+                      'Madame D. STAQUET, Vice-présidente,\n'
+                      'Messieurs F. ROMEO, M. PRIVITERA, Mesdames Ö. KAZANCI, L. ANCIAUX, M. SPANO,\n'
+                      'Messieurs J. CHRISTIAENS, M. BURY, M. BAISE, Madame P. TREMERIE,\n'
+                      'Monsieur A. CLEMENT, Madame A. SOMMEREYNS, Monsieur M. VAN HOOLAND,\nConseillers communaux',
   'default_attendees': [],
-  'default_place': '',
+  'default_place': 'Salle du Collège, 2ème étage',
   'default_signatories': [],
   'default_signatures': '',
   'enable_editors': '1',
   'enabled': '1',
   'label': 'Police',
-  'row_id': 'committee_2012-01-01.9920407131',
+  'row_id': Police,
   'supplements': '3',
   'using_groups': []},
- {'acronym': '',
+ {'acronym': 'Spe',
   'auto_from': [],
   'default_assembly': '',
   'default_attendees': [],
@@ -152,7 +180,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '1',
   'enabled': '1',
   'label': 'Sp\xc3\xa9ciale',
-  'row_id': 'committee_2012-01-01.5810485069',
+  'row_id': Speciale,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -165,7 +193,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'Travaux',
-  'row_id': 'committee_old_2012.5267121837',
+  'row_id': Travaux,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -178,7 +206,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'Enseignement',
-  'row_id': 'committee_old_2012.5810478389',
+  'row_id': Enseignement,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -191,7 +219,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'Cadre de Vie et Logement',
-  'row_id': 'committee_old_2012.5810479936',
+  'row_id': Cadre_Vie_Logement,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -204,7 +232,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'AG',
-  'row_id': 'committee_old_2012.5810473741',
+  'row_id': AG,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -217,7 +245,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'Finances et Patrimoine',
-  'row_id': 'committee_old_2012.9920391524',
+  'row_id': Finances_Patrimoine,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -230,7 +258,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'AG/Finances/Enseignement/Culture/Sport/Sant\xc3\xa9',
-  'row_id': 'committee_old_2013.2501155949',
+  'row_id': AG_Finances_Enseignement_Culture_Sport_Sante,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -243,7 +271,7 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'Cadre de Vie/Patrimoine',
-  'row_id': 'committee_old_2013.2501159941',
+  'row_id': Cadre_Vie_Patrimoine,
   'supplements': '3',
   'using_groups': []},
  {'acronym': '',
@@ -256,15 +284,46 @@ COMMITTEES_TO_APPLY = (
   'enable_editors': '0',
   'enabled': '0',
   'label': 'Travaux/Finances',
-  'row_id': 'committee_old_2019.2501156983',
+  'row_id': Travaux_Finances,
   'supplements': '3',
   'using_groups': []},
 )
 
+COMMISSIONS_2020 = [Travaux_Finances_Patrimoine, AG_Enseignement_Culture_Sport_Sante, Cadre_Vie, Police, Speciale]
+COMMISSIONS_2019 = [Travaux_Finances, AG_Enseignement_Culture_Sport_Sante, Cadre_Vie_Patrimoine, Police, Speciale]
+COMMISSIONS_2013 = [Travaux, AG_Finances_Enseignement_Culture_Sport_Sante, Cadre_Vie_Patrimoine, Police, Speciale]
+COMMISSIONS_2012 = [Travaux, Enseignement, Cadre_Vie_Logement, AG, Finances_Patrimoine, Police, Speciale]
+
 
 class Migrate_To_4200(MCMigrate_To_4200):
 
-    def _fixCfgs(self):
+    def replace_user_committee_editors(self):
+        binding = {
+            "commission-travaux_commissioneditors": Travaux_Finances_Patrimoine,
+            "commission-sport_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
+            "commission-speciale_commissioneditors": Speciale,
+            "commission-sante_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
+            "commission-police_commissioneditors": Police,
+            "commission-patrimoine_commissioneditors": Travaux_Finances_Patrimoine,
+            "commission-finances_commissioneditors": Travaux_Finances_Patrimoine,
+            "commission-enseignement_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
+            "commission-cadre-de-vie_commissioneditors": Cadre_Vie,
+            "commission-ag_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
+            "commission-culture_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
+        }
+        group_tool = self.portal.potal_groups
+        meetingmanagers_council = group_tool.getGroupById('meeting-config-council_meetingmanagers').getAllGroupMemberIds()
+        for old_commission in binding:
+            group = group_tool.getGroupById(old_commission)
+            members = group.getAllGroupMemberIds()
+            new_group = group_tool.getGroupById(binding[old_commission])
+            for member in members:
+                group.removeMember(member)
+                if member not in meetingmanagers_council:
+                    new_group.addMember(member)
+            group_tool.removeGroup(group)
+
+    def _fixUsedMeetingWFs(self):
         def _replace_columns(columns_tuple):
             columns = list(columns_tuple)
             if 'actions' in columns:
@@ -281,6 +340,8 @@ class Migrate_To_4200(MCMigrate_To_4200):
         for cfg in self.tool.objectValues('MeetingConfig'):
             if 'council' in cfg.getId():
                 cfg.setCommittees(COMMITTEES_TO_APPLY)
+                cfg.createCommitteeEditorsGroups()
+                self.replace_user_committee_editors()
             # replace action and review_state column by async actions
             cfg.setItemColumns(_replace_columns(cfg.getItemColumns()))
             cfg.setAvailableItemsListVisibleColumns(_replace_columns(cfg.getAvailableItemsListVisibleColumns()))
@@ -394,13 +455,68 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                    LLO_APPLYED_COUNCIL_WFA or
                                    LLO_APPLYED_COLLEGE_WFA)
 
+    def _hook_custom_meeting_to_dx(self, old, new):
+
+        def get_committee(date, assembly, place, row_id):
+            date._timezone_naive = True
+            datetime = self.new.date = date.asdatetime()
+            return {'assembly': RichTextValue(assembly),  # RichTextValue object.
+                    'attendees': None,
+                    'committee_observations': None,
+                    'convocation_date': None,
+                    'date': datetime,  # fill selected date in old
+                    'place': place,  # fill place value in old
+                    'row_id': row_id,  # fill row_id un cfg
+                    'signatories': None,
+                    'signatures': None}
+
+        if new.portal_type == 'MeetingCouncil':
+            committees = []
+            if old.getPremeetingDate():
+                committees.append(get_committee(old.getPremeetingDate(), old.getPremeetingAssembly(),
+                                                old.getPremeetingPlace(), self.find_committee_row_id(1,
+                                                                                                     old.getDate())))
+            if old.getPremeetingDate_2():
+                committees.append(get_committee(old.getPremeetingDate_2(), old.getPremeetingAssembly_2(),
+                                                old.getPremeetingPlace_2(), self.find_committee_row_id(2,
+                                                                                                       old.getDate())))
+            if old.getPremeetingDate_3():
+                committees.append(get_committee(old.getPremeetingDate_3(), old.getPremeetingAssembly_3(),
+                                                old.getPremeetingPlace_3(), self.find_committee_row_id(3,
+                                                                                                       old.getDate())))
+            if old.getPremeetingDate_4():
+                committees.append(get_committee(old.getPremeetingDate_4(), old.getPremeetingAssembly_4(),
+                                                old.getPremeetingPlace_4(), self.find_committee_row_id(4,
+                                                                                                       old.getDate())))
+            if old.getPremeetingDate_5():
+                committees.append(get_committee(old.getPremeetingDate_5(), old.getPremeetingAssembly_5(),
+                                                old.getPremeetingPlace_5(), self.find_committee_row_id(5,
+                                                                                                       old.getDate())))
+            if old.getPremeetingDate_6():
+                committees.append(get_committee(old.getPremeetingDate_6(), old.getPremeetingAssembly_6(),
+                                                old.getPremeetingPlace_6(), self.find_committee_row_id(6,
+                                                                                                       old.getDate())))
+            if old.getPremeetingDate_7():
+                committees.append(get_committee(old.getPremeetingDate_7(), old.getPremeetingAssembly_7(),
+                                                old.getPremeetingPlace_7(), self.find_committee_row_id(7,
+                                                                                                       old.getDate())))
+            new.committees = committees
+
+    def find_committee_row_id(self, number, date):
+        if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
+            return COMMISSIONS_2020[number]
+        elif date.year() >= 2019 and date.month() > 8:
+            return COMMISSIONS_2019[number]
+        elif date.year() >= 2013 and date.month() > 5:
+            return COMMISSIONS_2013[number]
+        else:
+            return COMMISSIONS_2012[number]
+
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
-        self._fixCfgs()
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
         self._adaptWFHistoryForItemsAndMeetings()
-
         logger.info('Done migrating to MeetingLalouviere 4200...')
 
 
