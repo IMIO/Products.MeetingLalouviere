@@ -325,7 +325,7 @@ COMMITTEES_2012 = [Travaux, Enseignement, Cadre_Vie_Logement, AG, Finances_Patri
 
 class Migrate_To_4200(MCMigrate_To_4200):
 
-    def replace_user_committee_editors(self):
+    def _replace_user_committee_editors(self):
         binding = {
             "commission-travaux_commissioneditors": Travaux_Finances_Patrimoine,
             "commission-sport_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
@@ -339,7 +339,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             "commission-ag_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
             "commission-culture_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
         }
-        group_tool = self.portal.potal_groups
+        group_tool = self.portal.portal_groups
         meetingmanagers_council = group_tool.getGroupById('meeting-config-council_meetingmanagers').getAllGroupMemberIds()
         for old_commission in binding:
             group = group_tool.getGroupById(old_commission)
@@ -347,11 +347,11 @@ class Migrate_To_4200(MCMigrate_To_4200):
             new_group = group_tool.getGroupById(binding[old_commission])
             for member in members:
                 group.removeMember(member)
-                if member not in meetingmanagers_council:
+                if new_group and member not in meetingmanagers_council:
                     new_group.addMember(member)
-            group_tool.removeGroup(group)
+            group_tool.removeGroup(group.getId())
 
-    def _fixUsedMeetingWFs(self):
+    def _applyMeetingConfig_fixtures(self):
         def _replace_columns(columns_tuple):
             columns = list(columns_tuple)
             if 'actions' in columns:
@@ -362,24 +362,24 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 columns.append('review_state_title')
             return tuple(columns)
 
-        """meetingseraing_workflow/meetingitemseraing_workflow do not exist anymore,
-           we use meeting_workflow/meetingitem_workflow."""
         logger.info("Adapting 'meetingWorkflow/meetingItemWorkflow' for every MeetingConfigs...")
         for cfg in self.tool.objectValues('MeetingConfig'):
             if 'council' in cfg.getId():
                 cfg.setCommittees(COMMITTEES_TO_APPLY)
                 cfg.createCommitteeEditorsGroups()
-                self.replace_user_committee_editors()
+                self._replace_user_committee_editors()
+                # Force init some fields
+                cfg.setItemCommitteesStates(('presented', 'itemfrozen', 'itempublished'))
+                cfg.setItemCommitteesViewStates(('presented', 'itemfrozen', 'itempublished', 'accepted',
+                                                 'accepted_but_modified', 'pre_accepted', 'refused', 'delayed',
+                                                 'removed',
+                                                 'returned_to_proposing_group'))
             # replace action and review_state column by async actions
             cfg.setItemColumns(_replace_columns(cfg.getItemColumns()))
             cfg.setAvailableItemsListVisibleColumns(_replace_columns(cfg.getAvailableItemsListVisibleColumns()))
             cfg.setItemsListVisibleColumns(_replace_columns(cfg.getItemsListVisibleColumns()))
             cfg.setMeetingColumns(_replace_columns(cfg.getMeetingColumns()))
-            # Force init some fields
-            cfg.setItemCommitteesStates(('presented', 'itemfrozen', 'itempublished'))
-            cfg.setItemCommitteesViewStates(('presented', 'itemfrozen', 'itempublished', 'accepted',
-                                             'accepted_but_modified', 'pre_accepted', 'refused', 'delayed', 'removed',
-                                             'returned_to_proposing_group'))
+
             # remove old attrs
             delattr(cfg, 'preMeetingAssembly_default')
             delattr(cfg, 'preMeetingAssembly_2_default')
@@ -389,6 +389,13 @@ class Migrate_To_4200(MCMigrate_To_4200):
             delattr(cfg, 'preMeetingAssembly_6_default')
             delattr(cfg, 'preMeetingAssembly_7_default')
 
+    def _fixUsedMeetingWFs(self):
+        # remap states and transitions
+        for cfg in self.tool.objectValues('MeetingConfig'):
+            # ensure att axists
+            cfg.getItemCommitteesStates()
+            cfg.getItemCommitteesViewStates()
+            cfg.getItemPreferredMeetingStates()
             cfg.setMeetingWorkflow('meeting_workflow')
             cfg.setItemWorkflow('meetingitem_workflow')
             cfg.setItemConditionsInterface(
@@ -399,7 +406,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 'Products.MeetingCommunes.interfaces.IMeetingCommunesWorkflowConditions')
             cfg.setMeetingActionsInterface(
                 'Products.MeetingCommunes.interfaces.IMeetingCommunesWorkflowActions')
-        # remap states and transitions
+
         self.updateWFStatesAndTransitions(
             query={'portal_type': ('MeetingItemCouncil',)},
             review_state_mappings={
@@ -412,6 +419,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             },
             # will be done by next step in migration
             update_local_roles=False)
+
         self.updateWFStatesAndTransitions(
             related_to="Meeting",
             query={'portal_type': ('MeetingCouncil',)},
@@ -616,6 +624,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
+        self._applyMeetingConfig_fixtures()
         self._adaptWFHistoryForItemsAndMeetings()
         self._adapt_council_items()
         logger.info('Done migrating to MeetingLalouviere 4200...')
