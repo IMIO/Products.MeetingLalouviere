@@ -508,33 +508,33 @@ class Migrate_To_4200(MCMigrate_To_4200):
 
         if new.portal_type == 'MeetingCouncil':
             committees = []
-            if old.getPremeetingDate():
-                committees.append(get_committee(old.getPremeetingDate(), old.getPremeetingAssembly(),
-                                                old.getPremeetingPlace(), self.find_committee_row_id(1,
+            if old.getPreMeetingDate():
+                committees.append(get_committee(old.getPreMeetingDate(), old.getPreMeetingAssembly(),
+                                                old.getPreMeetingPlace(), self.find_committee_row_id(1,
                                                                                                      old.getDate())))
-            if old.getPremeetingDate_2():
-                committees.append(get_committee(old.getPremeetingDate_2(), old.getPremeetingAssembly_2(),
-                                                old.getPremeetingPlace_2(), self.find_committee_row_id(2,
+            if old.getPreMeetingDate_2():
+                committees.append(get_committee(old.getPreMeetingDate_2(), old.getPreMeetingAssembly_2(),
+                                                old.getPreMeetingPlace_2(), self.find_committee_row_id(2,
                                                                                                        old.getDate())))
-            if old.getPremeetingDate_3():
-                committees.append(get_committee(old.getPremeetingDate_3(), old.getPremeetingAssembly_3(),
-                                                old.getPremeetingPlace_3(), self.find_committee_row_id(3,
+            if old.getPreMeetingDate_3():
+                committees.append(get_committee(old.getPreMeetingDate_3(), old.getPreMeetingAssembly_3(),
+                                                old.getPreMeetingPlace_3(), self.find_committee_row_id(3,
                                                                                                        old.getDate())))
-            if old.getPremeetingDate_4():
-                committees.append(get_committee(old.getPremeetingDate_4(), old.getPremeetingAssembly_4(),
-                                                old.getPremeetingPlace_4(), self.find_committee_row_id(4,
+            if old.getPreMeetingDate_4():
+                committees.append(get_committee(old.getPreMeetingDate_4(), old.getPreMeetingAssembly_4(),
+                                                old.getPreMeetingPlace_4(), self.find_committee_row_id(4,
                                                                                                        old.getDate())))
-            if old.getPremeetingDate_5():
-                committees.append(get_committee(old.getPremeetingDate_5(), old.getPremeetingAssembly_5(),
-                                                old.getPremeetingPlace_5(), self.find_committee_row_id(5,
+            if old.getPreMeetingDate_5():
+                committees.append(get_committee(old.getPreMeetingDate_5(), old.getPreMeetingAssembly_5(),
+                                                old.getPreMeetingPlace_5(), self.find_committee_row_id(5,
                                                                                                        old.getDate())))
-            if old.getPremeetingDate_6():
-                committees.append(get_committee(old.getPremeetingDate_6(), old.getPremeetingAssembly_6(),
-                                                old.getPremeetingPlace_6(), self.find_committee_row_id(6,
+            if old.getPreMeetingDate_6():
+                committees.append(get_committee(old.getPreMeetingDate_6(), old.getPreMeetingAssembly_6(),
+                                                old.getPreMeetingPlace_6(), self.find_committee_row_id(6,
                                                                                                        old.getDate())))
-            if old.getPremeetingDate_7():
-                committees.append(get_committee(old.getPremeetingDate_7(), old.getPremeetingAssembly_7(),
-                                                old.getPremeetingPlace_7(), self.find_committee_row_id(7,
+            if old.getPreMeetingDate_7():
+                committees.append(get_committee(old.getPreMeetingDate_7(), old.getPreMeetingAssembly_7(),
+                                                old.getPreMeetingPlace_7(), self.find_committee_row_id(7,
                                                                                                        old.getDate())))
             new.committees = committees
 
