@@ -496,7 +496,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
         def get_committee(date, assembly, place, row_id):
             date._timezone_naive = True
             datetime = self.new.date = date.asdatetime()
-            return {'assembly': RichTextValue(assembly),  # RichTextValue object.
+            return {'assembly': RichTextValue(assembly.raw, 'text/plain', 'text/x-html-safe'),
                     'attendees': None,
                     'committee_observations': None,
                     'convocation_date': None,
@@ -508,34 +508,27 @@ class Migrate_To_4200(MCMigrate_To_4200):
 
         if new.portal_type == 'MeetingCouncil':
             committees = []
-            if old.getPreMeetingDate():
-                committees.append(get_committee(old.getPreMeetingDate(), old.getPreMeetingAssembly(),
-                                                old.getPreMeetingPlace(), self.find_committee_row_id(1,
-                                                                                                     old.getDate())))
-            if hasattr(old, 'getPreMeetingDate_2') and old.getPreMeetingDate_2():
-                committees.append(get_committee(old.getPreMeetingDate_2(), old.getPreMeetingAssembly_2(),
-                                                old.getPreMeetingPlace_2(), self.find_committee_row_id(2,
-                                                                                                       old.getDate())))
-            if hasattr(old, 'getPreMeetingDate_3') and old.getPreMeetingDate_3():
-                committees.append(get_committee(old.getPreMeetingDate_3(), old.getPreMeetingAssembly_3(),
-                                                old.getPreMeetingPlace_3(), self.find_committee_row_id(3,
-                                                                                                       old.getDate())))
-            if hasattr(old, 'getPreMeetingDate_4') and old.getPreMeetingDate_4():
-                committees.append(get_committee(old.getPreMeetingDate_4(), old.getPreMeetingAssembly_4(),
-                                                old.getPreMeetingPlace_4(), self.find_committee_row_id(4,
-                                                                                                       old.getDate())))
-            if hasattr(old, 'getPreMeetingDate_5') and old.getPreMeetingDate_5():
-                committees.append(get_committee(old.getPreMeetingDate_5(), old.getPreMeetingAssembly_5(),
-                                                old.getPreMeetingPlace_5(), self.find_committee_row_id(5,
-                                                                                                       old.getDate())))
-            if hasattr(old, 'getPreMeetingDate_6') and old.getPreMeetingDate_6():
-                committees.append(get_committee(old.getPreMeetingDate_6(), old.getPreMeetingAssembly_6(),
-                                                old.getPreMeetingPlace_6(), self.find_committee_row_id(6,
-                                                                                                       old.getDate())))
-            if hasattr(old, 'getPreMeetingDate_7') and old.getPreMeetingDate_7():
-                committees.append(get_committee(old.getPreMeetingDate_7(), old.getPreMeetingAssembly_7(),
-                                                old.getPreMeetingPlace_7(), self.find_committee_row_id(7,
-                                                                                                       old.getDate())))
+            if old.preMeetingDate:
+                committees.append(get_committee(old.preMeetingDate, old.preMeetingAssembly,
+                                                old.preMeetingPlace, self.find_committee_row_id(1, old.getDate())))
+            if hasattr(old, 'preMeetingDate_2') and old.preMeetingDate_2:
+                committees.append(get_committee(old.preMeetingDate_2, old.preMeetingAssembly_2,
+                                                old.preMeetingPlace_2, self.find_committee_row_id(2, old.getDate())))
+            if hasattr(old, 'preMeetingDate_3') and old.preMeetingDate_3:
+                committees.append(get_committee(old.preMeetingDate_3, old.preMeetingAssembly_3,
+                                                old.preMeetingPlace_3, self.find_committee_row_id(3, old.getDate())))
+            if hasattr(old, 'preMeetingDate_4') and old.preMeetingDate_4:
+                committees.append(get_committee(old.preMeetingDate_4, old.preMeetingAssembly_4,
+                                                old.preMeetingPlace_4, self.find_committee_row_id(4, old.getDate())))
+            if hasattr(old, 'preMeetingDate_5') and old.preMeetingDate_5:
+                committees.append(get_committee(old.preMeetingDate_5, old.preMeetingAssembly_5,
+                                                old.preMeetingPlace_5, self.find_committee_row_id(5, old.getDate())))
+            if hasattr(old, 'preMeetingDate_6') and old.preMeetingDate_6:
+                committees.append(get_committee(old.preMeetingDate_6, old.preMeetingAssembly_6,
+                                                old.preMeetingPlace_6, self.find_committee_row_id(6, old.getDate())))
+            if hasattr(old, 'preMeetingDate_7') and old.preMeetingDate_7:
+                committees.append(get_committee(old.preMeetingDate_7, old.preMeetingAssembly_7,
+                                                old.preMeetingPlace_7, self.find_committee_row_id(7, old.getDate())))
             new.committees = committees
 
     def find_committee_row_id(self, number, date):
