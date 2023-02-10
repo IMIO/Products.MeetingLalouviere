@@ -495,7 +495,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
 
         def get_committee(date, assembly, place, row_id):
             date._timezone_naive = True
-            datetime = self.new.date = date.asdatetime()
+            datetime = date.asdatetime()
             return {'assembly': RichTextValue(assembly.raw, 'text/plain', 'text/x-html-safe'),
                     'attendees': None,
                     'committee_observations': None,
@@ -523,23 +523,24 @@ class Migrate_To_4200(MCMigrate_To_4200):
             if hasattr(old, 'preMeetingDate_5') and old.preMeetingDate_5:
                 committees.append(get_committee(old.preMeetingDate_5, old.preMeetingAssembly_5,
                                                 old.preMeetingPlace_5, self.find_committee_row_id(5, old.getDate())))
-            if hasattr(old, 'preMeetingDate_6') and old.preMeetingDate_6:
-                committees.append(get_committee(old.preMeetingDate_6, old.preMeetingAssembly_6,
-                                                old.preMeetingPlace_6, self.find_committee_row_id(6, old.getDate())))
-            if hasattr(old, 'preMeetingDate_7') and old.preMeetingDate_7:
-                committees.append(get_committee(old.preMeetingDate_7, old.preMeetingAssembly_7,
-                                                old.preMeetingPlace_7, self.find_committee_row_id(7, old.getDate())))
+            if old.getDate().year() <= 2013 and old.getDate().month() < 6:
+                if hasattr(old, 'preMeetingDate_6') and old.preMeetingDate_6:
+                    committees.append(get_committee(old.preMeetingDate_6, old.preMeetingAssembly_6,
+                                                    old.preMeetingPlace_6, self.find_committee_row_id(6, old.getDate())))
+                if hasattr(old, 'preMeetingDate_7') and old.preMeetingDate_7:
+                    committees.append(get_committee(old.preMeetingDate_7, old.preMeetingAssembly_7,
+                                                    old.preMeetingPlace_7, self.find_committee_row_id(7, old.getDate())))
             new.committees = committees
 
     def find_committee_row_id(self, number, date):
         if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
-            return COMMITTEES_2020[number]
+            return COMMITTEES_2020[number - 1]
         elif date.year() >= 2019 and date.month() > 8:
-            return COMMITTEES_2019[number]
+            return COMMITTEES_2019[number - 1]
         elif date.year() >= 2013 and date.month() > 5:
-            return COMMITTEES_2013[number]
+            return COMMITTEES_2013[number - 1]
         else:
-            return COMMITTEES_2012[number]
+            return COMMITTEES_2012[number - 1]
 
     def find_item_committee_row_id(self, date, item_lassifier):
         if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
