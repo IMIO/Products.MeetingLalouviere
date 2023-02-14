@@ -543,7 +543,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             return COMMITTEES_2012[number - 1]
 
     def find_item_committee_row_id(self, date, item_lassifier):
-        if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
+        if not date or date.year > 2020 or (date.year == 2020 and date.month > 8):
             binding = {
                 "commission-travaux": Travaux_Finances_Patrimoine,
                 "commission-sport": AG_Enseignement_Culture_Sport_Sante,
@@ -557,7 +557,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "commission-ag": AG_Enseignement_Culture_Sport_Sante,
                 "commission-culture": AG_Enseignement_Culture_Sport_Sante,
             }
-        elif date.year() >= 2019 and date.month() > 8:
+        elif date.year >= 2019 and date.month > 8:
             binding = {
                 "commission-travaux": Travaux_Finances,
                 "commission-sport": AG_Enseignement_Culture_Sport_Sante,
@@ -571,7 +571,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "commission-ag": AG_Enseignement_Culture_Sport_Sante,
                 "commission-culture": AG_Enseignement_Culture_Sport_Sante,
             }
-        elif date.year() >= 2013 and date.month() > 5:
+        elif date.year >= 2013 and date.month > 5:
             binding = {
                 "commission-travaux": Travaux,
                 "commission-sport": AG_Finances_Enseignement_Culture_Sport_Sante,
@@ -610,7 +610,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             if committee_id:
                 item = brain.getObject()
                 item.setClassifier(None)
-                item.setCommittee((committee_id, ))
+                item.setCommittees((committee_id, ))
             else:
                 raise ValueError("committee not found for item " + brain.id)
 
