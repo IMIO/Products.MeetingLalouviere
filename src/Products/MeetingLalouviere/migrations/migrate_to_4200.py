@@ -543,6 +543,10 @@ class Migrate_To_4200(MCMigrate_To_4200):
             return COMMITTEES_2012[number - 1]
 
     def find_item_committee_row_id(self, date, item_lassifier):
+        suffix = ""
+        if "1er-supplement" in item_lassifier:
+            suffix = "__suppl__1"
+            item_lassifier = item_lassifier.strip("-1er-supplement")
         if not date or date.year > 2020 or (date.year == 2020 and date.month > 8):
             binding = {
                 "commission-travaux": Travaux_Finances_Patrimoine,
@@ -601,7 +605,11 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "commission-cadre-de-vie-et-logement": Cadre_Vie_Logement,
                 "commission-finances-et-patrimoine": Finances_Patrimoine
             }
-        return binding.get(item_lassifier, None)
+        committee = binding.get(item_lassifier, None)
+        if committee:
+            return committee + suffix
+        else:
+            return item_lassifier
 
     def _adapt_council_items(self):
         brains = self.catalog(portal_type='MeetingItemCouncil', sort_on=['meeting_date', 'getRawClassifier'])
@@ -612,7 +620,8 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 item.setClassifier(None)
                 item.setCommittees((committee_id, ))
             else:
-                raise ValueError("committee not found for item " + brain.id)
+                raise ValueError(
+                    "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
