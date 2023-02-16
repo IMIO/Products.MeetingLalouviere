@@ -560,6 +560,8 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "commission-cadre-de-vie": Cadre_Vie,
                 "commission-ag": AG_Enseignement_Culture_Sport_Sante,
                 "commission-culture": AG_Enseignement_Culture_Sport_Sante,
+                "points-conseillers-2eme-supplement": Conseillers2,
+                "points-conseillers-3eme-supplement": Conseillers3
             }
         elif date.year >= 2019 and date.month > 8:
             binding = {
@@ -574,6 +576,8 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "commission-cadre-de-vie": Cadre_Vie_Patrimoine,
                 "commission-ag": AG_Enseignement_Culture_Sport_Sante,
                 "commission-culture": AG_Enseignement_Culture_Sport_Sante,
+                "points-conseillers-2eme-supplement": Conseillers2,
+                "points-conseillers-3eme-supplement": Conseillers3
             }
         elif date.year >= 2013 and date.month > 5:
             binding = {
@@ -588,6 +592,8 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "commission-cadre-de-vie": Cadre_Vie,
                 "commission-ag": AG_Finances_Enseignement_Culture_Sport_Sante,
                 "commission-culture": AG_Finances_Enseignement_Culture_Sport_Sante,
+                "points-conseillers-2eme-supplement": Conseillers2,
+                "points-conseillers-3eme-supplement": Conseillers3
             }
         else:
             binding = {
@@ -603,7 +609,9 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "commission-ag": AG,
                 "commission-culture": AG,
                 "commission-cadre-de-vie-et-logement": Cadre_Vie_Logement,
-                "commission-finances-et-patrimoine": Finances_Patrimoine
+                "commission-finances-et-patrimoine": Finances_Patrimoine,
+                "points-conseillers-2eme-supplement": Conseillers2,
+                "points-conseillers-3eme-supplement": Conseillers3
             }
         committee = binding.get(item_lassifier, None)
         if committee:
@@ -614,14 +622,14 @@ class Migrate_To_4200(MCMigrate_To_4200):
     def _adapt_council_items(self):
         brains = self.catalog(portal_type='MeetingItemCouncil', sort_on=['meeting_date', 'getRawClassifier'])
         for brain in brains:
-            committee_id = self.find_item_committee_row_id(brain.meeting_date, brain.getRawClassifier)
-            if committee_id:
-                item = brain.getObject()
-                item.setClassifier(None)
-                item.setCommittees((committee_id, ))
-            else:
-                raise ValueError(
-                    "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
+            if brain.meeting_date and brain.meeting_date.year > 2000:
+                committee_id = self.find_item_committee_row_id(brain.meeting_date, brain.getRawClassifier)
+                if committee_id:
+                    item = brain.getObject()
+                    item.setCommittees((committee_id, ))
+                else:
+                    raise ValueError(
+                        "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
