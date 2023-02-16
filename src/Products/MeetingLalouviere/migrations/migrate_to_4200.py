@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from DateTime import DateTime
 from plone import api
@@ -620,16 +621,21 @@ class Migrate_To_4200(MCMigrate_To_4200):
             return item_lassifier
 
     def _adapt_council_items(self):
-        brains = self.catalog(portal_type='MeetingItemCouncil', sort_on=['meeting_date', 'getRawClassifier'])
+        brains = self.catalog(portal_type=('MeetingItemTemplateCouncil', 'MeetingItemRecurringCouncil'))
         for brain in brains:
-            if brain.meeting_date and brain.meeting_date.year > 2000:
-                committee_id = self.find_item_committee_row_id(brain.meeting_date, brain.getRawClassifier)
-                if committee_id:
-                    item = brain.getObject()
-                    item.setCommittees((committee_id, ))
-                else:
-                    raise ValueError(
-                        "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
+            item = brain.getObject()
+            item.setClassifier(None)
+
+        brains = self.catalog(portal_type='MeetingItemCouncil',
+                              meeting_date={'query': datetime(2000, 1, 1), 'range': 'min'})
+        for brain in brains:
+            committee_id = self.find_item_committee_row_id(brain.meeting_date, brain.getRawClassifier)
+            if committee_id:
+                item = brain.getObject()
+                item.setCommittees((committee_id, ))
+            else:
+                raise ValueError(
+                    "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
