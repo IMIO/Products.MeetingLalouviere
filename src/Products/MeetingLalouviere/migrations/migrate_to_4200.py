@@ -357,12 +357,37 @@ class Migrate_To_4200(MCMigrate_To_4200):
             columns = list(columns_tuple)
             if 'actions' in columns:
                 columns.remove('actions')
-                columns.append('actions_async')
+                columns.append('async_actions')
             if 'council' in cfg.getId() and 'review_state' in columns:
                 columns.remove('review_state')
                 columns.append('review_state_title')
+                columns.remove('getRawClassifier')
+                columns.append('committees_index')
             return tuple(columns)
 
+        self.cleanUsedItemAttributes(['classifier', 'commissionTranscript'])
+        self.cleanUsedMeetingAttributes(["preMeetingDate",
+                                         "preMeetingPlace",
+                                         "preMeetingAssembly",
+                                         "preMeetingDate_2",
+                                         "preMeetingPlace_2",
+                                         "preMeetingAssembly_2",
+                                         "preMeetingDate_3",
+                                         "preMeetingPlace_3",
+                                         "preMeetingAssembly_3",
+                                         "preMeetingDate_4",
+                                         "preMeetingPlace_4",
+                                         "preMeetingAssembly_4",
+                                         "preMeetingDate_5",
+                                         "preMeetingPlace_5",
+                                         "preMeetingAssembly_5",
+                                         "preMeetingDate_6",
+                                         "preMeetingPlace_6",
+                                         "preMeetingAssembly_6",
+                                         "preMeetingDate_7",
+                                         "preMeetingPlace_7",
+                                         "preMeetingAssembly_7",
+                                         ])
         logger.info("Adapting 'meetingWorkflow/meetingItemWorkflow' for every MeetingConfigs...")
         for cfg in self.tool.objectValues('MeetingConfig'):
             if 'council' in cfg.getId():
@@ -375,6 +400,15 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                                  'accepted_but_modified', 'pre_accepted', 'refused', 'delayed',
                                                  'removed',
                                                  'returned_to_proposing_group'))
+                used_meeting_attr = list(cfg.getUsedMeetingAttributes())
+                used_meeting_attr.append("committees")
+                used_meeting_attr.append("committees_assembly")
+                used_meeting_attr.append("committees_place")
+                cfg.setUsedMeetingAttributes(tuple(used_meeting_attr))
+                used_item_attr = list(cfg.getUsedMeetingAttributes())
+                used_item_attr.append("committeeTranscript")
+                cfg.setUsedMeetingAttributes(tuple(used_item_attr))
+
             # replace action and review_state column by async actions
             cfg.setItemColumns(_replace_columns(cfg.getItemColumns()))
             cfg.setAvailableItemsListVisibleColumns(_replace_columns(cfg.getAvailableItemsListVisibleColumns()))
