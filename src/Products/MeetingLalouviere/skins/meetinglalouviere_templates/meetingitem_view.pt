@@ -598,10 +598,6 @@
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
-    <tal:comment replace="nothing">Committee transcript</tal:comment>
-    <tal:field define="fieldName python: 'committeeTranscript'; ajaxEdit python:True">
-       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
-    </tal:field>
 
     <tal:comment replace="nothing">Committee transcript</tal:comment>
     <tal:field define="fieldName python: 'committeeTranscript'; ajaxEdit python:True">
