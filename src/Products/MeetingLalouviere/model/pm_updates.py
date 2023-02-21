@@ -44,9 +44,8 @@ def update_item_schema(baseSchema):
             name='followUp',
             default="follow_up_no",
             widget=SelectionWidget(
-                condition="python: here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()"
-                          "and (tool.isManager(cfg) "
-                          "or tool.user_is_in_org(org_uid=here.getProposingGroup(theObject=False)))",
+                condition="python: not here.isDefinedInTool() "
+                          "and here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
                 description="A follow up is needed : no, yes, provided?",
                 description_msgid="MeetingLalouviere_descr_followUp",
                 label='FollowUp',
@@ -61,7 +60,8 @@ def update_item_schema(baseSchema):
             optional=True,
             widget=RichWidget(
                 rows=15,
-                condition="python: here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
+                condition="python: not here.isDefinedInTool() "
+                          "and here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
                 label='NeededFollowUp',
                 label_msgid='MeetingLalouviere_label_neededFollowUp',
                 description='Follow-up needed for this item',
@@ -79,7 +79,8 @@ def update_item_schema(baseSchema):
             optional=True,
             widget=RichWidget(
                 rows=15,
-                condition="python: here.attribute_is_used('providedFollowUp') and here.adapted().showFollowUp()",
+                condition="python: not here.isDefinedInTool() "
+                          "and here.attribute_is_used('providedFollowUp') and here.adapted().showFollowUp()",
                 label='ProvidedFollowUp',
                 label_msgid='MeetingLalouviere_label_providedFollowUp',
                 description='Follow-up provided for this item',

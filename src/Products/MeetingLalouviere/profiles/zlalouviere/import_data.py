@@ -145,12 +145,15 @@ collegeMeeting.itemAdviceStates = [
 ]
 
 collegeMeeting.usedItemAttributes = (
+    u"description",
     u"budgetInfos",
+    u"proposingGroupWithGroupInCharge",
     u"motivation",
-    u"toDiscuss",
+    u"decisionSuite",
+    u"internalNotes",
     u"observations",
     u"manuallyLinkedItems",
-    u"itemTags",
+    u"textCheckList",
     u"neededFollowUp",
     u"providedFollowUp",
 )
@@ -158,8 +161,12 @@ collegeMeeting.usedItemAttributes = (
 collegeMeeting.usedMeetingAttributes = (
     u"start_date",
     u"end_date",
-    u"signatures",
-    u"assembly",
+    u"assembly_guests",
+    u"attendees",
+    u"excused",
+    u"absents",
+    u"non_attendees",
+    u"signatories",
     u"place",
     u"observations",
 )
@@ -195,6 +202,82 @@ collegeMeeting.onMeetingTransitionItemActionToExecute = (
     },
     {"meeting_transition": "close", "item_action": "itemfreeze", "tal_expression": ""},
     {"meeting_transition": "close", "item_action": "accept", "tal_expression": ""},
+)
+collegeMeeting.itemColumns = [
+    "static_labels",
+    "static_item_reference",
+    "Creator",
+    "CreationDate",
+    "ModificationDate",
+    "review_state",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "advices",
+    "meeting_date",
+    "async_actions",
+]
+collegeMeeting.dashboardItemsListingsFilters = (
+    "c4",
+    "c6",
+    "c7",
+    "c8",
+    "c9",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c15",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
+)
+collegeMeeting.availableItemsListVisibleColumns = [
+    "static_labels",
+    "Creator",
+    "CreationDate",
+    "ModificationDate",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "advices",
+    "preferred_meeting_date",
+    "async_actions",
+]
+collegeMeeting.dashboardMeetingAvailableItemsFilters = (
+    "c4",
+    "c7",
+    "c8",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c20",
+    "c26",
+)
+collegeMeeting.itemsListVisibleColumns = [
+    "static_labels",
+    "static_item_reference",
+    "Creator",
+    "review_state",
+    "getCategory",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "advices",
+    "async_actions",
+]
+collegeMeeting.dashboardMeetingLinkedItemsFilters = (
+    "c4",
+    "c6",
+    "c7",
+    "c8",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
 )
 
 # COUNCIL
@@ -242,14 +325,18 @@ councilMeeting.onMeetingTransitionItemActionToExecute = (
 )
 
 councilMeeting.usedItemAttributes = (
+    u"description",
     u"budgetInfos",
+    u"proposingGroupWithGroupInCharge",
     u"motivation",
+    u"decisionSuite",
     u"oralQuestion",
     u"itemInitiator",
+    u"internalNotes",
     u"observations",
     u"manuallyLinkedItems",
     u"privacy",
-    u"itemTags",
+    u"textCheckList",
     u"interventions",
     u"committeeTranscript",
 )
@@ -257,187 +344,19 @@ councilMeeting.usedItemAttributes = (
 councilMeeting.usedMeetingAttributes = (
     u"start_date",
     u"end_date",
-    u"signatures",
-    u"assembly",
+    u"assembly_guests",
+    u"attendees",
+    u"excused",
+    u"absents",
+    u"non_attendees",
+    u"signatories",
     u"place",
     u"observations",
+    u"committees",
+    u"committees_place",
+    u"committees_assembly",
 )
 
-classifiers = [
-    CategoryDescriptor(
-        "administration",
-        "Administration générale",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-travaux", "Commission Travaux"),
-    CategoryDescriptor(
-        "commission-enseignement",
-        "Commission Enseignement"),
-    CategoryDescriptor(
-        "commission-culture", "Commission Culture"),
-    CategoryDescriptor(
-        "commission-sport", "Commission Sport"),
-    CategoryDescriptor(
-        "commission-sante", "Commission Santé"),
-    CategoryDescriptor(
-        "commission-cadre-de-vie",
-        "Commission Cadre de Vie"),
-    CategoryDescriptor("commission-ag", "Commission AG"),
-    CategoryDescriptor(
-        "commission-finances", "Commission Finances"),
-    CategoryDescriptor(
-        "commission-patrimoine",
-        "Commission Patrimoine"),
-    CategoryDescriptor(
-        "commission-police", "Commission Police"),
-    CategoryDescriptor(
-        "commission-speciale",
-        "Commission Spéciale",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-travaux-1er-supplement",
-        "Commission Travaux (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-enseignement-1er-supplement",
-        "Commission Enseignement (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-culture-1er-supplement",
-        "Commission Culture (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-sport-1er-supplement",
-        "Commission Sport (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-sante-1er-supplement",
-        "Commission Santé (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-cadre-de-vie-1er-supplement",
-        "Commission Cadre de Vie (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-ag-1er-supplement",
-        "Commission AG (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-finances-1er-supplement",
-        "Commission Finances (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-patrimoine-1er-supplement",
-        "Commission Patrimoine (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-police-1er-supplement",
-        "Commission Police (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-speciale-1er-supplement",
-        "Commission Spéciale (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "points-conseillers-2eme-supplement",
-        "Points conseillers (2ème supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "points-conseillers-3eme-supplement",
-        "Points conseillers (3ème supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-]
-councilMeeting.classifiers = classifiers
 councilMeeting.categories = PORTAL_CATEGORIES
 councilMeeting.useGroupsAsCategories = False
 
@@ -458,29 +377,91 @@ councilMeeting.annexTypes = [
 councilMeeting.itemBudgetInfosStates = ()
 councilMeeting.meetingAppDefaultView = "searchallitems"
 councilMeeting.itemAdviceViewStates = []
-councilMeeting.availableItemsListVisibleColumns = [
-    "Creator",
-    "CreationDate",
-    "getProposingGroup",
-    "getCategory",
-    "actions",
-]
-councilMeeting.itemsListVisibleColumns = [
-    "Creator",
-    "CreationDate",
-    "review_state",
-    "getProposingGroup",
-    "getCategory",
-    "actions",
-]
-# columns shown on items listings.  Order is important!
 councilMeeting.itemColumns = [
+    "static_labels",
+    "static_item_reference",
     "Creator",
     "CreationDate",
-    "review_state",
-    "getProposingGroup",
+    "ModificationDate",
+    "review_state_title",
     "getCategory",
-    "actions",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "committees_index",
+    "advices",
+    "meeting_date",
+    "async_actions",
 ]
+councilMeeting.dashboardItemsListingsFilters = (
+    "c4",
+    "c5",
+    "c6",
+    "c7",
+    "c8",
+    "c9",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c15",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
+    "c31",
+)
+councilMeeting.availableItemsListVisibleColumns = [
+    "static_labels",
+    "Creator",
+    "getCategory",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "committees_index",
+    "advices",
+    "preferred_meeting_date",
+    "async_actions",
+]
+councilMeeting.dashboardMeetingAvailableItemsFilters = (
+    "c4",
+    "c5",
+    "c7",
+    "c8",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c20",
+    "c26",
+    "c31",
+)
+councilMeeting.itemsListVisibleColumns = [
+    "static_labels",
+    "static_item_reference",
+    "CreationDate",
+    "ModificationDate",
+    "review_state_title",
+    "getCategory",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "committees_index",
+    "advices",
+    "async_actions",
+]
+councilMeeting.dashboardMeetingLinkedItemsFilters = (
+    "c4",
+    "c5",
+    "c6",
+    "c7",
+    "c8",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
+    "c31",
+)
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)

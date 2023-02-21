@@ -502,13 +502,13 @@ class LLCustomMeetingItem(CustomMeetingItem):
         showfollowUp = getRequest().get('Products.MeetingLalouviere.showFollowUp_cachekey', None)
         if showfollowUp is None:
             tool = api.portal.get_tool('portal_plonemeeting')
-            if not self.getSelf().query_state().startswith("returned_") and self.getSelf().hasMeeting():
+            if self.getSelf().hasMeeting() and not self.getSelf().query_state().startswith("returned_"):
+                cfg = tool.getMeetingConfig(self.getSelf())
                 if self.getSelf().query_state() in ('presented', 'itemfrozen'):
-                    cfg = tool.getMeetingConfig(self.getSelf())
                     showfollowUp = tool.isManager(cfg)
                 else:
                     org_uid = self.getSelf().getProposingGroup(theObject=False)
-                    showfollowUp = tool.user_is_in_org(org_uid=org_uid)
+                    showfollowUp = tool.isManager(cfg) or tool.user_is_in_org(org_uid=org_uid)
             else:
                 showfollowUp = tool.isManager(realManagers=True)
 
