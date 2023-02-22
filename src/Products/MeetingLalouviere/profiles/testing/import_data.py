@@ -25,22 +25,6 @@ pmAdviser2 = UserDescriptor("pmAdviser2", [])
 voter1 = UserDescriptor("voter1", [], fullname="M. Voter One")
 voter2 = UserDescriptor("voter2", [], fullname="M. Voter Two")
 
-# Commission editors
-commissioneditor = UserDescriptor(
-    "commissioneditor",
-    [],
-    email="commissioneditor@plonemeeting.org",
-    fullname="M. Commission Editor",
-)
-commissioneditor2 = UserDescriptor(
-    "commissioneditor2",
-    [],
-    email="commissioneditor2@plonemeeting.org",
-    fullname="M. Commission Editor 2",
-)
-data.usersOutsideGroups.append(commissioneditor)
-data.usersOutsideGroups.append(commissioneditor2)
-
 pmAlderman1 = UserDescriptor(
     "pmAlderman1", [], email="pmalderman1@plonemeeting.org", fullname="M. PMAlderman One"
 )

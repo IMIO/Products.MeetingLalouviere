@@ -353,40 +353,14 @@ class Migrate_To_4200(MCMigrate_To_4200):
             group_tool.removeGroup(group.getId())
 
     def _applyMeetingConfig_fixtures(self):
-        def _replace_columns(columns_tuple):
-            columns = list(columns_tuple)
-            if 'actions' in columns:
-                columns.remove('actions')
-                columns.append('async_actions')
-            if 'council' in cfg.getId() and 'review_state' in columns:
-                columns.remove('review_state')
-                columns.append('review_state_title')
-                columns.remove('getRawClassifier')
-                columns.append('committees_index')
-            return tuple(columns)
-
         self.cleanUsedItemAttributes(['classifier', 'commissionTranscript'])
-        self.cleanUsedMeetingAttributes(["preMeetingDate",
-                                         "preMeetingPlace",
-                                         "preMeetingAssembly",
-                                         "preMeetingDate_2",
-                                         "preMeetingPlace_2",
-                                         "preMeetingAssembly_2",
-                                         "preMeetingDate_3",
-                                         "preMeetingPlace_3",
-                                         "preMeetingAssembly_3",
-                                         "preMeetingDate_4",
-                                         "preMeetingPlace_4",
-                                         "preMeetingAssembly_4",
-                                         "preMeetingDate_5",
-                                         "preMeetingPlace_5",
-                                         "preMeetingAssembly_5",
-                                         "preMeetingDate_6",
-                                         "preMeetingPlace_6",
-                                         "preMeetingAssembly_6",
-                                         "preMeetingDate_7",
-                                         "preMeetingPlace_7",
-                                         "preMeetingAssembly_7",
+        self.cleanUsedMeetingAttributes(["preMeetingDate", "preMeetingPlace", "preMeetingAssembly",
+                                         "preMeetingDate_2", "preMeetingPlace_2", "preMeetingAssembly_2",
+                                         "preMeetingDate_3", "preMeetingPlace_3", "preMeetingAssembly_3",
+                                         "preMeetingDate_4", "preMeetingPlace_4", "preMeetingAssembly_4",
+                                         "preMeetingDate_5", "preMeetingPlace_5", "preMeetingAssembly_5",
+                                         "preMeetingDate_6", "preMeetingPlace_6", "preMeetingAssembly_6",
+                                         "preMeetingDate_7", "preMeetingPlace_7", "preMeetingAssembly_7",
                                          ])
         logger.info("Adapting 'meetingWorkflow/meetingItemWorkflow' for every MeetingConfigs...")
         for cfg in self.tool.objectValues('MeetingConfig'):
@@ -410,11 +384,9 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 cfg.setUsedMeetingAttributes(tuple(used_item_attr))
 
             # replace action and review_state column by async actions
-            cfg.setItemColumns(_replace_columns(cfg.getItemColumns()))
-            cfg.setAvailableItemsListVisibleColumns(_replace_columns(cfg.getAvailableItemsListVisibleColumns()))
-            cfg.setItemsListVisibleColumns(_replace_columns(cfg.getItemsListVisibleColumns()))
-            cfg.setMeetingColumns(_replace_columns(cfg.getMeetingColumns()))
-
+            self.updateColumns(to_replace={'actions': 'async_actions',
+                                           'review_state': 'review_state_title',
+                                           'getRawClassifier': 'committees_index'})
             # remove old attrs
             delattr(cfg, 'preMeetingAssembly_default')
             delattr(cfg, 'preMeetingAssembly_2_default')
@@ -427,7 +399,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
     def _fixUsedMeetingWFs(self):
         # remap states and transitions
         for cfg in self.tool.objectValues('MeetingConfig'):
-            # ensure att axists
+            # ensure attr exists
             cfg.getItemCommitteesStates()
             cfg.getItemCommitteesViewStates()
             cfg.getItemPreferredMeetingStates()
