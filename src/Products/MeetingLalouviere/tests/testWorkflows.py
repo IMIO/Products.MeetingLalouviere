@@ -209,18 +209,17 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser("admin")
         self.setMeetingConfig(self.meetingConfig2.getId())
         self._enableField("observations")
+        self._enableField("committees", related_to='Meeting')
         self._enableField("committeeTranscript")
         self._activate_wfas(('waiting_advices',
                              # 'waiting_advices_adviser_send_back',
                              'waiting_advices_proposing_group_send_back',
                              'propose_to_budget_reviewer',
-                             'apply_council_state_label'),
+                             'apply_council_state_label',
+                             'return_to_proposing_group',
+                             'accepted_but_modified'),
                             keep_existing=True)
-        # TODO setup committee and committee editors using 4.2 new committees feature.
-        self._setup_commissions_classifiers()
-        self.add_commission_plone_groups()
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
-        self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
         self.create(
             "MeetingItemRecurring",
             title="Rec item 1",
@@ -235,7 +234,8 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             title="The first item",
             autoAddCategory=False,
             category="deployment",
-            classifier="commission-ag"
+            commettees=("commission-ag",),
+            decision="<p>test</p>"
         )
         annex1 = self.addAnnex(item1)
         self._check_users_can_modify(item1,
@@ -275,7 +275,8 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             title="The second item",
             preferredMeeting=meeting.UID(),
             category="deployment",
-            classifier="commission-patrimoine"
+            commettees=("commission-patrimoine",),
+            decision="<p>test</p>"
         )
         self.do(item2, "proposeToDirector")
         # pmManager inserts item1 into the meeting and freezes it
@@ -290,13 +291,6 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser("pmManager")
         self.do(meeting, "freeze")
         self.assertEqual(item1.query_state(), "itemfrozen")
-
-        self.changeUser("commissioneditor")
-        self.assertTrue(item1.mayQuickEdit("committeeTranscript"))
-
-        self.changeUser("commissioneditor2")
-        self.failIf(item1.mayQuickEdit("committeeTranscript"))
-
         # pmReviewer2 validates item2
         self.changeUser("pmDirector2")
         item2.setPreferredMeeting(meeting.UID())
@@ -315,27 +309,23 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # remove the item, set the meeting in council and add it again
         self.backToState(item2, "validated")
         self.failIf(len(meeting.get_items()) != 1)
-        self.do(meeting, "decide")
-        # remove published meeting to check that item is correctly presented in this cas as well
+        self.do(meeting, "publish")
         self.setCurrentMeeting(None)
-        self.do(item2, "present")
 
         item1_addition = self.create(
             "MeetingItem",
             title="Addition to the first item",
             autoAddCategory=False,
             category="deployment",
-            classifier="commission-ag-1er-supplement"
+            commettees=("commission-ag__suppl_1",)
         )
         self.do(item1_addition, "proposeToDirector")
         item1_addition.setPreferredMeeting(meeting.UID())
         self.do(item1_addition, "validate")
         self.do(item1_addition, "present")
-        # setting the meeting in council (setInCouncil) add 1 recurring item...
-        self.assertEqual(len(meeting.get_items()), 4)
-        self.failUnless(item2.isLate())
+        self.assertEqual(len(meeting.get_items()), 2)
         self.failIf(item1_addition.isLate())
-        # an item can be send back to the service so MeetingMembers
+        # an item can be sent back to the service so MeetingMembers
         # can edit it and send it back to the meeting
         self.changeUser("pmCreator1")
         self.failIf(self.hasPermission(ModifyPortalContent, item1))
@@ -349,14 +339,11 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # item state follow meeting state
         self.changeUser("pmManager")
         self.assertEquals(item1.query_state(), "itempublished")
-        self.assertEquals(item2.query_state(), "itempublished")
-        self.do(meeting, "backToFrozen")
-        self.assertEquals(item1.query_state(), "itemfrozen")
-        self.assertEquals(item2.query_state(), "itemfrozen")
-        self.do(meeting, "decide")
-        self.assertEquals(item1.query_state(), "itempublished")
-        self.assertEquals(item2.query_state(), "itempublished")
         # while closing a meeting, every no decided items are accepted
+        self.do(meeting, "decide")
+        self.do(item2, "present")
+        self.assertEqual(len(meeting.get_items()), 3)
+        self.failUnless(item2.isLate())
         self.do(item1, "accept_but_modify")
         self.do(meeting, "close")
         self.assertEquals(item1.query_state(), "accepted_but_modified")

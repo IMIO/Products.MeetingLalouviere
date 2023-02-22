@@ -6,7 +6,7 @@ def onItemLocalRolesUpdated(item, event):
     """
     Add MeetingFollowUpWriter localrole?
     Depending on the selected Council commission (category),
-    give the 'MeetingCommissionEditor' role to the relevant Plone group
+    give the 'MeetingFollowUpWriter' role to the relevant Plone group
        """
     tool = api.portal.get_tool('portal_plonemeeting')
     cfg = tool.getMeetingConfig(item)
