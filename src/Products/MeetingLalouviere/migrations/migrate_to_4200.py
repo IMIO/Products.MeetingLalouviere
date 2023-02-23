@@ -353,6 +353,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             group_tool.removeGroup(group.getId())
 
     def _applyMeetingConfig_fixtures(self):
+        logger.info('applying meetingconfig fixtures...')
         self.cleanUsedItemAttributes(['classifier', 'commissionTranscript'])
         self.cleanUsedMeetingAttributes(["preMeetingDate", "preMeetingPlace", "preMeetingAssembly",
                                          "preMeetingDate_2", "preMeetingPlace_2", "preMeetingAssembly_2",
@@ -539,6 +540,12 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                                     old.preMeetingPlace_7, self.find_committee_row_id(7, old.getDate())))
             new.committees = committees
 
+    def _hook_after_meeting_to_dx(self):
+        self._applyMeetingConfig_fixtures()
+        self._remove_votes_form_action()
+        self._adaptWFHistoryForItemsAndMeetings()
+        self._adapt_council_items()
+
     def find_committee_row_id(self, number, date):
         if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
             return COMMITTEES_2020[number - 1]
@@ -627,6 +634,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             return item_lassifier
 
     def _adapt_council_items(self):
+        logger.info('adapting council items...')
         brains = self.catalog(portal_type=('MeetingItemTemplateCouncil', 'MeetingItemRecurringCouncil'))
         for brain in brains:
             item = brain.getObject()
@@ -648,13 +656,17 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 raise ValueError(
                     "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
 
+    def _remove_votes_form_action(self):
+        logger.info('removing votes_form action...')
+        item_council_type = self.portal_types.MeetingItemCouncil
+        action_ids = [action.getId() for action in item_council_type.listActions()]
+        if 'votes_form' in action_ids:
+            item_council_type.deleteAction((action_ids.index('votes_form'), ))
+
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
-        self._applyMeetingConfig_fixtures()
-        self._adaptWFHistoryForItemsAndMeetings()
-        self._adapt_council_items()
         logger.info('Done migrating to MeetingLalouviere 4200...')
 
 
