@@ -381,7 +381,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 cfg.setUsedMeetingAttributes(tuple(used_meeting_attr))
                 used_item_attr = list(cfg.getUsedMeetingAttributes())
                 used_item_attr.append("committeeTranscript")
-                cfg.setUsedMeetingAttributes(tuple(used_item_attr))
+                cfg.setUsedItemAttributes(tuple(used_item_attr))
 
             # replace action and review_state column by async actions
             self.updateColumns(to_replace={'actions': 'async_actions',
