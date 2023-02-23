@@ -542,7 +542,6 @@ class Migrate_To_4200(MCMigrate_To_4200):
 
     def _hook_after_meeting_to_dx(self):
         self._applyMeetingConfig_fixtures()
-        self._remove_votes_form_action()
         self._adaptWFHistoryForItemsAndMeetings()
         self._adapt_council_items()
 
@@ -655,13 +654,6 @@ class Migrate_To_4200(MCMigrate_To_4200):
             else:
                 raise ValueError(
                     "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
-
-    def _remove_votes_form_action(self):
-        logger.info('removing votes_form action...')
-        item_council_type = self.portal_types.MeetingItemCouncil
-        action_ids = [action.getId() for action in item_council_type.listActions()]
-        if 'votes_form' in action_ids:
-            item_council_type.deleteAction((action_ids.index('votes_form'), ))
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
