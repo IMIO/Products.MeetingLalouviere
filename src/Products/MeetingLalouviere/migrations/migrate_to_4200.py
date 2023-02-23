@@ -632,13 +632,18 @@ class Migrate_To_4200(MCMigrate_To_4200):
             item = brain.getObject()
             item.setClassifier(None)
 
-        brains = self.catalog(portal_type='MeetingItemCouncil',
-                              meeting_date={'query': datetime(2000, 1, 1), 'range': 'min'})
+        brains = self.catalog(portal_type='MeetingItemCouncil')
+        treshold_datetime = datetime(2000, 1, 1)
+        substitute_datetime = datetime.now()
         for brain in brains:
-            committee_id = self.find_item_committee_row_id(brain.meeting_date, brain.getRawClassifier)
+            meeting_date = brain.meeting_date
+            if meeting_date < treshold_datetime:
+                meeting_date = substitute_datetime
+            committee_id = self.find_item_committee_row_id(meeting_date, brain.getRawClassifier)
             if committee_id:
                 item = brain.getObject()
                 item.setCommittees((committee_id, ))
+                item.reindexObject(['committees_index'])
             else:
                 raise ValueError(
                     "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
