@@ -415,32 +415,6 @@ class Migrate_To_4200(MCMigrate_To_4200):
             cfg.setMeetingActionsInterface(
                 'Products.MeetingCommunes.interfaces.IMeetingCommunesWorkflowActions')
 
-        self.updateWFStatesAndTransitions(
-            query={'portal_type': ('MeetingItemCouncil',)},
-            review_state_mappings={
-                'item_in_committee': 'itemfrozen',
-                'item_in_council': 'itempublished',
-            },
-            transition_mappings={
-                'setItemInCommittee': 'itemfreeze',
-                'setItemInCouncil': 'itempublish',
-            },
-            # will be done by next step in migration
-            update_local_roles=False)
-
-        self.updateWFStatesAndTransitions(
-            related_to="Meeting",
-            query={'portal_type': ('MeetingCouncil',)},
-            review_state_mappings={
-                'in_committee': 'frozen',
-                'in_council': 'decided',
-            },
-            transition_mappings={
-                'setInCommittee': 'freeze',
-                'setInCouncil': 'decide',
-            },
-            # will be done by next step in migration
-            update_local_roles=False)
         # delete old unused workflows
         wfs_to_delete = [wfId for wfId in self.wfTool.listWorkflows()
                          if any(x in wfId for x in (
@@ -544,6 +518,35 @@ class Migrate_To_4200(MCMigrate_To_4200):
         self._applyMeetingConfig_fixtures()
         self._adaptWFHistoryForItemsAndMeetings()
         self._adapt_council_items()
+        self.update_wf_states_and_transitions()
+
+    def update_wf_states_and_transitions(self):
+        self.updateWFStatesAndTransitions(
+            query={'portal_type': ('MeetingItemCouncil',)},
+            review_state_mappings={
+                'item_in_committee': 'itemfrozen',
+                'item_in_council': 'itempublished',
+            },
+            transition_mappings={
+                'setItemInCommittee': 'itemfreeze',
+                'setItemInCouncil': 'itempublish',
+            },
+            # will be done by next step in migration
+            update_local_roles=False)
+
+        self.updateWFStatesAndTransitions(
+            related_to="Meeting",
+            query={'portal_type': ('MeetingCouncil',)},
+            review_state_mappings={
+                'in_committee': 'frozen',
+                'in_council': 'decided',
+            },
+            transition_mappings={
+                'setInCommittee': 'freeze',
+                'setInCouncil': 'decide',
+            },
+            # will be done by next step in migration
+            update_local_roles=False)
 
     def find_committee_row_id(self, number, date):
         if not date or date.year() > 2020 or (date.year() == 2020 and date.month() > 8):
