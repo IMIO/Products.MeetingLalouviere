@@ -646,17 +646,18 @@ class Migrate_To_4200(MCMigrate_To_4200):
         treshold_datetime = datetime(2000, 1, 1)
         substitute_datetime = datetime.now()
         for brain in brains:
-            meeting_date = brain.meeting_date
-            if meeting_date < treshold_datetime:
-                meeting_date = substitute_datetime
-            committee_id = self.find_item_committee_row_id(meeting_date, brain.getRawClassifier)
-            if committee_id:
-                item = brain.getObject()
-                item.setCommittees((committee_id, ))
-                item.reindexObject(['committees_index'])
-            else:
-                raise ValueError(
-                    "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
+            if brain.getRawClassifier:
+                meeting_date = brain.meeting_date
+                if meeting_date < treshold_datetime:
+                    meeting_date = substitute_datetime
+                committee_id = self.find_item_committee_row_id(meeting_date, brain.getRawClassifier)
+                if committee_id:
+                    item = brain.getObject()
+                    item.setCommittees((committee_id, ))
+                    item.reindexObject(['committees_index'])
+                else:
+                    raise ValueError(
+                        "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
