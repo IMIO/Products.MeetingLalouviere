@@ -325,6 +325,7 @@ councilMeeting.onMeetingTransitionItemActionToExecute = (
 )
 
 councilMeeting.usedItemAttributes = (
+    u"category",
     u"description",
     u"budgetInfos",
     u"proposingGroupWithGroupInCharge",
@@ -358,7 +359,6 @@ councilMeeting.usedMeetingAttributes = (
 )
 
 councilMeeting.categories = PORTAL_CATEGORIES
-councilMeeting.useGroupsAsCategories = False
 
 for recurringItem in councilMeeting.recurringItems:
     recurringItem.category = "recurrent"
