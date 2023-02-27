@@ -342,14 +342,14 @@ class Migrate_To_4200(MCMigrate_To_4200):
             "commission-culture_commissioneditors": AG_Enseignement_Culture_Sport_Sante,
         }
         group_tool = self.portal.portal_groups
-        meetingmanagers_council = group_tool.getGroupById('meeting-config-council_meetingmanagers').getAllGroupMemberIds()
+        meetingmanagers = group_tool.getGroupById('meeting-config-council_meetingmanagers').getAllGroupMemberIds()
         for old_commission in binding:
             group = group_tool.getGroupById(old_commission)
             members = group.getAllGroupMemberIds()
-            new_group = group_tool.getGroupById(binding[old_commission])
+            new_group = group_tool.getGroupById("meeting-config-council_" + binding[old_commission])
             for member in members:
                 group.removeMember(member)
-                if new_group and member not in meetingmanagers_council:
+                if new_group and member not in meetingmanagers:
                     new_group.addMember(member)
             group_tool.removeGroup(group.getId())
 
@@ -477,6 +477,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
         cfg.setWorkflowAdaptations(cfg.getId() == 'meeting-config-council' and
                                    LLO_APPLYED_COUNCIL_WFA or
                                    LLO_APPLYED_COLLEGE_WFA)
+
     def _hook_custom_meeting_to_dx(self, old, new):
 
         def get_committee(date, assembly, place, row_id):
