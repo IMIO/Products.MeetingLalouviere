@@ -7,6 +7,7 @@ from Products.MeetingCommunes.migrations.migrate_to_4200 import Migrate_To_4200 
 from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS, LLO_APPLYED_COUNCIL_WFA, \
     LLO_APPLYED_COLLEGE_WFA
 from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
+from Products.PloneMeeting.config import NO_COMMITTEE
 import logging
 
 from plone.app.textfield import RichTextValue
@@ -561,11 +562,11 @@ class Migrate_To_4200(MCMigrate_To_4200):
         else:
             return COMMITTEES_2012[number - 1]
 
-    def find_item_committee_row_id(self, date, item_lassifier):
+    def find_item_committee_row_id(self, date, item_classifier):
         suffix = ""
-        if "1er-supplement" in item_lassifier:
+        if "1er-supplement" in item_classifier:
             suffix = "__suppl__1"
-            item_lassifier = item_lassifier.strip("-1er-supplement")
+            item_classifier = item_classifier.strip("-1er-supplement")
         if not date or date.year > 2020 or (date.year == 2020 and date.month > 8):
             binding = {
                 "commission-travaux": Travaux_Finances_Patrimoine,
@@ -632,19 +633,14 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "points-conseillers-2eme-supplement": Conseillers2,
                 "points-conseillers-3eme-supplement": Conseillers3
             }
-        committee = binding.get(item_lassifier, None)
+        committee = binding.get(item_classifier, None)
         if committee:
             return committee + suffix
         else:
-            return item_lassifier
+            return NO_COMMITTEE
 
     def _adapt_council_items(self):
         logger.info('adapting council items...')
-        brains = self.catalog(portal_type=('MeetingItemTemplateCouncil', 'MeetingItemRecurringCouncil'))
-        for brain in brains:
-            item = brain.getObject()
-            item.setClassifier(None)
-
         brains = self.catalog(portal_type='MeetingItemCouncil')
         treshold_datetime = datetime(2000, 1, 1)
         substitute_datetime = datetime.now()
@@ -654,13 +650,14 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 if meeting_date < treshold_datetime:
                     meeting_date = substitute_datetime
                 committee_id = self.find_item_committee_row_id(meeting_date, brain.getRawClassifier)
-                if committee_id:
-                    item = brain.getObject()
-                    item.setCommittees((committee_id, ))
-                    item.reindexObject(['committees_index'])
-                else:
-                    raise ValueError(
-                        "committee not found for item {}, classifier = {}".format(brain.getPath(), brain.getRawClassifier))
+                if committee_id == NO_COMMITTEE:
+                    logger.warning("Committee not found for {} at {}, classifier = {} committee = {}".format(
+                        brain.portal_type,
+                        brain.getPath(),
+                        brain.getRawClassifier,
+                        committee_id))
+                item = brain.getObject()
+                item.setCommittees((committee_id, ))
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
