@@ -403,6 +403,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
         # remap states and transitions
         for cfg in self.tool.objectValues('MeetingConfig'):
             # ensure attr exists
+            cfg.getCommittees()
             cfg.getItemCommitteesStates()
             cfg.getItemCommitteesViewStates()
             cfg.getItemPreferredMeetingStates()
