@@ -354,6 +354,8 @@ class Migrate_To_4200(MCMigrate_To_4200):
 
     def _applyMeetingConfig_fixtures(self):
         logger.info('applying meetingconfig fixtures...')
+        self.updateTALConditions("year()", "year")
+        self.updateTALConditions("month()", "month")
         self.cleanUsedItemAttributes(['classifier', 'commissionTranscript'])
         self.cleanUsedMeetingAttributes(["preMeetingDate", "preMeetingPlace", "preMeetingAssembly",
                                          "preMeetingDate_2", "preMeetingPlace_2", "preMeetingAssembly_2",
@@ -404,6 +406,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             cfg.getItemCommitteesStates()
             cfg.getItemCommitteesViewStates()
             cfg.getItemPreferredMeetingStates()
+            cfg.getItemObserversStates()
             cfg.setMeetingWorkflow('meeting_workflow')
             cfg.setItemWorkflow('meetingitem_workflow')
             cfg.setItemConditionsInterface(
@@ -472,7 +475,6 @@ class Migrate_To_4200(MCMigrate_To_4200):
         cfg.setWorkflowAdaptations(cfg.getId() == 'meeting-config-council' and
                                    LLO_APPLYED_COUNCIL_WFA or
                                    LLO_APPLYED_COLLEGE_WFA)
-
     def _hook_custom_meeting_to_dx(self, old, new):
 
         def get_committee(date, assembly, place, row_id):
