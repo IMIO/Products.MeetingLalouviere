@@ -660,9 +660,18 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 item = brain.getObject()
                 item.setCommittees((committee_id, ))
 
+    def _remove_old_dashboardcollection(self):
+        for cfg in self.tool.objectValues('MeetingConfig'):
+            items = cfg.searches.searches_items
+            meetings = cfg.searches.searches_items
+            decided = cfg.searches.searches_items
+            for folder in (items, meetings, decided):
+                api.content.delete(objects=folder.listFolderContents())
+
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
+        self._remove_old_dashboardcollection()
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
         logger.info('Done migrating to MeetingLalouviere 4200...')
 
