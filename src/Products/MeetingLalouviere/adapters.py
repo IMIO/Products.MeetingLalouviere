@@ -525,15 +525,42 @@ class LLMeetingConfig(CustomMeetingConfig):
 
     def _extraSearchesInfo(self, infos):
         """Add some specific searches."""
-        super(CustomMeetingConfig, self)._extraSearchesInfo(infos)
+        super(LLMeetingConfig, self)._extraSearchesInfo(infos)
         cfg = self.getSelf()
         itemType = cfg.getItemTypeName()
-        extra_infos = OrderedDict(
-            [
-                # Items in state 'proposed'
-                # Items in state 'proposed'
+        proposed_to_director = (
+            "searchproposedtodirector",
+            {
+                "subFolderId": "searches_items",
+                "active": True,
+                "query": [
+                    {
+                        "i": "portal_type",
+                        "o": "plone.app.querystring.operation.selection.is",
+                        "v": [itemType, ],
+                    },
+                    {
+                        "i": "review_state",
+                        "o": "plone.app.querystring.operation.selection.is",
+                        "v": ["proposed_to_director"],
+                    },
+                ],
+                "sort_on": u"modified",
+                "sort_reversed": True,
+                "showNumberOfItems": True,
+                "tal_condition": "python:tool.userIsAmong(['directors'])",
+                "roles_bypassing_talcondition": ["Manager", ],
+            },
+        )
+        extra_infos = []
+        if 'council' in cfg.getId():
+            extra_infos = [
+                proposed_to_director,
+            ]
+        elif 'college' in cfg.getId():
+            extra_infos = [
                 (
-                    "searchproposeditems",
+                    "searchproposedtobudgetreviewer",
                     {
                         "subFolderId": "searches_items",
                         "active": True,
@@ -541,22 +568,95 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
+                                "v": [itemType, ],
                             },
                             {
                                 "i": "review_state",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["proposed"],
+                                "v": ["proposed_to_budget_reviewer"],
                             },
                         ],
-                        "sort_on": u"created",
+                        "sort_on": u"modified",
                         "sort_reversed": True,
-                        "showNumberOfItems": False,
-                        "tal_condition": "python: tool.userIsAmong(['creators']) "
-                        "and not tool.userIsAmong(['reviewers'])",
-                        "roles_bypassing_talcondition": ["Manager",],
+                        "showNumberOfItems": True,
+                        "tal_condition": "",
+                        "roles_bypassing_talcondition": ["Manager", ],
                     },
                 ),
+                (
+                    "searchproposedtoservicehead",
+                    {
+                        "subFolderId": "searches_items",
+                        "active": True,
+                        "query": [
+                            {
+                                "i": "portal_type",
+                                "o": "plone.app.querystring.operation.selection.is",
+                                "v": [itemType, ],
+                            },
+                            {
+                                "i": "review_state",
+                                "o": "plone.app.querystring.operation.selection.is",
+                                "v": ["proposed_to_servicehead"],
+                            },
+                        ],
+                        "sort_on": u"modified",
+                        "sort_reversed": True,
+                        "showNumberOfItems": True,
+                        "tal_condition":
+                            "python:tool.userIsAmong(['serviceheads', 'officemanagers', 'divisionheads', 'directors'])",
+                        "roles_bypassing_talcondition": ["Manager", ],
+                    },
+                ),
+                (
+                    "searchproposedtoofficemanager",
+                    {
+                        "subFolderId": "searches_items",
+                        "active": True,
+                        "query": [
+                            {
+                                "i": "portal_type",
+                                "o": "plone.app.querystring.operation.selection.is",
+                                "v": [itemType, ],
+                            },
+                            {
+                                "i": "review_state",
+                                "o": "plone.app.querystring.operation.selection.is",
+                                "v": ["proposed_to_officemanager"],
+                            },
+                        ],
+                        "sort_on": u"modified",
+                        "sort_reversed": True,
+                        "showNumberOfItems": True,
+                        "tal_condition": "python:tool.userIsAmong(['officemanagers', 'divisionheads', 'directors'])",
+                        "roles_bypassing_talcondition": ["Manager", ],
+                    },
+                ),
+                (
+                    "searchproposedtodivisionhead",
+                    {
+                        "subFolderId": "searches_items",
+                        "active": True,
+                        "query": [
+                            {
+                                "i": "portal_type",
+                                "o": "plone.app.querystring.operation.selection.is",
+                                "v": [itemType, ],
+                            },
+                            {
+                                "i": "review_state",
+                                "o": "plone.app.querystring.operation.selection.is",
+                                "v": ["proposed_to_divisionhead"],
+                            },
+                        ],
+                        "sort_on": u"modified",
+                        "sort_reversed": True,
+                        "showNumberOfItems": True,
+                        "tal_condition": "python:tool.userIsAmong(['divisionheads', 'directors'])",
+                        "roles_bypassing_talcondition": ["Manager", ],
+                    },
+                ),
+                proposed_to_director,
                 # Items in state 'proposed_to_dg'
                 (
                     "searchproposedtodg",
@@ -567,7 +667,7 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
+                                "v": [itemType, ],
                             },
                             {
                                 "i": "review_state",
@@ -578,9 +678,8 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_on": u"modified",
                         "sort_reversed": True,
                         "showNumberOfItems": True,
-                        "tal_condition": "tool.isManager(here) and 'validate_by_dg_and_alderman' in "
-                        "cfg.getWorkflowAdaptations()",
-                        "roles_bypassing_talcondition": ["Manager",],
+                        "tal_condition": "tool.isManager(here)",
+                        "roles_bypassing_talcondition": ["Manager", ],
                     },
                 ),
                 # Items in state 'proposed_to_alderman'
@@ -593,7 +692,7 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
+                                "v": [itemType, ],
                             },
                             {
                                 "i": "review_state",
@@ -604,37 +703,10 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_on": u"modified",
                         "sort_reversed": True,
                         "showNumberOfItems": True,
-                        "tal_condition": "python:tool.userIsAmong(['alderman']) and 'validate_by_dg_and_alderman' "
-                        "in cfg.getWorkflowAdaptations()",
-                        "roles_bypassing_talcondition": ["Manager",],
+                        "tal_condition": "python:tool.userIsAmong(['alderman'])",
+                        "roles_bypassing_talcondition": ["Manager", ],
                     },
                 ),
-                # Items in state 'validated'
-                (
-                    "searchvalidateditems",
-                    {
-                        "subFolderId": "searches_items",
-                        "active": True,
-                        "query": [
-                            {
-                                "i": "portal_type",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
-                            },
-                            {
-                                "i": "review_state",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["validated"],
-                            },
-                        ],
-                        "sort_on": u"created",
-                        "sort_reversed": True,
-                        "showNumberOfItems": False,
-                        "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager",],
-                    },
-                ),
-                # Items to follow up'
                 (
                     "searchItemsTofollow_up_yes",
                     {
@@ -644,7 +716,7 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
+                                "v": [itemType, ],
                             },
                             {
                                 "i": "review_state",
@@ -659,19 +731,19 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "getFollowUp",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["follow_up_yes",],
+                                "v": ["follow_up_yes", ],
                             },
                         ],
                         "sort_on": u"created",
                         "sort_reversed": True,
                         "showNumberOfItems": False,
                         "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager",],
+                        "roles_bypassing_talcondition": ["Manager", ],
                     },
                 ),
                 # Items to follow provider but not to print in Dashboard'
                 (
-                    "searchItemsToProviderNotToPrint",
+                    "searchItemsProvidedFollowUpButNotToPrint",
                     {
                         "subFolderId": "searches_items",
                         "active": True,
@@ -679,7 +751,7 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
+                                "v": [itemType, ],
                             },
                             {
                                 "i": "review_state",
@@ -694,19 +766,19 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "getFollowUp",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["follow_up_provided_not_printed",],
+                                "v": ["follow_up_provided_not_printed", ],
                             },
                         ],
                         "sort_on": u"created",
                         "sort_reversed": True,
                         "showNumberOfItems": False,
                         "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager",],
+                        "roles_bypassing_talcondition": ["Manager", ],
                     },
                 ),
-                # Items to follow provider and to print'
+                # Items to follow provider and to print
                 (
-                    "searchItemsForDashboard",
+                    "searchItemsProvidedFollowUp",
                     {
                         "subFolderId": "searches_items",
                         "active": True,
@@ -714,7 +786,7 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
+                                "v": [itemType, ],
                             },
                             {
                                 "i": "review_state",
@@ -729,47 +801,18 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "getFollowUp",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["follow_up_provided",],
+                                "v": ["follow_up_provided", ],
                             },
                         ],
                         "sort_on": u"created",
                         "sort_reversed": True,
                         "showNumberOfItems": False,
                         "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager",],
-                    },
-                ),
-                (
-                    FINANCE_ADVICES_COLLECTION_ID,
-                    {
-                        "subFolderId": "searches_items",
-                        "active": True,
-                        "query": [
-                            {
-                                "i": "portal_type",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType,],
-                            },
-                            {
-                                "i": "indexAdvisers",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    "delay_row_id__unique_id_002",
-                                    "delay_row_id__unique_id_003",
-                                    "delay_row_id__unique_id_004",
-                                ],
-                            },
-                        ],
-                        "sort_on": u"created",
-                        "sort_reversed": True,
-                        "showNumberOfItems": False,
-                        "tal_condition": "python: 'tool.userIsAmong(['budgetimpactreviewers']) or tool.isManager(here)",
-                        "roles_bypassing_talcondition": ["Manager",],
+                        "roles_bypassing_talcondition": ["Manager", ],
                     },
                 ),
             ]
-        )
-        infos.update(extra_infos)
+        infos.update(OrderedDict(extra_infos))
         return infos
 
     def _custom_reviewersFor(self):
