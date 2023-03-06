@@ -3,8 +3,8 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.0-alpha1 (unreleased)
---------------------
+4.2.0-alpha1 (2023-03-06)
+-------------------------
 
 - Migrated to 4.2.
   [odelaere]
