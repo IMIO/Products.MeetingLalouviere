@@ -31,6 +31,9 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 class testFaceted(MeetingLalouviereTestCase, mctf):
     """Tests the faceted navigation."""
 
+    def _orgs_to_exclude_from_filter(self):
+        return (self.direction_generale_uid, )
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

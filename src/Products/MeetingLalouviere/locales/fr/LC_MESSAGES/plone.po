@@ -180,14 +180,6 @@ msgstr "En commission"
 msgid "in_council"
 msgstr "En Conseil communal"
 
-#. Default: "In committee"
-msgid "item_in_committee"
-msgstr "En commission"
-
-#. Default: "In council"
-msgid "item_in_council"
-msgstr "En Conseil communal"
-
 # Workflow states
 #. Default: "Waiting advices"
 msgid "itemcreated_waiting_advices"
@@ -203,6 +195,10 @@ msgstr "Description dans l'ordre du jour"
 
 msgid "proposeToBudgetImpactReviewer"
 msgstr "Proposer au correspondant financier"
+
+#. Default: "validateByBudgetImpactReviewer"
+msgid "validateByBudgetImpactReviewer"
+msgstr "Valider les infos budgétaires"
 
 msgid "proposeToDirector"
 msgstr "Proposer au directeur"
@@ -239,7 +235,7 @@ msgid "proposeToServiceHead"
 msgstr "Proposer au chef de service"
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "proposed_to_budgetimpact_reviewer"
+msgid "proposed_to_budget_reviewer"
 msgstr "Proposé au correspondant financier"
 
 #. Default: "Proposed to dg"
@@ -341,9 +337,30 @@ msgstr "Certains points sont toujours dans des services pour corrections"
 msgid "validate"
 msgstr "Valider"
 
-msgid "validateByBudgetImpactReviewer"
-msgstr "Valider les infos budgétaires"
-
 #. Default: "Validated"
 msgid "validated"
 msgstr "Validé"
+
+#. Default: "Waiting advices (proposed_to_alderman)"
+msgid "proposed_to_alderman_waiting_advices"
+msgstr "En attente des avis (Proposé à l'Échevin)"
+
+#. Default: "Waiting advices (proposed_to_dg)"
+msgid "proposed_to_dg_waiting_advices"
+msgstr "En attente des avis (Proposé au DG)"
+
+#. Default: "Waiting advices (proposed_to_director)"
+msgid "proposed_to_director_waiting_advices"
+msgstr "En attente des avis (Proposé au directeur)"
+
+#. Default: "Waiting advices (proposed_to_divisionhead)"
+msgid "proposed_to_divisionhead_waiting_advices"
+msgstr "En attente des avis (Proposé au chef de division)"
+
+#. Default: "Waiting advices (proposed_to_officemanager)"
+msgid "proposed_to_officemanager_waiting_advices"
+msgstr "En attente des avis (Proposé au chef de bureau)"
+
+#. Default: "Waiting advices (proposed_to_servicehead)"
+msgid "proposed_to_servicehead_waiting_advices"
+msgstr "En attente des avis (Proposé au chef de service)"

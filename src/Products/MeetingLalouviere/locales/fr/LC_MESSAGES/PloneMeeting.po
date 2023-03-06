@@ -32,10 +32,6 @@ msgstr "Conseil communal"
 msgid "MeetingLalouviere_descr_assembly"
 msgstr "Laissez ce champ vide pour utiliser l'assemblée qui sera définie sur la séance"
 
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_descr_commissionTranscript"
-msgstr " "
-
 #. Default: "Follow-up"
 msgid "MeetingLalouviere_descr_followUp"
 msgstr " "
@@ -60,10 +56,6 @@ msgstr "Référence"
 msgid "MeetingLalouviere_label_advice_reference_descr"
 msgstr "Encodez une référence pour l'avis si nécessaire."
 
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_label_commissionTranscript"
-msgstr "Procès-verbal de la commission"
-
 #. Default: "Deliberation"
 msgid "MeetingLalouviere_label_councildecision"
 msgstr "Délibération"
@@ -75,10 +67,6 @@ msgstr "Note explicative"
 #. Default: "Follow-up"
 msgid "MeetingLalouviere_label_followUp"
 msgstr "Suivi"
-
-#. Default: "Initialize the item decision when deciding meeting"
-msgid "MeetingLalouviere_label_initItemDecisionIfEmptyOnDecide"
-msgstr "Initialiser le champ décision des points lorsque la séance passe 'En rédaction du PV'?"
 
 #. Default: "Interventions"
 msgid "MeetingLalouviere_label_interventions"
@@ -319,20 +307,12 @@ msgstr "Un suivi est nécessaire"
 msgid "icon_help_follow_up_provided"
 msgstr "Un suivi a été apporté mais le point est encore imprimé dans le tableau de bord"
 
-#. Default: "Item in committee"
-msgid "icon_help_item_in_committee"
-msgstr "En commission"
-
-#. Default: "Item in council"
-msgid "icon_help_item_in_council"
-msgstr "En Conseil communal"
-
 #. Default: "Waiting advices"
 msgid "icon_help_itemcreated_waiting_advices"
 msgstr "En attente des avis"
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "icon_help_proposed_to_budgetimpact_reviewer"
+msgid "icon_help_proposed_to_budget_reviewer"
 msgstr "Proposé au correspondant financier"
 
 #. Default: "Proposed to DG"

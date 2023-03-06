@@ -32,7 +32,7 @@ class testAnnexes(MeetingLalouviereTestCase, mcta):
     """"""
 
     def _manage_custom_searchable_fields(self, item):
-        item.setCommissionTranscript("")
+        item.setCommitteeTranscript("")
         item.setProvidedFollowUp("")
 
 

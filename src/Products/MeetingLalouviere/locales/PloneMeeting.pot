@@ -122,14 +122,6 @@ msgstr ""
 msgid "Send to council"
 msgstr ""
 
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_label_commissionTranscript"
-msgstr ""
-
-#. Default: "Transcript of commission"
-msgid "MeetingLalouviere_descr_commissionTranscript"
-msgstr ""
-
 #. Default: "Interventions"
 msgid "MeetingLalouviere_label_interventions"
 msgstr ""
@@ -152,10 +144,6 @@ msgstr ""
 
 #. Default: "Explanatory note"
 msgid "MeetingLalouviere_label_councildescription"
-msgstr ""
-
-#. Default: "Commission"
-msgid "MeetingLalouviere_label_councilclassifier"
 msgstr ""
 
 #. Default: "Deliberation"
@@ -450,20 +438,12 @@ msgstr ""
 msgid "icon_help_proposed_to_officemanager"
 msgstr ""
 
-#. Default: "Item in council"
-msgid "icon_help_item_in_council"
-msgstr ""
-
-#. Default: "Item in committee"
-msgid "icon_help_item_in_committee"
-msgstr ""
-
 #. Default: "Proposed to service head"
 msgid "icon_help_proposed_to_servicehead"
 msgstr ""
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "icon_help_proposed_to_budgetimpact_reviewer"
+msgid "icon_help_proposed_to_budget_reviewer"
 msgstr ""
 
 #. Default: "Proposed to DG"
@@ -484,10 +464,6 @@ msgstr ""
 
 #. Default: "Enter a reference for this advice if necessary."
 msgid "MeetingLalouviere_label_advice_reference_descr"
-msgstr ""
-
-#. Default: "Initialize the item decision when deciding meeting"
-msgid "MeetingLalouviere_label_initItemDecisionIfEmptyOnDecide"
 msgstr ""
 
 #. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item"

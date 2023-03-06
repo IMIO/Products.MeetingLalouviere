@@ -2,6 +2,10 @@
 from copy import deepcopy
 
 from Products.MeetingCommunes.config import PORTAL_CATEGORIES
+from Products.MeetingLalouviere.config import LLO_APPLYED_COLLEGE_WFA
+from Products.MeetingLalouviere.config import LLO_APPLYED_COUNCIL_WFA
+from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
+from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 from Products.MeetingCommunes.profiles.examples_fr import import_data as mc_import_data
 from Products.PloneMeeting.profiles import (
     AnnexTypeDescriptor,
@@ -120,41 +124,12 @@ meetingAnnex = AnnexTypeDescriptor(
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
 collegeMeeting.transitionsToConfirm = []
-collegeMeeting.itemWorkflow = "meetingitemcollegelalouviere_workflow"
-collegeMeeting.meetingWorkflow = "meetingcollegelalouviere_workflow"
-collegeMeeting.itemConditionsInterface = \
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
-collegeMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
-)
-collegeMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions"
-)
-collegeMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"
-)
-collegeMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
+collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
+collegeMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COLLEGE_WFA)
+
 collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
-collegeMeeting.transitionsForPresentingAnItem = (
-    "proposeToServiceHead",
-    "proposeToOfficeManager",
-    "proposeToDivisionHead",
-    "proposeToDirector",
-    # applied by WF adaptation
-    "propose_to_dg",
-    "propose_to_alderman",
-    "validate",
-    "present",
-)
 collegeMeeting.itemAdviceViewStates = [
-    "proposed_to_servicehead",
-    "proposed_to_officemanager",
-    "proposed_to_divisionhead",
     "proposed_to_director",
     "proposed_to_dg",
     "proposed_to_alderman",
@@ -162,37 +137,42 @@ collegeMeeting.itemAdviceViewStates = [
     "presented",
     "itemfrozen",
 ]
-collegeMeeting.workflowAdaptations = [
-    "refused",
-    "removed",
-    # "return_to_proposing_group",
-    "validate_by_dg_and_alderman",
-]
+
 collegeMeeting.itemAdviceStates = [
     "proposed_to_director",
+    "proposed_to_dg",
+    "proposed_to_alderman",
 ]
 
 collegeMeeting.usedItemAttributes = (
+    u"description",
     u"budgetInfos",
+    u"proposingGroupWithGroupInCharge",
     u"motivation",
-    u"toDiscuss",
+    u"decisionSuite",
+    u"internalNotes",
     u"observations",
     u"manuallyLinkedItems",
-    u"itemTags",
+    u"textCheckList",
     u"neededFollowUp",
     u"providedFollowUp",
 )
 
 collegeMeeting.usedMeetingAttributes = (
-    u"startDate",
-    u"endDate",
-    u"signatures",
-    u"assembly",
+    u"start_date",
+    u"end_date",
+    u"assembly_guests",
+    u"attendees",
+    u"excused",
+    u"absents",
+    u"non_attendees",
+    u"signatories",
     u"place",
     u"observations",
 )
 
-collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
+collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "proposed_to_dg", "proposed_to_alderman", "validated"]
+collegeMeeting.itemAdvicesStates = ["proposed_to_director"]
 
 collegeMeeting.annexTypes = [
     financialAnalysis,
@@ -206,7 +186,7 @@ collegeMeeting.annexTypes = [
     meetingAnnex,
 ]
 
-collegeMeeting.itemBudgetInfosStates = ("proposed_to_budgetimpact_reviewer",)
+collegeMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budget_reviewer",)
 collegeMeeting.meetingAppDefaultView = "searchallitems"
 
 collegeMeeting.onMeetingTransitionItemActionToExecute = (
@@ -223,47 +203,96 @@ collegeMeeting.onMeetingTransitionItemActionToExecute = (
     {"meeting_transition": "close", "item_action": "itemfreeze", "tal_expression": ""},
     {"meeting_transition": "close", "item_action": "accept", "tal_expression": ""},
 )
-
-collegeMeeting.useGroupsAsCategories = True
+collegeMeeting.itemColumns = [
+    "static_labels",
+    "static_item_reference",
+    "Creator",
+    "CreationDate",
+    "ModificationDate",
+    "review_state",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "advices",
+    "meeting_date",
+    "async_actions",
+]
+collegeMeeting.dashboardItemsListingsFilters = (
+    "c4",
+    "c6",
+    "c7",
+    "c8",
+    "c9",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c15",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
+)
+collegeMeeting.availableItemsListVisibleColumns = [
+    "static_labels",
+    "Creator",
+    "CreationDate",
+    "ModificationDate",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "advices",
+    "preferred_meeting_date",
+    "async_actions",
+]
+collegeMeeting.dashboardMeetingAvailableItemsFilters = (
+    "c4",
+    "c7",
+    "c8",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c20",
+    "c26",
+)
+collegeMeeting.itemsListVisibleColumns = [
+    "static_labels",
+    "static_item_reference",
+    "Creator",
+    "review_state",
+    "getCategory",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "advices",
+    "async_actions",
+]
+collegeMeeting.dashboardMeetingLinkedItemsFilters = (
+    "c4",
+    "c6",
+    "c7",
+    "c8",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
+)
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
 councilMeeting.transitionsToConfirm = []
-councilMeeting.itemWorkflow = "meetingitemcouncillalouviere_workflow"
-councilMeeting.meetingWorkflow = "meetingcouncillalouviere_workflow"
-councilMeeting.itemConditionsInterface = \
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
-councilMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
-)
-councilMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions"
-)
-councilMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"
-)
-councilMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
+councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
-councilMeeting.transitionsForPresentingAnItem = (
-    "proposeToDirector",
-    "validate",
-    "present",
-)
-councilMeeting.workflowAdaptations = []
-councilMeeting.itemAdviceStates = [
-    "proposed_to_director",
-]
+councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
+councilMeeting.itemAdviceStates = ["proposed_to_director",]
 councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 councilMeeting.itemCopyGroupsStates = [
-    "proposed_to_director",
     "validated",
-    "item_in_committee",
-    "item_in_council",
+    "itemfrozen",
+    "itempublished",
 ]
 
 councilMeeting.onMeetingTransitionItemActionToExecute = (
@@ -296,225 +325,40 @@ councilMeeting.onMeetingTransitionItemActionToExecute = (
 )
 
 councilMeeting.usedItemAttributes = (
+    u"category",
+    u"description",
     u"budgetInfos",
+    u"proposingGroupWithGroupInCharge",
     u"motivation",
+    u"decisionSuite",
     u"oralQuestion",
     u"itemInitiator",
+    u"internalNotes",
     u"observations",
     u"manuallyLinkedItems",
     u"privacy",
-    u"itemTags",
+    u"textCheckList",
     u"interventions",
-    u"commissionTranscript",
+    u"committeeTranscript",
 )
 
 councilMeeting.usedMeetingAttributes = (
-    u"startDate",
-    u"endDate",
-    u"signatures",
-    u"assembly",
+    u"start_date",
+    u"end_date",
+    u"assembly_guests",
+    u"attendees",
+    u"excused",
+    u"absents",
+    u"non_attendees",
+    u"signatories",
     u"place",
     u"observations",
-    u"preMeetingDate",
-    u"preMeetingPlace",
-    u"preMeetingAssembly",
-    u"preMeetingDate_2",
-    u"preMeetingPlace_2",
-    u"preMeetingAssembly_2",
-    u"preMeetingDate_3",
-    u"preMeetingPlace_3",
-    u"preMeetingAssembly_3",
-    u"preMeetingDate_4",
-    u"preMeetingPlace_4",
-    u"preMeetingAssembly_4",
-    u"preMeetingDate_5",
-    u"preMeetingPlace_5",
-    u"preMeetingAssembly_5",
-    u"preMeetingDate_6",
-    u"preMeetingPlace_6",
-    u"preMeetingAssembly_6",
-    u"preMeetingDate_7",
-    u"preMeetingPlace_7",
-    u"preMeetingAssembly_7",
+    u"committees",
+    u"committees_place",
+    u"committees_assembly",
 )
 
-classifiers = [
-    CategoryDescriptor(
-        "administration",
-        "Administration générale",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-travaux", "Commission Travaux"),
-    CategoryDescriptor(
-        "commission-enseignement",
-        "Commission Enseignement"),
-    CategoryDescriptor(
-        "commission-culture", "Commission Culture"),
-    CategoryDescriptor(
-        "commission-sport", "Commission Sport"),
-    CategoryDescriptor(
-        "commission-sante", "Commission Santé"),
-    CategoryDescriptor(
-        "commission-cadre-de-vie",
-        "Commission Cadre de Vie"),
-    CategoryDescriptor("commission-ag", "Commission AG"),
-    CategoryDescriptor(
-        "commission-finances", "Commission Finances"),
-    CategoryDescriptor(
-        "commission-patrimoine",
-        "Commission Patrimoine"),
-    CategoryDescriptor(
-        "commission-police", "Commission Police"),
-    CategoryDescriptor(
-        "commission-speciale",
-        "Commission Spéciale",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-travaux-1er-supplement",
-        "Commission Travaux (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-enseignement-1er-supplement",
-        "Commission Enseignement (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-culture-1er-supplement",
-        "Commission Culture (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-sport-1er-supplement",
-        "Commission Sport (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-sante-1er-supplement",
-        "Commission Santé (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-cadre-de-vie-1er-supplement",
-        "Commission Cadre de Vie (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-ag-1er-supplement",
-        "Commission AG (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-finances-1er-supplement",
-        "Commission Finances (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-patrimoine-1er-supplement",
-        "Commission Patrimoine (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-police-1er-supplement",
-        "Commission Police (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "commission-speciale-1er-supplement",
-        "Commission Spéciale (1er supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "points-conseillers-2eme-supplement",
-        "Points conseillers (2ème supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-    CategoryDescriptor(
-        "points-conseillers-3eme-supplement",
-        "Points conseillers (3ème supplément)",
-        using_groups=(
-            "secretaire-communal",
-            "secretaire-communal-adj",
-            "secretariat",
-            "dirgen",
-        ),
-    ),
-]
-councilMeeting.classifiers = classifiers
 councilMeeting.categories = PORTAL_CATEGORIES
-councilMeeting.useGroupsAsCategories = False
 
 for recurringItem in councilMeeting.recurringItems:
     recurringItem.category = "recurrent"
@@ -533,30 +377,91 @@ councilMeeting.annexTypes = [
 councilMeeting.itemBudgetInfosStates = ()
 councilMeeting.meetingAppDefaultView = "searchallitems"
 councilMeeting.itemAdviceViewStates = []
-councilMeeting.availableItemsListVisibleColumns = [
-    "Creator",
-    "CreationDate",
-    "getProposingGroup",
-    "getCategory",
-    "actions",
-]
-councilMeeting.itemsListVisibleColumns = [
-    "Creator",
-    "CreationDate",
-    "review_state",
-    "getProposingGroup",
-    "getCategory",
-    "actions",
-]
-# columns shown on items listings.  Order is important!
 councilMeeting.itemColumns = [
+    "static_labels",
+    "static_item_reference",
     "Creator",
     "CreationDate",
-    "review_state",
-    "getProposingGroup",
+    "ModificationDate",
+    "review_state_title",
     "getCategory",
-    "linkedMeetingDate",
-    "actions",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "committees_index",
+    "advices",
+    "meeting_date",
+    "async_actions",
 ]
+councilMeeting.dashboardItemsListingsFilters = (
+    "c4",
+    "c5",
+    "c6",
+    "c7",
+    "c8",
+    "c9",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c15",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
+    "c31",
+)
+councilMeeting.availableItemsListVisibleColumns = [
+    "static_labels",
+    "Creator",
+    "getCategory",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "committees_index",
+    "advices",
+    "preferred_meeting_date",
+    "async_actions",
+]
+councilMeeting.dashboardMeetingAvailableItemsFilters = (
+    "c4",
+    "c5",
+    "c7",
+    "c8",
+    "c10",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c20",
+    "c26",
+    "c31",
+)
+councilMeeting.itemsListVisibleColumns = [
+    "static_labels",
+    "static_item_reference",
+    "CreationDate",
+    "ModificationDate",
+    "review_state_title",
+    "getCategory",
+    "proposing_group_acronym",
+    "getGroupsInCharge",
+    "committees_index",
+    "advices",
+    "async_actions",
+]
+councilMeeting.dashboardMeetingLinkedItemsFilters = (
+    "c4",
+    "c5",
+    "c6",
+    "c7",
+    "c8",
+    "c11",
+    "c13",
+    "c14",
+    "c16",
+    "c19",
+    "c20",
+    "c26",
+    "c31",
+)
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)

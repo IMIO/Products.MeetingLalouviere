@@ -42,14 +42,6 @@ msgstr ""
 msgid "in_council"
 msgstr ""
 
-#. Default: "In committee"
-msgid "item_in_committee"
-msgstr ""
-
-#. Default: "In council"
-msgid "item_in_council"
-msgstr ""
-
 # Workflow transitions
 #. Default: "Ask advices"
 msgid "ask_advices_by_itemcreator"
@@ -131,6 +123,10 @@ msgstr ""
 msgid "proposeToBudgetImpactReviewer"
 msgstr ""
 
+#. Default: "validateByBudgetImpactReviewer"
+msgid "validateByBudgetImpactReviewer"
+msgstr ""
+
 msgid "proposeToDirector"
 msgstr ""
 
@@ -150,7 +146,7 @@ msgid "proposeToServiceHead"
 msgstr ""
 
 #. Default: "Proposed to budget impact reviewer"
-msgid "proposed_to_budgetimpact_reviewer"
+msgid "proposed_to_budget_reviewer"
 msgstr ""
 
 #. Default: "Proposed to dg"
@@ -186,9 +182,6 @@ msgstr ""
 
 #. Default: "Validate"
 msgid "validate"
-msgstr ""
-
-msgid "validateByBudgetImpactReviewer"
 msgstr ""
 
 #. Default: "Validated"
@@ -365,4 +358,28 @@ msgstr ""
 
 #. Default: "Send back to 'financial manager'"
 msgid "backToProposedToFinancialManager"
+msgstr ""
+
+#. Default: "Waiting advices (proposed_to_alderman)"
+msgid "proposed_to_alderman_waiting_advices"
+msgstr "Waiting advices (proposed_to_alderman)"
+
+#. Default: "Waiting advices (proposed_to_dg)"
+msgid "proposed_to_dg_waiting_advices"
+msgstr ""
+
+#. Default: "Waiting advices (proposed_to_director)"
+msgid "proposed_to_director_waiting_advices"
+msgstr ""
+
+#. Default: "Waiting advices (proposed_to_divisionhead)"
+msgid "proposed_to_divisionhead_waiting_advices"
+msgstr ""
+
+#. Default: "Waiting advices (proposed_to_officemanager)"
+msgid "proposed_to_officemanager_waiting_advices"
+msgstr ""
+
+#. Default: "Waiting advices (proposed_to_servicehead)"
+msgid "proposed_to_servicehead_waiting_advices"
 msgstr ""

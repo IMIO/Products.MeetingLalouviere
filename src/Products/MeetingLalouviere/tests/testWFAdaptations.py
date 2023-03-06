@@ -21,267 +21,311 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
+from copy import deepcopy
 
 from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
-from Products.PloneMeeting.model.adaptations import (
-    RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS,
-)
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
-from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
-from DateTime import DateTime
-from Products.CMFCore.permissions import View
+from Products.CMFCore.permissions import ModifyPortalContent, DeleteObjects, View
+from Products.PloneMeeting.config import WriteBudgetInfos, WriteInternalNotes
+from zope.event import notify
+from zope.i18n import translate
+from zope.lifecycleevent import ObjectModifiedEvent
 
 
 class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
     """Tests various aspects of votes management."""
 
     def test_pm_WFA_availableWFAdaptations(self):
-        """Most of wfAdaptations makes no sense, just make sure most are disabled."""
-        self.assertEquals(
-            set(self.meetingConfig.listWorkflowAdaptations()),
-            set(("removed", "refused", "validate_by_dg_and_alderman", "return_to_proposing_group",)),
-        )
+        self.assertEqual(sorted(self.meetingConfig.listWorkflowAdaptations().keys()),
+                         ['accepted_but_modified',
+                          'accepted_out_of_meeting',
+                          'accepted_out_of_meeting_and_duplicated',
+                          'accepted_out_of_meeting_emergency',
+                          'accepted_out_of_meeting_emergency_and_duplicated',
+                          # Custom
+                          'apply_council_state_label',
+                          # End of custom
+                          'decide_item_when_back_to_meeting_from_returned_to_proposing_group',
+                          'delayed',
+                          'hide_decisions_when_under_writing',
+                          'item_validation_no_validate_shortcuts',
+                          'item_validation_shortcuts',
+                          'mark_not_applicable',
+                          'meetingmanager_correct_closed_meeting',
+                          'no_decide',
+                          'no_freeze',
+                          'no_publication',
+                          'only_creator_may_delete',
+                          'postpone_next_meeting',
+                          'pre_accepted',
+                          'presented_item_back_to_itemcreated',
+                          # Do no exist (like spaghetti a la bolognese)
+                          # 'presented_item_back_to_proposed',
+                          # NEW
+                          'presented_item_back_to_proposed_to_alderman',
+                          'presented_item_back_to_proposed_to_dg',
+                          'presented_item_back_to_proposed_to_director',
+                          'presented_item_back_to_proposed_to_divisionhead',
+                          'presented_item_back_to_proposed_to_officemanager',
+                          'presented_item_back_to_proposed_to_servicehead',
+                          'propose_to_budget_reviewer',
+                          # End of custom
+                          'refused',
+                          'removed',
+                          'removed_and_duplicated',
+                          'return_to_proposing_group',
+                          'return_to_proposing_group_with_all_validations',
+                          'return_to_proposing_group_with_last_validation',
+                          'reviewers_take_back_validated_item',
+                          'transfered',
+                          'transfered_and_duplicated',
+                          'waiting_advices',
+                          'waiting_advices_adviser_send_back',
+                          'waiting_advices_proposing_group_send_back'
+                          ])
 
-    def test_pm_WFA_no_publication(self):
-        """No sense..."""
-        pass
+    def _process_transition_for_correcting_item(self, item, all):
+        if all:
+            self.changeUser('pmCreator1')
+            self.do(item, 'goTo_returned_to_proposing_group_proposed_to_servicehead')
+            self.failIf(self.hasPermission(ModifyPortalContent, item))
+            self.changeUser('pmServiceHead1')
+            self.do(item, 'goTo_returned_to_proposing_group_proposed_to_officemanager')
+            self.failIf(self.hasPermission(ModifyPortalContent, item))
+            self.changeUser('pmOfficeManager1')
+            self.do(item, 'goTo_returned_to_proposing_group_proposed_to_divisionhead')
+            self.failIf(self.hasPermission(ModifyPortalContent, item))
+            self.changeUser('pmDivisionHead1')
+            self.do(item, 'goTo_returned_to_proposing_group_proposed_to_director')
+            self.failIf(self.hasPermission(ModifyPortalContent, item))
+            self.changeUser('pmDirector1')
+            self.do(item, 'goTo_returned_to_proposing_group_proposed_to_dg')
+            self.failIf(self.hasPermission(ModifyPortalContent, item))
 
-    def test_pm_WFA_no_proposal(self):
-        """No sense..."""
-        pass
+        self.changeUser('pmManager')
+        self.do(item, 'goTo_returned_to_proposing_group_proposed_to_alderman')
+
+    def _get_developers_reviewers_groups(self):
+        return [self.developers_serviceheads,
+                self.developers_officemanagers,
+                self.developers_divisionheads,
+                self.developers_directors,
+                self.developers_alderman,
+                self.developers_reviewers]
+
+    def test_pm_Validate_workflowAdaptations_removed_return_to_proposing_group_with_last_validation(self):
+        """Test MeetingConfig.validate_workflowAdaptations that manage removal
+           of wfAdaptations 'return_to_proposing_group with last validation' that is not possible if
+           some items are 'returned_to_proposing_group xxx'."""
+        # ease override by subproducts
+        cfg = self.meetingConfig
+        if not self._check_wfa_available(['return_to_proposing_group_with_last_validation']):
+            return
+
+        return_to_proposing_group_removed_error = translate(
+            'wa_removed_return_to_proposing_group_with_last_validation_error',
+            domain='PloneMeeting',
+            context=self.request)
+        self.changeUser('pmManager')
+        self._activate_wfas(('return_to_proposing_group_with_last_validation',))
+
+        meeting = self.create('Meeting')
+        item = self.create('MeetingItem')
+        self.presentItem(item)
+        self.freezeMeeting(meeting)
+        self.do(item, 'return_to_proposing_group')
+        self.assertEqual(item.query_state(), 'returned_to_proposing_group')
+        self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_last_validation',)))
+        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+            self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group',)))
+        if 'return_to_proposing_group_with_all_validations' in cfg.listWorkflowAdaptations():
+            self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
+        self.do(item, 'goTo_returned_to_proposing_group_proposed_to_alderman')
+        self.assertEqual(item.query_state(), 'returned_to_proposing_group_proposed_to_alderman')
+        self.assertEqual(
+            cfg.validate_workflowAdaptations(()),
+            return_to_proposing_group_removed_error)
+        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+            self.assertEqual(
+                cfg.validate_workflowAdaptations(('return_to_proposing_group',)),
+                return_to_proposing_group_removed_error)
+        if 'return_to_proposing_group_with_all_validations' in cfg.listWorkflowAdaptations():
+            self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
+        # make wfAdaptation unselectable
+        self.do(item, 'backTo_itemfrozen_from_returned_to_proposing_group')
+        self.failIf(cfg.validate_workflowAdaptations(()))
+
+    def test_pm_Validate_workflowAdaptations_removed_return_to_proposing_group_with_all_validations(self):
+        """Test MeetingConfig.validate_workflowAdaptations that manage removal
+           of wfAdaptations 'return_to_proposing_group with all validations' that is not possible if
+           some items are 'returned_to_proposing_group xxx'."""
+        # ease override by subproducts
+        cfg = self.meetingConfig
+        if not self._check_wfa_available(['return_to_proposing_group_with_all_validations']):
+            return
+
+        return_to_proposing_group_removed_error = translate(
+            'wa_removed_return_to_proposing_group_with_all_validations_error',
+            domain='PloneMeeting',
+            context=self.request)
+        self.changeUser('pmManager')
+        self._activate_wfas(('return_to_proposing_group_with_all_validations',))
+
+        meeting = self.create('Meeting')
+        item = self.create('MeetingItem')
+        self.presentItem(item)
+        self.freezeMeeting(meeting)
+        self.do(item, 'return_to_proposing_group')
+        self.assertEqual(item.query_state(), 'returned_to_proposing_group')
+        self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
+        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+            self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group',)))
+
+        if 'return_to_proposing_group_with_last_validation' in cfg.listWorkflowAdaptations():
+            self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_last_validation',)))
+        self._process_transition_for_correcting_item(item, True)
+        self.assertEqual(item.query_state(), 'returned_to_proposing_group_proposed_to_alderman')
+        self.assertEqual(
+            cfg.validate_workflowAdaptations(()),
+            return_to_proposing_group_removed_error)
+        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+            self.assertEqual(
+                cfg.validate_workflowAdaptations(('return_to_proposing_group',)),
+                return_to_proposing_group_removed_error)
+        if 'return_to_proposing_group_with_last_validation' in cfg.listWorkflowAdaptations():
+            self.assertEqual(
+                cfg.validate_workflowAdaptations(('return_to_proposing_group_with_last_validation',)),
+                return_to_proposing_group_removed_error)
+        # make wfAdaptation unselectable
+        self.do(item, 'backTo_itemfrozen_from_returned_to_proposing_group')
+        self.failIf(cfg.validate_workflowAdaptations(()))
+
+    def test_pm_WFA_waiting_advices_unknown_state(self):
+        '''Does not fail to be activated if a from/back state does not exist.'''
+        cfg = self.meetingConfig
+        # ease override by subproducts
+        if not self._check_wfa_available(['waiting_advices']):
+            return
+
+        from Products.PloneMeeting.model import adaptations
+        original_WAITING_ADVICES_FROM_STATES = deepcopy(adaptations.WAITING_ADVICES_FROM_STATES)
+        adaptations.WAITING_ADVICES_FROM_STATES['*'] = adaptations.WAITING_ADVICES_FROM_STATES['*'] + (
+            {'from_states': ('unknown',),
+             'back_states': ('unknown',), },)
+        self._activate_wfas(('waiting_advices', 'waiting_advices_proposing_group_send_back'))
+        itemWF = cfg.getItemWorkflow(True)
+        # does not fail and existing states are taken into account
+        self.assertListEqual(
+            sorted([st for st in itemWF.states if 'waiting_advices' in st]),
+            ['itemcreated_waiting_advices', 'proposed_to_alderman_waiting_advices'])
+
+        # back to original configuration
+        adaptations.WAITING_ADVICES_FROM_STATES = original_WAITING_ADVICES_FROM_STATES
+
+    def _item_validation_shortcuts_inactive(self):
+        self._enable_mc_Prevalidation(self.meetingConfig)
+        super(testWFAdaptations, self)._item_validation_shortcuts_inactive()
 
     def test_pm_WFA_pre_validation(self):
-        """No sense..."""
         pass
 
-    def test_pm_WFA_items_come_validated(self):
-        """No sense..."""
-        pass
+    def _waiting_advices_active(self):
+        '''Tests while 'waiting_advices' wfAdaptation is active.'''
+        cfg = self.meetingConfig
+        # by default it is linked to the 'proposed' state
+        itemWF = cfg.getItemWorkflow(True)
+        waiting_state_name = '{0}_waiting_advices'.format(self._stateMappingFor('proposed_first_level'))
+        waiting_transition_name = 'wait_advices_from_{0}'.format(self._stateMappingFor('proposed_first_level'))
+        self.assertIn(waiting_state_name, itemWF.states.keys())
 
-    def test_pm_WFA_only_creator_may_delete(self):
-        """No sense..."""
-        pass
+        # the budget impact editors functionnality still works even if 'remove_modify_access': True
+        cfg.setItemBudgetInfosStates((waiting_state_name, ))
+        # check that the internalNotes functionnality works as well
+        # enable field internalNotes
+        self._enableField('internalNotes', reload=True)
+        # make internal notes editable by copyGroups
+        self._activate_config('itemInternalNotesEditableBy',
+                              'reader_copy_groups')
+        cfg.setItemCopyGroupsStates((waiting_state_name, ))
 
-    def test_pm_WFA_no_global_observation(self):
-        """No sense..."""
-        pass
+        # right, create an item and set it to 'waiting_advices'
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem', copyGroups=[self.vendors_reviewers])
+        self.proposeItem(item, first_level=True)
+        # 'pmCreator1' is not able to set item to 'waiting_advices'
+        self.assertFalse(self.transitions(item))
+        # 'pmReviewer1' may do it but by default is not able to edit it
+        self.changeUser('pmManager')
+        # no advice asked so a No() instance is returned for now
+        self.assertNotIn(waiting_transition_name, self.transitions(item))
+        advice_required_to_ask_advices = translate('advice_required_to_ask_advices',
+                                                   domain='PloneMeeting',
+                                                   context=self.request)
+        proposed_state = self._stateMappingFor('proposed_first_level')
+        self.assertEqual(
+            translate(item.wfConditions().mayWait_advices(
+                proposed_state, waiting_state_name).msg, context=self.request),
+            advice_required_to_ask_advices)
+        # ask an advice so transition is available
+        item.setOptionalAdvisers((self.vendors_uid, ))
+        item._update_after_edit()
+        # still not available because no advice may be asked in state waiting_state_name
+        self.assertNotIn(waiting_state_name, self.vendors.item_advice_states)
+        self.assertNotIn(waiting_transition_name, self.transitions(item))
 
-    def test_pm_WFA_everyone_reads_all(self):
-        """No sense..."""
-        pass
+        # do things work
+        self.vendors.item_advice_states = ("{0}__state__{1}".format(
+            cfg.getId(), waiting_state_name), )
+        # clean MeetingConfig.getItemAdviceStatesForOrg
+        notify(ObjectModifiedEvent(self.vendors))
 
-    def test_pm_WFA_creator_edits_unless_closed(self):
-        """No sense..."""
-        pass
+        self.assertIn(waiting_transition_name, self.transitions(item))
+        self._setItemToWaitingAdvices(item, waiting_transition_name)
+        self.assertEqual(item.query_state(), waiting_state_name)
+        self.assertFalse(self.hasPermission(ModifyPortalContent, item))
+        self.assertFalse(self.hasPermission(DeleteObjects, item))
 
-    def test_subproduct_WFA_add_published_state(self):
-        """No sense..."""
-        pass
+        # pmCreator1 may view but not edit
+        self.changeUser('pmCreator1')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertFalse(self.hasPermission(ModifyPortalContent, item))
+        self.assertFalse(self.hasPermission(DeleteObjects, item))
+        self.assertFalse(self.transitions(item))
 
-    def _return_to_proposing_group_inactive(self):
-        """Tests while 'return_to_proposing_group' wfAdaptation is inactive."""
-        # this is active by default in MeetingLalouviere council wf
-        return
+        # budget impact editors access are correct even when 'remove_modify_access': True
+        self.changeUser('budgetimpacteditor')
+        self.assertTrue(self.hasPermission(WriteBudgetInfos, item))
 
-    def _return_to_proposing_group_active_state_to_clone(self):
-        """Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
-           RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE defined value.
-           In our usecase, this is Nonsense as we use RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS."""
-        return
+        # check internalNotes editable by copyGroups
+        self.changeUser('pmReviewer2')
+        self.assertTrue(self.hasPermission(View, item))
+        self.assertTrue(self.hasPermission(WriteInternalNotes, item))
+        # change text and add image
+        text = '<p>Internal note with image <img src="%s"/>.</p>' % self.external_image1
+        item.setInternalNotes(text)
+        item.at_post_edit_script()
 
-    def _return_to_proposing_group_active_custom_permissions(self):
-        """Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
-           RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS defined value.
-           In our use case, just test that permissions of 'returned_to_proposing_group' state
-           are the one defined in RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS."""
-        itemWF = self.wfTool.getWorkflowsFor(self.meetingConfig.getItemTypeName())[0]
-        returned_to_proposing_group_state_permissions = itemWF.states[
-            "returned_to_proposing_group"
-        ].permission_roles
-        for permission in returned_to_proposing_group_state_permissions:
-            self.assertEquals(
-                returned_to_proposing_group_state_permissions[permission],
-                RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[
-                    self.meetingConfig.getItemWorkflow()
-                ][permission],
-            )
+        # right come back to 'proposed'
+        self.changeUser('pmReviewerLevel1')
+        self.do(item, 'backTo_%s_from_waiting_advices' % self._stateMappingFor('proposed_first_level'))
+        self.assertEqual(item.query_state(), self._stateMappingFor('proposed_first_level'))
 
-    def _return_to_proposing_group_active_wf_functionality(self):
-        """Tests the workflow functionality of using the 'return_to_proposing_group' wfAdaptation.
-           Same as default test until the XXX here under."""
-        # while it is active, the creators of the item can edit the item as well as the MeetingManagers
-        self.meetingConfig = self.meetingConfig2
-        self.meetingConfig.setWorkflowAdaptations("return_to_proposing_group")
-        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
-        self.changeUser("pmCreator1")
-        item = self.create("MeetingItem")
-        self.proposeItem(item)
-        self.changeUser("pmReviewer1")
-        self.validateItem(item)
-        # create a Meeting and add the item to it
-        self.changeUser("pmManager")
-        meeting = self.create("Meeting", date=DateTime())
-        self.presentItem(item)
-        # now that it is presented, the pmCreator1/pmReviewer1 can not edit it anymore
-        for userId in ("pmCreator1", "pmReviewer1"):
-            self.changeUser(userId)
-            self.failIf(self.hasPermission("Modify portal content", item))
-        # the item can be send back to the proposing group by the MeetingManagers only
-        for userId in ("pmCreator1", "pmReviewer1"):
-            self.changeUser(userId)
-            self.failIf(self.wfTool.getTransitionsFor(item))
-        self.changeUser("pmManager")
-        self.failUnless(
-            "return_to_proposing_group"
-            in [tr["name"] for tr in self.wfTool.getTransitionsFor(item)]
-        )
-        # send the item back to the proposing group so the proposing group as an edit access to it
-        self.do(item, "return_to_proposing_group")
-        self.changeUser("pmCreator1")
-        self.failUnless(self.hasPermission("Modify portal content", item))
-        # MeetingManagers can still edit it also
-        self.changeUser("pmManager")
-        self.failUnless(self.hasPermission("Modify portal content", item))
-        # the creator can send the item back to the meeting managers, as the meeting managers
-        for userId in ("pmCreator1", "pmManager"):
-            self.changeUser(userId)
-            self.failUnless(
-                "backTo_presented_from_returned_to_proposing_group"
-                in [tr["name"] for tr in self.wfTool.getTransitionsFor(item)]
-            )
-        # when the creator send the item back to the meeting, it is in the right state depending
-        # on the meeting state.  Here, when meeting is 'created', the item is back to 'presented'
-        self.do(item, "backTo_presented_from_returned_to_proposing_group")
-        self.assertEquals(item.queryState(), "presented")
-        # XXX changed by MeetingLalouviere
-        # send the item back to proposing group, set the meeting in_committee then send the item back to the meeting
-        # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
-        self.do(item, "return_to_proposing_group")
-        self.do(meeting, "setInCommittee")
-        self.do(item, "backTo_item_in_committee_from_returned_to_proposing_group")
-        self.assertEquals(item.queryState(), "item_in_committee")
+    def test_pm_Validate_workflowAdaptations_dependencies(self):
+        """Test MeetingConfig.validate_workflowAdaptations that manage dependencies
+           between wfAdaptations, a base WFA must be selected and other will complete it."""
+        wa_dependencies = translate('wa_dependencies', domain='PloneMeeting', context=self.request)
+        cfg = self.meetingConfig
 
-    def test_pm_WFA_hide_decisions_when_under_writing(self):
-        """Only launch the test for meetingConfig not for meetingConfig2 as no
-           'decided' state exists in meetingConfig2 for the 'Meeting'."""
-        self.meetingConfig2.setMeetingWorkflow(self.meetingConfig.getMeetingWorkflow())
-        mctwfa.test_pm_WFA_hide_decisions_when_under_writing(self)
-
-    def test_pm_Validate_workflowAdaptations_custom(self):
-        self.failIf(
-            self.meetingConfig.validate_workflowAdaptations(
-                ("validate_by_dg_and_alderman",)
-            )
-        )
-        self.meetingConfig.setWorkflowAdaptations("validate_by_dg_and_alderman")
-        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
-        self.failIf(
-            self.meetingConfig.validate_workflowAdaptations(
-                ("validate_by_dg_and_alderman",)
-            )
-        )
-
-        self.changeUser("pmManager")
-        item = self.create("MeetingItem")
-        self.do(item, "proposeToServiceHead")
-        self.do(item, "proposeToOfficeManager")
-        self.do(item, "proposeToDivisionHead")
-        self.do(item, "proposeToDirector")
-        self.do(item, "propose_to_dg")
-
-        self.failUnless(self.meetingConfig.validate_workflowAdaptations(()))
-
-        self.do(item, "propose_to_alderman")
-        self.failUnless(self.meetingConfig.validate_workflowAdaptations(()))
-
-        self.changeUser("pmAlderman")
-        self.do(item, "validate")
-        self.failIf(self.meetingConfig.validate_workflowAdaptations(()))
-
-    def test_pm_WFA_ValidateByDgAndAlderman(self):
-        self.meetingConfig.setWorkflowAdaptations("validate_by_dg_and_alderman")
-        performWorkflowAdaptations(self.meetingConfig, logger=pm_logger)
-        self.changeUser("pmManager")
-        item = self.create("MeetingItem")
-        self.do(item, "proposeToServiceHead")
-        self.do(item, "proposeToOfficeManager")
-        self.do(item, "proposeToDivisionHead")
-        self.do(item, "proposeToDirector")
-        self.do(item, "propose_to_dg")
-        self.assertEquals(item.queryState(), "proposed_to_dg")
-
-        self.changeUser("pmManager")
-        self.failUnless(self.hasPermission("Modify portal content", item))
-
-        for userId in ("pmCreator1", "pmReviewer1", "pmAlderman"):
-            self.changeUser(userId)
-            self.failIf(self.wfTool.getTransitionsFor(item))
-
-        self.changeUser("pmManager")
-        self.do(item, "propose_to_alderman")
-        self.assertEquals(item.queryState(), "proposed_to_alderman")
-
-        self.changeUser("pmAlderman")
-        self.failUnless(self.hasPermission("Modify portal content", item))
-
-        for userId in ("pmCreator1", "pmDirector1", "pmReviewer1"):
-            self.changeUser(userId)
-            self.failIf(self.wfTool.getTransitionsFor(item))
-
-        self.changeUser("pmAlderman")
-        self.validateItem(item)
-        self.assertEquals(item.queryState(), "validated")
-        self.failUnless(self.hasPermission(View, item))
-        self.failUnless(self.hasPermission("PloneMeeting: Read decision", item))
-        self.failUnless(self.hasPermission("PloneMeeting: Read budget infos", item))
-        self.failUnless(self.hasPermission("PloneMeeting: Read item observations", item))
-        self.failUnless(self.hasPermission("Access contents information", item))
-
-        self.changeUser("pmManager")
-        self.failUnless(self.hasPermission("Modify portal content", item))
-
-        for userId in ("pmCreator1", "pmReviewer1", "pmAlderman"):
-            self.changeUser(userId)
-            self.failIf(self.wfTool.getTransitionsFor(item))
-
-        # test alderman access to presented items and after
-        self.changeUser("pmManager")
-        meeting = self.create("Meeting", date="2007/12/11 09:00:00")
-        self.presentItem(item)
-        self.assertEqual(item.queryState(), "presented")
-        self.changeUser("pmAlderman")
-        self.failUnless(self.hasPermission(View, item))
-
-        self.changeUser("pmManager")
-        self.do(meeting, "freeze")
-        self.assertEqual(item.queryState(), "itemfrozen")
-        self.changeUser("pmAlderman")
-        self.failUnless(self.hasPermission(View, item))
-
-        self.changeUser("pmManager")
-        self.do(meeting, "decide")
-        self.do(item, "accept")
-        self.assertEqual(item.queryState(), "accepted")
-        self.changeUser("pmAlderman")
-        self.failUnless(self.hasPermission(View, item))
-
-        # test back trx
-        self.changeUser("pmManager")
-        self.do(item, "backToItemFrozen")
-        self.do(item, "backToPresented")
-        self.do(item, "backToValidated")
-        self.do(item, "backToProposedToAlderman")
-        self.assertEquals(item.queryState(), "proposed_to_alderman")
-        self.changeUser("pmAlderman")
-        self.do(item, "backToProposedToDg")
-        self.assertEquals(item.queryState(), "proposed_to_dg")
-        self.changeUser("pmManager")
-        self.do(item, "backToProposedToDirector")
-        self.assertEquals(item.queryState(), "proposed_to_director")
+        # item_validation_shortcuts alone is ok
+        self.failIf(cfg.validate_workflowAdaptations(('item_validation_shortcuts', )))
+        # but item_validation_no_validate_shortcuts depends on it
+        self.assertEqual(
+            cfg.validate_workflowAdaptations(
+                ('item_validation_no_validate_shortcuts', )),
+            wa_dependencies)
 
 
 def test_suite():

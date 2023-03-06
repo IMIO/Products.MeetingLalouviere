@@ -32,7 +32,22 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 
 class testToolPloneMeeting(MeetingLalouviereTestCase, mctt):
     """Tests the ToolPloneMeeting class methods."""
-
+    def test_pm_Get_selectable_orgs(self):
+        """Returns selectable organizations depending on :
+           - MeetingConfig.usingGroups;
+           - user is creator for if only_selectable=True."""
+        cfg = self.meetingConfig
+        cfg2 = self.meetingConfig
+        self.changeUser('pmCreator1')
+        self.assertEqual(self.tool.get_selectable_orgs(cfg), [self.developers])
+        self.assertEqual(self.tool.get_selectable_orgs(cfg2), [self.developers])
+        self.assertEqual(self.tool.get_selectable_orgs(cfg, only_selectable=False),
+                         [self.developers, self.vendors, self.direction_generale])
+        # do not return more than MeetingConfig.usingGroups
+        cfg2.setUsingGroups([self.vendors_uid])
+        self.assertEqual(self.tool.get_selectable_orgs(cfg2), [])
+        self.assertEqual(self.tool.get_selectable_orgs(cfg2, only_selectable=False),
+                         [self.vendors])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

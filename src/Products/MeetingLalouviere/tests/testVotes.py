@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeeting.py
+# File: testViews.py
 #
-# Copyright (c) 2007-2012 by CommunesPlone.org
+# Copyright (c) 2007-2015 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -22,18 +22,19 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.testMeeting import testMeetingType as mctm
+from Products.MeetingCommunes.tests.testVotes import testVotes as mctv
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
     MeetingLalouviereTestCase,
 )
 
 
-class testMeetingType(MeetingLalouviereTestCase, mctm):
-    """Tests the Meeting class methods."""
+class testVotes(MeetingLalouviereTestCase, mctv):
+    """ """
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeetingType, prefix='test_'))
+    suite.addTest(makeSuite(testVotes, prefix="test_"))
     return suite

@@ -2,9 +2,10 @@
 from copy import deepcopy
 
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
+from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS, DG_GROUP_ID
+from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
+from Products.PloneMeeting.profiles import UserDescriptor, OrgDescriptor
 from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
-
-from Products.PloneMeeting.profiles import UserDescriptor, PodTemplateDescriptor
 
 data = deepcopy(mc_import_data.data)
 
@@ -17,30 +18,19 @@ pmDivisionHead1 = UserDescriptor("pmDivisionHead1", [])
 pmDivisionHead2 = UserDescriptor("pmDivisionHead2", [])
 pmDirector1 = UserDescriptor("pmDirector1", [])
 pmDirector2 = UserDescriptor("pmDirector2", [])
+pmDg = UserDescriptor("pmDg", [])
 pmCreator2 = UserDescriptor("pmCreator2", [])
 pmAdviser1 = UserDescriptor("pmAdviser1", [])
 pmAdviser2 = UserDescriptor("pmAdviser2", [])
 voter1 = UserDescriptor("voter1", [], fullname="M. Voter One")
 voter2 = UserDescriptor("voter2", [], fullname="M. Voter Two")
 
-# Commission editors
-commissioneditor = UserDescriptor(
-    "commissioneditor",
-    [],
-    email="commissioneditor@plonemeeting.org",
-    fullname="M. Commission Editor",
+pmAlderman1 = UserDescriptor(
+    "pmAlderman1", [], email="pmalderman1@plonemeeting.org", fullname="M. PMAlderman One"
 )
-commissioneditor2 = UserDescriptor(
-    "commissioneditor2",
-    [],
-    email="commissioneditor2@plonemeeting.org",
-    fullname="M. Commission Editor 2",
-)
-data.usersOutsideGroups.append(commissioneditor)
-data.usersOutsideGroups.append(commissioneditor2)
 
-pmAlderman = UserDescriptor(
-    "pmAlderman", [], email="pmalderman@plonemeeting.org", fullname="M. PMAlderman One"
+pmAlderman2 = UserDescriptor(
+    "pmAlderman2", [], email="pmalderman2@plonemeeting.org", fullname="M. PMAlderman One"
 )
 
 pmFollowup1 = UserDescriptor("pmFollowup1", [])
@@ -49,191 +39,85 @@ pmBudgetReviewer1 = UserDescriptor("pmBudgetReviewer1", [])
 pmBudgetReviewer2 = UserDescriptor("pmBudgetReviewer2", [])
 
 # Inherited users
-pmCreator1 = deepcopy(pm_import_data.pmCreator1)
-pmReviewer1 = deepcopy(pm_import_data.pmReviewer1)
-pmReviewer2 = deepcopy(pm_import_data.pmReviewer2)
-pmReviewerLevel1 = deepcopy(pm_import_data.pmReviewerLevel1)
-pmReviewerLevel2 = deepcopy(pm_import_data.pmReviewerLevel2)
-pmManager = deepcopy(pm_import_data.pmManager)
+pmReviewer1 = pm_import_data.pmReviewer1
+pmReviewer2 = pm_import_data.pmReviewer2
+pmReviewerLevel1 = pm_import_data.pmReviewerLevel1
+pmReviewerLevel2 = pm_import_data.pmReviewerLevel2
+pmManager = pm_import_data.pmManager
 
 # GROUPS
 developers = data.orgs[0]
 # custom groups
-developers.serviceheads.append(pmReviewer1)
 developers.serviceheads.append(pmServiceHead1)
 developers.serviceheads.append(pmReviewerLevel1)
 developers.serviceheads.append(pmManager)
 developers.officemanagers.append(pmOfficeManager1)
-developers.officemanagers.append(pmReviewer1)
 developers.officemanagers.append(pmManager)
 developers.divisionheads.append(pmDivisionHead1)
-developers.divisionheads.append(pmReviewer1)
 developers.divisionheads.append(pmManager)
 developers.directors.append(pmDirector1)
-developers.directors.append(pmReviewer1)
 developers.directors.append(pmReviewerLevel2)
+developers.directors.append(pmReviewer1)
 developers.directors.append(pmManager)
 developers.budgetimpactreviewers.append(pmManager)
 developers.budgetimpactreviewers.append(pmBudgetReviewer1)
+developers.alderman.append(pmReviewerLevel2)
+developers.alderman.append(pmReviewer1)
 developers.alderman.append(pmManager)
-developers.alderman.append(pmAlderman)
+developers.alderman.append(pmAlderman1)
 developers.followupwriters.append(pmFollowup1)
 developers.observers.append(pmFollowup1)
 
 vendors = data.orgs[1]
-vendors.serviceheads.append(pmReviewer2)
 vendors.serviceheads.append(pmServiceHead2)
 vendors.officemanagers.append(pmOfficeManager2)
-vendors.officemanagers.append(pmReviewer2)
 vendors.divisionheads.append(pmDivisionHead2)
-vendors.divisionheads.append(pmReviewer2)
 vendors.directors.append(pmDirector2)
 vendors.directors.append(pmReviewer2)
 vendors.directors.append(pmReviewerLevel2)
-vendors.directors.append(pmManager)
-vendors.budgetimpactreviewers.append(pmManager)
 vendors.budgetimpactreviewers.append(pmBudgetReviewer2)
-vendors.alderman.append(pmManager)
-vendors.alderman.append(pmAlderman)
-vendors.followupwriters.append(pmFollowup1)
+vendors.alderman.append(pmReviewer2)
+vendors.alderman.append(pmAlderman2)
+vendors.alderman.append(pmReviewerLevel2)
 vendors.followupwriters.append(pmFollowup2)
-vendors.observers.append(pmFollowup1)
 vendors.observers.append(pmFollowup2)
+
+dg = OrgDescriptor(DG_GROUP_ID, 'Dg', u'Dg')
+data.orgs += (dg,)
+
+dg.creators.append(pmDg)
+dg.directors.append(pmDg)
+dg.directors.append(pmManager)
+dg.budgetimpactreviewers.append(pmDg)
+
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
-collegeMeeting.itemWorkflow = "meetingitemcollegelalouviere_workflow"
-collegeMeeting.meetingWorkflow = "meetingcollegelalouviere_workflow"
-collegeMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowConditions"
-collegeMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCollegeLalouviereWorkflowActions"
-)
-collegeMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowConditions"
-)
-collegeMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCollegeLalouviereWorkflowActions"
-)
-collegeMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
-collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
-collegeMeeting.transitionsForPresentingAnItem = (
-    "proposeToServiceHead",
-    "proposeToOfficeManager",
-    "proposeToDivisionHead",
-    "proposeToDirector",
-    "validate",
-    "present",
-)
-collegeMeeting.workflowAdaptations = []
+collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS)
 collegeMeeting.itemAdviceStates = [
-    "proposed_to_director",
+    "proposed_to_alderman",
 ]
-
-collegeMeeting.usedItemAttributes = (
-    u"description",
-    u"observations",
-    u"toDiscuss",
-    u"itemTags",
-    u"itemIsSigned",
-    u"neededFollowUp",
-    u"providedFollowUp",
-)
-
-collegeMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
+collegeMeeting.itemAdviceEditStates = [
+    "proposed_to_alderman",
+    "validated"
+]
+usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"neededFollowUp", u"providedFollowUp",]
+collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
-councilMeeting.itemWorkflow = "meetingitemcouncillalouviere_workflow"
-councilMeeting.meetingWorkflow = "meetingcouncillalouviere_workflow"
-councilMeeting.itemConditionsInterface = "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowConditions"
-councilMeeting.itemActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingItemCouncilLalouviereWorkflowActions"
-)
-councilMeeting.meetingConditionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowConditions"
-)
-councilMeeting.meetingActionsInterface = (
-    "Products.MeetingLalouviere.interfaces.IMeetingCouncilLalouviereWorkflowActions"
-)
-councilMeeting.itemDecidedStates = [
-    "accepted",
-    "delayed",
-    "accepted_but_modified",
-]
-councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
-
-councilMeeting.transitionsForPresentingAnItem = (
-    "proposeToDirector",
-    "validate",
-    "present",
-)
-councilMeeting.workflowAdaptations = []
+councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS)
 councilMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
-councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
-councilMeeting.itemCopyGroupsStates = [
+councilMeeting.itemAdviceEditStates = [
     "proposed_to_director",
-    "validated",
-    "item_in_committee",
-    "item_in_council",
+    "validated"
 ]
-
-councilMeeting.onMeetingTransitionItemActionToExecute = (
-    {
-        "meeting_transition": "setInCommittee",
-        "item_action": "setItemInCommittee",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "setInCouncil",
-        "item_action": "setItemInCouncil",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "backToCreated",
-        "item_action": "backToPresented",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "backToInCommittee",
-        "item_action": "backToItemInCouncil",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "backToInCommittee",
-        "item_action": "backToItemInCommittee",
-        "tal_expression": "",
-    },
-    {
-        "meeting_transition": "close",
-        "item_action": "accept",
-        "tal_expression": "",
-    },
-)
-
-councilMeeting.usedItemAttributes = (
-    u"description",
-    u"observations",
-    u"toDiscuss",
-    u"itemTags",
-    u"itemIsSigned",
-    u"commissionTranscript",
-    # u"classifier",
-)
-
-agendaCouncilTemplate = PodTemplateDescriptor('agendaTemplate', 'Ordre du jour')
-agendaCouncilTemplate.odt_file = 'council-oj.odt'
-agendaCouncilTemplate.pod_formats = ['odt', 'pdf', ]
-agendaCouncilTemplate.pod_portal_types = ['Meeting']
-agendaCouncilTemplate.tal_condition = u'python:tool.isManager(here)'
-agendaCouncilTemplate.style_template = ['styles1']
-
-councilMeeting.podTemplates.append(agendaCouncilTemplate)
+# councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
+usedItemAttributes = list(councilMeeting.usedItemAttributes) + [u"committeeTranscript",]
+councilMeeting.usedItemAttributes = tuple(usedItemAttributes)
+councilMeeting.itemPreferredMeetingStates += ('decided',)
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
