@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0a2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix migration error because some object are empty.
+  [odelaere]
 
 
 4.2.0-alpha1 (2023-03-06)

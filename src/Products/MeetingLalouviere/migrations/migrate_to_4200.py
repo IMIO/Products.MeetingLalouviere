@@ -345,13 +345,14 @@ class Migrate_To_4200(MCMigrate_To_4200):
         meetingmanagers = group_tool.getGroupById('meeting-config-council_meetingmanagers').getAllGroupMemberIds()
         for old_commission in binding:
             group = group_tool.getGroupById(old_commission)
-            members = group.getAllGroupMemberIds()
-            new_group = group_tool.getGroupById("meeting-config-council_" + binding[old_commission])
-            for member in members:
-                group.removeMember(member)
-                if new_group and member not in meetingmanagers:
-                    new_group.addMember(member)
-            group_tool.removeGroup(group.getId())
+            if group:
+                members = group.getAllGroupMemberIds()
+                new_group = group_tool.getGroupById("meeting-config-council_" + binding[old_commission])
+                for member in members:
+                    group.removeMember(member)
+                    if new_group and member not in meetingmanagers:
+                        new_group.addMember(member)
+                group_tool.removeGroup(group.getId())
 
     def _applyMeetingConfig_fixtures(self):
         logger.info('applying meetingconfig fixtures...')
@@ -392,13 +393,12 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                            'review_state': 'review_state_title',
                                            'getRawClassifier': 'committees_index'})
             # remove old attrs
-            delattr(cfg, 'preMeetingAssembly_default')
-            delattr(cfg, 'preMeetingAssembly_2_default')
-            delattr(cfg, 'preMeetingAssembly_3_default')
-            delattr(cfg, 'preMeetingAssembly_4_default')
-            delattr(cfg, 'preMeetingAssembly_5_default')
-            delattr(cfg, 'preMeetingAssembly_6_default')
-            delattr(cfg, 'preMeetingAssembly_7_default')
+            old_attrs = ('preMeetingAssembly_default', 'preMeetingAssembly_2_default', 'preMeetingAssembly_3_default',
+                         'preMeetingAssembly_4_default', 'preMeetingAssembly_5_default', 'preMeetingAssembly_6_default',
+                         'preMeetingAssembly_7_default')
+            for field in old_attrs:
+                if hasattr(cfg, field):
+                    delattr(cfg, field)
 
     def _fixUsedMeetingWFs(self):
         # remap states and transitions
