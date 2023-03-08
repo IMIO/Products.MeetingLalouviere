@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.0a2 (unreleased)
+4.2.0a2 (2023-03-08)
 --------------------
 
 - Fix migration error because some object are empty.
