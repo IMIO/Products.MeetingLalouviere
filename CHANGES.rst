@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.0a3 (unreleased)
+4.2.0a3 (2023-03-17)
 --------------------
 
 - Fix commission - committee bindings.
