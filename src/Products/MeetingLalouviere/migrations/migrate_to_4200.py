@@ -567,7 +567,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
         suffix = ""
         if "1er-supplement" in item_classifier:
             suffix = "__suppl__1"
-            item_classifier = item_classifier.strip("-1er-supplement")
+            item_classifier = '-'.join(item_classifier.split('-')[:-2])
         if not date or date.year > 2020 or (date.year == 2020 and date.month > 8):
             binding = {
                 "commission-travaux": Travaux_Finances_Patrimoine,
@@ -584,7 +584,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "points-conseillers-2eme-supplement": Conseillers2,
                 "points-conseillers-3eme-supplement": Conseillers3
             }
-        elif date.year >= 2019 and date.month > 8:
+        elif date.year > 2019 or (date.year == 2019 and date.month > 8):
             binding = {
                 "commission-travaux": Travaux_Finances,
                 "commission-sport": AG_Enseignement_Culture_Sport_Sante,
@@ -600,7 +600,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 "points-conseillers-2eme-supplement": Conseillers2,
                 "points-conseillers-3eme-supplement": Conseillers3
             }
-        elif date.year >= 2013 and date.month > 5:
+        elif date.year > 2013 or (date.year == 2013 and date.month > 5):
             binding = {
                 "commission-travaux": Travaux,
                 "commission-sport": AG_Finances_Enseignement_Culture_Sport_Sante,

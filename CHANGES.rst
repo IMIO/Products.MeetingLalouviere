@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0a3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix commission - committee bindings.
+  [odelaere]
 
 
 4.2.0a2 (2023-03-08)
