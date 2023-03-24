@@ -209,6 +209,12 @@ msgstr "Proposer au DG"
 msgid "propose_to_alderman"
 msgstr "Proposer à l'échevin"
 
+msgid "proposeToDg"
+msgstr "Proposer au DG"
+
+msgid "proposeToAlderman"
+msgstr "Proposer à l'échevin"
+
 msgid "proposeToDivisionHead"
 msgstr "Proposer au chef de division"
 

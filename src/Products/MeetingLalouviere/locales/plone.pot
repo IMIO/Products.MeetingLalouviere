@@ -59,6 +59,12 @@ msgstr ""
 msgid "backToProposedToServiceHead"
 msgstr ""
 
+msgid "proposeToDg"
+msgstr ""
+
+msgid "proposeToAlderman"
+msgstr ""
+
 msgid "setInCommittee"
 msgstr ""
 
