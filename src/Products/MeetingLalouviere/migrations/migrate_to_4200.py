@@ -384,10 +384,12 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 used_meeting_attr.append("committees_assembly")
                 used_meeting_attr.append("committees_place")
                 cfg.setUsedMeetingAttributes(tuple(used_meeting_attr))
-                used_item_attr = list(cfg.getUsedMeetingAttributes())
+                used_item_attr = list(cfg.getUsedItemAttributes())
                 used_item_attr.append("committeeTranscript")
                 cfg.setUsedItemAttributes(tuple(used_item_attr))
-
+                cfg.setWorkflowAdaptations(LLO_APPLYED_COUNCIL_WFA)
+            else:
+                cfg.setWorkflowAdaptations(LLO_APPLYED_COLLEGE_WFA)
             # replace action and review_state column by async actions
             self.updateColumns(to_replace={'actions': 'async_actions',
                                            'review_state': 'review_state_title',
@@ -399,6 +401,32 @@ class Migrate_To_4200(MCMigrate_To_4200):
             for field in old_attrs:
                 if hasattr(cfg, field):
                     delattr(cfg, field)
+
+            cfg.setItemBudgetInfosStates(self.replace_in_list(u'proposed_to_budgetimpact_reviewer',
+                                                              u'proposed_to_budget_reviewer',
+                                                              cfg.getItemBudgetInfosStates())
+                                         )
+            cfg.setItemAdviceStates(self.replace_in_list(u'proposed_to_budgetimpact_reviewer',
+                                                         u'proposed_to_budget_reviewer',
+                                                         cfg.getItemAdviceStates())
+                                    )
+            cfg.setItemAdviceViewStates(self.replace_in_list(u'proposed_to_budgetimpact_reviewer',
+                                                             u'proposed_to_budget_reviewer',
+                                                             cfg.getItemAdviceViewStates())
+                                        )
+            cfg.setItemAdviceEditStates(self.replace_in_list(u'proposed_to_budgetimpact_reviewer',
+                                                             u'proposed_to_budget_reviewer',
+                                                             cfg.getItemAdviceEditStates())
+                                        )
+
+    def replace_in_list(self, to_replace, new_value, list):
+        result = set()
+        for value in list:
+            if value == to_replace:
+                result.add(new_value)
+            else:
+                result.add(value)
+        return tuple(result)
 
     def _fixUsedMeetingWFs(self):
         # remap states and transitions

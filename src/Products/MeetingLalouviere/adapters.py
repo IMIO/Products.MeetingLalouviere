@@ -436,7 +436,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def _get_college_item_ref(self, meeting, meeting_date, service, item_number):
         return "{meetingdate}-{meetingnumber}/{service}/{itemnumber}".format(
             meetingdate=meeting_date,
-            meetingnumber=meeting.getMeetingNumber(),
+            meetingnumber=meeting.meeting_number(),
             service=service,
             itemnumber=item_number,
         )

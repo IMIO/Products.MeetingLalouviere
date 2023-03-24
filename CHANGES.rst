@@ -6,6 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0a4 (unreleased)
 --------------------
 
+- Fix meetingconfig migration.
+  [odelaere]
 - Fix search configurations.
   [odelaere]
 

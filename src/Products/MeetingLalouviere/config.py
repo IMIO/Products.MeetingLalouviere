@@ -225,18 +225,24 @@ LLO_APPLYED_COLLEGE_WFA = (
     "accepted_but_modified",
     "pre_accepted",
     "refused",
-    "removed",
     "delayed",
-    "no_publication",
+    "removed",
     "return_to_proposing_group",
+    "no_publication",
+    'propose_to_budget_reviewer',
+    'waiting_advices',
+    'waiting_advices_proposing_group_send_back',
 )
 
 LLO_APPLYED_COUNCIL_WFA = (
     "accepted_but_modified",
     "pre_accepted",
     "refused",
-    "removed",
     "delayed",
-    "no_decide",
+    "removed",
     "return_to_proposing_group",
+    'apply_council_state_label',
+    'propose_to_budget_reviewer',
+    'waiting_advices',
+    'waiting_advices_proposing_group_send_back',
 )
