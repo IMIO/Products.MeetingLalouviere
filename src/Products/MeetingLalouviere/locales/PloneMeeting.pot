@@ -550,6 +550,21 @@ msgstr ""
 msgid "wa_validate_by_dg_and_alderman"
 msgstr ""
 
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtobudgetreviewer"
+msgstr ""
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtoservicehead"
+msgstr ""
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtoofficemanager"
+msgstr ""
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtodivisionhead"
+msgstr ""
 
 #. Default: "Items proposed to ceo"
 msgid "searchproposedtodg"
@@ -557,6 +572,14 @@ msgstr ""
 
 #. Default: "Items proposed to alderman"
 msgid "searchproposedtoalderman"
+msgstr ""
+
+#. Default: "FollowUpButNotToPrint"
+msgid "searchItemsProvidedFollowUpButNotToPrint"
+msgstr ""
+
+#. Default: "ItemsProvidedFollowUp"
+msgid "searchItemsProvidedFollowUp"
 msgstr ""
 
 #. Default: "You can not unselect the 'Validation by CEO and Alderman' adaptation as there are still items in state 'proposed to CEO' or 'proposed to alderman'."

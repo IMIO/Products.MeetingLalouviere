@@ -531,12 +531,36 @@ msgid "searchproposedtoalderman"
 msgstr "points proposés à l'échevin"
 
 #. Default: "Items proposed to ceo"
+msgid "searchproposedtobudgetreviewer"
+msgstr "Points proposés au référent budgétaire"
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtoservicehead"
+msgstr "Points proposés au chef de service"
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtoofficemanager"
+msgstr "Points proposés au chef de bureau"
+
+#. Default: "Items proposed to ceo"
+msgid "searchproposedtodivisionhead"
+msgstr "Points proposés au chef de division"
+
+#. Default: "Items proposed to ceo"
 msgid "searchproposedtodg"
-msgstr "points proposés au DG"
+msgstr "Points proposés au DG"
 
 #. Default: "validated items"
 msgid "searchvalidateditems"
-msgstr "points validés"
+msgstr "Points validés"
+
+#. Default: "FollowUpButNotToPrint"
+msgid "searchItemsProvidedFollowUpButNotToPrint"
+msgstr "Suivi à ne pas imprimer"
+
+#. Default: "ItemsProvidedFollowUp"
+msgid "searchItemsProvidedFollowUp"
+msgstr "Suivi à imprimer"
 
 # Suffix
 #. Default: "service heads"
@@ -566,10 +590,6 @@ msgstr "<span class='follow_up_yes'>Un suivi est nécessaire.</span>"
 #. Default: "Validation by CEO and Alderman"
 msgid "wa_validate_by_dg_and_alderman"
 msgstr "Validation par le DG et l'échevin"
-
-#. Default: "Items proposed to ceo"
-msgid "searchproposedtodg"
-msgstr "points proposés au DG"
 
 #. Default: "Items proposed to alderman"
 msgid "searchproposedtoalderman"

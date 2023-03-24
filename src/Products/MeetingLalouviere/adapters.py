@@ -678,7 +678,7 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_on": u"modified",
                         "sort_reversed": True,
                         "showNumberOfItems": True,
-                        "tal_condition": "tool.isManager(here)",
+                        "tal_condition": "python: tool.isManager(cfg)",
                         "roles_bypassing_talcondition": ["Manager", ],
                     },
                 ),
