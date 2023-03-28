@@ -436,7 +436,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def _get_college_item_ref(self, meeting, meeting_date, service, item_number):
         return "{meetingdate}-{meetingnumber}/{service}/{itemnumber}".format(
             meetingdate=meeting_date,
-            meetingnumber=meeting.meeting_number(),
+            meetingnumber=meeting.meeting_number,
             service=service,
             itemnumber=item_number,
         )
@@ -446,7 +446,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
             secretnum = len(meeting.get_items(unrestricted=True)) - len(
                 meeting.get_items(
                     unrestricted=True,
-                    theObjects=False,
+                    the_objects=False,
                     additional_catalog_query={"privacy": "public"},
                 )
             )

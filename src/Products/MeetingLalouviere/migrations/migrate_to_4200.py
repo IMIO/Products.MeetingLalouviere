@@ -366,6 +366,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                          "preMeetingDate_5", "preMeetingPlace_5", "preMeetingAssembly_5",
                                          "preMeetingDate_6", "preMeetingPlace_6", "preMeetingAssembly_6",
                                          "preMeetingDate_7", "preMeetingPlace_7", "preMeetingAssembly_7",
+                                         "first_item_number",
                                          ])
         logger.info("Adapting 'meetingWorkflow/meetingItemWorkflow' for every MeetingConfigs...")
         for cfg in self.tool.objectValues('MeetingConfig'):
@@ -383,13 +384,17 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 used_meeting_attr.append("committees")
                 used_meeting_attr.append("committees_assembly")
                 used_meeting_attr.append("committees_place")
+                if "meeting_number" in used_meeting_attr:
+                    used_meeting_attr.remove("meeting_number")
                 cfg.setUsedMeetingAttributes(tuple(used_meeting_attr))
                 used_item_attr = list(cfg.getUsedItemAttributes())
                 used_item_attr.append("committeeTranscript")
+                used_item_attr.append("votesResult")
                 cfg.setUsedItemAttributes(tuple(used_item_attr))
                 cfg.setWorkflowAdaptations(LLO_APPLYED_COUNCIL_WFA)
             else:
                 cfg.setWorkflowAdaptations(LLO_APPLYED_COLLEGE_WFA)
+                cfg.setMeetingColumns(cfg.getMeetingColumns() + ('static_meeting_number',))
             # replace action and review_state column by async actions
             self.updateColumns(to_replace={'actions': 'async_actions',
                                            'review_state': 'review_state_title',
