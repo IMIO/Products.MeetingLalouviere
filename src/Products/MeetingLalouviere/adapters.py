@@ -24,13 +24,13 @@
 #
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
+from copy import deepcopy
 
 from Products.MeetingCommunes.adapters import (
     CustomMeeting,
     CustomMeetingConfig, CustomToolPloneMeeting, MeetingItemCommunesWorkflowActions,
 )
 from Products.MeetingCommunes.adapters import CustomMeetingItem
-from Products.MeetingCommunes.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActions
 from Products.MeetingLalouviere.config import DG_GROUP_ID
 from Products.MeetingLalouviere.config import FALLBACK_DG_GROUP_ID
@@ -58,46 +58,10 @@ from zope.i18n import translate
 from zope.interface import implements
 
 # disable waiting advice
-customWfAdaptations = ('item_validation_shortcuts',
-                       'item_validation_no_validate_shortcuts',
-                       'only_creator_may_delete',
-                       # first define meeting workflow state removal
-                       'no_freeze',
-                       'no_publication',
-                       'no_decide',
-                       # then define added item decided states
-                       'accepted_but_modified',
-                       'postpone_next_meeting',
-                       'mark_not_applicable',
-                       'removed',
-                       'removed_and_duplicated',
-                       'refused',
-                       'delayed',
-                       'pre_accepted',
-                       # then other adaptations
-                       'reviewers_take_back_validated_item',
-                       'presented_item_back_to_validation_state',
-                       'return_to_proposing_group',
-                       'return_to_proposing_group_with_last_validation',
-                       'return_to_proposing_group_with_all_validations',
-                       'decide_item_when_back_to_meeting_from_returned_to_proposing_group',
-                       'hide_decisions_when_under_writing',
-                       'waiting_advices',
-                       'waiting_advices_adviser_send_back',
-                       'waiting_advices_proposing_group_send_back',
-                       'accepted_out_of_meeting',
-                       'accepted_out_of_meeting_and_duplicated',
-                       'accepted_out_of_meeting_emergency',
-                       'accepted_out_of_meeting_emergency_and_duplicated',
-                       'transfered',
-                       'transfered_and_duplicated',
-                       'propose_to_budget_reviewer',
-                       'apply_council_state_label',
-                       'meetingmanager_correct_closed_meeting',
-                       )
-
-MeetingConfig.wfAdaptations = customWfAdaptations
-CustomMeetingConfig.wfAdaptations = customWfAdaptations
+customWfAdaptations = list(deepcopy(MeetingConfig.wfAdaptations))
+customWfAdaptations.append('apply_council_state_label')
+customWfAdaptations.append('propose_to_budget_reviewer')
+MeetingConfig.wfAdaptations = tuple(customWfAdaptations)
 
 
 class LLCustomMeeting(CustomMeeting):
@@ -112,147 +76,6 @@ class LLCustomMeeting(CustomMeeting):
             return "decided"
         return super(CustomMeeting, self).get_late_state()
     # helper methods used in templates
-
-    security.declarePublic("get_normal_classifiers")
-
-    def get_normal_classifiers(self):
-        """Returns the 'normal' categories"""
-        tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self.getSelf())
-        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
-        res = []
-        for classifier in classifiers:
-            classifier_id = classifier.getId()
-            if not classifier_id.endswith("supplement"):
-                res.append(classifier_id)
-        return res
-
-    security.declarePublic("get_first_suppl_classifiers")
-
-    def get_first_suppl_classifiers(self):
-        """Returns the '1er-supplement' categories"""
-        tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self.getSelf())
-        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
-        res = []
-        for classifier in classifiers:
-            classifier_id = classifier.getId()
-            if classifier_id.endswith("1er-supplement"):
-                res.append(classifier_id)
-        return res
-
-    security.declarePublic("get_second_suppl_classifiers")
-
-    def get_second_suppl_classifiers(self):
-        """Returns the '2eme-supplement' categories"""
-        tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self.getSelf())
-        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
-        res = []
-        for classifier in classifiers:
-            classifier_id = classifier.getId()
-            if classifier_id.endswith("2eme-supplement"):
-                res.append(classifier_id)
-        return res
-
-    security.declarePublic("get_third_suppl_classifiers")
-
-    def get_third_suppl_classifiers(self):
-        """Returns the '3eme-supplement' categories"""
-        tool = api.portal.get_tool("portal_plonemeeting")
-        mc = tool.getMeetingConfig(self.getSelf())
-        classifiers = mc.getCategories(catType='classifiers', onlySelectable=False)
-        res = []
-        for classifier in classifiers:
-            classifier_id = classifier.getId()
-            if classifier_id.endswith("3eme-supplement"):
-                res.append(classifier_id)
-        return res
-
-    def _get_renumbered_items(self, itemUids, privacy, listTypes, base_num_classifiers, item_list_classifiers):
-        number = (
-                self.getNumberOfItems(
-                    itemUids,
-                    listTypes=listTypes,
-                    privacy=privacy,
-                    classifiers=base_num_classifiers
-                )
-                + 1
-        )
-        items = self.getSelf().get_items(itemUids,
-                                        ordered=True,
-                                        listTypes=listTypes,
-                                        additional_catalog_query={
-                                            'privacy': privacy,
-                                            'getRawClassifier': item_list_classifiers
-                                        })
-        res = []
-        for item in items:
-            res.append([number, item])
-            number += 1
-        return res
-
-    security.declarePublic("get_normal_items")
-
-    def get_normal_items(self, itemUids, privacy="public", listTypes=['normal'], renumber=False):
-        """Returns the items presented as first supplement"""
-
-        items = self.getSelf().get_items(itemUids,
-                                        ordered=True,
-                                        listTypes=listTypes,
-                                        additional_catalog_query={
-                                            'privacy': privacy,
-                                            'getRawClassifier': self.get_normal_classifiers()
-                                        })
-        if renumber:
-            number = 1
-            res = []
-            for item in items:
-                res.append([number, item])
-                number += 1
-            return res
-
-        return items
-
-    security.declarePublic("get_items_first_suppl")
-
-    def get_items_first_suppl(self, itemUids, privacy="public", listTypes=['normal']):
-        """Returns the items presented as first supplement"""
-        normal_classifiers = self.get_normal_classifiers()
-        first_suppl_classifiers = self.get_first_suppl_classifiers()
-        return self._get_renumbered_items(itemUids,
-                                          privacy,
-                                          listTypes,
-                                          normal_classifiers,
-                                          first_suppl_classifiers)
-
-    security.declarePublic("get_items_second_suppl")
-
-    def get_items_second_suppl(self, itemUids, privacy="public", listTypes=['normal']):
-        """Returns the items presented as second supplement"""
-
-        normal_classifiers = self.get_normal_classifiers()
-        first_suppl_classifiers = self.get_first_suppl_classifiers()
-        second_suppl_classifiers = self.get_second_suppl_classifiers()
-        return self._get_renumbered_items(itemUids,
-                                          privacy,
-                                          listTypes,
-                                          normal_classifiers + first_suppl_classifiers,
-                                          second_suppl_classifiers)
-
-    security.declarePublic("get_items_third_suppl")
-
-    def get_items_third_suppl(self, itemUids, privacy="public", listTypes=['normal']):
-        """Returns the items presented as third supplement"""
-        normal_classifiers = self.get_normal_classifiers()
-        first_suppl_classifiers = self.get_first_suppl_classifiers()
-        second_suppl_classifiers = self.get_second_suppl_classifiers()
-        third_suppl_classifiers = self.get_third_suppl_classifiers()
-        return self._get_renumbered_items(itemUids,
-                                          privacy,
-                                          listTypes,
-                                          normal_classifiers + first_suppl_classifiers + second_suppl_classifiers,
-                                          third_suppl_classifiers)
 
     security.declarePublic("getLabelObservations")
 
@@ -295,22 +118,6 @@ class LLCustomMeetingItem(CustomMeetingItem):
             )
 
     MeetingItem.getLabelDescription = getLabelDescription
-
-    security.declarePublic("getLabelClassifier")
-
-    def getLabelClassifier(self):
-        """Returns the label to use for field MeetingItem.category
-          The label is different between college and council"""
-        item = self.getSelf()
-        if item.portal_type == "MeetingItemCouncil":
-
-            return item.utranslate(
-                "MeetingLalouviere_label_councilclassifier", domain="PloneMeeting"
-            )
-        else:
-            return item.utranslate("PloneMeeting_label_classifier", domain="PloneMeeting")
-
-    MeetingItem.getLabelClassifier = getLabelClassifier
 
     security.declarePublic("activateFollowUp")
 
