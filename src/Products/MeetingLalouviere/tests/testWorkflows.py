@@ -165,28 +165,19 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEqual(meeting.get_items(list_types=["late"])[0], item2)
         self.do(meeting, "decide")
         item1.activateFollowUp()
-        self.assertEqual(item1.getDecision(), item1.getNeededFollowUp())
-        item2.activateFollowUp()
-        self.assertEqual(item2.getDecision(), item2.getNeededFollowUp())
         # followup writer cannot edit follow up on frozen items
         self.changeUser("pmFollowup1")
-        self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
         self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
-        # manager can edit neededfollowup for frozen and decided items
         self.changeUser("pmManager")
-        self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
 
         self.assertEquals(item2.query_state(), "itemfrozen")
-        self.assertTrue(item2.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
 
         self.do(item1, "accept")
         self.assertEquals(item1.query_state(), "accepted")
-        self.assertTrue(item1.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmFollowup1")
-        self.assertFalse(item1.mayQuickEdit("neededFollowUp"))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
         item1.setProvidedFollowUp("<p>Followed</p>")
         self.changeUser("pmManager")
@@ -195,10 +186,8 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(meeting, "close")
         # every items without a decision are automatically accepted
         self.assertEquals(item2.query_state(), "accepted")
-        self.assertFalse(item2.mayQuickEdit("neededFollowUp"))
         self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmFollowup2")
-        self.assertFalse(item2.mayQuickEdit("neededFollowUp"))
         self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
 
     def _testWholeDecisionProcessCouncil(self):

@@ -358,7 +358,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
         logger.info('applying meetingconfig fixtures...')
         self.updateTALConditions("year()", "year")
         self.updateTALConditions("month()", "month")
-        self.cleanUsedItemAttributes(['classifier', 'commissionTranscript'])
+        self.cleanUsedItemAttributes(['classifier', 'commissionTranscript', 'neededFollowUp'])
         self.cleanUsedMeetingAttributes(["preMeetingDate", "preMeetingPlace", "preMeetingAssembly",
                                          "preMeetingDate_2", "preMeetingPlace_2", "preMeetingAssembly_2",
                                          "preMeetingDate_3", "preMeetingPlace_3", "preMeetingAssembly_3",

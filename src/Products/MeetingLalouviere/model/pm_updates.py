@@ -45,7 +45,7 @@ def update_item_schema(baseSchema):
             default="follow_up_no",
             widget=SelectionWidget(
                 condition="python: not here.isDefinedInTool() "
-                          "and here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
+                          "and here.attribute_is_used('providedFollowUp') and here.adapted().showFollowUp()",
                 description="A follow up is needed : no, yes, provided?",
                 description_msgid="MeetingLalouviere_descr_followUp",
                 label='FollowUp',
@@ -54,25 +54,6 @@ def update_item_schema(baseSchema):
             ),
             vocabulary_factory='Products.MeetingLalouviere.vocabularies.listFollowUps',
             write_permission="MeetingLalouviere: Write followUp",
-        ),
-        TextField(
-            name='neededFollowUp',
-            optional=True,
-            widget=RichWidget(
-                rows=15,
-                condition="python: not here.isDefinedInTool() "
-                          "and here.attribute_is_used('neededFollowUp') and here.adapted().showFollowUp()",
-                label='NeededFollowUp',
-                label_msgid='MeetingLalouviere_label_neededFollowUp',
-                description='Follow-up needed for this item',
-                description_msgid='MeetingLalouviere_descr_neededFollowUp',
-                i18n_domain='PloneMeeting',
-            ),
-            default_content_type="text/html",
-            searchable=True,
-            allowable_content_types=('text/html',),
-            default_output_type="text/html",
-            write_permission="MeetingLalouviere: Write neededFollowUp",
         ),
         TextField(
             name='providedFollowUp',

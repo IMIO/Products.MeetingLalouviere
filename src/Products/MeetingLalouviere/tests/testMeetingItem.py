@@ -41,7 +41,7 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
     def _extraNeutralFields(self):
         """This method is made to be overrided by subplugins that added
            neutral fields to the MeetingItem schema."""
-        return ["followUp", "neededFollowUp", "providedFollowUp"]
+        return ["followUp", "providedFollowUp"]
 
     def _get_developers_all_reviewers_groups(self):
         return [self.developers_officemanagers,

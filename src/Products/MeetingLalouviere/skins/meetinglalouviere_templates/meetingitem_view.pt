@@ -650,7 +650,7 @@
     </tal:field>
 
     <tal:comment replace="nothing">XXX follow-up</tal:comment>
-    <tal:followUp condition="python: 'neededFollowUp' in usedAttrs and here.adapted().showFollowUp()">
+    <tal:followUp condition="python: 'providedFollowUp' in usedAttrs and here.adapted().showFollowUp()">
     <tal:defines define="followUp context/getFollowUp">
      <a name="followup"></a>
      <tal:noFollowUp condition="python: followUp == 'follow_up_no'">
@@ -661,9 +661,6 @@
       <tal:yesFollowUp condition="python: followUp == 'follow_up_yes'">
        <tal:translate i18n:translate="yes_followup_needed_itemview">A follow-up is needed.</tal:translate>
        <tal:translate condition="python: tool.isManager(cfg)" i18n:translate="yes_followup_needed_actions_itemview">Actions.</tal:translate>
-       <tal:field define="fieldName python: 'neededFollowUp'; ajaxEdit python:True">
-         <metal:f use-macro="context/@@pm-macros/viewContentField"/>
-       </tal:field>
        <tal:field define="fieldName python: 'providedFollowUp'; ajaxEdit python:True">
          <metal:f use-macro="context/@@pm-macros/viewContentField"/>
        </tal:field>
@@ -673,9 +670,6 @@
        <tal:translate condition="python: followUp == 'follow_up_provided' and tool.isManager(cfg)" i18n:translate="provided_followup_actions_itemview">Actions.</tal:translate>
        <tal:translate tal:condition="python: followUp == 'follow_up_provided_not_printed'" i18n:translate="provided_followup_not_printed_itemview">The needed follow-up has been provided.  Click here if you want to define that a follow-up is still needed or click here to deactivate needed follow-up.</tal:translate>
        <tal:translate condition="python: followUp == 'follow_up_provided_not_printed' and tool.isManager(cfg)" i18n:translate="provided_followup_not_printed_actions_itemview">Actions.</tal:translate>
-       <fieldset><legend i18n:translate="MeetingLalouviere_label_neededFollowUp">Needed follow-up</legend>
-        <span metal:use-macro="python: here.widget('neededFollowUp', mode='view')" />
-       </fieldset>
        <fieldset><legend i18n:translate="MeetingLalouviere_label_providedFollowUp">Provided follow-up</legend>
         <span metal:use-macro="python: here.widget('providedFollowUp', mode='view')" />
        </fieldset>

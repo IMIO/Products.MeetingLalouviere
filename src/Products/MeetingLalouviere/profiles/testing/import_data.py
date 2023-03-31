@@ -102,7 +102,7 @@ collegeMeeting.itemAdviceEditStates = [
     "proposed_to_alderman",
     "validated"
 ]
-usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"neededFollowUp", u"providedFollowUp",]
+usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"providedFollowUp",]
 collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
 
 # COUNCIL
