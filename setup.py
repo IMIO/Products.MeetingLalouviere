@@ -1,7 +1,7 @@
 # coding=utf-8
 from setuptools import setup, find_packages
 
-version = "4.2.0a6"
+version = "4.2.0a7.dev0"
 
 setup(
     name="Products.MeetingLalouviere",
