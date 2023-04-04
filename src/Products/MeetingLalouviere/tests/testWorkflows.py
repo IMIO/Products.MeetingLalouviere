@@ -234,7 +234,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             title="The first item",
             autoAddCategory=False,
             category="deployment",
-            commettees=("commission-ag",),
+            committees_index=("commission-ag",),
             decision="<p>test</p>"
         )
         annex1 = self.addAnnex(item1)
@@ -275,7 +275,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             title="The second item",
             preferredMeeting=meeting.UID(),
             category="deployment",
-            commettees=("commission-patrimoine",),
+            committees_index=("commission-patrimoine",),
             decision="<p>test</p>"
         )
         self.do(item2, "proposeToDirector")
@@ -317,7 +317,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             title="Addition to the first item",
             autoAddCategory=False,
             category="deployment",
-            commettees=("commission-ag__suppl_1",)
+            committees_index=("commission-ag__suppl_1",)
         )
         self.do(item1_addition, "proposeToDirector")
         item1_addition.setPreferredMeeting(meeting.UID())

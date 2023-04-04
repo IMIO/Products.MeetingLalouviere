@@ -123,88 +123,30 @@ class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):
 
 
 class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperView):
-    """Specific printing methods used for meeting."""
-    def get_classifiers_for_commission(self, commission_num):
-        commission_classifier_ids = self.real_context.adapted().get_commission_classifiers_ids()
-        classifier = commission_classifier_ids[commission_num - 1]
-        if isinstance(classifier, tuple):
-            return list(classifier)
-        else:
-            # single classifier as a string
-            return [classifier]
 
-    def get_commission_items(self, itemUids, commission_num, type='normal'):
+    def get_all_commission_items(self, supplement, privacy, include_no_committee=False):
         """
-        Get the items of the commission
-        :param commission_num: number of the commission
-        :param supplement: supplement items
-        :param type: must be 'normal', 'supplement' or '*'
-        :return: list of meetingItem
+        Returns every items of all committees respecting the order of committees on the meeting.
+        For p_supplement:
+        - -1 means only include normal, no supplement;
+        - 0 means normal + every supplements;
+        - 1, 2, 3, ... only items of supplement 1, 2, 3, ...
+        - 99 means every supplements only.
+        This is calling get_committee_items under so every parameters of get_items may be given in kwargs.
+        For p_privacy:
+        - 'public' means filter on public items
+        - 'secret' means filter on secret items
+        For p_include_no_committee:
+        - True insert 'no_committee' items before others
         """
-        classifiers = self.get_classifiers_for_commission(commission_num)
-        if type == 'supplement':
-            # If we want the supplements items only
-            # append supplement suffix to the classifiers
-            classifiers = [classifier + '-1er-supplement' for classifier in classifiers]
-        elif type == '*':
-            # If we want all items
-            classifiers = classifiers + [classifier + '-1er-supplement' for classifier in classifiers]
+        res = []
+        if include_no_committee:
+            res = self.context.get_items(ordered=True,
+                                         additional_catalog_query={"privacy": privacy,
+                                                                   "committees_index": [u'no_committee']})
 
-        items = self.context.get_items(uids=itemUids,
-                                      ordered=True,
-                                      additional_catalog_query={"getRawClassifier": classifiers})
-        return items
-
-    def format_commission_pre_meeting_date(self, commission_num):
-        """
-        format pre-meeting date like this : (Lundi 20 mai 2019 (18H30), Salle du Conseil communal)
-        :param commission_num: number of the commission
-        :return: formatted pre-meeting date string
-        """
-        meeting = self.context
-        if commission_num > 1:
-            pre_meeting_date = getattr(meeting, "getPreMeetingDate_" + str(commission_num))()
-            pre_meeting_place = getattr(meeting, "getPreMeetingPlace_" + str(commission_num))()
-        else:
-            pre_meeting_date = meeting.getPreMeetingDate()
-            pre_meeting_place = meeting.getPreMeetingPlace()
-
-        weekday = meeting.translate("weekday_%s" % pre_meeting_date.aDay().lower(), domain="plonelocales")
-        day = pre_meeting_date.strftime('%d')
-        month = meeting.translate('month_%s' % pre_meeting_date.strftime('%b').lower(),
-                                  domain='plonelocales').lower()
-        year = pre_meeting_date.strftime('%Y')
-        time = pre_meeting_date.strftime('%HH%M')
-
-        return u"({weekday} {day} {month} {year} ({time}), {place})".format(
-            weekday=safe_unicode(weekday),
-            day=safe_unicode(day),
-            month=safe_unicode(month),
-            year=safe_unicode(year),
-            time=safe_unicode(time),
-            place=safe_unicode(pre_meeting_place)
-        )
-
-    def has_commission_pre_meeting_date(self, commission_num):
-        """
-        Has the commission [com_num] a pre-meeting date ?
-        :return: True if it has one, False otherwise
-        """
-        meeting = self.context
-        if commission_num > 1:
-            pre_meeting_date = getattr(meeting, "getPreMeetingDate_" + str(commission_num))()
-        else:
-            pre_meeting_date = meeting.getPreMeetingDate()
-        return pre_meeting_date is not None
-
-    def get_commission_assembly(self, commission_num):
-        """
-        get the commission pre-meeting assembly based on the commission number.
-        :param commission_num: number of the commission
-        :return: preMeetingAssembly
-        """
-        meeting = self.context
-        if commission_num > 1:
-            return getattr(meeting, "getPreMeetingAssembly_" + str(commission_num))()
-        else:
-            return meeting.getPreMeetingAssembly()
+        for committee in self.context.get_committees():
+            res += self.context.get_committee_items(committee,
+                                                    int(supplement),
+                                                    additional_catalog_query={"privacy": privacy}, )
+        return res

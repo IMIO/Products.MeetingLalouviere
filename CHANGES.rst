@@ -6,6 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0a6 (unreleased)
 --------------------
 
+- get_all_commission_items.
+  [odelaere]
 - Fine tuning migration.
   [odelaere]
 

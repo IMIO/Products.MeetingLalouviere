@@ -384,8 +384,10 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 used_meeting_attr.append("committees")
                 used_meeting_attr.append("committees_assembly")
                 used_meeting_attr.append("committees_place")
-                if "meeting_number" in used_meeting_attr:
-                    used_meeting_attr.remove("meeting_number")
+                # meeting_number will be used in convocations in meeting reference field
+                for attribute in ("pre_meeting_date", "pre_meeting_place"):
+                    if attribute in used_meeting_attr:
+                        used_meeting_attr.remove(attribute)
                 cfg.setUsedMeetingAttributes(tuple(used_meeting_attr))
                 used_item_attr = list(cfg.getUsedItemAttributes())
                 used_item_attr.append("committeeTranscript")
@@ -556,6 +558,8 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                                     old.preMeetingPlace_7,
                                                     self.find_committee_row_id(7, old.getDate())))
             new.committees = committees
+        new.pre_meeting_date = None
+        new.pre_meeting_place = None
 
     def _hook_after_meeting_to_dx(self):
         self._applyMeetingConfig_fixtures()
