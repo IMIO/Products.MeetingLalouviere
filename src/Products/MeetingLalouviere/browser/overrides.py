@@ -124,9 +124,9 @@ class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):
 
 class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperView):
 
-    def get_all_commission_items(self, supplement, privacy, include_no_committee=False):
+    def get_all_committees_items(self, supplement, privacy='public', list_types=['normal'], include_no_committee=False):
         """
-        Returns every items of all committees respecting the order of committees on the meeting.
+        Returns all items of all committees respecting the order of committees on the meeting.
         For p_supplement:
         - -1 means only include normal, no supplement;
         - 0 means normal + every supplements;
@@ -142,11 +142,13 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
         res = []
         if include_no_committee:
             res = self.context.get_items(ordered=True,
+                                         list_types=list_types,
                                          additional_catalog_query={"privacy": privacy,
                                                                    "committees_index": [u'no_committee']})
 
         for committee in self.context.get_committees():
             res += self.context.get_committee_items(committee,
                                                     int(supplement),
-                                                    additional_catalog_query={"privacy": privacy}, )
+                                                    additional_catalog_query={"privacy": privacy},
+                                                    list_types=list_types)
         return res

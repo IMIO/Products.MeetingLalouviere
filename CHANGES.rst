@@ -6,8 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0a7 (unreleased)
 --------------------
 
-- Nothing changed yet.
-
+- Added a `IMeetingLalouviereLayer BrowserLayer`.
+  [odelaere]
 
 4.2.0a6 (2023-04-04)
 --------------------
