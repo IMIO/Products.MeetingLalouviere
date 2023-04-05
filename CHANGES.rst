@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0b2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix searchproposedtodirector translation.
+  [odelaere]
 
 
 4.2.0b1 (2023-04-05)

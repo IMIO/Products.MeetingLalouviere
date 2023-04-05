@@ -566,6 +566,10 @@ msgstr ""
 msgid "searchproposedtodivisionhead"
 msgstr ""
 
+#. Default: "Items proposed to manager"
+msgid "searchproposedtodirector"
+msgstr ""
+
 #. Default: "Items proposed to ceo"
 msgid "searchproposedtodg"
 msgstr ""

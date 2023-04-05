@@ -394,6 +394,12 @@ class Migrate_To_4200(MCMigrate_To_4200):
                 used_item_attr.append("votesResult")
                 cfg.setUsedItemAttributes(tuple(used_item_attr))
                 cfg.setWorkflowAdaptations(LLO_APPLYED_COUNCIL_WFA)
+                cfg.setDashboardItemsListingsFilters(
+                    self.replace_in_list("c24", "c31", cfg.getDashboardItemsListingsFilters()))
+                cfg.setDashboardMeetingAvailableItemsFilters(
+                    self.replace_in_list("c24", "c31", cfg.getDashboardMeetingAvailableItemsFilters()))
+                cfg.setDashboardMeetingLinkedItemsFilters(
+                    self.replace_in_list("c24", "c31", cfg.getDashboardMeetingLinkedItemsFilters()))
             else:
                 cfg.setWorkflowAdaptations(LLO_APPLYED_COLLEGE_WFA)
                 cfg.setMeetingColumns(cfg.getMeetingColumns() + ('static_meeting_number',))

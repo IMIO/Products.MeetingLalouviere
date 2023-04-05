@@ -546,6 +546,10 @@ msgstr "Points proposés au chef de bureau"
 msgid "searchproposedtodivisionhead"
 msgstr "Points proposés au chef de division"
 
+#. Default: "Items proposed to manager"
+msgid "searchproposedtodirector"
+msgstr "Points proposés au directeur"
+
 #. Default: "Items proposed to ceo"
 msgid "searchproposedtodg"
 msgstr "Points proposés au DG"
