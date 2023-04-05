@@ -6,6 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0b2 (unreleased)
 --------------------
 
+- Adapt MLLItemDocumentGenerationHelperView.
+  [odelaere]
 - Fix searchproposedtodirector translation.
   [odelaere]
 
