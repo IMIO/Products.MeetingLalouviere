@@ -3,8 +3,8 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.0b4 (unreleased)
---------------------
+4.2.0rc1 (2023-04-14)
+---------------------
 
 - Fix missing getFolloUp index.
   [odelaere]
