@@ -6,8 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0b4 (unreleased)
 --------------------
 
+- Fix missing getFolloUp index.
+  [odelaere]
 - Deleted neededFollowUp.
-  [odelaere].
+  [odelaere]
 
 
 4.2.0b3 (2023-04-13)

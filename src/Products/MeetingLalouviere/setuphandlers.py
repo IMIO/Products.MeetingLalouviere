@@ -11,7 +11,7 @@
 
 import logging
 import os
-
+from imio.helpers.catalog import addOrUpdateIndexes
 from Products.MeetingLalouviere.config import PROJECTNAME
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 
@@ -31,6 +31,8 @@ def postInstall(context):
     site = context.getSite()
     # need to reinstall PloneMeeting after reinstalling MC workflows to re-apply wfAdaptations
     reinstallPloneMeeting(context, site)
+    # Add additional indexes
+    addAdditionalIndexes(context, site)
     showHomeTab(context, site)
     reorderSkinsLayers(context, site)
 
@@ -66,6 +68,22 @@ def initializeTool(context):
     # so install it manually
     _installPloneMeeting(context)
     return ToolInitializer(context, PROJECTNAME).run()
+
+
+def addAdditionalIndexes(context, portal):
+    '''
+       Add some specific indexes used by MeetingLalouviere
+    '''
+    if isNotMeetingLalouviereProfile(context):
+        return
+
+    indexInfo = {
+        'getFollowUp': ('FieldIndex', {}),
+    }
+
+    logStep("addAdditionalIndexes", context)
+    # Create or update indexes
+    addOrUpdateIndexes(portal, indexInfo)
 
 
 def reinstallPloneMeeting(context, site):
