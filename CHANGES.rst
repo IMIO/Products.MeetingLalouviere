@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0b4 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Deleted neededFollowUp.
+  [odelaere].
 
 
 4.2.0b3 (2023-04-13)

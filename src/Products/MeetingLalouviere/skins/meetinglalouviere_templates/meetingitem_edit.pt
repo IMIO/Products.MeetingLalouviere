@@ -138,10 +138,6 @@
     <tal:comment replace="nothing">XXX followUp</tal:comment>
     <metal:field use-macro="python:here.widget('followUp', mode='edit')"/>
 
-    <tal:comment replace="nothing">XXX neededFollowUp</tal:comment>
-    <tal:field define="fieldName python: 'neededFollowUp'">
-      <metal:f use-macro="context/@@pm-macros/editContentField"/>
-    </tal:field>
     <tal:comment replace="nothing">XXX providedFollowUp</tal:comment>
     <tal:field define="fieldName python: 'providedFollowUp'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>

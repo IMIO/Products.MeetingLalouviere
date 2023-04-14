@@ -154,7 +154,6 @@ collegeMeeting.usedItemAttributes = (
     u"observations",
     u"manuallyLinkedItems",
     u"textCheckList",
-    u"neededFollowUp",
     u"providedFollowUp",
 )
 

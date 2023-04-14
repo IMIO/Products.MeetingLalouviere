@@ -162,14 +162,6 @@ msgstr ""
 msgid "MeetingLalouviere_descr_followUp"
 msgstr ""
 
-#. Default: "Needed follow-up"
-msgid "MeetingLalouviere_label_neededFollowUp"
-msgstr ""
-
-#. Default: "Needed follow-up"
-msgid "MeetingLalouviere_descr_neededFollowUp"
-msgstr ""
-
 #. Default: "Provided follow-up"
 msgid "MeetingLalouviere_label_providedFollowUp"
 msgstr ""

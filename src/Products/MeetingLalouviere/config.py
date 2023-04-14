@@ -35,9 +35,6 @@ PROJECTNAME = "MeetingLalouviere"
 DEFAULT_WRITE_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write followUp"
 setDefaultRoles(DEFAULT_WRITE_FOLLOWUP_PERMISSION, ('Manager', 'MeetingManager'))
 
-DEFAULT_WRITE_NEEDED_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write neededFollowUp"
-setDefaultRoles(DEFAULT_WRITE_NEEDED_FOLLOWUP_PERMISSION, ('Manager', 'MeetingManager'))
-
 DEFAULT_WRITE_PROVIDED_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write providedFollowUp"
 setDefaultRoles(DEFAULT_WRITE_PROVIDED_FOLLOWUP_PERMISSION, ('Manager', 'MeetingManager', 'MeetingFollowUpWriter'))
 

@@ -130,9 +130,6 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def activateFollowUp(self):
         """Activate follow-up by setting followUp to 'follow_up_yes'."""
         self.setFollowUp("follow_up_yes")
-        # initialize the neededFollowUp field with the available content of the 'decision' field
-        if not self.getNeededFollowUp():
-            self.setNeededFollowUp(self.getDecision())
         self.reindexObject(
             idxs=["getFollowUp",]
         )
