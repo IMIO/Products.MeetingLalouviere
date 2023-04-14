@@ -229,7 +229,7 @@ LLO_APPLYED_COLLEGE_WFA = (
     'propose_to_budget_reviewer',
     'waiting_advices',
     'waiting_advices_proposing_group_send_back',
-    'item_validation_shortcuts,'
+    'item_validation_shortcuts',
 )
 
 LLO_APPLYED_COUNCIL_WFA = (

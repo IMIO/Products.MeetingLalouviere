@@ -1,15 +1,29 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="urban">
+    xmlns:plone="http://namespaces.plone.org/plone">
 
+  <!-- collective.documentgenerator helper view for Meeting -->
+  <browser:page
+        for="Products.PloneMeeting.content.meeting.IMeeting"
+        class=".overrides.MLLMeetingDocumentGenerationHelperView"
+        permission="zope2.View"
+        layer="Products.MeetingLalouviere.interfaces.IMeetingLalouviereLayer"
+        name="document_generation_helper_view"
+     />
+  <!-- collective.documentgenerator helper view for MeetingItem -->
+    <browser:page
+        for="Products.PloneMeeting.interfaces.IMeetingItem"
+        class=".overrides.MLLItemDocumentGenerationHelperView"
+        permission="zope2.View"
+        layer="Products.MeetingLalouviere.interfaces.IMeetingLalouviereLayer"
+        name="document_generation_helper_view" />
   <!-- the meetingadvice workflow conditions view -->
   <browser:view
       for="Products.PloneMeeting.content.advice.IMeetingAdvice"
       name="advice-wf-conditions"
       class=".views.AdviceWFConditionsView"
       layer="Products.PloneMeeting.interfaces.IPloneMeetingLayer"
-      permission="zope2.View" />
+      permission="zope2.View"/>
 
 </configure>

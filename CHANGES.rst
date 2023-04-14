@@ -3,10 +3,39 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.0a6 (unreleased)
+4.2.0b4 (unreleased)
 --------------------
 
 - Deleted neededFollowUp.
+  [odelaere].
+
+
+4.2.0b3 (2023-04-13)
+--------------------
+
+- Added full committees to apply.
+  [odelaere]
+
+
+4.2.0b2 (2023-04-06)
+--------------------
+
+- Adapt MLLItemDocumentGenerationHelperView.
+  [odelaere]
+- Fix searchproposedtodirector translation.
+  [odelaere]
+
+
+4.2.0b1 (2023-04-05)
+--------------------
+
+- Added a `IMeetingLalouviereLayer BrowserLayer`.
+  [odelaere]
+
+4.2.0a6 (2023-04-04)
+--------------------
+
+- get_all_commission_items.
   [odelaere]
 - Fine tuning migration.
   [odelaere]
