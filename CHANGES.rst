@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.0rc2 (unreleased)
+4.2.0rc2 (2023-04-18)
 ---------------------
 
 - Ensure 'decisionSuite' is removed from used items attributes.
