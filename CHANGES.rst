@@ -6,6 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0rc2 (unreleased)
 ---------------------
 
+- Ensure 'decisionSuite' is removed from used items attributes.
+  [odelaere]
 - Fix custom WFA back transitions labels.
   [odelaere]
 
