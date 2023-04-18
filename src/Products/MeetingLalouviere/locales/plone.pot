@@ -68,13 +68,25 @@ msgstr ""
 msgid "setInCommittee"
 msgstr ""
 
+msgid "backToCommittee"
+msgstr ""
+
 msgid "setItemInCommittee"
+msgstr ""
+
+msgid "backToItemCommittee"
 msgstr ""
 
 msgid "setInCouncil"
 msgstr ""
 
+msgid "backToCouncil"
+msgstr ""
+
 msgid "setItemInCouncil"
+msgstr ""
+
+msgid "backToItemCouncil"
 msgstr ""
 
 msgid "return_to_service"

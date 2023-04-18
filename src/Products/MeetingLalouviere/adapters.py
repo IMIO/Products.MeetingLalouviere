@@ -692,13 +692,17 @@ class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
         if wfAdaptation == 'apply_council_state_label':
             meetingWorkflow.states['frozen'].title = translate("in_committee", "plone")
             meetingWorkflow.transitions['freeze'].title = translate("setInCommittee", "plone")
+            meetingWorkflow.transitions['backToFrozen'].title = translate("backToCommittee", "plone")
             meetingWorkflow.states['published'].title = translate("in_council", "plone")
             meetingWorkflow.transitions['publish'].title = translate("setInCouncil", "plone")
+            meetingWorkflow.transitions['backToPublished'].title = translate("backToCouncil", "plone")
 
             itemWorkflow.states['itemfrozen'].title = translate("in_committee", "plone")
             itemWorkflow.transitions['itemfreeze'].title = translate("setItemInCommittee", "plone")
+            itemWorkflow.transitions['backToItemFrozen'].title = translate("backToItemCommittee", "plone")
             itemWorkflow.states['itempublished'].title = translate("in_council", "plone")
             itemWorkflow.transitions['itempublish'].title = translate("setItemInCouncil", "plone")
+            itemWorkflow.transitions['backToItemPublished'].title = translate("backToItemCouncil", "plone")
             return True
         return False
 

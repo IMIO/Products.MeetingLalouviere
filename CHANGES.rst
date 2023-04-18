@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0rc2 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Fix custom WFA back transitions labels.
+  [odelaere]
 
 
 4.2.0rc1 (2023-04-14)

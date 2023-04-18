@@ -320,16 +320,28 @@ msgid "sendtocouncil_error_no_existing_meetingconfig"
 msgstr "Le type de séance vers laquelle vous souhaitez envoyer ce point n'existe pas!"
 
 msgid "setInCommittee"
-msgstr "Mettre en commission"
+msgstr "Mettre en Commission"
+
+msgid "backToCommittee"
+msgstr "Remettre en \"Commission\""
 
 msgid "setInCouncil"
 msgstr "Mettre en Conseil communal"
 
+msgid "backToCouncil"
+msgstr "Remettre en \"Conseil\""
+
 msgid "setItemInCommittee"
-msgstr "Mettre en commission"
+msgstr "Mettre en Commission"
+
+msgid "backToItemCommittee"
+msgstr "Remettre en \"Commission\""
 
 msgid "setItemInCouncil"
 msgstr "Mettre en Conseil communal"
+
+msgid "backToItemCouncil"
+msgstr "Remettre en \"Conseil\""
 
 #. Default: "Sign financial advice"
 msgid "signFinancialAdvice"
