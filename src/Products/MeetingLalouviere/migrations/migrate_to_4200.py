@@ -459,9 +459,16 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                                              u'proposed_to_budget_reviewer',
                                                              cfg.getItemAdviceEditStates())
                                         )
-            cfg.setToDoListSearches(tuple())
             cfg.setUseVotes(True)
-            cfg.setVotesResultTALExpr("python: pm_utils.print_votes(item, include_total_voters=True)")
+            cfg.setVotesResultTALExpr("python: pm_utils.print_votes(item)")
+
+            cfg_dashboard_path = "portal_plonemeeting/{}/searches/searches_items/".format(cfg.getId())
+            to_dashboard_ids = ["searchallitemstoadvice",
+                                "searchallitemsincopy",
+                                "searchitemstovalidate",
+                                "searchitemstocorrect"]
+            cfg.setToDoListSearches(
+                tuple([self.catalog.resolve_path(cfg_dashboard_path + id).UID() for id in to_dashboard_ids]))
 
     def replace_in_list(self, to_replace, new_value, list):
         result = set()

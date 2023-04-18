@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0rc3 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Apply to do portlet searches in migration.
+  [odelaere]
 
 
 4.2.0rc2 (2023-04-18)
@@ -21,7 +22,7 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0rc1 (2023-04-14)
 ---------------------
 
-- Fix missing getFolloUp index.
+- Fix missing getFollowUp index.
   [odelaere]
 - Deleted neededFollowUp.
   [odelaere]
