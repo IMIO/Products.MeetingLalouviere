@@ -462,14 +462,6 @@ class Migrate_To_4200(MCMigrate_To_4200):
             cfg.setUseVotes(True)
             cfg.setVotesResultTALExpr("python: pm_utils.print_votes(item)")
 
-            cfg_dashboard_path = "portal_plonemeeting/{}/searches/searches_items/".format(cfg.getId())
-            to_dashboard_ids = ["searchallitemstoadvice",
-                                "searchallitemsincopy",
-                                "searchitemstovalidate",
-                                "searchitemstocorrect"]
-            cfg.setToDoListSearches(
-                tuple([self.catalog.resolve_path(cfg_dashboard_path + id).UID() for id in to_dashboard_ids]))
-
     def replace_in_list(self, to_replace, new_value, list):
         result = set()
         for value in list:
@@ -750,12 +742,25 @@ class Migrate_To_4200(MCMigrate_To_4200):
             decided = cfg.searches.searches_items
             for folder in (items, meetings, decided):
                 api.content.delete(objects=folder.listFolderContents())
+            cfg.setToDoListSearches(())
+
+    def post_migration_fixtures(self):
+        logger.info("Adapting todo searches ...")
+        for cfg in self.tool.objectValues('MeetingConfig'):
+            cfg_dashboard_path = "portal_plonemeeting/{}/searches/searches_items/".format(cfg.getId())
+            to_dashboard_ids = ["searchallitemstoadvice",
+                                "searchallitemsincopy",
+                                "searchitemstovalidate",
+                                "searchitemstocorrect"]
+            searches = [self.catalog.resolve_path(cfg_dashboard_path + id) for id in to_dashboard_ids]
+            cfg.setToDoListSearches(tuple([search.UID() for search in searches if search is not None]))
 
     def run(self,
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
         self._remove_old_dashboardcollection()
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
+        self.post_migration_fixtures()
         logger.info('Done migrating to MeetingLalouviere 4200...')
 
 
