@@ -6,6 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.0rc5 (unreleased)
 ---------------------
 
+- set correct migration profile_name.
+  [odelaere]
 - Update setVotesResultTALExpr.
   [odelaere]
 - adapt vote config in migration.

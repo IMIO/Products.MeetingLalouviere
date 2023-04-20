@@ -461,7 +461,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                         )
             cfg.setUseVotes('council' in cfg.getId())
             cfg.setVotesResultTALExpr("python: item.getPollType() != 'no_vote' "
-                                      "and '<p>&nbsp;</p>' + pm_utils.print_votes(item) "
+                                      "python: item.getPollType() != 'no_vote' "
                                       "or ''")
 
     def replace_in_list(self, to_replace, new_value, list):
@@ -761,7 +761,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             profile_name=u'profile-Products.MeetingLalouviere:default',
             extra_omitted=[]):
         self._remove_old_dashboardcollection()
-        super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
+        super(Migrate_To_4200, self).run(profile_name=profile_name, extra_omitted=extra_omitted)
         self.post_migration_fixtures()
         logger.info('Done migrating to MeetingLalouviere 4200...')
 
