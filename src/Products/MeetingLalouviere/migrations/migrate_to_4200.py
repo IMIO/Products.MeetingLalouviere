@@ -461,7 +461,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
                                         )
             cfg.setUseVotes('council' in cfg.getId())
             cfg.setVotesResultTALExpr("python: item.getPollType() != 'no_vote' "
-                                      "and '<p>&nbsp;</p> <p>&nbsp;</p> ' + pm_utils.print_votes(item) "
+                                      "and '<p>&nbsp;</p>' + pm_utils.print_votes(item) "
                                       "or ''")
 
     def replace_in_list(self, to_replace, new_value, list):
