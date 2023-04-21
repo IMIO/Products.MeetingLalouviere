@@ -230,6 +230,7 @@ LLO_APPLYED_COLLEGE_WFA = (
     'waiting_advices',
     'waiting_advices_proposing_group_send_back',
     'item_validation_shortcuts',
+    'postpone_next_meeting',
 )
 
 LLO_APPLYED_COUNCIL_WFA = (
@@ -244,4 +245,5 @@ LLO_APPLYED_COUNCIL_WFA = (
     'waiting_advices',
     'waiting_advices_proposing_group_send_back',
     'item_validation_shortcuts',
+    'postpone_next_meeting',
 )
