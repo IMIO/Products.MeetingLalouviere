@@ -82,8 +82,6 @@ def update_item_schema(baseSchema):
 
     baseSchema['privacy'].widget.condition = "python: here.showMeetingManagerReservedField('privacy')"
 
-    baseSchema['observations'].write_permission = ModifyPortalContent
-
     completeItemSchema = baseSchema + specificSchema.copy()
     return completeItemSchema
 

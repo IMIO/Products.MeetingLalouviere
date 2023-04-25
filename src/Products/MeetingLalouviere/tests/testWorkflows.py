@@ -23,11 +23,15 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
        (self.assertRaise). Instead, we check that the user has the permission
        to do so (getSecurityManager().checkPermission)."""
 
-    def _check_users_can_modify(self, item, users, annex):
+    def _check_users_can_modify(self, item, users=None, annex=None):
+        if users is None:
+            users = [self.member.id]
         for user_id in users:
             self.changeUser(user_id)
-            self.assertTrue(item.mayQuickEdit("observations"))
-            self.failUnless(self.hasPermission(ModifyPortalContent, (item, annex)))
+            if annex is None:
+                self.failUnless(self.hasPermission(ModifyPortalContent, item))
+            else:
+                self.failUnless(self.hasPermission(ModifyPortalContent, (item, annex)))
 
     def _testWholeDecisionProcessCollege(self):
         """This test covers the whole decision workflow. It begins with the
@@ -42,7 +46,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.meetingConfig.setItemAdviceStates(("itemcreated_waiting_advices", ))
         self.changeUser("pmCreator1")
         item1 = self.create("MeetingItem", title="The first item", optionalAdvisers=(self.vendors_uid, ))
-        self.assertTrue(item1.mayQuickEdit("observations"))
+        self._check_users_can_modify(item1)
         annex1 = self.addAnnex(item1)
         self.addAnnex(item1, relatedTo="item_decision")
         item1.setOptionalAdvisers((self.vendors_uid, ))
@@ -54,7 +58,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
         self.changeUser("pmBudgetReviewer1")
-        self.assertTrue(item1.mayQuickEdit("observations"))
+        self._check_users_can_modify(item1)
         self.do(item1, "backTo_itemcreated_from_proposed_to_budget_reviewer")
         self.assertEqual("itemcreated", item1.query_state())
         self.changeUser("pmCreator1")
@@ -124,7 +128,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
         # pmManager creates a meeting
         self.changeUser("pmManager")
-        self.assertTrue(item1.mayQuickEdit("observations"))
+        self._check_users_can_modify(item1)
         meeting = self.create("Meeting", date=datetime(2007, 12, 11, 9))
         self.addAnnex(item1, relatedTo="item_decision")
         # pmCreator2 creates and proposes an item
@@ -253,7 +257,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         # pmManager creates a meeting
         self.changeUser("pmManager")
-        self.assertTrue(item1.mayQuickEdit("observations"))
+        self._check_users_can_modify(item1)
         meeting = self.create("Meeting", date=datetime(2007, 12, 11, 9, 0, 0))
         # The meetingManager can add a decision annex
         self.addAnnex(item1, relatedTo="item_decision")

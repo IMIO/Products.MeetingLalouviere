@@ -430,7 +430,6 @@ class Migrate_To_4200(MCMigrate_To_4200):
                     self.replace_in_list("c24", "c31", cfg.getDashboardMeetingLinkedItemsFilters()))
             else:
                 cfg.setWorkflowAdaptations(LLO_APPLYED_COLLEGE_WFA)
-                cfg.setMeetingColumns(cfg.getMeetingColumns() + ('static_meeting_number',))
             # replace action and review_state column by async actions
             self.updateColumns(to_replace={'actions': 'async_actions',
                                            'review_state': 'review_state_title',
