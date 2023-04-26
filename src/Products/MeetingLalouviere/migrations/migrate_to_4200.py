@@ -461,6 +461,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
             cfg.setUseVotes('council' in cfg.getId())
             cfg.setVotesResultTALExpr(
                 "python: item.getPollType() == 'no_vote' and '' or '<p>&nbsp;</p>' + pm_utils.print_votes(item)")
+            cfg.setEnabledAnnexesBatchActions(('delete', 'download-annexes'))
 
     def replace_in_list(self, to_replace, new_value, list):
         result = set()

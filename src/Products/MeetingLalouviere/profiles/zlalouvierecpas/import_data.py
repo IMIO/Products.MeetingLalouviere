@@ -4,12 +4,11 @@ from copy import deepcopy
 from Products.MeetingCommunes.config import PORTAL_CATEGORIES
 from Products.MeetingLalouviere.config import LLO_ITEM_CPAS_WF_VALIDATION_LEVELS, \
     LLO_APPLYED_CPAS_WFA
-from Products.MeetingCommunes.profiles.examples_fr import import_data as mc_import_data
+from Products.MeetingCommunes.profiles.zcpas import import_data as mc_import_data
 from Products.PloneMeeting.profiles import (
     AnnexTypeDescriptor,
     ItemAnnexTypeDescriptor,
     ItemAnnexSubTypeDescriptor,
-    CategoryDescriptor,
     OrgDescriptor,
 )
 
@@ -120,14 +119,14 @@ meetingAnnex = AnnexTypeDescriptor(
 # </editor-fold>
 
 # COLLEGE
-collegeMeeting = deepcopy(mc_import_data.collegeMeeting)
-collegeMeeting.transitionsToConfirm = []
-collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_CPAS_WF_VALIDATION_LEVELS)
-collegeMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_CPAS_WFA)
+bpMeeting = deepcopy(mc_import_data.bpMeeting)
+bpMeeting.transitionsToConfirm = []
+bpMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_CPAS_WF_VALIDATION_LEVELS)
+bpMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_CPAS_WFA)
 
-collegeMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
+bpMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
-collegeMeeting.itemAdviceViewStates = [
+bpMeeting.itemAdviceViewStates = [
     "proposed_to_president",
     "proposed_to_secretaire",
     "proposed_to_n2",
@@ -137,14 +136,14 @@ collegeMeeting.itemAdviceViewStates = [
     "itemfrozen",
 ]
 
-collegeMeeting.itemAdviceStates = [
+bpMeeting.itemAdviceStates = [
     "proposed_to_president",
     "proposed_to_secretaire",
     "proposed_to_n2",
     "proposed_to_n1",
 ]
 
-collegeMeeting.usedItemAttributes = (
+bpMeeting.usedItemAttributes = (
     u"description",
     u"budgetInfos",
     u"proposingGroupWithGroupInCharge",
@@ -157,7 +156,7 @@ collegeMeeting.usedItemAttributes = (
     u"providedFollowUp",
 )
 
-collegeMeeting.usedMeetingAttributes = (
+bpMeeting.usedMeetingAttributes = (
     u"start_date",
     u"end_date",
     u"assembly_guests",
@@ -170,16 +169,16 @@ collegeMeeting.usedMeetingAttributes = (
     u"observations",
 )
 
-collegeMeeting.itemAdviceEditStates = [
+bpMeeting.itemAdviceEditStates = [
     "proposed_to_president",
     "proposed_to_secretaire",
     "proposed_to_n2",
     "proposed_to_n1",
     "validated"
 ]
-collegeMeeting.itemAdvicesStates = ["proposed_to_president"]
+bpMeeting.itemAdvicesStates = ["proposed_to_president"]
 
-collegeMeeting.annexTypes = [
+bpMeeting.annexTypes = [
     financialAnalysis,
     budgetAnalysisCfg1,
     overheadAnalysis,
@@ -191,10 +190,10 @@ collegeMeeting.annexTypes = [
     meetingAnnex,
 ]
 
-collegeMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budget_reviewer",)
-collegeMeeting.meetingAppDefaultView = "searchallitems"
+bpMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budget_reviewer",)
+bpMeeting.meetingAppDefaultView = "searchallitems"
 
-collegeMeeting.onMeetingTransitionItemActionToExecute = (
+bpMeeting.onMeetingTransitionItemActionToExecute = (
     {
         "meeting_transition": "freeze",
         "item_action": "itemfreeze",
@@ -208,7 +207,7 @@ collegeMeeting.onMeetingTransitionItemActionToExecute = (
     {"meeting_transition": "close", "item_action": "itemfreeze", "tal_expression": ""},
     {"meeting_transition": "close", "item_action": "accept", "tal_expression": ""},
 )
-collegeMeeting.itemColumns = [
+bpMeeting.itemColumns = [
     "static_labels",
     "static_item_reference",
     "Creator",
@@ -221,7 +220,7 @@ collegeMeeting.itemColumns = [
     "meeting_date",
     "async_actions",
 ]
-collegeMeeting.dashboardItemsListingsFilters = (
+bpMeeting.dashboardItemsListingsFilters = (
     "c4",
     "c6",
     "c7",
@@ -237,7 +236,7 @@ collegeMeeting.dashboardItemsListingsFilters = (
     "c20",
     "c26",
 )
-collegeMeeting.availableItemsListVisibleColumns = [
+bpMeeting.availableItemsListVisibleColumns = [
     "static_labels",
     "Creator",
     "CreationDate",
@@ -248,7 +247,7 @@ collegeMeeting.availableItemsListVisibleColumns = [
     "preferred_meeting_date",
     "async_actions",
 ]
-collegeMeeting.dashboardMeetingAvailableItemsFilters = (
+bpMeeting.dashboardMeetingAvailableItemsFilters = (
     "c4",
     "c7",
     "c8",
@@ -260,7 +259,7 @@ collegeMeeting.dashboardMeetingAvailableItemsFilters = (
     "c20",
     "c26",
 )
-collegeMeeting.itemsListVisibleColumns = [
+bpMeeting.itemsListVisibleColumns = [
     "static_labels",
     "static_item_reference",
     "Creator",
@@ -271,7 +270,7 @@ collegeMeeting.itemsListVisibleColumns = [
     "advices",
     "async_actions",
 ]
-collegeMeeting.dashboardMeetingLinkedItemsFilters = (
+bpMeeting.dashboardMeetingLinkedItemsFilters = (
     "c4",
     "c6",
     "c7",
@@ -286,20 +285,20 @@ collegeMeeting.dashboardMeetingLinkedItemsFilters = (
 )
 
 # COUNCIL
-councilMeeting = deepcopy(mc_import_data.councilMeeting)
-councilMeeting.transitionsToConfirm = []
-councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_CPAS_WF_VALIDATION_LEVELS)
-councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
+casMeeting = deepcopy(mc_import_data.casMeeting)
+casMeeting.transitionsToConfirm = []
+casMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_CPAS_WF_VALIDATION_LEVELS)
+casMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
-councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_CPAS_WFA)
-councilMeeting.itemAdviceStates = ["proposed_to_president",]
-councilMeeting.itemAdviceEditStates = ["proposed_to_president", "validated"]
-councilMeeting.itemCopyGroupsStates = [
+casMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_CPAS_WFA)
+casMeeting.itemAdviceStates = ["proposed_to_president",]
+casMeeting.itemAdviceEditStates = ["proposed_to_president", "validated"]
+casMeeting.itemCopyGroupsStates = [
     "validated",
     "itemfrozen",
 ]
 
-councilMeeting.usedItemAttributes = (
+casMeeting.usedItemAttributes = (
     u"category",
     u"description",
     u"budgetInfos",
@@ -316,7 +315,7 @@ councilMeeting.usedItemAttributes = (
     u"interventions",
 )
 
-councilMeeting.usedMeetingAttributes = (
+casMeeting.usedMeetingAttributes = (
     u"start_date",
     u"end_date",
     u"assembly_guests",
@@ -329,12 +328,12 @@ councilMeeting.usedMeetingAttributes = (
     u"observations",
 )
 
-councilMeeting.categories = PORTAL_CATEGORIES
+casMeeting.categories = PORTAL_CATEGORIES
 
-for recurringItem in councilMeeting.recurringItems:
+for recurringItem in casMeeting.recurringItems:
     recurringItem.category = "recurrent"
 
-councilMeeting.annexTypes = [
+casMeeting.annexTypes = [
     financialAnalysis,
     legalAnalysis,
     budgetAnalysisCfg2,
@@ -345,10 +344,10 @@ councilMeeting.annexTypes = [
     meetingAnnex,
 ]
 
-councilMeeting.itemBudgetInfosStates = ()
-councilMeeting.meetingAppDefaultView = "searchallitems"
-councilMeeting.itemAdviceViewStates = []
-councilMeeting.itemColumns = [
+casMeeting.itemBudgetInfosStates = ()
+casMeeting.meetingAppDefaultView = "searchallitems"
+casMeeting.itemAdviceViewStates = []
+casMeeting.itemColumns = [
     "static_labels",
     "static_item_reference",
     "Creator",
@@ -362,7 +361,7 @@ councilMeeting.itemColumns = [
     "meeting_date",
     "async_actions",
 ]
-councilMeeting.dashboardItemsListingsFilters = (
+casMeeting.dashboardItemsListingsFilters = (
     "c4",
     "c5",
     "c6",
@@ -380,7 +379,7 @@ councilMeeting.dashboardItemsListingsFilters = (
     "c26",
     "c31",
 )
-councilMeeting.availableItemsListVisibleColumns = [
+casMeeting.availableItemsListVisibleColumns = [
     "static_labels",
     "Creator",
     "getCategory",
@@ -390,7 +389,7 @@ councilMeeting.availableItemsListVisibleColumns = [
     "preferred_meeting_date",
     "async_actions",
 ]
-councilMeeting.dashboardMeetingAvailableItemsFilters = (
+casMeeting.dashboardMeetingAvailableItemsFilters = (
     "c4",
     "c5",
     "c7",
@@ -404,7 +403,7 @@ councilMeeting.dashboardMeetingAvailableItemsFilters = (
     "c26",
     "c31",
 )
-councilMeeting.itemsListVisibleColumns = [
+casMeeting.itemsListVisibleColumns = [
     "static_labels",
     "static_item_reference",
     "CreationDate",
@@ -416,7 +415,7 @@ councilMeeting.itemsListVisibleColumns = [
     "advices",
     "async_actions",
 ]
-councilMeeting.dashboardMeetingLinkedItemsFilters = (
+casMeeting.dashboardMeetingLinkedItemsFilters = (
     "c4",
     "c5",
     "c6",
@@ -432,4 +431,4 @@ councilMeeting.dashboardMeetingLinkedItemsFilters = (
     "c31",
 )
 
-data.meetingConfigs = (collegeMeeting, councilMeeting)
+data.meetingConfigs = (bpMeeting, casMeeting)
