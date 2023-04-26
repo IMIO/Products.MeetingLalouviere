@@ -12,8 +12,9 @@
 import logging
 import os
 from imio.helpers.catalog import addOrUpdateIndexes
-from Products.MeetingLalouviere.config import PROJECTNAME
+from Products.MeetingLalouviere.config import PROJECTNAME, MUNICIPALITY_SUFFIXES, CPAS_SUFFIXES
 from Products.PloneMeeting.exportimport.content import ToolInitializer
+from Products.PloneMeeting import config as PMconfig
 
 logger = logging.getLogger('MeetingLalouviere: setuphandlers')
 
@@ -44,8 +45,11 @@ def logStep(method, context):
 
 def isMeetingLalouviereConfigureProfile(context):
     return context.readDataFile("MeetingLalouviere_lalouviere_marker.txt") or \
+        context.readDataFile("MeetingLalouviere_lalouvierecpas_marker.txt") or \
         context.readDataFile("MeetingLalouviere_testing_marker.txt")
 
+def isCPASProfile(context):
+    return context.readDataFile("MeetingLalouviere_lalouvierecpas_marker.txt")
 
 def installMeetingLalouviere(context):
     """ Run the default profile"""
@@ -63,6 +67,10 @@ def initializeTool(context):
         return
 
     logStep("initializeTool", context)
+    if isCPASProfile(context):
+        PMconfig.EXTRA_GROUP_SUFFIXES = CPAS_SUFFIXES
+    else:
+        PMconfig.EXTRA_GROUP_SUFFIXES = MUNICIPALITY_SUFFIXES
     # PloneMeeting is no more a dependency to avoid
     # magic between quickinstaller and portal_setup
     # so install it manually
