@@ -190,7 +190,7 @@ bpMeeting.annexTypes = [
     meetingAnnex,
 ]
 
-bpMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budget_reviewer",)
+bpMeeting.itemBudgetInfosStates = ()
 bpMeeting.meetingAppDefaultView = "searchallitems"
 
 bpMeeting.onMeetingTransitionItemActionToExecute = (
