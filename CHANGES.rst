@@ -12,6 +12,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
   [odelaere]
 - adapt vote config in migration.
   [odelaere]
+- Fixed translation of `Data that will be used on new item` on `meetingitem_view.pt`.
+  [gbastien]
 
 
 4.2.0rc4 (2023-04-19)
