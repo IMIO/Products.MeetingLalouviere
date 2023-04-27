@@ -21,6 +21,14 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+  <genericsetup:registerProfile
+      name="zlalouvierecpas"
+      title="PloneMeeting / Demo profile for La Louvière CPAS with french examples"
+      directory="profiles/zlalouvierecpas"
+      description="PloneMeeting for CPAS of La Louviere (Belgium)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
   <genericsetup:upgradeStep
       title="Go to MeetingLalouviere 4.2"
       description=""

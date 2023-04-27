@@ -6,7 +6,6 @@ from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import SelectionWidget
 from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import TextField
-from Products.CMFCore.permissions import ModifyPortalContent
 
 
 def update_meeting_schema(baseSchema):

@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 from copy import deepcopy
 
@@ -191,7 +190,7 @@ bpMeeting.annexTypes = [
     meetingAnnex,
 ]
 
-bpMeeting.itemBudgetInfosStates = ()  # TODO '("proposed_to_budget_reviewer",)
+bpMeeting.itemBudgetInfosStates = ()
 bpMeeting.meetingAppDefaultView = "searchallitems"
 
 bpMeeting.onMeetingTransitionItemActionToExecute = (
@@ -432,4 +431,6 @@ casMeeting.dashboardMeetingLinkedItemsFilters = (
     "c31",
 )
 
+
 data.meetingConfigs = (bpMeeting, casMeeting)
+
