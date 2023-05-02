@@ -3,8 +3,8 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.0rc5 (unreleased)
----------------------
+4.2.0 (2023-05-02)
+------------------
 
 - Revert access rights of field "observations" to default from MeetingCommunes.
   [odelaere]
