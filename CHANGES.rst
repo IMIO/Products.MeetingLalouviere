@@ -3,10 +3,11 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.1 (unreleased)
+4.2.1 (2023-05-02)
 ------------------
 
-- Nothing changed yet.
+- Revert `set correct migration profile_name`.
+  [odelaere]
 
 
 4.2.0 (2023-05-02)
