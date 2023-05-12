@@ -520,7 +520,7 @@ msgstr "points proposés"
 
 #. Default: "Items proposed to alderman"
 msgid "searchproposedtoalderman"
-msgstr "points proposés à l'échevin"
+msgstr "Points proposés à l'échevin"
 
 #. Default: "Items proposed to ceo"
 msgid "searchproposedtobudgetreviewer"
@@ -589,7 +589,7 @@ msgstr "Validation par le DG et l'échevin"
 
 #. Default: "Items proposed to alderman"
 msgid "searchproposedtoalderman"
-msgstr "points proposés à l'échevin"
+msgstr "Points proposés à l'échevin"
 
 #. Default: "You can not unselect the 'Validation by CEO and Alderman' adaptation as there are still items in state 'proposed to CEO' or 'proposed to alderman'."
 msgid "wa_removed_validate_by_dg_and_alderman_error"

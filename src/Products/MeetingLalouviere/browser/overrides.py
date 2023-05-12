@@ -11,6 +11,8 @@ from Products.MeetingCommunes.browser.overrides import MCMeetingDocumentGenerati
 
 import cgi
 
+from plone import api
+
 
 class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):
     """Specific printing methods used for item."""
@@ -21,7 +23,7 @@ class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):
 
 class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperView):
 
-    def get_all_committees_items(self, supplement, privacy='public', list_types=['normal'], include_no_committee=False):
+    def get_all_committees_items(self, uids, supplement, privacy='public', list_types=['normal'], include_no_committee=False):
         """
         Returns all items of all committees respecting the order of committees on the meeting.
         For p_supplement:
@@ -29,23 +31,38 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
         - 0 means normal + every supplements;
         - 1, 2, 3, ... only items of supplement 1, 2, 3, ...
         - 99 means every supplements only.
-        This is calling get_committee_items under so every parameters of get_items may be given in kwargs.
+        This is calling get_committee_items under so every parameter of get_items may be given in kwargs.
         For p_privacy:
         - 'public' means filter on public items
         - 'secret' means filter on secret items
         For p_include_no_committee:
         - True insert 'no_committee' items before others
         """
-        res = []
-        if include_no_committee:
-            res = self.context.get_items(ordered=True,
-                                         list_types=list_types,
-                                         additional_catalog_query={"privacy": privacy,
-                                                                   "committees_index": [u'no_committee']})
+        tool = api.portal.get_tool('portal_plonemeeting')
+        cfg = tool.getMeetingConfig(self)
+        additional_catalog_query = {"privacy": privacy, 'committees_index': []}
 
+        if include_no_committee:
+            additional_catalog_query['committees_index'].append(u'no_committee')
+        # =========
+        # ATTENTION
+        # =========
+        # Police committee items are the last of public part but the first of private part.
+        # So it is important to respect item order as manually defined on the meeting.
+        # Even if they are doing wrong weird shit and should separate police council from municipality council properly.
         for committee in self.context.get_committees():
-            res += self.context.get_committee_items(committee,
-                                                    int(supplement),
-                                                    additional_catalog_query={"privacy": privacy},
-                                                    list_types=list_types)
-        return res
+            available_suppl_ids = cfg.get_supplements_for_committee(committee)
+            if int(supplement) == -1:
+                additional_catalog_query['committees_index'].append(committee)
+            elif int(supplement) == 0:
+                additional_catalog_query['committees_index'].append(committee)
+                additional_catalog_query['committees_index'] += available_suppl_ids
+            elif int(supplement) == 99:
+                additional_catalog_query['committees_index'] = available_suppl_ids
+            elif len(available_suppl_ids) >= int(supplement):
+                    additional_catalog_query['committees_index'] = available_suppl_ids[int(supplement) - 1]
+
+        return self.context.get_items(uids,
+                                      ordered=True,
+                                      additional_catalog_query=additional_catalog_query,
+                                      list_types=list_types)

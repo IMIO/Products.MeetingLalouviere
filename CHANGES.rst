@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix get_all_committees_items.
+  [odelaere]
 
 
 4.2.1 (2023-05-02)
