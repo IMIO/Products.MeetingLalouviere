@@ -57,10 +57,14 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
             elif int(supplement) == 0:
                 additional_catalog_query['committees_index'].append(committee)
                 additional_catalog_query['committees_index'] += available_suppl_ids
+            elif supplement == 2:
+                additional_catalog_query['committees_index'].append("points-conseillers-2eme-supplement")
+            elif supplement == 3:
+                additional_catalog_query['committees_index'].append("points-conseillers-3eme-supplement")
             elif int(supplement) == 99:
                 additional_catalog_query['committees_index'] = available_suppl_ids
             elif len(available_suppl_ids) >= int(supplement):
-                    additional_catalog_query['committees_index'] = available_suppl_ids[int(supplement) - 1]
+                additional_catalog_query['committees_index'].append(available_suppl_ids[int(supplement) - 1])
 
         return self.context.get_items(uids,
                                       ordered=True,

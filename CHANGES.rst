@@ -6,8 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix get_all_committees_items.
+  [aduchene]
 
 4.2.2 (2023-05-12)
 ------------------
