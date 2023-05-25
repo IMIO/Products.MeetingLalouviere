@@ -126,10 +126,6 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         if not self._check_wfa_available(['return_to_proposing_group_with_last_validation']):
             return
 
-        return_to_proposing_group_removed_error = translate(
-            'wa_removed_return_to_proposing_group_with_last_validation_error',
-            domain='PloneMeeting',
-            context=self.request)
         self.changeUser('pmManager')
         self._activate_wfas(('return_to_proposing_group_with_last_validation',))
 
@@ -146,13 +142,24 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
             self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
         self.do(item, 'goTo_returned_to_proposing_group_proposed_to_alderman')
         self.assertEqual(item.query_state(), 'returned_to_proposing_group_proposed_to_alderman')
-        self.assertEqual(
-            cfg.validate_workflowAdaptations(()),
-            return_to_proposing_group_removed_error)
+        msg_removed_error = translate(
+            'wa_removed_found_elements_error',
+            domain='PloneMeeting',
+            mapping={
+                'wfa': translate(
+                    'wa_return_to_proposing_group_with_last_validation',
+                    domain="PloneMeeting",
+                    context=self.request),
+                'review_state': translate(
+                    'returned_to_proposing_group_proposed_to_alderman',
+                    domain="plone",
+                    context=self.request)},
+            context=self.request)
+        self.assertEqual(cfg.validate_workflowAdaptations(()), msg_removed_error)
         if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
             self.assertEqual(
                 cfg.validate_workflowAdaptations(('return_to_proposing_group',)),
-                return_to_proposing_group_removed_error)
+                msg_removed_error)
         if 'return_to_proposing_group_with_all_validations' in cfg.listWorkflowAdaptations():
             self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
         # make wfAdaptation unselectable
@@ -317,6 +324,9 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
     def test_pm_Validate_workflowAdaptations_dependencies(self):
         """Test MeetingConfig.validate_workflowAdaptations that manage dependencies
            between wfAdaptations, a base WFA must be selected and other will complete it."""
+        # remove use of delayed in powerObservers or WFA will not validate
+        self._setPowerObserverStates(states=[])
+
         wa_dependencies = translate('wa_dependencies', domain='PloneMeeting', context=self.request)
         cfg = self.meetingConfig
 
