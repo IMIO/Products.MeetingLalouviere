@@ -8,6 +8,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 
 - Fix providedFollowUp quickEdit access.
   [odelaere]
+- Fix searchproposedtobudgetreviewer label.
+  [odelaere]
 
 
 4.2.3 (2023-05-24)

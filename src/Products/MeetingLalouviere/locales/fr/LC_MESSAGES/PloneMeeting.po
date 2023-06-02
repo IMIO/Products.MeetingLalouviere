@@ -524,7 +524,7 @@ msgstr "Points proposés à l'échevin"
 
 #. Default: "Items proposed to ceo"
 msgid "searchproposedtobudgetreviewer"
-msgstr "Points proposés au référent budgétaire"
+msgstr "Points proposés au correspondant financier"
 
 #. Default: "Items proposed to ceo"
 msgid "searchproposedtoservicehead"
