@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix providedFollowUp quickEdit access.
+  [odelaere]
 
 
 4.2.3 (2023-05-24)

@@ -325,6 +325,10 @@ class LLCustomMeetingItem(CustomMeetingItem):
             getRequest().set('Products.MeetingLalouviere.showFollowUp_cachekey', showfollowUp)
         return showfollowUp
 
+    def _bypass_meeting_closed_check_for(self, fieldName):
+        """See docstring in interfaces.py"""
+        return super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(fieldName) or fieldName=='providedFollowUp'
+
 
 class LLMeetingConfig(CustomMeetingConfig):
     """Adapter that adapts a meetingConfig implementing IMeetingConfig to the

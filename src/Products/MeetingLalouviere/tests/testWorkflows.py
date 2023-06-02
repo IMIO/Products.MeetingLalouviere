@@ -185,14 +185,20 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
         item1.setProvidedFollowUp("<p>Followed</p>")
         self.changeUser("pmManager")
-        item1.confirmFollowUp()
-        item1.deactivateFollowUp()
         self.do(meeting, "close")
+        self.changeUser("pmFollowup1")
+        self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
+        self.changeUser("pmManager")
+        self.assertEqual("follow_up_yes", item1.getFollowUp())
+        item1.confirmFollowUp()
+        self.assertEqual("follow_up_provided", item1.getFollowUp())
+        item1.deactivateFollowUp()
+        self.assertEqual("follow_up_no", item1.getFollowUp())
         # every items without a decision are automatically accepted
         self.assertEquals(item2.query_state(), "accepted")
-        self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
+        self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmFollowup2")
-        self.assertFalse(item2.mayQuickEdit("providedFollowUp"))
+        self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
 
     def _testWholeDecisionProcessCouncil(self):
         """
