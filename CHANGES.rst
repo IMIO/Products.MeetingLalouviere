@@ -6,7 +6,9 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Alderman cannot send item back to all previous validation levels.
+  Use a new custom method `MeetingItemMLLWorkflowConditions.may_user_send_back`
+  that will probably be backported to PloneMeeting.
 
 
 4.2.4 (2023-06-02)

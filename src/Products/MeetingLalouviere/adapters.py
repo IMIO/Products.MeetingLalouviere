@@ -29,6 +29,7 @@ from copy import deepcopy
 from Products.MeetingCommunes.adapters import (
     CustomMeeting,
     CustomMeetingConfig, CustomToolPloneMeeting, MeetingItemCommunesWorkflowActions,
+    MeetingItemCommunesWorkflowConditions,
 )
 from Products.MeetingCommunes.adapters import CustomMeetingItem
 from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActions
@@ -51,6 +52,7 @@ from Products.PloneMeeting.utils import org_id_to_uid
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from collective.contact.plonegroup.utils import get_all_suffixes
+from imio.helpers.cache import get_current_user_id
 from imio.helpers.content import uuidsToObjects
 from plone import api
 from zope.globalrequest import getRequest
@@ -328,6 +330,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def _bypass_meeting_closed_check_for(self, fieldName):
         """See docstring in interfaces.py"""
         return super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(fieldName) or fieldName=='providedFollowUp'
+
 
 
 class LLMeetingConfig(CustomMeetingConfig):
@@ -720,6 +723,44 @@ class MeetingItemMLLWorkflowActions(MeetingItemCommunesWorkflowActions):
 
     def doProposeToBudgetImpactReviewer(self, stateChange):
         pass
+
+
+class MeetingItemMLLWorkflowConditions(MeetingItemCommunesWorkflowConditions):
+    '''Adapter that adapts a meeting item implementing IMeetingItem to the
+       interface IMeetingItemCommunesWorkflowConditions'''
+
+    def may_user_send_back(self, destination_state):
+        '''Check if the user can send the item back in a previous validation state
+        A user can send back if he is reviewer at the next validation level for a
+        given destination_state.'''
+        item_validation_wf_states  = self.cfg.getItemWFValidationLevels()
+        proposing_group_uid = self.context.getProposingGroup()
+        next_level_state = None
+        for i, validation_wf_state in enumerate(item_validation_wf_states):
+            # Find the destination state and so the next one (i+1) is the
+            # one we have to check if user is reviewer
+            if validation_wf_state["state"] == destination_state:
+                next_level_state = item_validation_wf_states[i+1]
+                break
+        if not next_level_state:
+            # We didn't find it so whe return False. This shouldn't happen.
+            return False
+
+        all_suffixes = next_level_state["extra_suffixes"] + [next_level_state["suffix"]]
+        for suffix in all_suffixes:
+            # We need to check every suffixes
+            if self.tool.group_is_not_empty(proposing_group_uid, suffix,
+               user_id=get_current_user_id(self.context.REQUEST)):
+                return True  # User is reviewer for the next state
+        return False
+
+
+    def mayCorrect(self, destinationState=None):
+        if self.context.query_state() == "proposed_to_alderman":
+            # Handle a special case at LaLouviere. Alderman cannot send back to
+            # all previous validation levels.
+            return self.may_user_send_back(destinationState)
+        return super(MeetingItemCommunesWorkflowConditions, self).mayCorrect(destinationState)
 
 
 # ------------------------------------------------------------------------------
