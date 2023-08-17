@@ -62,6 +62,7 @@ from zope.interface import implements
 customWfAdaptations = list(deepcopy(MeetingConfig.wfAdaptations))
 customWfAdaptations.append('apply_council_state_label')
 customWfAdaptations.append('propose_to_budget_reviewer')
+customWfAdaptations.append('alderman_cannot_send_back_to_every_levels')
 # disable not compatible waiting advice wfa
 customWfAdaptations.remove('waiting_advices_adviser_may_validate')
 customWfAdaptations.remove('waiting_advices_from_before_last_val_level')
@@ -754,9 +755,9 @@ class MeetingItemMLLWorkflowConditions(MeetingItemCommunesWorkflowConditions):
                 return True  # User is reviewer for the next state
         return False
 
-
     def mayCorrect(self, destinationState=None):
-        if self.context.query_state() == "proposed_to_alderman":
+        if 'alderman_cannot_send_back_to_every_levels' in self.cfg.getWorkflowAdaptations() and \
+                self.context.query_state() == "proposed_to_alderman":
             # Handle a special case at LaLouviere. Alderman cannot send back to
             # all previous validation levels.
             return self.may_user_send_back(destinationState)

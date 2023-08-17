@@ -46,6 +46,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                           'accepted_out_of_meeting_emergency',
                           'accepted_out_of_meeting_emergency_and_duplicated',
                           # Custom
+                          'alderman_cannot_send_back_to_every_levels',
                           'apply_council_state_label',
                           # End of custom
                           'decide_item_when_back_to_meeting_from_returned_to_proposing_group',

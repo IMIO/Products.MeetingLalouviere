@@ -6,8 +6,9 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Add a WFA to enable "Alderman cannot send item back..." so it doesn't
+  break all tests.
+  [aduchene]
 
 4.2.5 (2023-08-17)
 ------------------
@@ -15,7 +16,7 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 - Alderman cannot send item back to all previous validation levels.
   Use a new custom method `MeetingItemMLLWorkflowConditions.may_user_send_back`
   that will probably be backported to PloneMeeting.
-
+  [aduchene]
 
 4.2.4 (2023-06-02)
 ------------------
