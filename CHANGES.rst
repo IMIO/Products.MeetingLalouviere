@@ -6,8 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Adapted code as field `MeetingConfig.useCopies` was removed.
+  [gbastien]
 
 4.2.6 (2023-08-17)
 ------------------
