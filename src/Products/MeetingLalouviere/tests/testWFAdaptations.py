@@ -94,14 +94,6 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.changeUser('pmManager')
         self.do(item, 'goTo_returned_to_proposing_group_proposed_to_alderman')
 
-    def _get_developers_reviewers_groups(self):
-        return [self.developers_serviceheads,
-                self.developers_officemanagers,
-                self.developers_divisionheads,
-                self.developers_directors,
-                self.developers_alderman,
-                self.developers_reviewers]
-
     def test_pm_Validate_workflowAdaptations_removed_return_to_proposing_group_with_last_validation(self):
         """Test MeetingConfig.validate_workflowAdaptations that manage removal
            of wfAdaptations 'return_to_proposing_group with last validation' that is not possible if
