@@ -1,36 +1,16 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeetingItem.py
-#
-# Copyright (c) 2007-2012 by CommunesPlone.org
-#
 # GNU General Public License (GPL)
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-
-from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
 
 from imio.helpers.cache import cleanRamCache
 from imio.helpers.content import get_vocab
 from plone import api
 from plone.app.testing.bbb import _createMemberarea
+from Products.Archetypes.event import ObjectEditedEvent
+from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
+from zope.event import notify
 
 
 class testMeetingItem(MeetingLalouviereTestCase, mctmi):
@@ -164,12 +144,18 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         # not in itemFieldsToKeepConfigSortingFor for now
         self.assertFalse('proposingGroup' in cfg.getItemFieldsToKeepConfigSortingFor())
         self.assertListEqual([term.value for term in vocab(item)._terms],
-                         [self.developers_uid, self.direction_generale_uid, self.endUsers_uid, self.vendors_uid])
+                             [self.developers_uid,
+                              self.direction_generale_uid,
+                              self.endUsers_uid,
+                              self.vendors_uid])
         cfg.setItemFieldsToKeepConfigSortingFor(('proposingGroup', ))
         # invalidate vocabularies caching
-        cfg.at_post_edit_script()
+        notify(ObjectEditedEvent(cfg))
         self.assertListEqual([term.value for term in vocab(item)._terms],
-                         [self.developers_uid, self.vendors_uid, self.direction_generale_uid, self.endUsers_uid])
+                             [self.developers_uid,
+                              self.vendors_uid,
+                              self.direction_generale_uid,
+                              self.endUsers_uid])
 
     def _reviewers_may_edit_itemcreated(self):
         return True

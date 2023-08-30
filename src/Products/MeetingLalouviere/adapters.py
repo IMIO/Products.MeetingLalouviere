@@ -1,63 +1,42 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-# File: adapters.py
-#
-# Copyright (c) 2013 by Imio.be
-#
 # GNU General Public License (GPL)
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-# ------------------------------------------------------------------------------
-from collections import OrderedDict
-from copy import deepcopy
 
-from Products.MeetingCommunes.adapters import (
-    CustomMeeting,
-    CustomMeetingConfig, CustomToolPloneMeeting, MeetingItemCommunesWorkflowActions,
-    MeetingItemCommunesWorkflowConditions,
-)
+from AccessControl import ClassSecurityInfo
+from App.class_init import InitializeClass
+from collections import OrderedDict
+from collective.contact.plonegroup.utils import get_all_suffixes
+from copy import deepcopy
+from imio.helpers.cache import get_current_user_id
+from imio.helpers.content import uuidsToObjects
+from plone import api
+from Products.MeetingCommunes.adapters import CustomMeeting
+from Products.MeetingCommunes.adapters import CustomMeetingConfig
 from Products.MeetingCommunes.adapters import CustomMeetingItem
+from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
 from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActions
 from Products.MeetingLalouviere.config import DG_GROUP_ID
 from Products.MeetingLalouviere.config import FALLBACK_DG_GROUP_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
+from Products.PloneMeeting.interfaces import IMeetingConfigCustom
+from Products.PloneMeeting.interfaces import IMeetingCustom
+from Products.PloneMeeting.interfaces import IMeetingItemCustom
+from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
-from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
-from Products.PloneMeeting.interfaces import (
-    IMeetingConfigCustom, IToolPloneMeetingCustom,
-)
-from Products.PloneMeeting.interfaces import IMeetingCustom
-from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import _addIsolatedState
 from Products.PloneMeeting.utils import org_id_to_uid
-
-from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass
-from collective.contact.plonegroup.utils import get_all_suffixes
-from imio.helpers.cache import get_current_user_id
-from imio.helpers.content import uuidsToObjects
-from plone import api
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import implements
+
 
 customWfAdaptations = list(deepcopy(MeetingConfig.wfAdaptations))
 customWfAdaptations.append('apply_council_state_label')

@@ -1,30 +1,13 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2013 by Imio.be
-#
 # GNU General Public License (GPL)
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-from copy import deepcopy
 
+from copy import deepcopy
+from Products.Archetypes.event import ObjectEditedEvent
 from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 from Products.PloneMeeting.profiles import MeetingConfigDescriptor
-
-from Products.MimetypesRegistry.mime_types.magic import magicTest
+from zope.event import notify
 
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
@@ -166,20 +149,19 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         for value in defValues:
             value['suffix'] = suffix_mapping[value['suffix']]
         cfg.setItemWFValidationLevels(defValues)
-        cfg.at_post_edit_script()
+        notify(ObjectEditedEvent(cfg))
 
     def apply_meeting_transition_to_late_state(self, meeting, as_manager=False, clean_memoize=True):
         if meeting.portal_type == "MeetingCouncil":
             self.decideMeeting(meeting, as_manager, clean_memoize)
         else:
-            super(MeetingLalouviereTestingHelpers, self).apply_meeting_transition_to_late_state(meeting,
-                                                                                          as_manager,
-                                                                                          clean_memoize)
+            super(MeetingLalouviereTestingHelpers, self).apply_meeting_transition_to_late_state(
+                meeting, as_manager, clean_memoize)
 
     def _enablePrevalidation(self, cfg, enable_extra_suffixes=False):
         if self._testMethodName in ('test_pm_WFA_waiting_advices_with_prevalidation',):
             super(MeetingLalouviereTestingHelpers, self)._enablePrevalidation(cfg, enable_extra_suffixes)
-        cfg.at_post_edit_script()
+        notify(ObjectEditedEvent(cfg))
 
     def _enable_mc_Prevalidation(self, cfg, enable_extra_suffixes=False):
         self._setUpDefaultItemWFValidationLevels(cfg)
