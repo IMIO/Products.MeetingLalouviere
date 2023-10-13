@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.7 (unreleased)
+4.2.7 (2023-10-13)
 ------------------
 
 - Adapted code as field `MeetingConfig.useCopies` was removed.
