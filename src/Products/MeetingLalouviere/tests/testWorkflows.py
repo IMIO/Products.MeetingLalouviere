@@ -8,7 +8,7 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
 from Products.PloneMeeting.config import AddAnnex
 
 from AccessControl import Unauthorized
-from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import ModifyPortalContent, View
 
 
 class testWorkflows(MeetingLalouviereTestCase, mctw):
@@ -115,7 +115,12 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self._check_users_can_modify(item1,
                                      ['pmDg'],
                                      annex1)
+        self.changeUser("pmAlderman1")
+        # Alderman cannot see the item at this state
+        self.failIf(self.hasPermission(View, item1))
+        self.changeUser("pmDirector1")
         self.do(item1, 'proposeToAlderman')
+        self.assertTrue(self.hasPermission(View, item1))  # Now alderman can see it
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission(AddAnnex, item1))
         self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))

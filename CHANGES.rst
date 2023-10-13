@@ -8,6 +8,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 
 - Adapted code as field `MeetingConfig.useCopies` was removed.
   [gbastien]
+- Fix issue with alderman that could see items at the proposed_to_dg state.
+  [aduchene]
 
 4.2.6 (2023-08-17)
 ------------------

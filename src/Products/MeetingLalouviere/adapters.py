@@ -311,6 +311,19 @@ class LLCustomMeetingItem(CustomMeetingItem):
         """See docstring in interfaces.py"""
         return super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(fieldName) or fieldName=='providedFollowUp'
 
+    def _assign_roles_to_all_groups_managing_item_suffixes(self,
+                                                           cfg,
+                                                           item_state,
+                                                           org_uids,
+                                                           org_uid):
+        """By default, every proposingGroup suffixes get the "Reader" role
+           but we do not want the "observers" to get the "Reader" role."""
+        item = self.getSelf()
+        for managing_org_uid in org_uids:
+            suffix_roles = {suffix: ['Reader'] for suffix in
+                            get_all_suffixes(managing_org_uid)
+                            if suffix != 'alderman'}
+            item._assign_roles_to_group_suffixes(managing_org_uid, suffix_roles)
 
 
 class LLMeetingConfig(CustomMeetingConfig):
