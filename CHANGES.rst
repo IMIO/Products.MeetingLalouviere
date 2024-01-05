@@ -6,7 +6,9 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed issue with budgetreviewer that could not add annex when item was
+  in proposed_to_budgetreviewer state.
+  [aduchene]
 
 
 4.2.7 (2023-10-13)

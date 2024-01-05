@@ -9,6 +9,7 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import View
 from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
+from Products.PloneMeeting.config import AddAnnex
 from Products.PloneMeeting.config import MEETING_REMOVE_MOG_WFA
 from Products.PloneMeeting.config import WriteBudgetInfos
 from Products.PloneMeeting.config import WriteInternalNotes
@@ -283,6 +284,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         # budget impact editors access are correct even when 'remove_modify_access': True
         self.changeUser('budgetimpacteditor')
         self.assertTrue(self.hasPermission(WriteBudgetInfos, item))
+        self.assertTrue(self.hasPermission(AddAnnex, item))
 
         # check internalNotes editable by copyGroups
         self.changeUser('pmReviewer2')

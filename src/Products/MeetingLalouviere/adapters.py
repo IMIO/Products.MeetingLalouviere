@@ -22,6 +22,7 @@ from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActi
 from Products.MeetingLalouviere.config import DG_GROUP_ID
 from Products.MeetingLalouviere.config import FALLBACK_DG_GROUP_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from Products.PloneMeeting.config import AddAnnex
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.interfaces import IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IMeetingCustom
@@ -688,6 +689,8 @@ class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
                 back_transition_title=translate("validateByBudgetImpactReviewer", "plone"),
                 # back_transition_icon=None
                 itemWorkflow=itemWorkflow)
+            state = itemWorkflow.states["proposed_to_budget_reviewer"]
+            state.permission_roles[AddAnnex] = state.permission_roles[AddAnnex] + ("Editor", )
             return True
         if wfAdaptation == 'apply_council_state_label':
             meetingWorkflow.states['frozen'].title = translate("in_committee", "plone")
