@@ -6,8 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fixed POD templates `deliberation.odt` and `deliberation_recto_verso.odt`,
+  `MeetingItem.getCertifiedSignatures` is no more an adaptable method
+  (removed `.adapted()`).
+  [gbastien]
 
 4.2.8 (2024-01-05)
 ------------------
