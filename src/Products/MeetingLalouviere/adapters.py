@@ -52,6 +52,53 @@ customWfAdaptations.remove('waiting_advices_given_advices_required_to_validate')
 customWfAdaptations.remove('waiting_advices_given_and_signed_advices_required_to_validate')
 MeetingConfig.wfAdaptations = tuple(customWfAdaptations)
 
+LLO_WAITING_ADVICES_FROM_STATES = {
+    '*':
+    (
+        {'from_states': ('itemcreated', ),
+         'back_states': ('itemcreated', ),
+         'perm_cloned_state': 'itemcreated',
+         'use_custom_icon': False,
+         # default to "validated", this avoid using the backToValidated title that
+         # is translated to "Remove from meeting"
+         'use_custom_back_transition_title_for': ("validated", ),
+         # we can define some back transition id for some back_to_state
+         # if not, a generated transition is used, here we could have for example
+         # 'defined_back_transition_ids': {"validated": "validate"}
+         'defined_back_transition_ids': {},
+         # if () given, a custom transition icon is used for every back transitions
+         'only_use_custom_back_transition_icon_for': ("validated", ),
+         'use_custom_state_title': False,
+         'use_custom_transition_title_for': {},
+         'remove_modify_access': True,
+         'adviser_may_validate': True,
+         # must end with _waiting_advices
+         'new_state_id': None,
+         },
+        {'from_states': ('proposed_to_alderman', ),
+         'back_states': ('proposed_to_alderman', ),
+         'perm_cloned_state': 'validated',
+         'use_custom_icon': False,
+         # default to "validated", this avoid using the backToValidated title that
+         # is translated to "Remove from meeting"
+         'use_custom_back_transition_title_for': ("validated", ),
+         # we can define some back transition id for some back_to_state
+         # if not, a generated transition is used, here we could have for example
+         # 'defined_back_transition_ids': {"validated": "validate"}
+         'defined_back_transition_ids': {},
+         # if () given, a custom transition icon is used for every back transitions
+         'only_use_custom_back_transition_icon_for': ("validated", ),
+         'use_custom_state_title': True,
+         'use_custom_transition_title_for': {},
+         'remove_modify_access': True,
+         'adviser_may_validate': False,
+         # must end with _waiting_advices
+         'new_state_id': None,
+         },
+    ),
+}
+adaptations.WAITING_ADVICES_FROM_STATES.update(LLO_WAITING_ADVICES_FROM_STATES)
+
 
 class LLCustomMeeting(CustomMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
@@ -113,9 +160,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def activateFollowUp(self):
         """Activate follow-up by setting followUp to 'follow_up_yes'."""
         self.setFollowUp("follow_up_yes")
-        self.reindexObject(
-            idxs=["getFollowUp",]
-        )
+        self.reindexObject(idxs=["getFollowUp"])
         return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
 
     MeetingItem.activateFollowUp = activateFollowUp
@@ -125,9 +170,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def deactivateFollowUp(self):
         """Deactivate follow-up by setting followUp to 'follow_up_no'."""
         self.setFollowUp("follow_up_no")
-        self.reindexObject(
-            idxs=["getFollowUp",]
-        )
+        self.reindexObject(idxs=["getFollowUp"])
         return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
 
     MeetingItem.deactivateFollowUp = deactivateFollowUp
@@ -137,9 +180,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def confirmFollowUp(self):
         """Confirm follow-up by setting followUp to 'follow_up_provided'."""
         self.setFollowUp("follow_up_provided")
-        self.reindexObject(
-            idxs=["getFollowUp",]
-        )
+        self.reindexObject(idxs=["getFollowUp"])
         return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
 
     MeetingItem.confirmFollowUp = confirmFollowUp
@@ -149,9 +190,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def followUpNotPrinted(self):
         """While follow-up is confirmed, we may specify that we do not want it printed in the dashboard."""
         self.setFollowUp("follow_up_provided_not_printed")
-        self.reindexObject(
-            idxs=["getFollowUp",]
-        )
+        self.reindexObject(idxs=["getFollowUp"])
         return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
 
     MeetingItem.followUpNotPrinted = followUpNotPrinted
@@ -183,16 +222,15 @@ class LLCustomMeetingItem(CustomMeetingItem):
             res.append(proposingGroup)
         return res
 
-
     def mayGenerateFinanceAdvice(self):
         """
           Condition used in the 'Avis DF' PodTemplate.
         """
         finance_group_uid = org_id_to_uid(FINANCE_GROUP_ID)
         if (
-            finance_group_uid in self.context.adviceIndex
-            and self.context.adviceIndex[finance_group_uid]["delay"]
-            and self.context.adviceIndex[finance_group_uid]["type"] != NOT_GIVEN_ADVICE_VALUE
+            finance_group_uid in self.context.adviceIndex and
+            self.context.adviceIndex[finance_group_uid]["delay"] and
+            self.context.adviceIndex[finance_group_uid]["type"] != NOT_GIVEN_ADVICE_VALUE
         ):
             return True
         return False
@@ -310,7 +348,8 @@ class LLCustomMeetingItem(CustomMeetingItem):
 
     def _bypass_meeting_closed_check_for(self, fieldName):
         """See docstring in interfaces.py"""
-        return super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(fieldName) or fieldName=='providedFollowUp'
+        return super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(
+            fieldName) or fieldName == 'providedFollowUp'
 
     def _assign_roles_to_all_groups_managing_item_suffixes(self,
                                                            cfg,
@@ -727,16 +766,16 @@ class MeetingItemMLLWorkflowConditions(MeetingItemCommunesWorkflowConditions):
 
     def may_user_send_back(self, destination_state):
         '''Check if the user can send the item back in a previous validation state
-        A user can send back if he is reviewer at the next validation level for a
-        given destination_state.'''
-        item_validation_wf_states  = self.cfg.getItemWFValidationLevels()
+           A user can send back if he is reviewer at the next validation level for a
+           given destination_state.'''
+        item_validation_wf_states = self.cfg.getItemWFValidationLevels()
         proposing_group_uid = self.context.getProposingGroup()
         next_level_state = None
         for i, validation_wf_state in enumerate(item_validation_wf_states):
             # Find the destination state and so the next one (i+1) is the
             # one we have to check if user is reviewer
             if validation_wf_state["state"] == destination_state:
-                next_level_state = item_validation_wf_states[i+1]
+                next_level_state = item_validation_wf_states[i + 1]
                 break
         if not next_level_state:
             # We didn't find it so whe return False. This shouldn't happen.
@@ -765,50 +804,3 @@ InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeeting)
 InitializeClass(LLMeetingConfig)
 # ------------------------------------------------------------------------------
-
-LLO_WAITING_ADVICES_FROM_STATES = {
-    '*':
-    (
-        {'from_states': ('itemcreated', ),
-         'back_states': ('itemcreated', ),
-         'perm_cloned_state': 'itemcreated',
-         'use_custom_icon': False,
-         # default to "validated", this avoid using the backToValidated title that
-         # is translated to "Remove from meeting"
-         'use_custom_back_transition_title_for': ("validated", ),
-         # we can define some back transition id for some back_to_state
-         # if not, a generated transition is used, here we could have for example
-         # 'defined_back_transition_ids': {"validated": "validate"}
-         'defined_back_transition_ids': {},
-         # if () given, a custom transition icon is used for every back transitions
-         'only_use_custom_back_transition_icon_for': ("validated", ),
-         'use_custom_state_title': False,
-         'use_custom_transition_title_for': {},
-         'remove_modify_access': True,
-         'adviser_may_validate': True,
-         # must end with _waiting_advices
-         'new_state_id': None,
-         },
-        {'from_states': ('proposed_to_alderman', ),
-         'back_states': ('proposed_to_alderman', ),
-         'perm_cloned_state': 'validated',
-         'use_custom_icon': False,
-         # default to "validated", this avoid using the backToValidated title that
-         # is translated to "Remove from meeting"
-         'use_custom_back_transition_title_for': ("validated", ),
-         # we can define some back transition id for some back_to_state
-         # if not, a generated transition is used, here we could have for example
-         # 'defined_back_transition_ids': {"validated": "validate"}
-         'defined_back_transition_ids': {},
-         # if () given, a custom transition icon is used for every back transitions
-         'only_use_custom_back_transition_icon_for': ("validated", ),
-         'use_custom_state_title': True,
-         'use_custom_transition_title_for': {},
-         'remove_modify_access': True,
-         'adviser_may_validate': False,
-         # must end with _waiting_advices
-         'new_state_id': None,
-         },
-    ),
-}
-adaptations.WAITING_ADVICES_FROM_STATES.update(LLO_WAITING_ADVICES_FROM_STATES)
