@@ -1,8 +1,8 @@
 # encoding: utf-8
 
+from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import implements
-from zope.globalrequest import getRequest
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary

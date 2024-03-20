@@ -21,15 +21,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
-
 from AccessControl import Unauthorized
-from DateTime import DateTime
 from collective.contact.plonegroup.utils import select_org_for_function
+from DateTime import DateTime
 from ftw.labels.interfaces import ILabeling
+from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testMeetingConfig(MeetingLalouviereTestCase, mctmc):

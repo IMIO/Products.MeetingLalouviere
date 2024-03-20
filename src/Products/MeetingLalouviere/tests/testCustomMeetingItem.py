@@ -21,12 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
-from Products.MeetingCommunes.tests.testCustomMeetingItem import (
-    testCustomMeetingItem as mctcm,
-)
+from Products.MeetingCommunes.tests.testCustomMeetingItem import testCustomMeetingItem as mctcm
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from zope.globalrequest import getRequest
 
 

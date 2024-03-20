@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testSetup import testSetup as mcts
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testSetup(MeetingLalouviereTestCase, mcts):

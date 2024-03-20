@@ -24,8 +24,8 @@
 
 from AccessControl import Unauthorized
 from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.MeetingCommunes.tests.testCustomUtils import testCustomUtils as mctcu
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testCustomUtils(mctcu, MeetingLalouviereTestCase):

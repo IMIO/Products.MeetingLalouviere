@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testAdvices(MeetingLalouviereTestCase, mcta):

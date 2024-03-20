@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.GenericSetup.tool import DEPENDENCY_STRATEGY_NEW
-from Products.MeetingCommunes.migrations.migrate_to_4_1 import (
-    Migrate_To_4_1 as MCMigrate_To_4_1,
-)
-from collective.contact.plonegroup.config import (
-    get_registry_functions,
-    set_registry_functions,
-)
+from collective.contact.plonegroup.config import get_registry_functions
+from collective.contact.plonegroup.config import set_registry_functions
 from plone import api
+from Products.GenericSetup.tool import DEPENDENCY_STRATEGY_NEW
+from Products.MeetingCommunes.migrations.migrate_to_4_1 import Migrate_To_4_1 as MCMigrate_To_4_1
 
 import logging
 

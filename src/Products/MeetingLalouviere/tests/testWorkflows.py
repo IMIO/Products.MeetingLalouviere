@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-
-from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
-from Products.PloneMeeting.config import AddAnnex
 
 from AccessControl import Unauthorized
-from Products.CMFCore.permissions import ModifyPortalContent, View
+from datetime import datetime
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import View
+from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
+from Products.PloneMeeting.config import AddAnnex
 
 
 class testWorkflows(MeetingLalouviereTestCase, mctw):
@@ -118,19 +116,18 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.changeUser("pmAlderman1")
         # Alderman cannot see the item at this state
         self.failIf(self.hasPermission(View, item1))
-        self.changeUser("pmDirector1")
+        self.changeUser("pmDg")
         self.do(item1, 'proposeToAlderman')
-        self.assertTrue(self.hasPermission(View, item1))  # Now alderman can see it
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission(AddAnnex, item1))
-        self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
-        self._check_users_can_modify(item1,
-                                     ['pmAlderman1'],
-                                     annex1)
+        self.changeUser("pmAlderman1")
+        self.assertTrue(self.hasPermission(View, item1))
+        self.assertEqual(self.transitions(item1), ['backToProposedToDg', 'validate'])
+        self.assertTrue(self.hasPermission(AddAnnex, item1))
+        self.assertTrue(self.hasPermission(ModifyPortalContent, (item1, annex1)))
+        self._check_users_can_modify(item1, ['pmAlderman1'], annex1)
         self.do(item1, "validate")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission("PloneMeeting: Add annex", item1))
+        self.failIf(self.transitions(item1))
+        self.failIf(self.hasPermission(AddAnnex, item1))
         # pmManager creates a meeting
         self.changeUser("pmManager")
         self._check_users_can_modify(item1)

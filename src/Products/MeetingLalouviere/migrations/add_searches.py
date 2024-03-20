@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from Products.PloneMeeting.migrations import Migrator
+
 import logging
 
-from Products.PloneMeeting.migrations import Migrator
 
 logger = logging.getLogger('MeetingLalouviere')
 

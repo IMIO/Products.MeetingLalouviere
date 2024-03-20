@@ -22,8 +22,8 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.MeetingCommunes.tests.testCustomToolPloneMeeting import testCustomToolPloneMeeting as mctct
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testCustomToolPloneMeeting(mctct, MeetingLalouviereTestCase):
@@ -35,4 +35,3 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(testCustomToolPloneMeeting, prefix='test_'))
     return suite
-

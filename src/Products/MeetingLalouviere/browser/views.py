@@ -22,9 +22,9 @@
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from Products.Five import BrowserView
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
+from Products.Five import BrowserView
 from Products.MeetingLalouviere.config import POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER
 
 

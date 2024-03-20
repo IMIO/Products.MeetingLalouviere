@@ -22,12 +22,9 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.testViews import testViews as mctv
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
-
 from plone import api
+from Products.MeetingCommunes.tests.testViews import testViews as mctv
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testViews(MeetingLalouviereTestCase, mctv):

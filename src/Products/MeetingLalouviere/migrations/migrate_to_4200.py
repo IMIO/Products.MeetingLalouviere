@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-
 from DateTime import DateTime
+from datetime import datetime
 from plone import api
+from plone.app.textfield import RichTextValue
 from Products.MeetingCommunes.migrations.migrate_to_4200 import Migrate_To_4200 as MCMigrate_To_4200
-from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS, LLO_APPLYED_COUNCIL_WFA, \
-    LLO_APPLYED_COLLEGE_WFA
+from Products.MeetingLalouviere.config import LLO_APPLYED_COLLEGE_WFA
+from Products.MeetingLalouviere.config import LLO_APPLYED_COUNCIL_WFA
+from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.config import NO_COMMITTEE
+
 import logging
 
-from plone.app.textfield import RichTextValue
 
 logger = logging.getLogger('MeetingLalouviere')
 

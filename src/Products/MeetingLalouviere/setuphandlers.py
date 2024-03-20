@@ -9,11 +9,13 @@
 # GNU General Public License (GPL)
 #
 
-import logging
-import os
 from imio.helpers.catalog import addOrUpdateIndexes
 from Products.MeetingLalouviere.config import PROJECTNAME
 from Products.PloneMeeting.exportimport.content import ToolInitializer
+
+import logging
+import os
+
 
 logger = logging.getLogger('MeetingLalouviere: setuphandlers')
 

@@ -6,12 +6,11 @@
 #
 # GNU General Public License (GPL)
 #
+from plone import api
 from Products.MeetingCommunes.browser.overrides import MCItemDocumentGenerationHelperView
 from Products.MeetingCommunes.browser.overrides import MCMeetingDocumentGenerationHelperView
 
 import cgi
-
-from plone import api
 
 
 class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):

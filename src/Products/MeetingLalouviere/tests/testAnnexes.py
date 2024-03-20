@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testAnnexes import testAnnexes as mcta
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testAnnexes(MeetingLalouviereTestCase, mcta):

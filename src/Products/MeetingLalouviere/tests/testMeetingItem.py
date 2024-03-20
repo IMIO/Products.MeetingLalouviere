@@ -157,9 +157,6 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
                               self.direction_generale_uid,
                               self.endUsers_uid])
 
-    def _reviewers_may_edit_itemcreated(self):
-        return True
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

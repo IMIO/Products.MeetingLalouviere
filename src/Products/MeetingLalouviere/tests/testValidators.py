@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testValidators import testValidators as mctv
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testValidators(MeetingLalouviereTestCase, mctv):

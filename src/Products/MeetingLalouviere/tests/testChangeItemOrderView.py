@@ -22,12 +22,8 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.testChangeItemOrderView import (
-    testChangeItemOrderView as mctciov,
-)
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingCommunes.tests.testChangeItemOrderView import testChangeItemOrderView as mctciov
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testChangeItemOrderView(MeetingLalouviereTestCase, mctciov):

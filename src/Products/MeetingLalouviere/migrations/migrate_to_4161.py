@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import logging
-
-from Products.MeetingCommunes.Extensions.add_portal_configuration import (
-    add_category, add_lisTypes
-)
+from plone import api
+from Products.MeetingCommunes.Extensions.add_portal_configuration import add_category
+from Products.MeetingCommunes.Extensions.add_portal_configuration import add_lisTypes
 from Products.PloneMeeting.migrations import Migrator
 
-from plone import api
+import logging
+
 
 logger = logging.getLogger("MeetingLalouviere")
 

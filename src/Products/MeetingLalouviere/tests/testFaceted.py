@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testFaceted import testFaceted as mctf
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testFaceted(MeetingLalouviereTestCase, mctf):

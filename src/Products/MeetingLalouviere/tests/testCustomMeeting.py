@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
 from Products.MeetingCommunes.tests.testCustomMeeting import testCustomMeetingType as mctcm
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testCustomMeetingType(mctcm, MeetingLalouviereTestCase):

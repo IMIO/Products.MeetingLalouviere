@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testVotes import testVotes as mctv
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testVotes(MeetingLalouviereTestCase, mctv):

@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testColumns import testColumns as mctc
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testColumns(MeetingLalouviereTestCase, mctc):

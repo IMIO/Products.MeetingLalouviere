@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testUtils import testUtils as mctu
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testUtils(MeetingLalouviereTestCase, mctu):

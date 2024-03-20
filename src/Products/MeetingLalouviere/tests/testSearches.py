@@ -22,18 +22,14 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.testSearches import testSearches as mcts
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
-from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
-
-from Products.CMFCore.permissions import ModifyPortalContent
 from collective.compoundcriterion.interfaces import ICompoundCriterionFilter
 from imio.helpers.cache import cleanRamCacheFor
-from zope.component import getAdapter
-
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.MeetingCommunes.tests.testSearches import testSearches as mcts
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.adapters import _find_nothing_query
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
+from zope.component import getAdapter
 
 
 class testSearches(MeetingLalouviereTestCase, mcts):

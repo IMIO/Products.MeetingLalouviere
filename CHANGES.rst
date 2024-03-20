@@ -10,6 +10,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
   `MeetingItem.getCertifiedSignatures` is no more an adaptable method
   (removed `.adapted()`).
   [gbastien]
+- Cleanup and isort.
+  [gbastien]
 
 4.2.8 (2024-01-05)
 ------------------

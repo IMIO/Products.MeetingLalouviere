@@ -1,31 +1,14 @@
 # -*- coding: utf-8 -*-
 #
-# File: config.py
-#
-# Copyright (c) 2016 by Imio.be
-# Generator: ArchGenXML Version 2.7
-#            http://plone.org/products/archgenxml
-#
 # GNU General Public License (GPL)
 #
-# Product configuration.
-#
-# The contents of this module will be imported into __init__.py, the
-# workflow configuration and every content type module.
-#
-# If you wish to perform custom configuration, you may put a file
-# AppConfig.py in your product's root directory. The items in there
-# will be included (by importing) in this file if found.
-import copy
-import os
-from collections import OrderedDict
-
-from Products.PloneMeeting import config as PMconfig
 
 from Products.CMFCore.permissions import setDefaultRoles
+from Products.PloneMeeting import config as PMconfig
 
-__author__ = """Gauthier Bastien <g.bastien@imio.be>, 
-Stephan Geulette <s.geulette@imio.be>, 
+
+__author__ = """Gauthier Bastien <g.bastien@imio.be>,
+Stephan Geulette <s.geulette@imio.be>,
 Olivier Delaere <olivier.delaere@imio.be>"""
 __docformat__ = "plaintext"
 

@@ -22,12 +22,8 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.testMeetingCategory import (
-    testMeetingCategory as mctmc,
-)
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingCommunes.tests.testMeetingCategory import testMeetingCategory as mctmc
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testMeetingCategory(MeetingLalouviereTestCase, mctmc):

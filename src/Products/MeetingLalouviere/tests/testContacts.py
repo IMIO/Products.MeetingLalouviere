@@ -21,16 +21,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-import os
-
-import Products
 from collective.contact.plonegroup.utils import get_own_organization
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
+from plone import api
 from Products.MeetingCommunes.tests.testContacts import testContacts as mctc
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.Extensions.imports import import_contacts
 
-
-from plone import api
+import os
+import Products
 
 
 class testContacts(mctc, MeetingLalouviereTestCase):

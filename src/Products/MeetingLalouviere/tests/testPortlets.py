@@ -23,9 +23,7 @@
 #
 
 from Products.MeetingCommunes.tests.testPortlets import testPortlets as mctp
-from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import (
-    MeetingLalouviereTestCase,
-)
+from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
 
 class testPortlets(MeetingLalouviereTestCase, mctp):

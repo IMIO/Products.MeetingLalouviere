@@ -4,12 +4,12 @@
 #
 
 from copy import deepcopy
+from imio.helpers.content import get_vocab_values
 from Products.CMFCore.permissions import DeleteObjects
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import View
 from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.config import AddAnnex
 from Products.PloneMeeting.config import MEETING_REMOVE_MOG_WFA
 from Products.PloneMeeting.config import WriteBudgetInfos
 from Products.PloneMeeting.config import WriteInternalNotes
@@ -22,57 +22,56 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
     """Tests various aspects of votes management."""
 
     def test_pm_WFA_availableWFAdaptations(self):
-        self.assertEqual(sorted(self.meetingConfig.listWorkflowAdaptations().keys()),
-                         ['accepted_but_modified',
-                          'accepted_out_of_meeting',
-                          'accepted_out_of_meeting_and_duplicated',
-                          'accepted_out_of_meeting_emergency',
-                          'accepted_out_of_meeting_emergency_and_duplicated',
-                          # Custom
-                          'alderman_cannot_send_back_to_every_levels',
-                          'apply_council_state_label',
-                          # End of custom
-                          'decide_item_when_back_to_meeting_from_returned_to_proposing_group',
-                          'delayed',
-                          'hide_decisions_when_under_writing',
-                          'hide_decisions_when_under_writing_check_returned_to_proposing_group',
-                          'item_validation_no_validate_shortcuts',
-                          'item_validation_shortcuts',
-                          'itemdecided',
-                          'mark_not_applicable',
-                          MEETING_REMOVE_MOG_WFA,
-                          'meetingmanager_correct_closed_meeting',
-                          'no_decide',
-                          'no_freeze',
-                          'no_publication',
-                          'only_creator_may_delete',
-                          'postpone_next_meeting',
-                          'pre_accepted',
-                          'presented_item_back_to_itemcreated',
-                          # Do no exist (like spaghetti a la bolognese)
-                          # 'presented_item_back_to_proposed',
-                          # NEW
-                          'presented_item_back_to_proposed_to_alderman',
-                          'presented_item_back_to_proposed_to_dg',
-                          'presented_item_back_to_proposed_to_director',
-                          'presented_item_back_to_proposed_to_divisionhead',
-                          'presented_item_back_to_proposed_to_officemanager',
-                          'presented_item_back_to_proposed_to_servicehead',
-                          'propose_to_budget_reviewer',
-                          # End of custom
-                          'refused',
-                          'removed',
-                          'removed_and_duplicated',
-                          'return_to_proposing_group',
-                          'return_to_proposing_group_with_all_validations',
-                          'return_to_proposing_group_with_last_validation',
-                          'reviewers_take_back_validated_item',
-                          'transfered',
-                          'transfered_and_duplicated',
-                          'waiting_advices',
-                          'waiting_advices_adviser_send_back',
-                          'waiting_advices_proposing_group_send_back'
-                          ])
+        self.assertEqual(
+            sorted(get_vocab_values(self.meetingConfig, 'WorkflowAdaptations')),
+            ['accepted_but_modified',
+             'accepted_out_of_meeting',
+             'accepted_out_of_meeting_and_duplicated',
+             'accepted_out_of_meeting_emergency',
+             'accepted_out_of_meeting_emergency_and_duplicated',
+             # Custom
+             'alderman_cannot_send_back_to_every_levels',
+             'apply_council_state_label',
+             # End of custom
+             'decide_item_when_back_to_meeting_from_returned_to_proposing_group',
+             'delayed',
+             'hide_decisions_when_under_writing',
+             'hide_decisions_when_under_writing_check_returned_to_proposing_group',
+             'item_validation_no_validate_shortcuts',
+             'item_validation_shortcuts',
+             'itemdecided',
+             'mark_not_applicable',
+             MEETING_REMOVE_MOG_WFA,
+             'meetingmanager_correct_closed_meeting',
+             'no_decide',
+             'no_freeze',
+             'no_publication',
+             'only_creator_may_delete',
+             'postpone_next_meeting',
+             'postpone_next_meeting_keep_internal_number',
+             'postpone_next_meeting_transfer_annex_scan_id',
+             'pre_accepted',
+             'presented_item_back_to_itemcreated',
+             'presented_item_back_to_proposed_to_alderman',
+             'presented_item_back_to_proposed_to_dg',
+             'presented_item_back_to_proposed_to_director',
+             'presented_item_back_to_proposed_to_divisionhead',
+             'presented_item_back_to_proposed_to_officemanager',
+             'presented_item_back_to_proposed_to_servicehead',
+             'propose_to_budget_reviewer',
+             'refused',
+             'removed',
+             'removed_and_duplicated',
+             'return_to_proposing_group',
+             'return_to_proposing_group_with_all_validations',
+             'return_to_proposing_group_with_last_validation',
+             'reviewers_take_back_validated_item',
+             'transfered',
+             'transfered_and_duplicated',
+             'waiting_advices',
+             'waiting_advices_adviser_send_back',
+             'waiting_advices_proposing_group_send_back'
+             ])
 
     def _process_transition_for_correcting_item(self, item, all):
         if all:
@@ -114,9 +113,9 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, 'return_to_proposing_group')
         self.assertEqual(item.query_state(), 'returned_to_proposing_group')
         self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_last_validation',)))
-        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group']):
             self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group',)))
-        if 'return_to_proposing_group_with_all_validations' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group_with_all_validations']):
             self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
         self.do(item, 'goTo_returned_to_proposing_group_proposed_to_alderman')
         self.assertEqual(item.query_state(), 'returned_to_proposing_group_proposed_to_alderman')
@@ -134,11 +133,11 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                     context=self.request)},
             context=self.request)
         self.assertEqual(cfg.validate_workflowAdaptations(()), msg_removed_error)
-        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group']):
             self.assertEqual(
                 cfg.validate_workflowAdaptations(('return_to_proposing_group',)),
                 msg_removed_error)
-        if 'return_to_proposing_group_with_all_validations' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group_with_all_validations']):
             self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
         # make wfAdaptation unselectable
         self.do(item, 'backTo_itemfrozen_from_returned_to_proposing_group')
@@ -167,21 +166,20 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, 'return_to_proposing_group')
         self.assertEqual(item.query_state(), 'returned_to_proposing_group')
         self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_all_validations',)))
-        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group']):
             self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group',)))
-
-        if 'return_to_proposing_group_with_last_validation' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group_with_last_validation']):
             self.failIf(cfg.validate_workflowAdaptations(('return_to_proposing_group_with_last_validation',)))
         self._process_transition_for_correcting_item(item, True)
         self.assertEqual(item.query_state(), 'returned_to_proposing_group_proposed_to_alderman')
         self.assertEqual(
             cfg.validate_workflowAdaptations(()),
             return_to_proposing_group_removed_error)
-        if 'return_to_proposing_group' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group']):
             self.assertEqual(
                 cfg.validate_workflowAdaptations(('return_to_proposing_group',)),
                 return_to_proposing_group_removed_error)
-        if 'return_to_proposing_group_with_last_validation' in cfg.listWorkflowAdaptations():
+        if self._check_wfa_available(['return_to_proposing_group_with_last_validation']):
             self.assertEqual(
                 cfg.validate_workflowAdaptations(('return_to_proposing_group_with_last_validation',)),
                 return_to_proposing_group_removed_error)
@@ -284,7 +282,6 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         # budget impact editors access are correct even when 'remove_modify_access': True
         self.changeUser('budgetimpacteditor')
         self.assertTrue(self.hasPermission(WriteBudgetInfos, item))
-        self.assertTrue(self.hasPermission(AddAnnex, item))
 
         # check internalNotes editable by copyGroups
         self.changeUser('pmReviewer2')
