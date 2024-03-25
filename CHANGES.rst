@@ -12,6 +12,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
   [gbastien]
 - Cleanup and isort.
   [gbastien]
+- Fixed issue related to item send to proposing group when meeting is in published state.
+  [aduchene]
 
 4.2.8 (2024-01-05)
 ------------------

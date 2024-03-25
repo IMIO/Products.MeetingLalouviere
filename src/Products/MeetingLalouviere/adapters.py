@@ -99,6 +99,16 @@ LLO_WAITING_ADVICES_FROM_STATES = {
 }
 adaptations.WAITING_ADVICES_FROM_STATES.update(LLO_WAITING_ADVICES_FROM_STATES)
 
+CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
+    "backTo_itempublished_from_returned_to_proposing_group": [
+        "published",
+        "decided"
+    ],
+    "backTo_itemfrozen_from_returned_to_proposing_group": [
+        "frozen",
+    ],
+}
+adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 
 class LLCustomMeeting(CustomMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
