@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.10 (unreleased)
+4.2.10 (2024-03-28)
 -------------------
 
 - Revert `CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS['backTo_itemfrozen_from_returned_to_proposing_group']`.
