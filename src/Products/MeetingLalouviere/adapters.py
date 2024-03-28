@@ -103,10 +103,7 @@ CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
     "backTo_itempublished_from_returned_to_proposing_group": [
         "published",
         "decided"
-    ],
-    "backTo_itemfrozen_from_returned_to_proposing_group": [
-        "frozen",
-    ],
+    ]
 }
 adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 

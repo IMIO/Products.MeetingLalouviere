@@ -6,7 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Revert `CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS['backTo_itemfrozen_from_returned_to_proposing_group']`.
+  [aduchene]
 
 
 4.2.9 (2024-03-25)
