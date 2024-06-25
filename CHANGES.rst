@@ -6,8 +6,9 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Overrided `test_pm_ItemDecidedWithReturnToProposingGroup` as it is possible to
+  send an item back to `itempublished` from `returned_to_proposing_group`.
+  [gbastien]
 
 4.2.10 (2024-03-28)
 -------------------
