@@ -9,6 +9,11 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 - Overrided `test_pm_ItemDecidedWithReturnToProposingGroup` as it is possible to
   send an item back to `itempublished` from `returned_to_proposing_group`.
   [gbastien]
+- Remove overrided `test_pm_ItemDecidedWithReturnToProposingGroup` and
+  add a specific test `test_pm_ItemDecidedWithReturnToProposingGroupCouncil`
+  [aduchene]
+- Changed adapters.CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS to be different in meeting-config-council
+  [aduchene]
 
 4.2.10 (2024-03-28)
 -------------------

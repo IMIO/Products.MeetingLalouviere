@@ -316,22 +316,15 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                 ('item_validation_no_validate_shortcuts', )),
             wa_dependencies)
 
-    def test_pm_ItemDecidedWithReturnToProposingGroup(self):
-        """Override as we have a special behavior, possible to
+    def test_pm_ItemDecidedWithReturnToProposingGroupCouncil(self):
+        """Special behavior for MeetingLaLouviere, possible to
            "backTo_itempublished_from_returned_to_proposing_group" when meeting is
-           "published" or "decided"."""
+           "decided", only in meeting-config-council."""
         if not self._check_wfa_available(
-                ['itemdecided', 'return_to_proposing_group']):
+                ['return_to_proposing_group']):
             return
-        # enable auto itemdecide item when meeting decided
-        cfg = self.meetingConfig
-        actions = list(cfg.getOnMeetingTransitionItemActionToExecute())
-        actions.insert(5,
-                       {'meeting_transition': 'decide',
-                        'item_action': 'itemdecide',
-                        'tal_expression': ''})
-        cfg.setOnMeetingTransitionItemActionToExecute(actions)
-        self._activate_wfas(('itemdecided', 'return_to_proposing_group'))
+        self.setMeetingConfig(self.meetingConfig2.getId())
+        self._activate_wfas(('return_to_proposing_group'))
         self.changeUser('pmManager')
         item = self.create('MeetingItem', decision=self.decisionText)
         meeting = self.create('Meeting')
@@ -339,17 +332,17 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, 'return_to_proposing_group')
         self.assertEqual(self.transitions(item),
                          ['backTo_presented_from_returned_to_proposing_group'])
-        self.freezeMeeting(meeting)
+        self.do(meeting, 'freeze')
         self.assertEqual(self.transitions(item),
                          ['backTo_itemfrozen_from_returned_to_proposing_group'])
-        self.decideMeeting(meeting)
-        # XXX begin change by MeetingLalouviere
+        self.do(meeting, 'publish')
         self.assertEqual(self.transitions(item),
-                         ['backTo_itemdecided_from_returned_to_proposing_group',
-                          'backTo_itempublished_from_returned_to_proposing_group'])
-        # XXX end change by MeetingLalouviere
-        self.do(item, 'backTo_itemdecided_from_returned_to_proposing_group')
-        self.assertEqual(item.query_state(), 'itemdecided')
+                         ['backTo_itempublished_from_returned_to_proposing_group'])
+        self.do(meeting, 'decide')
+        self.assertEqual(self.transitions(item),
+                         ['backTo_itempublished_from_returned_to_proposing_group'])
+        self.do(item, 'backTo_itempublished_from_returned_to_proposing_group')
+        self.assertEqual(item.query_state(), 'itempublished')
 
 
 def test_suite():
