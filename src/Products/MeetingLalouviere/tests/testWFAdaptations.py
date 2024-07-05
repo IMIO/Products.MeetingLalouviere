@@ -316,6 +316,25 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                 ('item_validation_no_validate_shortcuts', )),
             wa_dependencies)
 
+    def test_pm_WFA_return_to_proposing_group(self):
+        '''Test the workflowAdaptation 'return_to_proposing_group'.'''
+        # XXX MeetingLalouviere only test meetingConfig and not meetingConfig2
+        # As it is tested in test_pm_ItemDecidedWithReturnToProposingGroupCouncil
+        # ease override by subproducts
+        if not self._check_wfa_available(['return_to_proposing_group']):
+            return
+        self._activate_wfas(())
+        # check while the wfAdaptation is not activated
+        self._return_to_proposing_group_inactive()
+        # activate the wfAdaptation and check
+        self._activate_wfas(('return_to_proposing_group', ))
+        # test what should happen to the wf (added states and transitions)
+        self._return_to_proposing_group_active()
+        # test the functionnality of returning an item to the proposing group
+        self._return_to_proposing_group_active_wf_functionality()
+        # test when no itemWFValidationLevels defined
+        self._return_to_proposing_group_with_no_validation_levels()
+
     def test_pm_ItemDecidedWithReturnToProposingGroupCouncil(self):
         """Special behavior for MeetingLaLouviere, possible to
            "backTo_itempublished_from_returned_to_proposing_group" when meeting is
