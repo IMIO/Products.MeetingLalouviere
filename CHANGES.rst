@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.11 (unreleased)
+4.2.11 (2024-07-05)
 -------------------
 
 - Overrided `test_pm_ItemDecidedWithReturnToProposingGroup` as it is possible to
