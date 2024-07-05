@@ -30,89 +30,83 @@ from Products.MeetingLalouviere.config import POSITIVE_FINANCE_ADVICE_SIGNABLE_B
 
 class AdviceWFConditionsView(BrowserView):
     """
-      This is a view that manage workflow guards for the advice.
-      It is called by the guard_expr of meetingadvice workflow transitions.
+    This is a view that manage workflow guards for the advice.
+    It is called by the guard_expr of meetingadvice workflow transitions.
     """
+
     security = ClassSecurityInfo()
 
-    security.declarePublic('mayBackToProposedToFinancialController')
+    security.declarePublic("mayBackToProposedToFinancialController")
 
     def mayBackToProposedToFinancialController(self):
-        '''
-        '''
+        """ """
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
 
-    security.declarePublic('mayBackToProposedToFinancialEditor')
+    security.declarePublic("mayBackToProposedToFinancialEditor")
 
     def mayBackToProposedToFinancialEditor(self):
-        '''
-        '''
+        """ """
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
 
-    security.declarePublic('mayBackToProposedToFinancialReviewer')
+    security.declarePublic("mayBackToProposedToFinancialReviewer")
 
     def mayBackToProposedToFinancialReviewer(self):
-        '''
-        '''
+        """ """
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
 
-    security.declarePublic('mayBackToProposedToFinancialManager')
+    security.declarePublic("mayBackToProposedToFinancialManager")
 
     def mayBackToProposedToFinancialManager(self):
-        '''
-        '''
+        """ """
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
 
-    security.declarePublic('mayProposeToFinancialEditor')
+    security.declarePublic("mayProposeToFinancialEditor")
 
     def mayProposeToFinancialEditor(self):
-        '''
-        '''
+        """ """
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
 
-    security.declarePublic('mayProposeToFinancialReviewer')
+    security.declarePublic("mayProposeToFinancialReviewer")
 
     def mayProposeToFinancialReviewer(self):
-        '''
-        '''
+        """ """
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
         return res
 
-    security.declarePublic('mayProposeToFinancialManager')
+    security.declarePublic("mayProposeToFinancialManager")
 
     def mayProposeToFinancialManager(self):
-        '''A financial manager may send the advice to the financial manager
-           in any case (advice positive or negative) except if advice
-           is still 'asked_again'.'''
+        """A financial manager may send the advice to the financial manager
+        in any case (advice positive or negative) except if advice
+        is still 'asked_again'."""
         res = False
-        if _checkPermission(ReviewPortalContent, self.context) and \
-           not self.context.advice_type == 'asked_again':
+        if _checkPermission(ReviewPortalContent, self.context) and not self.context.advice_type == "asked_again":
             res = True
         return res
 
-    security.declarePublic('maySignFinancialAdvice')
+    security.declarePublic("maySignFinancialAdvice")
 
     def maySignFinancialAdvice(self):
-        '''A financial reviewer may sign the advice if it is 'positive_finance'
-           or 'not_required_finance', if not this will be the financial manager
-           that will be able to sign it.'''
+        """A financial reviewer may sign the advice if it is 'positive_finance'
+        or 'not_required_finance', if not this will be the financial manager
+        that will be able to sign it."""
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
@@ -120,11 +114,13 @@ class AdviceWFConditionsView(BrowserView):
             # that a finances reviewer may sign an item in place of the finances manager
             # except if it is 'negative_finance'
             if POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER:
-                if self.context.advice_type == 'negative_finance' and \
-                   not self.context.query_state() == 'proposed_to_financial_manager':
+                if (
+                    self.context.advice_type == "negative_finance"
+                    and not self.context.query_state() == "proposed_to_financial_manager"
+                ):
                     res = False
             else:
-                if not self.context.query_state() == 'proposed_to_financial_manager':
+                if not self.context.query_state() == "proposed_to_financial_manager":
                     res = False
         return res
 

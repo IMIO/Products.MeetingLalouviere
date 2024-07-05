@@ -21,8 +21,9 @@ class MLLItemDocumentGenerationHelperView(MCItemDocumentGenerationHelperView):
 
 
 class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperView):
-
-    def get_all_committees_items(self, uids, supplement, privacy='public', list_types=['normal'], include_no_committee=False):
+    def get_all_committees_items(
+        self, uids, supplement, privacy="public", list_types=["normal"], include_no_committee=False
+    ):
         """
         Returns all items of all committees respecting the order of committees on the meeting.
         For p_supplement:
@@ -37,12 +38,12 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
         For p_include_no_committee:
         - True insert 'no_committee' items before others
         """
-        tool = api.portal.get_tool('portal_plonemeeting')
+        tool = api.portal.get_tool("portal_plonemeeting")
         cfg = tool.getMeetingConfig(self)
-        additional_catalog_query = {"privacy": privacy, 'committees_index': []}
+        additional_catalog_query = {"privacy": privacy, "committees_index": []}
 
         if include_no_committee:
-            additional_catalog_query['committees_index'].append(u'no_committee')
+            additional_catalog_query["committees_index"].append(u"no_committee")
         # =========
         # ATTENTION
         # =========
@@ -52,20 +53,19 @@ class MLLMeetingDocumentGenerationHelperView(MCMeetingDocumentGenerationHelperVi
         for committee in self.context.get_committees():
             available_suppl_ids = cfg.get_supplements_for_committee(committee)
             if int(supplement) == -1:
-                additional_catalog_query['committees_index'].append(committee)
+                additional_catalog_query["committees_index"].append(committee)
             elif int(supplement) == 0:
-                additional_catalog_query['committees_index'].append(committee)
-                additional_catalog_query['committees_index'] += available_suppl_ids
+                additional_catalog_query["committees_index"].append(committee)
+                additional_catalog_query["committees_index"] += available_suppl_ids
             elif supplement == 2:
-                additional_catalog_query['committees_index'].append("points-conseillers-2eme-supplement")
+                additional_catalog_query["committees_index"].append("points-conseillers-2eme-supplement")
             elif supplement == 3:
-                additional_catalog_query['committees_index'].append("points-conseillers-3eme-supplement")
+                additional_catalog_query["committees_index"].append("points-conseillers-3eme-supplement")
             elif int(supplement) == 99:
-                additional_catalog_query['committees_index'] = available_suppl_ids
+                additional_catalog_query["committees_index"] = available_suppl_ids
             elif len(available_suppl_ids) >= int(supplement):
-                additional_catalog_query['committees_index'].append(available_suppl_ids[int(supplement) - 1])
+                additional_catalog_query["committees_index"].append(available_suppl_ids[int(supplement) - 1])
 
-        return self.context.get_items(uids,
-                                      ordered=True,
-                                      additional_catalog_query=additional_catalog_query,
-                                      list_types=list_types)
+        return self.context.get_items(
+            uids, ordered=True, additional_catalog_query=additional_catalog_query, list_types=list_types
+        )

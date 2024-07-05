@@ -12,7 +12,12 @@ from zope.event import notify
 
 class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     """Override some values of PloneMeetingTestingHelpers."""
-    TRANSITIONS_FOR_FREEZING_MEETING_2 = ("freeze", "publish", "decide",)
+
+    TRANSITIONS_FOR_FREEZING_MEETING_2 = (
+        "freeze",
+        "publish",
+        "decide",
+    )
 
     TRANSITIONS_FOR_PROPOSING_ITEM_FIRST_LEVEL_1 = ("proposeToServiceHead",)
 
@@ -26,9 +31,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         "proposeToDg",
         "proposeToAlderman",
     )
-    TRANSITIONS_FOR_PROPOSING_ITEM_2 = (
-        "proposeToDirector",
-    )
+    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ("proposeToDirector",)
 
     TRANSITIONS_FOR_VALIDATING_ITEM_1 = (
         "proposeToServiceHead",
@@ -60,7 +63,12 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     BACK_TO_WF_PATH_1 = {
         # Meeting
-        "created": ("backToDecided", "backToPublished", "backToFrozen", "backToCreated",),
+        "created": (
+            "backToDecided",
+            "backToPublished",
+            "backToFrozen",
+            "backToCreated",
+        ),
         # MeetingItem
         "itemcreated": (
             "backToItemFrozen",
@@ -88,7 +96,11 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
             "backToValidated",
             "backToProposedToAlderman",
         ),
-        "validated": ("backToItemFrozen", "backToPresented", "backToValidated",),
+        "validated": (
+            "backToItemFrozen",
+            "backToPresented",
+            "backToValidated",
+        ),
     }
     BACK_TO_WF_PATH_2 = {
         "itemcreated": (
@@ -110,12 +122,16 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
             "backToValidated",
             "backToProposedToDirector",
         ),
-        "validated": ("backToItemFrozen", "backToPresented", "backToValidated",),
+        "validated": (
+            "backToItemFrozen",
+            "backToPresented",
+            "backToValidated",
+        ),
     }
 
     WF_ITEM_STATE_NAME_MAPPINGS_1 = {
         "itemcreated": "itemcreated",
-        'proposed_first_level': 'proposed_to_servicehead',
+        "proposed_first_level": "proposed_to_servicehead",
         "proposed": "proposed_to_alderman",
         "validated": "validated",
         "presented": "presented",
@@ -124,7 +140,7 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     WF_ITEM_STATE_NAME_MAPPINGS_2 = {
         "itemcreated": "itemcreated",
-        'proposed_first_level': 'proposed_to_director',
+        "proposed_first_level": "proposed_to_director",
         "proposed": "proposed_to_director",
         "validated": "validated",
         "presented": "presented",
@@ -133,21 +149,21 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
 
     def _setUpDefaultItemWFValidationLevels(self, cfg):
         """Setup default itemWFValidationLevels for given p_cfg,
-           used to avoid a custom profile breaking the tests."""
+        used to avoid a custom profile breaking the tests."""
         # make sure we use default itemWFValidationLevels,
         # useful when test executed with custom profile
         defValues = deepcopy(MeetingConfigDescriptor.get().itemWFValidationLevels)
         suffix_mapping = {
-            'creators': 'creators',
-            'level1reviewers': 'serviceheads',
-            'level2reviewers': 'officemanagers',
-            'level3reviewers': 'divisionheads',
-            'level4reviewers': 'directors',
-            'level5reviewers': 'directors',
-            'reviewers': 'directors',
+            "creators": "creators",
+            "level1reviewers": "serviceheads",
+            "level2reviewers": "officemanagers",
+            "level3reviewers": "divisionheads",
+            "level4reviewers": "directors",
+            "level5reviewers": "directors",
+            "reviewers": "directors",
         }
         for value in defValues:
-            value['suffix'] = suffix_mapping[value['suffix']]
+            value["suffix"] = suffix_mapping[value["suffix"]]
         cfg.setItemWFValidationLevels(defValues)
         notify(ObjectEditedEvent(cfg))
 
@@ -156,10 +172,11 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
             self.decideMeeting(meeting, as_manager, clean_memoize)
         else:
             super(MeetingLalouviereTestingHelpers, self).apply_meeting_transition_to_late_state(
-                meeting, as_manager, clean_memoize)
+                meeting, as_manager, clean_memoize
+            )
 
     def _enablePrevalidation(self, cfg, enable_extra_suffixes=False):
-        if self._testMethodName in ('test_pm_WFA_waiting_advices_with_prevalidation',):
+        if self._testMethodName in ("test_pm_WFA_waiting_advices_with_prevalidation",):
             super(MeetingLalouviereTestingHelpers, self)._enablePrevalidation(cfg, enable_extra_suffixes)
         notify(ObjectEditedEvent(cfg))
 

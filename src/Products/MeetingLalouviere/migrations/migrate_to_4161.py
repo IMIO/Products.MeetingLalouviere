@@ -23,9 +23,7 @@ class Migrate_To_4_1_5_4(Migrator):
 
         if "getRawClassifier" not in self.council.itemColumns:
             self.council.itemColumns = insert_in_tuple_after(
-                self.council.itemColumns,
-                u"getRawClassifier",
-                u"getCategory"
+                self.council.itemColumns, u"getRawClassifier", u"getCategory"
             )
 
         if "getRawClassifier" not in self.council.availableItemsListVisibleColumns:
@@ -79,9 +77,7 @@ class Migrate_To_4_1_5_4(Migrator):
                     target=self.council.categories,
                     id=category.id + "-old",
                 )
-                api.content.move(
-                    source=category, target=self.council.classifiers, id=category.id
-                )
+                api.content.move(source=category, target=self.council.classifiers, id=category.id)
                 category.reindexObject()
                 category = old_category
 
@@ -101,9 +97,7 @@ class Migrate_To_4_1_5_4(Migrator):
         for brain in brains:
             if brain.getCategory:
                 item = brain.getObject()
-                if item.portal_type == self.council.getItemTypeName(
-                    configType="MeetingItemRecurring"
-                ):
+                if item.portal_type == self.council.getItemTypeName(configType="MeetingItemRecurring"):
                     item.setCategory("administration")
                     item.setClassifier("administration")
                 elif item.getCategory() == "recurrent":
@@ -133,8 +127,7 @@ class Migrate_To_4_1_5_4(Migrator):
 
 
 def migrate(context):
-    """
-    """
+    """ """
     migrator = Migrate_To_4_1_5_4(context)
     migrator.run()
     migrator.finish()

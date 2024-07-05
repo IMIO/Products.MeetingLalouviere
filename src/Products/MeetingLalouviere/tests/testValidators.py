@@ -28,7 +28,7 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLa
 
 class testValidators(MeetingLalouviereTestCase, mctv):
     """
-        Tests the validators.
+    Tests the validators.
     """
 
 

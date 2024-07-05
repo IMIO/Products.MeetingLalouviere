@@ -5,11 +5,12 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLa
 
 
 class testCustomWFAdaptations(mctcwfa, MeetingLalouviereTestCase):
-    ''' '''
+    """ """
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testCustomWFAdaptations, prefix='test_'))
+    suite.addTest(makeSuite(testCustomWFAdaptations, prefix="test_"))
     return suite

@@ -18,9 +18,7 @@ data = deepcopy(mc_import_data.data)
 # Users and groups -------------------------------------------------------------
 # no user
 data.orgs.append(OrgDescriptor("secretaire-communal", "Secrétaire Communal", u"Sec"))
-data.orgs.append(
-    OrgDescriptor("secretaire-communal-adj", "Secrétaire Communal Adjoint", u"Sec-Adj")
-)
+data.orgs.append(OrgDescriptor("secretaire-communal-adj", "Secrétaire Communal Adjoint", u"Sec-Adj"))
 
 # <editor-fold desc="Annex types">
 overheadAnalysisSubtype = ItemAnnexSubTypeDescriptor(
@@ -34,14 +32,10 @@ overheadAnalysis = ItemAnnexTypeDescriptor(
     "Administrative overhead analysis",
     u"overheadAnalysis.png",
     subTypes=[overheadAnalysisSubtype],
-    other_mc_correspondences=(
-        "cfg2_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex",
-    ),
+    other_mc_correspondences=("cfg2_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex",),
 )
 
-financialAnalysisSubAnnex = ItemAnnexSubTypeDescriptor(
-    "financial-analysis-sub-annex", "Financial analysis sub annex"
-)
+financialAnalysisSubAnnex = ItemAnnexSubTypeDescriptor("financial-analysis-sub-annex", "Financial analysis sub annex")
 
 financialAnalysis = ItemAnnexTypeDescriptor(
     "financial-analysis",
@@ -51,13 +45,9 @@ financialAnalysis = ItemAnnexTypeDescriptor(
     subTypes=[financialAnalysisSubAnnex],
 )
 
-legalAnalysis = ItemAnnexTypeDescriptor(
-    "legal-analysis", "Legal analysis", u"legalAnalysis.png"
-)
+legalAnalysis = ItemAnnexTypeDescriptor("legal-analysis", "Legal analysis", u"legalAnalysis.png")
 
-budgetAnalysisCfg2Subtype = ItemAnnexSubTypeDescriptor(
-    "budget-analysis-sub-annex", "Budget analysis sub annex"
-)
+budgetAnalysisCfg2Subtype = ItemAnnexSubTypeDescriptor("budget-analysis-sub-annex", "Budget analysis sub annex")
 
 budgetAnalysisCfg2 = ItemAnnexTypeDescriptor(
     "budget-analysis",
@@ -69,9 +59,7 @@ budgetAnalysisCfg2 = ItemAnnexTypeDescriptor(
 budgetAnalysisCfg1Subtype = ItemAnnexSubTypeDescriptor(
     "budget-analysis-sub-annex",
     "Budget analysis sub annex",
-    other_mc_correspondences=(
-        "cfg2_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex",
-    ),
+    other_mc_correspondences=("cfg2_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex",),
 )
 
 budgetAnalysisCfg1 = ItemAnnexTypeDescriptor(
@@ -86,9 +74,7 @@ itemAnnex = ItemAnnexTypeDescriptor("item-annex", "Other annex(es)", u"itemAnnex
 # Could be used once we
 # will digitally sign decisions ? Indeed, once signed, we will need to
 # store them (together with the signature) as separate files.
-decision = ItemAnnexTypeDescriptor(
-    "decision", "Decision", u"decision.png", relatedTo="item_decision"
-)
+decision = ItemAnnexTypeDescriptor("decision", "Decision", u"decision.png", relatedTo="item_decision")
 decisionAnnex = ItemAnnexTypeDescriptor(
     "decision-annex",
     "Decision annex(es)",
@@ -104,9 +90,7 @@ marketingAnalysis = ItemAnnexTypeDescriptor(
     enabled=False,
 )
 # Advice annex types
-adviceAnnex = AnnexTypeDescriptor(
-    "advice-annex", "Advice annex(es)", u"itemAnnex.png", relatedTo="advice"
-)
+adviceAnnex = AnnexTypeDescriptor("advice-annex", "Advice annex(es)", u"itemAnnex.png", relatedTo="advice")
 adviceLegalAnalysis = AnnexTypeDescriptor(
     "advice-legal-analysis",
     "Advice legal analysis",
@@ -114,9 +98,7 @@ adviceLegalAnalysis = AnnexTypeDescriptor(
     relatedTo="advice",
 )
 # Meeting annex types
-meetingAnnex = AnnexTypeDescriptor(
-    "meeting-annex", "Meeting annex(es)", u"itemAnnex.png", relatedTo="meeting"
-)
+meetingAnnex = AnnexTypeDescriptor("meeting-annex", "Meeting annex(es)", u"itemAnnex.png", relatedTo="meeting")
 # </editor-fold>
 
 # COLLEGE
@@ -284,7 +266,9 @@ councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_
 councilMeeting.itemPositiveDecidedStates = ["accepted", "accepted_but_modified"]
 
 councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
-councilMeeting.itemAdviceStates = ["proposed_to_director",]
+councilMeeting.itemAdviceStates = [
+    "proposed_to_director",
+]
 councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 councilMeeting.itemCopyGroupsStates = [
     "validated",
@@ -318,7 +302,11 @@ councilMeeting.onMeetingTransitionItemActionToExecute = (
         "item_action": "backToItemInCommittee",
         "tal_expression": "",
     },
-    {"meeting_transition": "close", "item_action": "accept", "tal_expression": "", },
+    {
+        "meeting_transition": "close",
+        "item_action": "accept",
+        "tal_expression": "",
+    },
 )
 
 councilMeeting.usedItemAttributes = (

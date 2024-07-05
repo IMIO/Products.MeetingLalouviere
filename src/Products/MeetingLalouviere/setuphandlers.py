@@ -17,7 +17,7 @@ import logging
 import os
 
 
-logger = logging.getLogger('MeetingLalouviere: setuphandlers')
+logger = logging.getLogger("MeetingLalouviere: setuphandlers")
 
 
 def isNotMeetingLalouviereProfile(context):
@@ -25,7 +25,7 @@ def isNotMeetingLalouviereProfile(context):
 
 
 def postInstall(context):
-    """Called as at the end of the setup process. """
+    """Called as at the end of the setup process."""
     # the right place for your custom code
     if isNotMeetingLalouviereProfile(context):
         return
@@ -40,27 +40,27 @@ def postInstall(context):
 
 
 def logStep(method, context):
-    logger.info("Applying '%s' in profile '%s'" %
-                (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
+    logger.info("Applying '%s' in profile '%s'" % (method, "/".join(context._profile_path.split(os.sep)[-3:])))
 
 
 def isMeetingLalouviereConfigureProfile(context):
-    return context.readDataFile("MeetingLalouviere_lalouviere_marker.txt") or \
-        context.readDataFile("MeetingLalouviere_testing_marker.txt")
+    return context.readDataFile("MeetingLalouviere_lalouviere_marker.txt") or context.readDataFile(
+        "MeetingLalouviere_testing_marker.txt"
+    )
 
 
 def installMeetingLalouviere(context):
-    """ Run the default profile"""
+    """Run the default profile"""
     if not isMeetingLalouviereConfigureProfile(context):
         return
     logStep("installMeetingLalouviere", context)
     portal = context.getSite()
-    portal.portal_setup.runAllImportStepsFromProfile('profile-Products.MeetingLalouviere:default')
+    portal.portal_setup.runAllImportStepsFromProfile("profile-Products.MeetingLalouviere:default")
 
 
 def initializeTool(context):
-    '''Initialises the PloneMeeting tool based on information from the current
-       profile.'''
+    """Initialises the PloneMeeting tool based on information from the current
+    profile."""
     if not isMeetingLalouviereConfigureProfile(context):
         return
 
@@ -73,14 +73,14 @@ def initializeTool(context):
 
 
 def addAdditionalIndexes(context, portal):
-    '''
-       Add some specific indexes used by MeetingLalouviere
-    '''
+    """
+    Add some specific indexes used by MeetingLalouviere
+    """
     if isNotMeetingLalouviereProfile(context):
         return
 
     indexInfo = {
-        'getFollowUp': ('FieldIndex', {}),
+        "getFollowUp": ("FieldIndex", {}),
     }
 
     logStep("addAdditionalIndexes", context)
@@ -89,8 +89,8 @@ def addAdditionalIndexes(context, portal):
 
 
 def reinstallPloneMeeting(context, site):
-    '''Reinstall PloneMeeting so after install methods are called and applied,
-       like performWorkflowAdaptations for example.'''
+    """Reinstall PloneMeeting so after install methods are called and applied,
+    like performWorkflowAdaptations for example."""
 
     if isNotMeetingLalouviereProfile(context):
         return
@@ -101,20 +101,20 @@ def reinstallPloneMeeting(context, site):
 
 def _installPloneMeeting(context):
     site = context.getSite()
-    profileId = u'profile-Products.PloneMeeting:default'
+    profileId = u"profile-Products.PloneMeeting:default"
     site.portal_setup.runAllImportStepsFromProfile(profileId)
 
 
 def showHomeTab(context, site):
     """
-       Make sure the 'home' tab is shown...
+    Make sure the 'home' tab is shown...
     """
     if isNotMeetingLalouviereProfile(context):
         return
 
     logStep("showHomeTab", context)
 
-    index_html = getattr(site.portal_actions.portal_tabs, 'index_html', None)
+    index_html = getattr(site.portal_actions.portal_tabs, "index_html", None)
     if index_html:
         index_html.visible = True
     else:
@@ -123,23 +123,22 @@ def showHomeTab(context, site):
 
 def reorderSkinsLayers(context, site):
     """
-       Re-apply MeetingLalouviere skins.xml step as the reinstallation of
-       MeetingLalouviere and PloneMeeting changes the portal_skins layers order
+    Re-apply MeetingLalouviere skins.xml step as the reinstallation of
+    MeetingLalouviere and PloneMeeting changes the portal_skins layers order
     """
     if isNotMeetingLalouviereProfile(context) and not isMeetingLalouviereConfigureProfile(context):
         return
 
     logStep("reorderSkinsLayers", context)
-    site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingLalouviere:default', 'skins')
+    site.portal_setup.runImportStepFromProfile(u"profile-Products.MeetingLalouviere:default", "skins")
 
 
 def reorderCss(context):
     """
-       Make sure CSS are correctly reordered in portal_css so things
-       work as expected...
+    Make sure CSS are correctly reordered in portal_css so things
+    work as expected...
     """
-    if isNotMeetingLalouviereProfile(context) and \
-       not isMeetingLalouviereConfigureProfile(context):
+    if isNotMeetingLalouviereProfile(context) and not isMeetingLalouviereConfigureProfile(context):
         return
 
     site = context.getSite()
@@ -147,13 +146,15 @@ def reorderCss(context):
     logStep("reorderCss", context)
 
     portal_css = site.portal_css
-    css = ['plonemeeting.css',
-           'meeting.css',
-           'meetingitem.css',
-           'meetinglalouviere.css',
-           'imioapps.css',
-           'plonemeetingskin.css',
-           'imioapps_IEFixes.css',
-           'ploneCustom.css']
+    css = [
+        "plonemeeting.css",
+        "meeting.css",
+        "meetingitem.css",
+        "meetinglalouviere.css",
+        "imioapps.css",
+        "plonemeetingskin.css",
+        "imioapps_IEFixes.css",
+        "ploneCustom.css",
+    ]
     for resource in css:
         portal_css.moveResourceToBottom(resource)

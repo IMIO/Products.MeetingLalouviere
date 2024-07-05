@@ -25,7 +25,7 @@
 #
 
 __author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
-__docformat__ = 'plaintext'
+__docformat__ = "plaintext"
 
 
 # There are three ways to inject custom code here:
@@ -44,11 +44,11 @@ import logging
 import model.pm_updates  # noqa
 
 
-logger = logging.getLogger('MeetingLalouviere')
-logger.debug('Installing Product')
+logger = logging.getLogger("MeetingLalouviere")
+logger.debug("Installing Product")
 
 
-DirectoryView.registerDirectory('skins', product_globals)
+DirectoryView.registerDirectory("skins", product_globals)
 
 
 def initialize(context):

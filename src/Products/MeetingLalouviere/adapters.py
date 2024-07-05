@@ -40,61 +40,62 @@ from zope.interface import implements
 
 
 customWfAdaptations = list(deepcopy(MeetingConfig.wfAdaptations))
-customWfAdaptations.append('apply_council_state_label')
-customWfAdaptations.append('propose_to_budget_reviewer')
-customWfAdaptations.append('alderman_cannot_send_back_to_every_levels')
+customWfAdaptations.append("apply_council_state_label")
+customWfAdaptations.append("propose_to_budget_reviewer")
+customWfAdaptations.append("alderman_cannot_send_back_to_every_levels")
 # disable not compatible waiting advice wfa
-customWfAdaptations.remove('waiting_advices_adviser_may_validate')
-customWfAdaptations.remove('waiting_advices_from_before_last_val_level')
-customWfAdaptations.remove('waiting_advices_from_every_val_levels')
-customWfAdaptations.remove('waiting_advices_from_last_val_level')
-customWfAdaptations.remove('waiting_advices_given_advices_required_to_validate')
-customWfAdaptations.remove('waiting_advices_given_and_signed_advices_required_to_validate')
+customWfAdaptations.remove("waiting_advices_adviser_may_validate")
+customWfAdaptations.remove("waiting_advices_from_before_last_val_level")
+customWfAdaptations.remove("waiting_advices_from_every_val_levels")
+customWfAdaptations.remove("waiting_advices_from_last_val_level")
+customWfAdaptations.remove("waiting_advices_given_advices_required_to_validate")
+customWfAdaptations.remove("waiting_advices_given_and_signed_advices_required_to_validate")
 MeetingConfig.wfAdaptations = tuple(customWfAdaptations)
 
 LLO_WAITING_ADVICES_FROM_STATES = {
-    '*':
-    (
-        {'from_states': ('itemcreated', ),
-         'back_states': ('itemcreated', ),
-         'perm_cloned_state': 'itemcreated',
-         'use_custom_icon': False,
-         # default to "validated", this avoid using the backToValidated title that
-         # is translated to "Remove from meeting"
-         'use_custom_back_transition_title_for': ("validated", ),
-         # we can define some back transition id for some back_to_state
-         # if not, a generated transition is used, here we could have for example
-         # 'defined_back_transition_ids': {"validated": "validate"}
-         'defined_back_transition_ids': {},
-         # if () given, a custom transition icon is used for every back transitions
-         'only_use_custom_back_transition_icon_for': ("validated", ),
-         'use_custom_state_title': False,
-         'use_custom_transition_title_for': {},
-         'remove_modify_access': True,
-         'adviser_may_validate': True,
-         # must end with _waiting_advices
-         'new_state_id': None,
-         },
-        {'from_states': ('proposed_to_alderman', ),
-         'back_states': ('proposed_to_alderman', ),
-         'perm_cloned_state': 'validated',
-         'use_custom_icon': False,
-         # default to "validated", this avoid using the backToValidated title that
-         # is translated to "Remove from meeting"
-         'use_custom_back_transition_title_for': ("validated", ),
-         # we can define some back transition id for some back_to_state
-         # if not, a generated transition is used, here we could have for example
-         # 'defined_back_transition_ids': {"validated": "validate"}
-         'defined_back_transition_ids': {},
-         # if () given, a custom transition icon is used for every back transitions
-         'only_use_custom_back_transition_icon_for': ("validated", ),
-         'use_custom_state_title': True,
-         'use_custom_transition_title_for': {},
-         'remove_modify_access': True,
-         'adviser_may_validate': False,
-         # must end with _waiting_advices
-         'new_state_id': None,
-         },
+    "*": (
+        {
+            "from_states": ("itemcreated",),
+            "back_states": ("itemcreated",),
+            "perm_cloned_state": "itemcreated",
+            "use_custom_icon": False,
+            # default to "validated", this avoid using the backToValidated title that
+            # is translated to "Remove from meeting"
+            "use_custom_back_transition_title_for": ("validated",),
+            # we can define some back transition id for some back_to_state
+            # if not, a generated transition is used, here we could have for example
+            # 'defined_back_transition_ids': {"validated": "validate"}
+            "defined_back_transition_ids": {},
+            # if () given, a custom transition icon is used for every back transitions
+            "only_use_custom_back_transition_icon_for": ("validated",),
+            "use_custom_state_title": False,
+            "use_custom_transition_title_for": {},
+            "remove_modify_access": True,
+            "adviser_may_validate": True,
+            # must end with _waiting_advices
+            "new_state_id": None,
+        },
+        {
+            "from_states": ("proposed_to_alderman",),
+            "back_states": ("proposed_to_alderman",),
+            "perm_cloned_state": "validated",
+            "use_custom_icon": False,
+            # default to "validated", this avoid using the backToValidated title that
+            # is translated to "Remove from meeting"
+            "use_custom_back_transition_title_for": ("validated",),
+            # we can define some back transition id for some back_to_state
+            # if not, a generated transition is used, here we could have for example
+            # 'defined_back_transition_ids': {"validated": "validate"}
+            "defined_back_transition_ids": {},
+            # if () given, a custom transition icon is used for every back transitions
+            "only_use_custom_back_transition_icon_for": ("validated",),
+            "use_custom_state_title": True,
+            "use_custom_transition_title_for": {},
+            "remove_modify_access": True,
+            "adviser_may_validate": False,
+            # must end with _waiting_advices
+            "new_state_id": None,
+        },
     ),
 }
 adaptations.WAITING_ADVICES_FROM_STATES.update(LLO_WAITING_ADVICES_FROM_STATES)
@@ -102,19 +103,29 @@ adaptations.WAITING_ADVICES_FROM_STATES.update(LLO_WAITING_ADVICES_FROM_STATES)
 
 CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
     "backTo_itemfrozen_from_returned_to_proposing_group": {
-        "*": ["frozen", "decided", "decisions_published", ],
-        "meeting-config-council": ["frozen", "decisions_published", ]
+        "*": [
+            "frozen",
+            "decided",
+            "decisions_published",
+        ],
+        "meeting-config-council": [
+            "frozen",
+            "decisions_published",
+        ],
     },
     "backTo_itempublished_from_returned_to_proposing_group": {
-        "*": ["published",],
-        "meeting-config-council": ["published", "decided"]
+        "*": [
+            "published",
+        ],
+        "meeting-config-council": ["published", "decided"],
     },
 }
 adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(CUSTOM_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 
+
 class LLCustomMeeting(CustomMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
-       interface IMeetingCustom."""
+    interface IMeetingCustom."""
 
     implements(IMeetingCustom)
     security = ClassSecurityInfo()
@@ -123,29 +134,28 @@ class LLCustomMeeting(CustomMeeting):
         if self.getSelf().portal_type == "MeetingCouncil":
             return "decided"
         return super(CustomMeeting, self).get_late_state()
+
     # helper methods used in templates
 
     security.declarePublic("getLabelObservations")
 
     def getLabelObservations(self):
         """Returns the label to use for field Meeting.observations
-           The label is different between college and council"""
+        The label is different between college and council"""
         if self.portal_type == "MeetingCouncil":
             return self.utranslate(
                 "MeetingLalouviere_label_meetingcouncilobservations",
                 domain="PloneMeeting",
             )
         else:
-            return self.utranslate(
-                "PloneMeeting_label_meetingObservations", domain="PloneMeeting"
-            )
+            return self.utranslate("PloneMeeting_label_meetingObservations", domain="PloneMeeting")
 
     Meeting.getLabelObservations = getLabelObservations
 
 
 class LLCustomMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCustom."""
+    interface IMeetingItemCustom."""
 
     implements(IMeetingItemCustom)
     security = ClassSecurityInfo()
@@ -154,16 +164,12 @@ class LLCustomMeetingItem(CustomMeetingItem):
 
     def getLabelDescription(self):
         """Returns the label to use for field MeetingItem.description
-          The label is different between college and council"""
+        The label is different between college and council"""
         item = self.getSelf()
         if item.portal_type == "MeetingItemCouncil":
-            return item.utranslate(
-                "MeetingLalouviere_label_councildescription", domain="PloneMeeting"
-            )
+            return item.utranslate("MeetingLalouviere_label_councildescription", domain="PloneMeeting")
         else:
-            return item.utranslate(
-                "PloneMeeting_label_description", domain="PloneMeeting"
-            )
+            return item.utranslate("PloneMeeting_label_description", domain="PloneMeeting")
 
     MeetingItem.getLabelDescription = getLabelDescription
 
@@ -208,9 +214,9 @@ class LLCustomMeetingItem(CustomMeetingItem):
     MeetingItem.followUpNotPrinted = followUpNotPrinted
 
     def _getGroupManagingItem(self, review_state, theObject=False):
-        '''See doc in interfaces.py.'''
+        """See doc in interfaces.py."""
         item = self.getSelf()
-        if item.portal_type == 'MeetingItemCollege' and "proposed_to_dg" in review_state:
+        if item.portal_type == "MeetingItemCollege" and "proposed_to_dg" in review_state:
             dg_group_uid = org_id_to_uid(DG_GROUP_ID) or org_id_to_uid(FALLBACK_DG_GROUP_ID)
             if theObject:
                 return uuidsToObjects(dg_group_uid, unrestricted=True)[0]
@@ -220,10 +226,10 @@ class LLCustomMeetingItem(CustomMeetingItem):
             return item.getProposingGroup(theObject=theObject)
 
     def _getAllGroupsManagingItem(self, review_state, theObjects=False):
-        '''See doc in interfaces.py.'''
+        """See doc in interfaces.py."""
         res = []
         item = self.getSelf()
-        if item.portal_type == 'MeetingItemCollege' and "proposed_to_dg" in review_state:
+        if item.portal_type == "MeetingItemCollege" and "proposed_to_dg" in review_state:
             dg_group_uid = org_id_to_uid(DG_GROUP_ID) or org_id_to_uid(FALLBACK_DG_GROUP_ID)
             if theObjects:
                 res += uuidsToObjects(dg_group_uid, unrestricted=True)
@@ -236,20 +242,20 @@ class LLCustomMeetingItem(CustomMeetingItem):
 
     def mayGenerateFinanceAdvice(self):
         """
-          Condition used in the 'Avis DF' PodTemplate.
+        Condition used in the 'Avis DF' PodTemplate.
         """
         finance_group_uid = org_id_to_uid(FINANCE_GROUP_ID)
         if (
-            finance_group_uid in self.context.adviceIndex and
-            self.context.adviceIndex[finance_group_uid]["delay"] and
-            self.context.adviceIndex[finance_group_uid]["type"] != NOT_GIVEN_ADVICE_VALUE
+            finance_group_uid in self.context.adviceIndex
+            and self.context.adviceIndex[finance_group_uid]["delay"]
+            and self.context.adviceIndex[finance_group_uid]["type"] != NOT_GIVEN_ADVICE_VALUE
         ):
             return True
         return False
 
     def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc, cloned_from_item_template):
         """
-          Keep some new fields when item is cloned (to another mc or from itemtemplate).
+        Keep some new fields when item is cloned (to another mc or from itemtemplate).
         """
         res = []
         if cloned_to_same_mc and not cloned_from_item_template:
@@ -257,8 +263,8 @@ class LLCustomMeetingItem(CustomMeetingItem):
         return res
 
     def adviceDelayIsTimedOutWithRowId(self, groupId, rowIds=[]):
-        """ Check if advice with delay from a certain p_groupId and with
-            a row_id contained in p_rowIds is timed out.
+        """Check if advice with delay from a certain p_groupId and with
+        a row_id contained in p_rowIds is timed out.
         """
         item = self.getSelf()
         if item.getAdviceDataFor(item) and groupId in item.getAdviceDataFor(item):
@@ -301,9 +307,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
                 itemnum=item_number,
             )
         else:
-            res = "{date}/{srv}/{itemnum}".format(
-                date=meeting_date, srv=service, itemnum=item_number
-            )
+            res = "{date}/{srv}/{itemnum}".format(date=meeting_date, srv=service, itemnum=item_number)
         return res
 
     security.declarePublic("compute_item_ref")
@@ -319,12 +323,7 @@ class LLCustomMeetingItem(CustomMeetingItem):
             meeting_date = meeting.date
 
         date_str = meeting_date.strftime("%Y%m%d")
-        service = (
-            self.context.getProposingGroup(theObject=True)
-            .acronym.split("/")[0]
-            .strip()
-            .upper()
-        )
+        service = self.context.getProposingGroup(theObject=True).acronym.split("/")[0].strip().upper()
         item_number = self.context.getItemNumber(for_display=True)
 
         if self.context.portal_type == "MeetingItemCollege":
@@ -342,12 +341,12 @@ class LLCustomMeetingItem(CustomMeetingItem):
         presented and itemfrozen, only MeetingManager
         otherwise, only for Manager
         """
-        showfollowUp = getRequest().get('Products.MeetingLalouviere.showFollowUp_cachekey', None)
+        showfollowUp = getRequest().get("Products.MeetingLalouviere.showFollowUp_cachekey", None)
         if showfollowUp is None:
-            tool = api.portal.get_tool('portal_plonemeeting')
+            tool = api.portal.get_tool("portal_plonemeeting")
             if self.getSelf().hasMeeting() and not self.getSelf().query_state().startswith("returned_"):
                 cfg = tool.getMeetingConfig(self.getSelf())
-                if self.getSelf().query_state() in ('presented', 'itemfrozen'):
+                if self.getSelf().query_state() in ("presented", "itemfrozen"):
                     showfollowUp = tool.isManager(cfg)
                 else:
                     org_uid = self.getSelf().getProposingGroup(theObject=False)
@@ -355,32 +354,28 @@ class LLCustomMeetingItem(CustomMeetingItem):
             else:
                 showfollowUp = tool.isManager(realManagers=True)
 
-            getRequest().set('Products.MeetingLalouviere.showFollowUp_cachekey', showfollowUp)
+            getRequest().set("Products.MeetingLalouviere.showFollowUp_cachekey", showfollowUp)
         return showfollowUp
 
     def _bypass_meeting_closed_check_for(self, fieldName):
         """See docstring in interfaces.py"""
-        return super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(
-            fieldName) or fieldName == 'providedFollowUp'
+        return (
+            super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(fieldName)
+            or fieldName == "providedFollowUp"
+        )
 
-    def _assign_roles_to_all_groups_managing_item_suffixes(self,
-                                                           cfg,
-                                                           item_state,
-                                                           org_uids,
-                                                           org_uid):
+    def _assign_roles_to_all_groups_managing_item_suffixes(self, cfg, item_state, org_uids, org_uid):
         """By default, every proposingGroup suffixes get the "Reader" role
-           but we do not want the "observers" to get the "Reader" role."""
+        but we do not want the "observers" to get the "Reader" role."""
         item = self.getSelf()
         for managing_org_uid in org_uids:
-            suffix_roles = {suffix: ['Reader'] for suffix in
-                            get_all_suffixes(managing_org_uid)
-                            if suffix != 'alderman'}
+            suffix_roles = {suffix: ["Reader"] for suffix in get_all_suffixes(managing_org_uid) if suffix != "alderman"}
             item._assign_roles_to_group_suffixes(managing_org_uid, suffix_roles)
 
 
 class LLMeetingConfig(CustomMeetingConfig):
     """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
-       interface IMeetingConfigCustom."""
+    interface IMeetingConfigCustom."""
 
     implements(IMeetingConfigCustom)
     security = ClassSecurityInfo()
@@ -399,7 +394,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                     {
                         "i": "portal_type",
                         "o": "plone.app.querystring.operation.selection.is",
-                        "v": [itemType, ],
+                        "v": [
+                            itemType,
+                        ],
                     },
                     {
                         "i": "review_state",
@@ -411,15 +408,17 @@ class LLMeetingConfig(CustomMeetingConfig):
                 "sort_reversed": True,
                 "showNumberOfItems": True,
                 "tal_condition": "python:tool.userIsAmong(['directors'])",
-                "roles_bypassing_talcondition": ["Manager", ],
+                "roles_bypassing_talcondition": [
+                    "Manager",
+                ],
             },
         )
         extra_infos = []
-        if 'council' in cfg.getId():
+        if "council" in cfg.getId():
             extra_infos = [
                 proposed_to_director,
             ]
-        elif 'college' in cfg.getId():
+        elif "college" in cfg.getId():
             extra_infos = [
                 (
                     "searchproposedtobudgetreviewer",
@@ -430,7 +429,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -442,7 +443,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_reversed": True,
                         "showNumberOfItems": True,
                         "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 (
@@ -454,7 +457,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -465,9 +470,10 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_on": u"modified",
                         "sort_reversed": True,
                         "showNumberOfItems": True,
-                        "tal_condition":
-                            "python:tool.userIsAmong(['serviceheads', 'officemanagers', 'divisionheads', 'directors'])",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "tal_condition": "python:tool.userIsAmong(['serviceheads', 'officemanagers', 'divisionheads', 'directors'])",
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 (
@@ -479,7 +485,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -491,7 +499,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_reversed": True,
                         "showNumberOfItems": True,
                         "tal_condition": "python:tool.userIsAmong(['officemanagers', 'divisionheads', 'directors'])",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 (
@@ -503,7 +513,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -515,7 +527,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_reversed": True,
                         "showNumberOfItems": True,
                         "tal_condition": "python:tool.userIsAmong(['divisionheads', 'directors'])",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 proposed_to_director,
@@ -529,7 +543,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -541,7 +557,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_reversed": True,
                         "showNumberOfItems": True,
                         "tal_condition": "python: tool.isManager(cfg)",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 # Items in state 'proposed_to_alderman'
@@ -554,7 +572,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -566,7 +586,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_reversed": True,
                         "showNumberOfItems": True,
                         "tal_condition": "python:tool.userIsAmong(['alderman'])",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 (
@@ -578,7 +600,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -593,14 +617,18 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "getFollowUp",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["follow_up_yes", ],
+                                "v": [
+                                    "follow_up_yes",
+                                ],
                             },
                         ],
                         "sort_on": u"created",
                         "sort_reversed": True,
                         "showNumberOfItems": False,
                         "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 # Items to follow provider but not to print in Dashboard'
@@ -613,7 +641,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -628,14 +658,18 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "getFollowUp",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["follow_up_provided_not_printed", ],
+                                "v": [
+                                    "follow_up_provided_not_printed",
+                                ],
                             },
                         ],
                         "sort_on": u"created",
                         "sort_reversed": True,
                         "showNumberOfItems": False,
                         "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
                 # Items to follow provider and to print
@@ -648,7 +682,9 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "portal_type",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": [itemType, ],
+                                "v": [
+                                    itemType,
+                                ],
                             },
                             {
                                 "i": "review_state",
@@ -663,14 +699,18 @@ class LLMeetingConfig(CustomMeetingConfig):
                             {
                                 "i": "getFollowUp",
                                 "o": "plone.app.querystring.operation.selection.is",
-                                "v": ["follow_up_provided", ],
+                                "v": [
+                                    "follow_up_provided",
+                                ],
                             },
                         ],
                         "sort_on": u"created",
                         "sort_reversed": True,
                         "showNumberOfItems": False,
                         "tal_condition": "",
-                        "roles_bypassing_talcondition": ["Manager", ],
+                        "roles_bypassing_talcondition": [
+                            "Manager",
+                        ],
                     },
                 ),
             ]
@@ -678,92 +718,102 @@ class LLMeetingConfig(CustomMeetingConfig):
         return infos
 
     def _custom_reviewersFor(self):
-        '''Manage reviewersFor Bourgmestre because as some 'creators' suffixes are
-           used after reviewers levels, this break the _highestReviewerLevel and other
-           related hierarchic level functionalities.'''
+        """Manage reviewersFor Bourgmestre because as some 'creators' suffixes are
+        used after reviewers levels, this break the _highestReviewerLevel and other
+        related hierarchic level functionalities."""
         cfg = self.getSelf()
 
-        reviewers = [('directors', ['proposed_to_director', ])]
+        reviewers = [
+            (
+                "directors",
+                [
+                    "proposed_to_director",
+                ],
+            )
+        ]
 
-        if cfg.getId() == 'meeting-config-college':
+        if cfg.getId() == "meeting-config-college":
             reviewers = [
-                ('alderman', ['proposed_to_alderman', ]),
-                ('directors',
-                 ['proposed_to_dg',
-                  'proposed_to_director',
-                  'proposed_to_divisionhead',
-                  'proposed_to_officemanager',
-                  'proposed_to_servicehead']),
-                ('divisionheads',
-                 ['proposed_to_divisionhead',
-                  'proposed_to_officemanager',
-                  'proposed_to_servicehead']),
-                ('officemanagers',
-                 ['proposed_to_officemanager',
-                  'proposed_to_servicehead']),
-                ('serviceheads',
-                 ['proposed_to_servicehead']),
+                (
+                    "alderman",
+                    [
+                        "proposed_to_alderman",
+                    ],
+                ),
+                (
+                    "directors",
+                    [
+                        "proposed_to_dg",
+                        "proposed_to_director",
+                        "proposed_to_divisionhead",
+                        "proposed_to_officemanager",
+                        "proposed_to_servicehead",
+                    ],
+                ),
+                ("divisionheads", ["proposed_to_divisionhead", "proposed_to_officemanager", "proposed_to_servicehead"]),
+                ("officemanagers", ["proposed_to_officemanager", "proposed_to_servicehead"]),
+                ("serviceheads", ["proposed_to_servicehead"]),
             ]
         return OrderedDict(reviewers)
 
     def get_item_custom_suffix_roles(self, item, item_state):
-        '''See doc in interfaces.py.'''
+        """See doc in interfaces.py."""
         suffix_roles = {}
-        if item_state == 'proposed_to_budget_reviewer':
+        if item_state == "proposed_to_budget_reviewer":
             for suffix in get_all_suffixes(item.getProposingGroup()):
-                suffix_roles[suffix] = ['Reader']
-                if suffix == 'budgetimpactreviewers':
-                    suffix_roles[suffix] += ['Contributor', 'Editor', 'Reviewer']
+                suffix_roles[suffix] = ["Reader"]
+                if suffix == "budgetimpactreviewers":
+                    suffix_roles[suffix] += ["Contributor", "Editor", "Reviewer"]
 
         return True, suffix_roles
 
 
 class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
-    '''Adapter that adapts portal_plonemeeting.'''
+    """Adapter that adapts portal_plonemeeting."""
 
     implements(IToolPloneMeetingCustom)
     security = ClassSecurityInfo()
 
-    def performCustomWFAdaptations(
-            self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow):
-        ''' '''
-        if wfAdaptation == 'propose_to_budget_reviewer':
+    def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow):
+        """ """
+        if wfAdaptation == "propose_to_budget_reviewer":
             _addIsolatedState(
-                new_state_id='proposed_to_budget_reviewer',
-                origin_state_id='itemcreated',
-                origin_transition_id='proposeToBudgetImpactReviewer',
+                new_state_id="proposed_to_budget_reviewer",
+                origin_state_id="itemcreated",
+                origin_transition_id="proposeToBudgetImpactReviewer",
                 origin_transition_title=translate("proposeToBudgetImpactReviewer", "plone"),
                 # origin_transition_icon=None,
-                origin_transition_guard_expr_name='mayCorrect()',
+                origin_transition_guard_expr_name="mayCorrect()",
                 back_transition_guard_expr_name="mayCorrect()",
-                back_transition_id='backTo_itemcreated_from_proposed_to_budget_reviewer',
+                back_transition_id="backTo_itemcreated_from_proposed_to_budget_reviewer",
                 back_transition_title=translate("validateByBudgetImpactReviewer", "plone"),
                 # back_transition_icon=None
-                itemWorkflow=itemWorkflow)
+                itemWorkflow=itemWorkflow,
+            )
             state = itemWorkflow.states["proposed_to_budget_reviewer"]
-            state.permission_roles[AddAnnex] = state.permission_roles[AddAnnex] + ("Editor", )
+            state.permission_roles[AddAnnex] = state.permission_roles[AddAnnex] + ("Editor",)
             return True
-        if wfAdaptation == 'apply_council_state_label':
-            meetingWorkflow.states['frozen'].title = translate("in_committee", "plone")
-            meetingWorkflow.transitions['freeze'].title = translate("setInCommittee", "plone")
-            meetingWorkflow.transitions['backToFrozen'].title = translate("backToCommittee", "plone")
-            meetingWorkflow.states['published'].title = translate("in_council", "plone")
-            meetingWorkflow.transitions['publish'].title = translate("setInCouncil", "plone")
-            meetingWorkflow.transitions['backToPublished'].title = translate("backToCouncil", "plone")
+        if wfAdaptation == "apply_council_state_label":
+            meetingWorkflow.states["frozen"].title = translate("in_committee", "plone")
+            meetingWorkflow.transitions["freeze"].title = translate("setInCommittee", "plone")
+            meetingWorkflow.transitions["backToFrozen"].title = translate("backToCommittee", "plone")
+            meetingWorkflow.states["published"].title = translate("in_council", "plone")
+            meetingWorkflow.transitions["publish"].title = translate("setInCouncil", "plone")
+            meetingWorkflow.transitions["backToPublished"].title = translate("backToCouncil", "plone")
 
-            itemWorkflow.states['itemfrozen'].title = translate("in_committee", "plone")
-            itemWorkflow.transitions['itemfreeze'].title = translate("setItemInCommittee", "plone")
-            itemWorkflow.transitions['backToItemFrozen'].title = translate("backToItemCommittee", "plone")
-            itemWorkflow.states['itempublished'].title = translate("in_council", "plone")
-            itemWorkflow.transitions['itempublish'].title = translate("setItemInCouncil", "plone")
-            itemWorkflow.transitions['backToItemPublished'].title = translate("backToItemCouncil", "plone")
+            itemWorkflow.states["itemfrozen"].title = translate("in_committee", "plone")
+            itemWorkflow.transitions["itemfreeze"].title = translate("setItemInCommittee", "plone")
+            itemWorkflow.transitions["backToItemFrozen"].title = translate("backToItemCommittee", "plone")
+            itemWorkflow.states["itempublished"].title = translate("in_council", "plone")
+            itemWorkflow.transitions["itempublish"].title = translate("setItemInCouncil", "plone")
+            itemWorkflow.transitions["backToItemPublished"].title = translate("backToItemCouncil", "plone")
             return True
         return False
 
 
 class MeetingItemMLLWorkflowActions(MeetingItemCommunesWorkflowActions):
-    '''Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCommunesWorkflowActions'''
+    """Adapter that adapts a meeting item implementing IMeetingItem to the
+    interface IMeetingItemCommunesWorkflowActions"""
 
     implements(IMeetingItemCommunesWorkflowActions)
     security = ClassSecurityInfo()
@@ -773,13 +823,13 @@ class MeetingItemMLLWorkflowActions(MeetingItemCommunesWorkflowActions):
 
 
 class MeetingItemMLLWorkflowConditions(MeetingItemCommunesWorkflowConditions):
-    '''Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCommunesWorkflowConditions'''
+    """Adapter that adapts a meeting item implementing IMeetingItem to the
+    interface IMeetingItemCommunesWorkflowConditions"""
 
     def may_user_send_back(self, destination_state):
-        '''Check if the user can send the item back in a previous validation state
-           A user can send back if he is reviewer at the next validation level for a
-           given destination_state.'''
+        """Check if the user can send the item back in a previous validation state
+        A user can send back if he is reviewer at the next validation level for a
+        given destination_state."""
         item_validation_wf_states = self.cfg.getItemWFValidationLevels()
         proposing_group_uid = self.context.getProposingGroup()
         next_level_state = None
@@ -796,14 +846,17 @@ class MeetingItemMLLWorkflowConditions(MeetingItemCommunesWorkflowConditions):
         all_suffixes = next_level_state["extra_suffixes"] + [next_level_state["suffix"]]
         for suffix in all_suffixes:
             # We need to check every suffixes
-            if self.tool.group_is_not_empty(proposing_group_uid, suffix,
-               user_id=get_current_user_id(self.context.REQUEST)):
+            if self.tool.group_is_not_empty(
+                proposing_group_uid, suffix, user_id=get_current_user_id(self.context.REQUEST)
+            ):
                 return True  # User is reviewer for the next state
         return False
 
     def mayCorrect(self, destinationState=None):
-        if 'alderman_cannot_send_back_to_every_levels' in self.cfg.getWorkflowAdaptations() and \
-                self.context.query_state() == "proposed_to_alderman":
+        if (
+            "alderman_cannot_send_back_to_every_levels" in self.cfg.getWorkflowAdaptations()
+            and self.context.query_state() == "proposed_to_alderman"
+        ):
             # Handle a special case at LaLouviere. Alderman cannot send back to
             # all previous validation levels.
             return self.may_user_send_back(destinationState)

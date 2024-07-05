@@ -12,14 +12,14 @@ from Products.PloneMeeting.config import AddAnnex
 class testWorkflows(MeetingLalouviereTestCase, mctw):
     """Tests the default workflows implemented in MeetingLalouviere.
 
-       WARNING:
-       The Plone test system seems to be bugged: it does not seem to take into
-       account the write_permission and read_permission tags that are defined
-       on some attributes of the Archetypes model. So when we need to check
-       that a user is not authorized to set the value of a field protected
-       in this way, we do not try to use the accessor to trigger an exception
-       (self.assertRaise). Instead, we check that the user has the permission
-       to do so (getSecurityManager().checkPermission)."""
+    WARNING:
+    The Plone test system seems to be bugged: it does not seem to take into
+    account the write_permission and read_permission tags that are defined
+    on some attributes of the Archetypes model. So when we need to check
+    that a user is not authorized to set the value of a field protected
+    in this way, we do not try to use the accessor to trigger an exception
+    (self.assertRaise). Instead, we check that the user has the permission
+    to do so (getSecurityManager().checkPermission)."""
 
     def _check_users_can_modify(self, item, users=None, annex=None):
         if users is None:
@@ -33,21 +33,25 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
 
     def _testWholeDecisionProcessCollege(self):
         """This test covers the whole decision workflow. It begins with the
-           creation of some items, and ends by closing a meeting."""
+        creation of some items, and ends by closing a meeting."""
         # pmCreator1 creates an item with 1 annex and proposes it
         self._enableField("observations")
-        self._activate_wfas(('waiting_advices',
-                             # 'waiting_advices_adviser_send_back',
-                             'waiting_advices_proposing_group_send_back',
-                             'propose_to_budget_reviewer'),
-                            keep_existing=True)
-        self.meetingConfig.setItemAdviceStates(("itemcreated_waiting_advices", ))
+        self._activate_wfas(
+            (
+                "waiting_advices",
+                # 'waiting_advices_adviser_send_back',
+                "waiting_advices_proposing_group_send_back",
+                "propose_to_budget_reviewer",
+            ),
+            keep_existing=True,
+        )
+        self.meetingConfig.setItemAdviceStates(("itemcreated_waiting_advices",))
         self.changeUser("pmCreator1")
-        item1 = self.create("MeetingItem", title="The first item", optionalAdvisers=(self.vendors_uid, ))
+        item1 = self.create("MeetingItem", title="The first item", optionalAdvisers=(self.vendors_uid,))
         self._check_users_can_modify(item1)
         annex1 = self.addAnnex(item1)
         self.addAnnex(item1, relatedTo="item_decision")
-        item1.setOptionalAdvisers((self.vendors_uid, ))
+        item1.setOptionalAdvisers((self.vendors_uid,))
         self.do(item1, "wait_advices_from_itemcreated")
         self.assertEqual("itemcreated_waiting_advices", item1.query_state())
         self.do(item1, "backTo_itemcreated_from_waiting_advices")
@@ -66,64 +70,69 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.failIf(self.hasPermission(AddAnnex, item1))
         self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the ServiceHead validation level
-        self._check_users_can_modify(item1,
-                                     ['pmServiceHead1',
-                                      'pmOfficeManager1',
-                                      'pmDivisionHead1',
-                                      'pmDirector1',
-                                      ],
-                                     annex1)
+        self._check_users_can_modify(
+            item1,
+            [
+                "pmServiceHead1",
+                "pmOfficeManager1",
+                "pmDivisionHead1",
+                "pmDirector1",
+            ],
+            annex1,
+        )
         self.changeUser("pmServiceHead1")
         self.do(item1, "proposeToOfficeManager")
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission(AddAnnex, item1))
         self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the OfficeManager validation level
-        self._check_users_can_modify(item1,
-                                     ['pmOfficeManager1',
-                                      'pmDivisionHead1',
-                                      'pmDirector1',
-                                      ],
-                                     annex1)
+        self._check_users_can_modify(
+            item1,
+            [
+                "pmOfficeManager1",
+                "pmDivisionHead1",
+                "pmDirector1",
+            ],
+            annex1,
+        )
         self.changeUser("pmOfficeManager1")
         self.do(item1, "proposeToDivisionHead")
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission(AddAnnex, item1))
         self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the DivisionHead validation level
-        self._check_users_can_modify(item1,
-                                     ['pmDivisionHead1',
-                                      'pmDirector1',
-                                      ],
-                                     annex1)
+        self._check_users_can_modify(
+            item1,
+            [
+                "pmDivisionHead1",
+                "pmDirector1",
+            ],
+            annex1,
+        )
         self.changeUser("pmDivisionHead1")
         self.do(item1, "proposeToDirector")
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission(AddAnnex, item1))
         self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the Director validation level
-        self._check_users_can_modify(item1,
-                                     ['pmDirector1'],
-                                     annex1)
+        self._check_users_can_modify(item1, ["pmDirector1"], annex1)
         self.changeUser("pmDirector1")
-        self.do(item1, 'proposeToDg')
+        self.do(item1, "proposeToDg")
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission(AddAnnex, item1))
         self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
-        self._check_users_can_modify(item1,
-                                     ['pmDg'],
-                                     annex1)
+        self._check_users_can_modify(item1, ["pmDg"], annex1)
         self.changeUser("pmAlderman1")
         # Alderman cannot see the item at this state
         self.failIf(self.hasPermission(View, item1))
         self.changeUser("pmDg")
-        self.do(item1, 'proposeToAlderman')
+        self.do(item1, "proposeToAlderman")
         self.changeUser("pmAlderman1")
         self.assertTrue(self.hasPermission(View, item1))
-        self.assertEqual(self.transitions(item1), ['backToProposedToDg', 'validate'])
+        self.assertEqual(self.transitions(item1), ["backToProposedToDg", "validate"])
         self.assertTrue(self.hasPermission(AddAnnex, item1))
         self.assertTrue(self.hasPermission(ModifyPortalContent, (item1, annex1)))
-        self._check_users_can_modify(item1, ['pmAlderman1'], annex1)
+        self._check_users_can_modify(item1, ["pmAlderman1"], annex1)
         self.do(item1, "validate")
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo="item_decision")
         self.failIf(self.transitions(item1))
@@ -135,9 +144,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.addAnnex(item1, relatedTo="item_decision")
         # pmCreator2 creates and proposes an item
         self.changeUser("pmCreator2")
-        item2 = self.create(
-            "MeetingItem", title="The second item", preferredMeeting=meeting.UID()
-        )
+        item2 = self.create("MeetingItem", title="The second item", preferredMeeting=meeting.UID())
         self.do(item2, "proposeToServiceHead")
         # pmReviewer1 can not validate the item has not in the same proposing group
         self.changeUser("pmReviewer1")
@@ -204,22 +211,26 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
 
     def _testWholeDecisionProcessCouncil(self):
         """
-            This test covers the whole decision workflow. It begins with the
-            creation of some items, and ends by closing a meeting.
+        This test covers the whole decision workflow. It begins with the
+        creation of some items, and ends by closing a meeting.
         """
         self.changeUser("admin")
         self.setMeetingConfig(self.meetingConfig2.getId())
         self._enableField("observations")
-        self._enableField("committees", related_to='Meeting')
+        self._enableField("committees", related_to="Meeting")
         self._enableField("committeeTranscript")
-        self._activate_wfas(('waiting_advices',
-                             # 'waiting_advices_adviser_send_back',
-                             'waiting_advices_proposing_group_send_back',
-                             'propose_to_budget_reviewer',
-                             'apply_council_state_label',
-                             'return_to_proposing_group',
-                             'accepted_but_modified'),
-                            keep_existing=True)
+        self._activate_wfas(
+            (
+                "waiting_advices",
+                # 'waiting_advices_adviser_send_back',
+                "waiting_advices_proposing_group_send_back",
+                "propose_to_budget_reviewer",
+                "apply_council_state_label",
+                "return_to_proposing_group",
+                "accepted_but_modified",
+            ),
+            keep_existing=True,
+        )
         # add a recurring item that is inserted when the meeting is 'setInCouncil'
         self.create(
             "MeetingItemRecurring",
@@ -236,17 +247,20 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             autoAddCategory=False,
             category="deployment",
             committees_index=("commission-ag",),
-            decision="<p>test</p>"
+            decision="<p>test</p>",
         )
         annex1 = self.addAnnex(item1)
-        self._check_users_can_modify(item1,
-                                     ['pmCreator1',
-                                      'pmServiceHead1',
-                                      'pmOfficeManager1',
-                                      'pmDivisionHead1',
-                                      'pmDirector1',
-                                      ],
-                                     annex1)
+        self._check_users_can_modify(
+            item1,
+            [
+                "pmCreator1",
+                "pmServiceHead1",
+                "pmOfficeManager1",
+                "pmDivisionHead1",
+                "pmDirector1",
+            ],
+            annex1,
+        )
         self.changeUser("pmCreator1")
         # The creator can add a decision annex on created item
         self.addAnnex(item1, relatedTo="item_decision")
@@ -255,9 +269,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.failIf(self.hasPermission(AddAnnex, item1))
         self.failIf(self.hasPermission(ModifyPortalContent, (item1, annex1)))
         # the Director validation level
-        self._check_users_can_modify(item1,
-                                     ['pmDirector1'],
-                                     annex1)
+        self._check_users_can_modify(item1, ["pmDirector1"], annex1)
         self.addAnnex(item1, relatedTo="item_decision")
         self.do(item1, "validate")
         self.failIf(self.hasPermission(ModifyPortalContent, item1))
@@ -277,7 +289,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             preferredMeeting=meeting.UID(),
             category="deployment",
             committees_index=("commission-patrimoine",),
-            decision="<p>test</p>"
+            decision="<p>test</p>",
         )
         self.do(item2, "proposeToDirector")
         # pmManager inserts item1 into the meeting and freezes it
@@ -318,7 +330,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             title="Addition to the first item",
             autoAddCategory=False,
             category="deployment",
-            committees_index=("commission-ag__suppl_1",)
+            committees_index=("commission-ag__suppl_1",),
         )
         self.do(item1_addition, "proposeToDirector")
         item1_addition.setPreferredMeeting(meeting.UID())

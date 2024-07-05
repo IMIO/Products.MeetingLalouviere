@@ -27,13 +27,9 @@ pmAdviser2 = UserDescriptor("pmAdviser2", [])
 voter1 = UserDescriptor("voter1", [], fullname="M. Voter One")
 voter2 = UserDescriptor("voter2", [], fullname="M. Voter Two")
 
-pmAlderman1 = UserDescriptor(
-    "pmAlderman1", [], email="pmalderman1@plonemeeting.org", fullname="M. PMAlderman One"
-)
+pmAlderman1 = UserDescriptor("pmAlderman1", [], email="pmalderman1@plonemeeting.org", fullname="M. PMAlderman One")
 
-pmAlderman2 = UserDescriptor(
-    "pmAlderman2", [], email="pmalderman2@plonemeeting.org", fullname="M. PMAlderman One"
-)
+pmAlderman2 = UserDescriptor("pmAlderman2", [], email="pmalderman2@plonemeeting.org", fullname="M. PMAlderman One")
 
 pmFollowup1 = UserDescriptor("pmFollowup1", [])
 pmFollowup2 = UserDescriptor("pmFollowup2", [])
@@ -84,7 +80,7 @@ vendors.alderman.append(pmReviewerLevel2)
 vendors.followupwriters.append(pmFollowup2)
 vendors.observers.append(pmFollowup2)
 
-dg = OrgDescriptor(DG_GROUP_ID, 'Dg', u'Dg')
+dg = OrgDescriptor(DG_GROUP_ID, "Dg", u"Dg")
 data.orgs += (dg,)
 
 dg.creators.append(pmDg)
@@ -100,11 +96,10 @@ collegeMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COLLEGE_WF_VALIDATION_
 collegeMeeting.itemAdviceStates = [
     "proposed_to_alderman",
 ]
-collegeMeeting.itemAdviceEditStates = [
-    "proposed_to_alderman",
-    "validated"
+collegeMeeting.itemAdviceEditStates = ["proposed_to_alderman", "validated"]
+usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [
+    u"providedFollowUp",
 ]
-usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [u"providedFollowUp",]
 collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
 
 # COUNCIL
@@ -113,13 +108,12 @@ councilMeeting.itemWFValidationLevels = deepcopy(LLO_ITEM_COUNCIL_WF_VALIDATION_
 councilMeeting.itemAdviceStates = [
     "proposed_to_director",
 ]
-councilMeeting.itemAdviceEditStates = [
-    "proposed_to_director",
-    "validated"
-]
+councilMeeting.itemAdviceEditStates = ["proposed_to_director", "validated"]
 # councilMeeting.workflowAdaptations = deepcopy(LLO_APPLYED_COUNCIL_WFA)
-usedItemAttributes = list(councilMeeting.usedItemAttributes) + [u"committeeTranscript",]
+usedItemAttributes = list(councilMeeting.usedItemAttributes) + [
+    u"committeeTranscript",
+]
 councilMeeting.usedItemAttributes = tuple(usedItemAttributes)
-councilMeeting.itemPreferredMeetingStates += ('decided',)
+councilMeeting.itemPreferredMeetingStates += ("decided",)
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)

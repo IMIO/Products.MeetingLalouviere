@@ -8,20 +8,21 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLa
 
 class testCustomViews(mctcv, MeetingLalouviereTestCase):
     """
-        Tests the custom views
+    Tests the custom views
     """
+
     def test_MLLMeetingDocumentGenerationHelperView(self):
         """Test if the browser layer is correctly applied"""
-        self.changeUser('pmManager')
-        meeting = self.create('Meeting')
+        self.changeUser("pmManager")
+        meeting = self.create("Meeting")
         view = meeting.restrictedTraverse("@@document-generation")
         helper = view.get_generation_context_helper()
         self.assertTrue(isinstance(helper, MLLMeetingDocumentGenerationHelperView))
 
     def test_MLLItemDocumentGenerationHelperView(self):
         """Test if the browser layer is correctly applied"""
-        self.changeUser('pmCreator1')
-        item = self.create('MeetingItem')
+        self.changeUser("pmCreator1")
+        item = self.create("MeetingItem")
         view = item.restrictedTraverse("@@document-generation")
         helper = view.get_generation_context_helper()
         self.assertTrue(isinstance(helper, MLLItemDocumentGenerationHelperView))

@@ -16,6 +16,7 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
         """
         Remove groups that are not used in our custom workflow
         """
+
         def filter_list(list, filter_out):
             kept = []
             for item in list:
@@ -73,10 +74,10 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
 
     def _fixWFA(self):
         for cfg in self.tool.objectValues("MeetingConfig"):
-            if cfg.id == 'meeting-config-college':
-                wfa = ('refused', 'removed', 'return_to_proposing_group', 'validate_by_dg_and_alderman')
+            if cfg.id == "meeting-config-college":
+                wfa = ("refused", "removed", "return_to_proposing_group", "validate_by_dg_and_alderman")
             else:
-                wfa = ('refused', 'removed', 'return_to_proposing_group')
+                wfa = ("refused", "removed", "return_to_proposing_group")
             cfg.setWorkflowAdaptations(wfa)
             cfg.registerPortalTypes()
 
@@ -89,13 +90,9 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
             # cfg.reindexObject()
 
     def run(self, **kwargs):
-        self.ps.runImportStepFromProfile(
-            "profile-Products.MeetingLalouviere:default", "workflow"
-        )
+        self.ps.runImportStepFromProfile("profile-Products.MeetingLalouviere:default", "workflow")
         self._fixWFA()
-        super(Migrate_To_4_1, self).run(
-            extra_omitted=["Products.MeetingLalouviere:default"]
-        )
+        super(Migrate_To_4_1, self).run(extra_omitted=["Products.MeetingLalouviere:default"])
         self.remove_useless_functions()
         self.reinstall(
             profiles=[u"profile-Products.MeetingLalouviere:default"],
@@ -108,7 +105,7 @@ class Migrate_To_4_1(MCMigrate_To_4_1):
 def migrate(context):
     """This migration will:
 
-       1) Execute Products.MeetingCommunes migration.
+    1) Execute Products.MeetingCommunes migration.
     """
     migrator = Migrate_To_4_1(context)
     migrator.run()

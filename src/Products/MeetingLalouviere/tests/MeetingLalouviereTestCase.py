@@ -17,9 +17,7 @@ MeetingConfig.wfAdaptations = tuple(customWfAdaptations)
 adaptations.WAITING_ADVICES_FROM_STATES.update(LLO_WAITING_ADVICES_FROM_STATES)
 
 
-class MeetingLalouviereTestCase(
-    MeetingCommunesTestCase, MeetingLalouviereTestingHelpers
-):
+class MeetingLalouviereTestCase(MeetingCommunesTestCase, MeetingLalouviereTestingHelpers):
     """Base class for defining MeetingLalouviere test cases."""
 
     layer = MLL_TESTING_PROFILE_FUNCTIONAL

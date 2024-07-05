@@ -30,48 +30,55 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLa
 
 class testCustomUtils(mctcu, MeetingLalouviereTestCase):
     """
-        Tests the Extensions/utils methods.
+    Tests the Extensions/utils methods.
     """
+
     def test_ExportOrgs(self):
         """
-          Check that calling this method returns the right content
+        Check that calling this method returns the right content
         """
-        self.changeUser('admin')
+        self.changeUser("admin")
         expected = {
-            'vendors': ('Vendors', '', u'Devil'),
-            'endUsers': ('End users', '', u'EndUsers'),
-            'direction-generale': ('Dg', '', u'Dg'),
-            'developers': ('Developers', '', u'Devel')}
+            "vendors": ("Vendors", "", u"Devil"),
+            "endUsers": ("End users", "", u"EndUsers"),
+            "direction-generale": ("Dg", "", u"Dg"),
+            "developers": ("Developers", "", u"Devel"),
+        }
         res = self._exportOrgs()
         self.assertEqual(expected, res)
 
     def test_ImportOrgs(self):
         """
-          Check that calling this method creates the organizations if not exist
+        Check that calling this method creates the organizations if not exist
         """
-        self.changeUser('admin')
+        self.changeUser("admin")
         # if we pass a dict containing the existing groups, it does nothing but
         # returning that the groups already exist
         data = self._exportOrgs()
-        expected = 'Organization endUsers already exists\n' \
-                   'Organization vendors already exists\n' \
-                   'Organization developers already exists\n' \
-                   'Organization direction-generale already exists'
+        expected = (
+            "Organization endUsers already exists\n"
+            "Organization vendors already exists\n"
+            "Organization developers already exists\n"
+            "Organization direction-generale already exists"
+        )
         res = self._importOrgs(data)
         self.assertEqual(expected, res)
         # but it can also add an organization if it does not exist
-        data['newGroup'] = ('New group title', 'New group description', 'NGAcronym', 'python:False')
-        expected = 'Organization endUsers already exists\n' \
-                   'Organization vendors already exists\n' \
-                   'Organization newGroup added\n' \
-                   'Organization direction-generale already exists\n' \
-                   'Organization developers already exists'
+        data["newGroup"] = ("New group title", "New group description", "NGAcronym", "python:False")
+        expected = (
+            "Organization endUsers already exists\n"
+            "Organization vendors already exists\n"
+            "Organization newGroup added\n"
+            "Organization direction-generale already exists\n"
+            "Organization developers already exists"
+        )
         res = self._importOrgs(data)
         self.assertEqual(expected, res)
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+
     suite = TestSuite()
-    suite.addTest(makeSuite(testCustomUtils, prefix='test_'))
+    suite.addTest(makeSuite(testCustomUtils, prefix="test_"))
     return suite
