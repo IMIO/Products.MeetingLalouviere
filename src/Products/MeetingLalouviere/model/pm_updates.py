@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from Products.Archetypes.atapi import RichWidget
 from Products.Archetypes.atapi import Schema
 from Products.Archetypes.atapi import SelectionWidget
 from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import TextField
-from Products.CMFCore.permissions import ModifyPortalContent
 
 # Classes have already been registered, but we register them again here
 # because we have potentially applied some schema adaptations (see above).

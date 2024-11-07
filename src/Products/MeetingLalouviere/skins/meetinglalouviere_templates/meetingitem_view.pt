@@ -132,16 +132,16 @@
                      i18n:translate="legend_details" i18n:domain="plone">Details</a>
             </div>
 
-            <tal:comment replace="nothing">Copy groups for this item</tal:comment>
+            <tal:comment replace="nothing">Copy groups</tal:comment>
             <tal:copyGroups condition="python: context.attribute_is_used('copyGroups')">
                 <div class="discreet" tal:define="copyGroups python: context.getAllCopyGroups();
                                                   copy_groups_have_access python: context.check_copy_groups_have_access();">
-                    <span class="item_attribute_label"
-                          i18n:translate="PloneMeeting_label_copyGroups"></span>
-                    <span tal:define="css_class string:fa fa-question-circle help-doc pmHelp"
-                          i18n:attributes="title"
-                          tal:attributes="title python: context.getCopyGroupsHelpMsg(cfg);
-                                          class python: css_class + (copy_groups_have_access and ' green-colored' or '');">
+                    <span tal:attributes="class python: copy_groups_have_access and 'green-colored pmHelp' or 'pmHelp';
+                                          title python: context.getCopyGroupsHelpMsg(cfg);"
+                          i18n:attributes="title">
+                      <span class="item_attribute_label"
+                            i18n:translate="PloneMeeting_label_copyGroups"></span>
+                      <span class="fa fa-question-circle help-doc"></span>
                     </span>:&nbsp;&nbsp;
                     <tal:displayCopyGroups condition="copyGroups">
                         <span tal:replace="structure python: context.displayCopyGroups()">Copy groups</span>
@@ -149,6 +149,24 @@
                     <span tal:condition="not: copyGroups">-</span>
                 </div>
             </tal:copyGroups>
+
+            <tal:comment replace="nothing">Restricted copy groups</tal:comment>
+            <tal:restrictedCopyGroups condition="python: context.attribute_is_used('restrictedCopyGroups')">
+                <div class="discreet" tal:define="restrictedCopyGroups python: context.getAllRestrictedCopyGroups();
+                                                  restricted_copy_groups_have_access python: context.check_copy_groups_have_access(restricted=True);">
+                    <span tal:attributes="class python: restricted_copy_groups_have_access and 'green-colored pmHelp' or 'pmHelp';
+                                          title python: context.getCopyGroupsHelpMsg(cfg, restricted=True);"
+                          i18n:attributes="title">
+                      <span class="item_attribute_label"
+                            i18n:translate="PloneMeeting_label_restrictedCopyGroups"></span>
+                      <span class="fa fa-question-circle help-doc"></span>
+                    </span>:&nbsp;&nbsp;
+                    <tal:displayRestrictedCopyGroups condition="restrictedCopyGroups">
+                        <span tal:replace="structure python: context.displayCopyGroups(restricted=True)">Restricted copy groups</span>
+                    </tal:displayRestrictedCopyGroups>
+                    <span tal:condition="not: restrictedCopyGroups">-</span>
+                </div>
+            </tal:restrictedCopyGroups>
 
             <tal:comment replace="nothing">Item is signed?</tal:comment>
             <div class="discreet"
@@ -218,6 +236,16 @@
                   </tal:link>
               </tal:hasMeeting>
               <span tal:condition="not:nocall:meeting">-</span>
+            </div>
+
+            <tal:comment replace="nothing">Meeting deadline date</tal:comment>
+            <div class="discreet" tal:condition="python: 'meetingDeadlineDate' in usedAttrs">
+                <span class="item_attribute_label"
+                      i18n:translate="PloneMeeting_label_meetingDeadlineDate"></span>:&nbsp;&nbsp;
+                <span style="display: inline-block">
+                  <tal:block metal:use-macro="python: here.widget('meetingDeadlineDate', mode='view')" />
+                </span>
+                <span tal:condition="python: context.getMeetingDeadlineDate() is None">-</span>
             </div>
 
             <tal:comment replace="nothing">List type</tal:comment>
@@ -347,7 +375,8 @@
                               parent_tag=null,
                               load_view='@@load_item_assembly_and_signatures',
                               base_url=null,
-                              toggle_type='${toggle_type}');"
+                              toggle_type='${toggle_type}',
+                              sync=false);;initializeItemAttendeesDND();"
            class="collapsible discreet not-auto-collapsible-activable">
           <span class="meeting_attribute_label" i18n:translate="redefinable_assembly_and_signatures">
               <span i18n:name="assembly"
@@ -473,6 +502,11 @@
       </div>
     </fieldset>
     </tal:block>
+
+    <tal:comment replace="nothing">Emergency motivation</tal:comment>
+    <tal:field define="fieldName python: 'emergencyMotivation'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
 
     <tal:comment replace="nothing">Motivation</tal:comment>
     <tal:field define="fieldName python: 'motivation'; ajaxEdit python:True">
@@ -600,7 +634,6 @@
     <tal:field define="fieldName python: 'committeeObservations'; ajaxEdit python:True">
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
-
 
     <tal:comment replace="nothing">Committee transcript</tal:comment>
     <tal:field define="fieldName python: 'committeeTranscript'; ajaxEdit python:True">

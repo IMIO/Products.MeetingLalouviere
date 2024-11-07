@@ -6,8 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Adapted `meetingitem_edit.pt` and `meetingitem_view.pt` to include recent
+  changes from `PloneMeeting` (new fields `restrictedCopyGroups`,
+  `meetingDeadlineDate` and `emergencyMotivation`).
+  [gbastien]
 
 4.2.11 (2024-07-05)
 -------------------
