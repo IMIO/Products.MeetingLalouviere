@@ -77,27 +77,6 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
             ],
         )
 
-    def _process_transition_for_correcting_item(self, item, all):
-        if all:
-            self.changeUser("pmCreator1")
-            self.do(item, "goTo_returned_to_proposing_group_proposed_to_servicehead")
-            self.failIf(self.hasPermission(ModifyPortalContent, item))
-            self.changeUser("pmServiceHead1")
-            self.do(item, "goTo_returned_to_proposing_group_proposed_to_officemanager")
-            self.failIf(self.hasPermission(ModifyPortalContent, item))
-            self.changeUser("pmOfficeManager1")
-            self.do(item, "goTo_returned_to_proposing_group_proposed_to_divisionhead")
-            self.failIf(self.hasPermission(ModifyPortalContent, item))
-            self.changeUser("pmDivisionHead1")
-            self.do(item, "goTo_returned_to_proposing_group_proposed_to_director")
-            self.failIf(self.hasPermission(ModifyPortalContent, item))
-            self.changeUser("pmDirector1")
-            self.do(item, "goTo_returned_to_proposing_group_proposed_to_dg")
-            self.failIf(self.hasPermission(ModifyPortalContent, item))
-
-        self.changeUser("pmManager")
-        self.do(item, "goTo_returned_to_proposing_group_proposed_to_alderman")
-
     def test_pm_Validate_workflowAdaptations_removed_return_to_proposing_group_with_last_validation(self):
         """Test MeetingConfig.validate_workflowAdaptations that manage removal
         of wfAdaptations 'return_to_proposing_group with last validation' that is not possible if
@@ -361,6 +340,8 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, "backTo_itempublished_from_returned_to_proposing_group")
         self.assertEqual(item.query_state(), "itempublished")
 
+    def test_pm_WFA_return_to_proposing_group_with_all_validations(self):
+        """Bypass as not used..."""
 
 def test_suite():
     from unittest import TestSuite, makeSuite
