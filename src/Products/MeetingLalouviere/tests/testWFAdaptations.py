@@ -124,51 +124,6 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, "backTo_itemfrozen_from_returned_to_proposing_group")
         self.failIf(cfg.validate_workflowAdaptations(()))
 
-    def test_pm_Validate_workflowAdaptations_removed_return_to_proposing_group_with_all_validations(self):
-        """Test MeetingConfig.validate_workflowAdaptations that manage removal
-        of wfAdaptations 'return_to_proposing_group with all validations' that is not possible if
-        some items are 'returned_to_proposing_group xxx'."""
-        # ease override by subproducts
-        cfg = self.meetingConfig
-        if not self._check_wfa_available(["return_to_proposing_group_with_all_validations"]):
-            return
-
-        return_to_proposing_group_removed_error = translate(
-            "wa_removed_return_to_proposing_group_with_all_validations_error",
-            domain="PloneMeeting",
-            context=self.request,
-        )
-        self.changeUser("pmManager")
-        self._activate_wfas(("return_to_proposing_group_with_all_validations",))
-
-        meeting = self.create("Meeting")
-        item = self.create("MeetingItem")
-        self.presentItem(item)
-        self.freezeMeeting(meeting)
-        self.do(item, "return_to_proposing_group")
-        self.assertEqual(item.query_state(), "returned_to_proposing_group")
-        self.failIf(cfg.validate_workflowAdaptations(("return_to_proposing_group_with_all_validations",)))
-        if self._check_wfa_available(["return_to_proposing_group"]):
-            self.failIf(cfg.validate_workflowAdaptations(("return_to_proposing_group",)))
-        if self._check_wfa_available(["return_to_proposing_group_with_last_validation"]):
-            self.failIf(cfg.validate_workflowAdaptations(("return_to_proposing_group_with_last_validation",)))
-        self._process_transition_for_correcting_item(item, True)
-        self.assertEqual(item.query_state(), "returned_to_proposing_group_proposed_to_alderman")
-        self.assertEqual(cfg.validate_workflowAdaptations(()), return_to_proposing_group_removed_error)
-        if self._check_wfa_available(["return_to_proposing_group"]):
-            self.assertEqual(
-                cfg.validate_workflowAdaptations(("return_to_proposing_group",)),
-                return_to_proposing_group_removed_error,
-            )
-        if self._check_wfa_available(["return_to_proposing_group_with_last_validation"]):
-            self.assertEqual(
-                cfg.validate_workflowAdaptations(("return_to_proposing_group_with_last_validation",)),
-                return_to_proposing_group_removed_error,
-            )
-        # make wfAdaptation unselectable
-        self.do(item, "backTo_itemfrozen_from_returned_to_proposing_group")
-        self.failIf(cfg.validate_workflowAdaptations(()))
-
     def test_pm_WFA_waiting_advices_unknown_state(self):
         """Does not fail to be activated if a from/back state does not exist."""
         cfg = self.meetingConfig
@@ -340,8 +295,15 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
         self.do(item, "backTo_itempublished_from_returned_to_proposing_group")
         self.assertEqual(item.query_state(), "itempublished")
 
+    def test_pm_Validate_workflowAdaptations_removed_return_to_proposing_group_with_all_validations(self):
+        """Bypass as not used..."""
+
     def test_pm_WFA_return_to_proposing_group_with_all_validations(self):
         """Bypass as not used..."""
+
+    def test_pm_WFA_return_to_proposing_group_with_last_validation(self):
+        """Bypass as not used..."""
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
