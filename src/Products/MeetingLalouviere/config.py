@@ -87,16 +87,6 @@ PMconfig.EXTRA_GROUP_SUFFIXES = [
     },
 ]
 
-LALOUVIERE_MEETING_STATES_ACCEPTING_ITEMS = (
-    "created",
-    "frozen",
-    "published",
-    "decided",
-    "in_committee",
-    "in_council",
-)
-PMconfig.MEETING_STATES_ACCEPTING_ITEMS = LALOUVIERE_MEETING_STATES_ACCEPTING_ITEMS
-
 # id of finance advice group
 FINANCE_GROUP_ID = "avis-directeur-financier-2200020ac"
 

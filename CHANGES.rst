@@ -6,8 +6,9 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Removed override of `MeetingConfig.MEETING_STATES_ACCEPTING_ITEMS`
+  that does not exist anymore.
+  [gbastien]
 
 4.2.12 (2024-11-07)
 -------------------
