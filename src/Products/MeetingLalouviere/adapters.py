@@ -217,7 +217,8 @@ class LLCustomMeetingItem(CustomMeetingItem):
         """See doc in interfaces.py."""
         item = self.getSelf()
         if item.portal_type == "MeetingItemCollege" and \
-           review_state == "proposed_to_dg":
+           review_state in ["proposed_to_dg",
+                            "returned_to_proposing_group_proposed_to_dg"]:
             if item.getProposingGroup() == intref_group_uid():
                 # return an empty string ''
                 return ''
@@ -232,7 +233,9 @@ class LLCustomMeetingItem(CustomMeetingItem):
         """See doc in interfaces.py."""
         res = []
         item = self.getSelf()
-        if item.portal_type == "MeetingItemCollege" and "proposed_to_dg" in review_state:
+        if item.portal_type == "MeetingItemCollege" and \
+           review_state in ["proposed_to_dg",
+                            "returned_to_proposing_group_proposed_to_dg"]:
             if theObjects:
                 res += uuidsToObjects(dg_group_uid(), unrestricted=True)
             else:

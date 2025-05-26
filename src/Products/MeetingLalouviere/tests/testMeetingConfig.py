@@ -162,7 +162,7 @@ class testMeetingConfig(MeetingLalouviereTestCase, mctmc):
         self._select_organization(self.endUsers_uid)
         self.assertListEqual(
             cfg.listSelectableAdvisers().keys(),
-            [self.developers_uid, self.direction_generale_uid, self.endUsers_uid, self.vendors_uid],
+            [self.developers_uid, self.direction_generale_validation_uid, self.endUsers_uid, self.vendors_uid],
         )
         # restrict _advisers to developers and vendors
         select_org_for_function(self.developers_uid, "advisers")
