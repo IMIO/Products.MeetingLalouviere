@@ -2,28 +2,13 @@
 #
 # File: testMeetingGroup.py
 #
-# Copyright (c) 2007-2013 by Imio.be
-#
 # GNU General Public License (GPL)
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
+
 from collective.contact.plonegroup.utils import get_own_organization
 from plone import api
 from Products.MeetingCommunes.tests.testContacts import testContacts as mctc
+from Products.MeetingLalouviere.config import DG_GROUP_ID
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.Extensions.imports import import_contacts
 
@@ -75,7 +60,7 @@ class testContacts(mctc, MeetingLalouviereTestCase):
                 "developers",
                 "vendors",
                 "endUsers",
-                "direction-generale",
+                DG_GROUP_ID,
                 "service-1",
                 "service-2",
                 "service-associe-1",

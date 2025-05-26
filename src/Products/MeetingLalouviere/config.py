@@ -23,8 +23,9 @@ setDefaultRoles(DEFAULT_WRITE_PROVIDED_FOLLOWUP_PERMISSION, ("Manager", "Meeting
 
 product_globals = globals()
 
-DG_GROUP_ID = "direction-generale"
+DG_GROUP_ID = "direction-generale-validation"
 FALLBACK_DG_GROUP_ID = "dirgen"
+INTREF_GROUP_ID = "referent-integrite"
 
 # Dependencies of Products to be installed by quick-installer
 # override in custom configuration

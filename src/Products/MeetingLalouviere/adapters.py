@@ -19,9 +19,9 @@ from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
 from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
 from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
 from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActions
-from Products.MeetingLalouviere.config import DG_GROUP_ID
-from Products.MeetingLalouviere.config import FALLBACK_DG_GROUP_ID
 from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
+from Products.MeetingLalouviere.utils import dg_group_uid
+from Products.MeetingLalouviere.utils import intref_group_uid
 from Products.PloneMeeting.config import AddAnnex
 from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.interfaces import IMeetingConfigCustom
@@ -216,12 +216,15 @@ class LLCustomMeetingItem(CustomMeetingItem):
     def _getGroupManagingItem(self, review_state, theObject=False):
         """See doc in interfaces.py."""
         item = self.getSelf()
-        if item.portal_type == "MeetingItemCollege" and "proposed_to_dg" in review_state:
-            dg_group_uid = org_id_to_uid(DG_GROUP_ID) or org_id_to_uid(FALLBACK_DG_GROUP_ID)
+        if item.portal_type == "MeetingItemCollege" and \
+           review_state == "proposed_to_dg":
+            if item.getProposingGroup() == intref_group_uid():
+                # return an empty string ''
+                return ''
             if theObject:
-                return uuidsToObjects(dg_group_uid, unrestricted=True)[0]
+                return uuidsToObjects(dg_group_uid(), unrestricted=True)[0]
             else:
-                return dg_group_uid
+                return dg_group_uid()
         else:
             return item.getProposingGroup(theObject=theObject)
 
@@ -230,11 +233,10 @@ class LLCustomMeetingItem(CustomMeetingItem):
         res = []
         item = self.getSelf()
         if item.portal_type == "MeetingItemCollege" and "proposed_to_dg" in review_state:
-            dg_group_uid = org_id_to_uid(DG_GROUP_ID) or org_id_to_uid(FALLBACK_DG_GROUP_ID)
             if theObjects:
-                res += uuidsToObjects(dg_group_uid, unrestricted=True)
+                res += uuidsToObjects(dg_group_uid(), unrestricted=True)
             else:
-                res.append(dg_group_uid)
+                res.append(dg_group_uid())
         proposingGroup = item.getProposingGroup(theObject=theObjects)
         if proposingGroup:
             res.append(proposingGroup)

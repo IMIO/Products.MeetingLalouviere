@@ -9,6 +9,13 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 - Removed override of `MeetingConfig.MEETING_STATES_ACCEPTING_ITEMS`
   that does not exist anymore.
   [gbastien]
+- Changed group linked to item `proposed_to_dg` WF state to use
+  `direction-generale-validation`.
+  [gbastien]
+- Adapted code to manage `referent-integrite` group for which the WF does not
+  include the `proposed_to_dg` state, but only
+  `itemcreated/proposed_to_director/validated`.
+  [gbastien]
 
 4.2.12 (2024-11-07)
 -------------------
