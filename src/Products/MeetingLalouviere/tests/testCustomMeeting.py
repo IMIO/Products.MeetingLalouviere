@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+
 from Products.MeetingCommunes.tests.testCustomMeeting import testCustomMeetingType as mctcm
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 
