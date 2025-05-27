@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.13 (unreleased)
+4.2.13 (2025-05-27)
 -------------------
 
 - Removed override of `MeetingConfig.MEETING_STATES_ACCEPTING_ITEMS`
