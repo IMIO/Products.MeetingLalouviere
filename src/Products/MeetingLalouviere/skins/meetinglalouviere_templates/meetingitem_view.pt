@@ -51,7 +51,7 @@
               </div>
               <tal:comment replace="nothing">Groups in charge</tal:comment>
               <div class="discreet" tal:condition="python: context.show_groups_in_charge()"
-                                    tal:define="groupsInCharge python: context.getGroupsInCharge(includeAuto=True);">
+                                    tal:define="groupsInCharge python: context.getGroupsInCharge(includeAuto=False);">
                   <span class="item_attribute_label"
                         i18n:translate="PloneMeeting_label_groupsInCharge"></span>:&nbsp;&nbsp;
                   <tal:displayGroupsInCharge condition="groupsInCharge">
@@ -445,7 +445,7 @@
                          class_to_use python: (predecessors or linkedItems) and 'item_attribute_label highlightValue' or 'item_attribute_label';">
         <div id="linked-items"
              class="collapsible discreet not-auto-collapsible-activable"
-             onclick="toggleDetails('collapsible-linked-items', toggle_parent_active=true, parent_tag=null, load_view='@@load_linked_items');">
+             onclick="toggleDetails('collapsible-linked-items', toggle_parent_active=true, parent_tag=null, load_view='@@load-linked-items');">
           <span tal:condition="showManuallyLinkedItems"
                 class="item_attribute_label"
                 tal:attributes="class class_to_use"
