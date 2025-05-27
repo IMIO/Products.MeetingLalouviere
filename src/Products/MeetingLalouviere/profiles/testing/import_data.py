@@ -2,6 +2,7 @@
 from copy import deepcopy
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
 from Products.MeetingLalouviere.config import DG_GROUP_ID
+from Products.MeetingLalouviere.config import INTREF_GROUP_ID
 from Products.MeetingLalouviere.config import LLO_ITEM_COLLEGE_WF_VALIDATION_LEVELS
 from Products.MeetingLalouviere.config import LLO_ITEM_COUNCIL_WF_VALIDATION_LEVELS
 from Products.PloneMeeting.profiles import OrgDescriptor
@@ -79,15 +80,17 @@ vendors.alderman.append(pmAlderman2)
 vendors.alderman.append(pmReviewerLevel2)
 vendors.followupwriters.append(pmFollowup2)
 vendors.observers.append(pmFollowup2)
-
 dg = OrgDescriptor(DG_GROUP_ID, "Dg", u"Dg")
-data.orgs += (dg,)
+intref = OrgDescriptor(INTREF_GROUP_ID, "Référent intégrité", u"RI")
+
+data.orgs += (dg, intref, )
 
 dg.creators.append(pmDg)
 dg.directors.append(pmDg)
 dg.directors.append(pmManager)
 dg.budgetimpactreviewers.append(pmDg)
-
+intref.creators.append(pmCreator2)
+intref.directors.append(pmDirector2)
 
 # COLLEGE
 collegeMeeting = deepcopy(mc_import_data.collegeMeeting)

@@ -60,14 +60,20 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         item = self.create("MeetingItem")
         self.assertListEqual(
             item.Vocabulary("associatedGroups")[0].keys(),
-            [self.developers_uid, self.direction_generale_uid, self.vendors_uid],
+            [self.developers_uid,
+             self.direction_generale_validation_uid,
+             self.referent_integrite_uid,
+             self.vendors_uid],
         )
         # now select the 'developers' as associatedGroup for the item
         item.setAssociatedGroups((self.developers_uid,))
         # still the complete vocabulary
         self.assertListEqual(
             item.Vocabulary("associatedGroups")[0].keys(),
-            [self.developers_uid, self.direction_generale_uid, self.vendors_uid],
+            [self.developers_uid,
+             self.direction_generale_validation_uid,
+             self.referent_integrite_uid,
+             self.vendors_uid],
         )
         # disable developers organization
         self.changeUser("admin")
@@ -77,7 +83,10 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         # but added at the end of the vocabulary
         self.assertListEqual(
             item.Vocabulary("associatedGroups")[0].keys(),
-            [self.direction_generale_uid, self.vendors_uid, self.developers_uid],
+            [self.direction_generale_validation_uid,
+             self.referent_integrite_uid,
+             self.vendors_uid,
+             self.developers_uid],
         )
         # unselect 'developers' on the item, it will not appear anymore in the vocabulary
         item.setAssociatedGroups(())
@@ -85,7 +94,8 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         self.assertListEqual(
             item.Vocabulary("associatedGroups")[0].keys(),
             [
-                self.direction_generale_uid,
+                self.direction_generale_validation_uid,
+                self.referent_integrite_uid,
                 self.vendors_uid,
             ],
         )
@@ -97,11 +107,9 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         cleanRamCache()
         self.assertListEqual(
             item.Vocabulary("associatedGroups")[0].keys(),
-            [
-                self.developers_uid,
-                self.endUsers_uid,
-                self.vendors_uid,
-            ],
+            [self.developers_uid,
+             self.endUsers_uid,
+             self.vendors_uid]
         )
         cfg.setItemFieldsToKeepConfigSortingFor(("associatedGroups",))
         cleanRamCache()
@@ -113,14 +121,21 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         cfg.setOrderedAssociatedOrganizations(())
         cleanRamCache()
         self.assertListEqual(
-            item.Vocabulary("associatedGroups")[0].keys(), [self.direction_generale_uid, self.vendors_uid]
+            item.Vocabulary("associatedGroups")[0].keys(),
+            [self.direction_generale_validation_uid,
+             self.referent_integrite_uid,
+             self.vendors_uid]
         )
         self._select_organization(self.developers_uid)
         self._select_organization(self.endUsers_uid)
         cleanRamCache()
         self.assertListEqual(
             item.Vocabulary("associatedGroups")[0].keys(),
-            [self.developers_uid, self.direction_generale_uid, self.endUsers_uid, self.vendors_uid],
+            [self.developers_uid,
+             self.direction_generale_validation_uid,
+             self.endUsers_uid,
+             self.referent_integrite_uid,
+             self.vendors_uid]
         )
 
     def test_pm_ItemProposingGroupsVocabulary(self):
@@ -153,7 +168,8 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
             [term.value for term in vocab(item)._terms],
             [
                 self.developers_uid,
-                self.direction_generale_uid,
+                self.direction_generale_validation_uid,
+                self.referent_integrite_uid,
                 self.vendors_uid,
             ],
         )
@@ -183,14 +199,22 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
         self.assertFalse("proposingGroup" in cfg.getItemFieldsToKeepConfigSortingFor())
         self.assertListEqual(
             [term.value for term in vocab(item)._terms],
-            [self.developers_uid, self.direction_generale_uid, self.endUsers_uid, self.vendors_uid],
+            [self.developers_uid,
+             self.direction_generale_validation_uid,
+             self.endUsers_uid,
+             self.referent_integrite_uid,
+             self.vendors_uid],
         )
         cfg.setItemFieldsToKeepConfigSortingFor(("proposingGroup",))
         # invalidate vocabularies caching
         notify(ObjectEditedEvent(cfg))
         self.assertListEqual(
             [term.value for term in vocab(item)._terms],
-            [self.developers_uid, self.vendors_uid, self.direction_generale_uid, self.endUsers_uid],
+            [self.developers_uid,
+             self.vendors_uid,
+             self.direction_generale_validation_uid,
+             self.referent_integrite_uid,
+             self.endUsers_uid],
         )
 
 

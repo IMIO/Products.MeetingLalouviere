@@ -33,7 +33,7 @@ def update_item_schema(baseSchema):
                 widget=RichWidget(
                     rows=15,
                     condition="python: here.portal_type == 'MeetingItemCouncil' "
-                    "and here.showMeetingManagerReservedField('privacy')",
+                    "and here.showMeetingManagerReservedField('interventions')",
                     label="Interventions",
                     label_msgid="MeetingLalouviere_label_interventions",
                     description="Transcription of interventions",

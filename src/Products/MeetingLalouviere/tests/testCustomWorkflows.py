@@ -2,35 +2,37 @@
 #
 # File: testWorkflows.py
 #
-# Copyright (c) 2007-2012 by CommunesPlone.org
-#
 # GNU General Public License (GPL)
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
 
-from DateTime import DateTime
 from Products.MeetingCommunes.tests.testCustomWorkflows import testCustomWorkflows as mctcw
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-
-import logging
+from Products.MeetingLalouviere.utils import intref_group_uid
 
 
 class testCustomWorkflows(mctcw, MeetingLalouviereTestCase):
     """Tests the default workflows implemented in PloneMeeting."""
+
+    def test_IntegrityReferentWorkflow(self):
+        """For the "referent-integrite" group, there is only 3 validation levels:
+           - "itemcreated";
+           - "proposed_to_director";
+           - "validated".
+           We especially do not have the "proposed_to_dg" WF state.
+        """
+        self._activate_wfas(('item_validation_shortcuts', ))
+        self.changeUser('pmCreator2')
+        item = self.create('MeetingItem', proposingGroup=intref_group_uid())
+        self.assertEqual(self.transitions(item), ['proposeToDirector'])
+        self.do(item, 'proposeToDirector')
+        self.assertEqual(item.query_state(), 'proposed_to_director')
+        self.assertEqual(self.transitions(item), [])
+        self.changeUser('pmDirector2')
+        self.assertEqual(self.transitions(item), ['backToItemCreated', 'validate'])
+        self.do(item, 'validate')
+        self.assertEqual(item.query_state(), 'validated')
+        self.changeUser('pmManager')
+        self.assertEqual(self.transitions(item), ['backToItemCreated', 'backToProposedToDirector'])
 
 
 def test_suite():

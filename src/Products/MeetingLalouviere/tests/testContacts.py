@@ -2,28 +2,14 @@
 #
 # File: testMeetingGroup.py
 #
-# Copyright (c) 2007-2013 by Imio.be
-#
 # GNU General Public License (GPL)
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
+
 from collective.contact.plonegroup.utils import get_own_organization
 from plone import api
 from Products.MeetingCommunes.tests.testContacts import testContacts as mctc
+from Products.MeetingLalouviere.config import DG_GROUP_ID
+from Products.MeetingLalouviere.config import INTREF_GROUP_ID
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.Extensions.imports import import_contacts
 
@@ -42,7 +28,7 @@ class testContacts(mctc, MeetingLalouviereTestCase):
         own_org = get_own_organization()
         self.assertIsNone(own_org.acronym)
         # 5 internal and 2 external organizations
-        self.assertEqual(len(api.content.find(context=contacts, portal_type="organization")), 7)
+        self.assertEqual(len(api.content.find(context=contacts, portal_type="organization")), 8)
         self.assertEqual(len(api.content.find(context=contacts, portal_type="person")), 4)
         self.assertEqual(len(api.content.find(context=contacts, portal_type="held_position")), 4)
         path = os.path.join(os.path.dirname(Products.PloneMeeting.__file__), "profiles/testing")
@@ -56,7 +42,7 @@ class testContacts(mctc, MeetingLalouviereTestCase):
         self.changeUser("admin")
         import_contacts(self.portal, path=path)
         # we imported 10 organizations and 15 persons/held_positions
-        self.assertEqual(len(api.content.find(context=contacts, portal_type="organization")), 16)
+        self.assertEqual(len(api.content.find(context=contacts, portal_type="organization")), 17)
         self.assertEqual(len(api.content.find(context=contacts, portal_type="person")), 19)
         self.assertEqual(len(api.content.find(context=contacts, portal_type="held_position")), 19)
         # organizations are imported with an acronym
@@ -75,7 +61,8 @@ class testContacts(mctc, MeetingLalouviereTestCase):
                 "developers",
                 "vendors",
                 "endUsers",
-                "direction-generale",
+                DG_GROUP_ID,
+                INTREF_GROUP_ID,
                 "service-1",
                 "service-2",
                 "service-associe-1",
