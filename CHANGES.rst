@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.14 (unreleased)
+4.2.14 (2025-05-28)
 -------------------
 
 - Fixed transition `Propose to budget reviewer` as it it not managed by
