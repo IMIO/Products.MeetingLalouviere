@@ -788,8 +788,8 @@ class MLLCustomToolPloneMeeting(CustomToolPloneMeeting):
                 origin_transition_id="proposeToBudgetImpactReviewer",
                 origin_transition_title=translate("proposeToBudgetImpactReviewer", "plone"),
                 # origin_transition_icon=None,
-                origin_transition_guard_expr_name="mayCorrect()",
-                back_transition_guard_expr_name="mayCorrect()",
+                origin_transition_guard_expr_name="mayCorrect('proposed_to_budget_reviewer')",
+                back_transition_guard_expr_name="mayCorrect('')",
                 back_transition_id="backTo_itemcreated_from_proposed_to_budget_reviewer",
                 back_transition_title=translate("validateByBudgetImpactReviewer", "plone"),
                 # back_transition_icon=None
@@ -865,6 +865,9 @@ class MeetingItemMLLWorkflowConditions(MeetingItemCommunesWorkflowConditions):
             # Handle a special case at LaLouviere. Alderman cannot send back to
             # all previous validation levels.
             return self.may_user_send_back(destinationState)
+        elif destinationState == "proposed_to_budget_reviewer":
+            res = super(MeetingItemCommunesWorkflowConditions, self).mayCorrect(destinationState)
+            return res and self.tool.group_is_not_empty(self.context.getProposingGroup(), 'budgetimpactreviewers')
         return super(MeetingItemCommunesWorkflowConditions, self).mayCorrect(destinationState)
 
 

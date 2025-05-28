@@ -6,8 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.14 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Fixed transition `Propose to budget reviewer` as it it not managed by
+  `MeetingConfig.itemWFValidationLevels`, we have to manage it in
+  `MeetingItemMLLWorkflowConditions.mayCorrect`.
+  [gbastien]
 
 4.2.13 (2025-05-27)
 -------------------
