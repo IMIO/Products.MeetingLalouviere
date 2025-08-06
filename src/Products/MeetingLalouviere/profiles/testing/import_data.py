@@ -13,29 +13,26 @@ from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 data = deepcopy(mc_import_data.data)
 
 # USERS
-pmServiceHead1 = UserDescriptor("pmServiceHead1", [])
-pmServiceHead2 = UserDescriptor("pmServiceHead2", [])
-pmOfficeManager1 = UserDescriptor("pmOfficeManager1", [])
-pmOfficeManager2 = UserDescriptor("pmOfficeManager2", [])
-pmDivisionHead1 = UserDescriptor("pmDivisionHead1", [])
-pmDivisionHead2 = UserDescriptor("pmDivisionHead2", [])
-pmDirector1 = UserDescriptor("pmDirector1", [])
-pmDirector2 = UserDescriptor("pmDirector2", [])
-pmDg = UserDescriptor("pmDg", [])
-pmCreator2 = UserDescriptor("pmCreator2", [])
-pmAdviser1 = UserDescriptor("pmAdviser1", [])
-pmAdviser2 = UserDescriptor("pmAdviser2", [])
-voter1 = UserDescriptor("voter1", [], fullname="M. Voter One")
-voter2 = UserDescriptor("voter2", [], fullname="M. Voter Two")
-
+pmServiceHead1 = UserDescriptor("pmServiceHead1", [], email="pmservicehead1@plonemeeting.org")
+pmServiceHead2 = UserDescriptor("pmServiceHead2", [], email="pmservicehead2@plonemeeting.org")
+pmOfficeManager1 = UserDescriptor("pmOfficeManager1", [], email="pmofficemanager1@plonemeeting.org")
+pmOfficeManager2 = UserDescriptor("pmOfficeManager2", [], email="pmofficemanager2@plonemeeting.org")
+pmDivisionHead1 = UserDescriptor("pmDivisionHead1", [], email="pmdivisionhead1@plonemeeting.org")
+pmDivisionHead2 = UserDescriptor("pmDivisionHead2", [], email="pmdivisionhead2@plonemeeting.org")
+pmDirector1 = UserDescriptor("pmDirector1", [], email="pmdirector1@plonemeeting.org")
+pmDirector2 = UserDescriptor("pmDirector2", [], email="pmdirector2@plonemeeting.org")
+pmDg = UserDescriptor("pmDg", [], email="pmdg@plonemeeting.org")
+pmCreator2 = UserDescriptor("pmCreator2", [], email="pmcreator2@plonemeeting.org")
+pmAdviser1 = UserDescriptor("pmAdviser1", [], email="pmadviser1@plonemeeting.org")
+pmAdviser2 = UserDescriptor("pmAdviser2", [], email="pmadviser2@plonemeeting.org")
+voter1 = UserDescriptor("voter1", [], email="voter1@plonemeeting.org", fullname="M. Voter One")
+voter2 = UserDescriptor("voter2", [], email="voter2@plonemeeting.org", fullname="M. Voter Two")
 pmAlderman1 = UserDescriptor("pmAlderman1", [], email="pmalderman1@plonemeeting.org", fullname="M. PMAlderman One")
-
 pmAlderman2 = UserDescriptor("pmAlderman2", [], email="pmalderman2@plonemeeting.org", fullname="M. PMAlderman One")
-
-pmFollowup1 = UserDescriptor("pmFollowup1", [])
-pmFollowup2 = UserDescriptor("pmFollowup2", [])
-pmBudgetReviewer1 = UserDescriptor("pmBudgetReviewer1", [])
-pmBudgetReviewer2 = UserDescriptor("pmBudgetReviewer2", [])
+pmFollowup1 = UserDescriptor("pmFollowup1", [], email="pmfollowup1@plonemeeting.org")
+pmFollowup2 = UserDescriptor("pmFollowup2", [], email="pmfollowup2@plonemeeting.org")
+pmBudgetReviewer1 = UserDescriptor("pmBudgetReviewer1", [], email="pmbudgetreviewer1@plonemeeting.org")
+pmBudgetReviewer2 = UserDescriptor("pmBudgetReviewer2", [], email="pmbudgetreviewer2@plonemeeting.org")
 
 # Inherited users
 pmReviewer1 = pm_import_data.pmReviewer1

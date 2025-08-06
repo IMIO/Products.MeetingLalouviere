@@ -23,11 +23,11 @@ class testUtils(MeetingLalouviereTestCase, mctu):
             u"M. PMReviewer One <pmreviewer1@plonemeeting.org>",
             u"M. Power Observer1 <powerobserver1@plonemeeting.org>",
             u"Site administrator <siteadmin@plonemeeting.org>",
-            u"pmDirector1 <user@plonemeeting.org>",
-            u"pmDivisionHead1 <user@plonemeeting.org>",
-            u"pmFollowup1 <user@plonemeeting.org>",
-            u"pmOfficeManager1 <user@plonemeeting.org>",
-            u"pmServiceHead1 <user@plonemeeting.org>",
+            u"pmDirector1 <pmdirector1@plonemeeting.org>",
+            u"pmDivisionHead1 <pmdivisionhead1@plonemeeting.org>",
+            u"pmFollowup1 <pmfollowup1@plonemeeting.org>",
+            u"pmOfficeManager1 <pmofficemanager1@plonemeeting.org>",
+            u"pmServiceHead1 <pmservicehead1@plonemeeting.org>",
         ]
 
     def _modify_permission_mail_recipents(self):
@@ -38,10 +38,10 @@ class testUtils(MeetingLalouviereTestCase, mctu):
             u"M. PMReviewer Level Two <pmreviewerlevel2@plonemeeting.org>",
             u"M. PMReviewer One <pmreviewer1@plonemeeting.org>",
             u"Site administrator <siteadmin@plonemeeting.org>",
-            u"pmDirector1 <user@plonemeeting.org>",
-            u"pmDivisionHead1 <user@plonemeeting.org>",
-            u"pmOfficeManager1 <user@plonemeeting.org>",
-            u"pmServiceHead1 <user@plonemeeting.org>",
+            u"pmDirector1 <pmdirector1@plonemeeting.org>",
+            u"pmDivisionHead1 <pmdivisionhead1@plonemeeting.org>",
+            u"pmOfficeManager1 <pmofficemanager1@plonemeeting.org>",
+            u"pmServiceHead1 <pmservicehead1@plonemeeting.org>",
         ]
 
 
