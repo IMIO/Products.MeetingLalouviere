@@ -245,28 +245,6 @@ class LLCustomMeetingItem(CustomMeetingItem):
             res.append(proposingGroup)
         return res
 
-    def mayGenerateFinanceAdvice(self):
-        """
-        Condition used in the 'Avis DF' PodTemplate.
-        """
-        finance_group_uid = org_id_to_uid(FINANCE_GROUP_ID)
-        if (
-            finance_group_uid in self.context.adviceIndex
-            and self.context.adviceIndex[finance_group_uid]["delay"]
-            and self.context.adviceIndex[finance_group_uid]["type"] != NOT_GIVEN_ADVICE_VALUE
-        ):
-            return True
-        return False
-
-    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc, cloned_from_item_template):
-        """
-        Keep some new fields when item is cloned (to another mc or from itemtemplate).
-        """
-        res = []
-        if cloned_to_same_mc and not cloned_from_item_template:
-            res = ["interventions", "committeeTranscript"]
-        return res
-
     def adviceDelayIsTimedOutWithRowId(self, groupId, rowIds=[]):
         """Check if advice with delay from a certain p_groupId and with
         a row_id contained in p_rowIds is timed out.

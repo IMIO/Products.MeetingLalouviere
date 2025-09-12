@@ -6,8 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.15 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Do not keep fields `interventions`, `committeeTranscript` when cloning item.
+  [gbastien]
+- Removed useless method `LLCustomMeetingItem.mayGenerateFinanceAdvice`.
+  [gbastien]
 
 4.2.14 (2025-05-28)
 -------------------
