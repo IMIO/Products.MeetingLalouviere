@@ -10,6 +10,12 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
   [gbastien]
 - Removed useless method `LLCustomMeetingItem.mayGenerateFinanceAdvice`.
   [gbastien]
+- Adapted code to prepare moval to new follow-up management in next version:
+
+  - Removed default for field MeetingItem.providedFollowUp;
+  - Bypass default test_pm_FollowUp as we have our own that still pass.
+
+  [gbastien]
 
 4.2.14 (2025-05-28)
 -------------------

@@ -76,7 +76,7 @@ def update_item_schema(baseSchema):
                     i18n_domain="PloneMeeting",
                 ),
                 default_content_type="text/html",
-                default="<p>N&eacute;ant</p>",
+                # default="<p>N&eacute;ant</p>",
                 searchable=True,
                 allowable_content_types=("text/html",),
                 default_output_type="text/html",
