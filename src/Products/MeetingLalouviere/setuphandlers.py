@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: setuphandlers.py
-#
-# Copyright (c) 2016 by Imio.be
-# Generator: ArchGenXML Version 2.7
-#            http://plone.org/products/archgenxml
-#
 # GNU General Public License (GPL)
 #
 
-from imio.helpers.catalog import addOrUpdateIndexes
 from Products.MeetingLalouviere.config import PROJECTNAME
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 
@@ -33,9 +26,6 @@ def postInstall(context):
     site = context.getSite()
     # need to reinstall PloneMeeting after reinstalling MC workflows to re-apply wfAdaptations
     reinstallPloneMeeting(context, site)
-    # Add additional indexes
-    addAdditionalIndexes(context, site)
-    showHomeTab(context, site)
     reorderSkinsLayers(context, site)
 
 
@@ -72,22 +62,6 @@ def initializeTool(context):
     return ToolInitializer(context, PROJECTNAME).run()
 
 
-def addAdditionalIndexes(context, portal):
-    """
-    Add some specific indexes used by MeetingLalouviere
-    """
-    if isNotMeetingLalouviereProfile(context):
-        return
-
-    indexInfo = {
-        "getFollowUp": ("FieldIndex", {}),
-    }
-
-    logStep("addAdditionalIndexes", context)
-    # Create or update indexes
-    addOrUpdateIndexes(portal, indexInfo)
-
-
 def reinstallPloneMeeting(context, site):
     """Reinstall PloneMeeting so after install methods are called and applied,
     like performWorkflowAdaptations for example."""
@@ -103,22 +77,6 @@ def _installPloneMeeting(context):
     site = context.getSite()
     profileId = u"profile-Products.PloneMeeting:default"
     site.portal_setup.runAllImportStepsFromProfile(profileId)
-
-
-def showHomeTab(context, site):
-    """
-    Make sure the 'home' tab is shown...
-    """
-    if isNotMeetingLalouviereProfile(context):
-        return
-
-    logStep("showHomeTab", context)
-
-    index_html = getattr(site.portal_actions.portal_tabs, "index_html", None)
-    if index_html:
-        index_html.visible = True
-    else:
-        logger.info("The 'Home' tab does not exist !!!")
 
 
 def reorderSkinsLayers(context, site):

@@ -9,10 +9,6 @@
     padding-left: 5.5em !important;
 }
 
-#premeetings dd.collapsibleContent {
-    margin-left: 0;
-}
-
 /* Colors on states */
 /* Items */
 .state-proposed_to_budget_reviewer, .label-state-proposed_to_budget_reviewer {
@@ -24,27 +20,6 @@
     padding: 0 0.5em;
     color: white !important;
     border: 2px solid red;
-}
-
-.follow_up_no {
-background: transparent url(&dtml-portal_url;/follow_up_no.png) no-repeat scroll 0 1px;
-padding: 1px 0 1px 18px;
-color: grey;
-font-weight: bold;
-}
-
-.follow_up_yes {
-background: transparent url(&dtml-portal_url;/follow_up_yes.png) no-repeat scroll 0 1px;
-padding: 1px 0 1px 18px;
-color: red;
-font-weight: bold;
-}
-
-.follow_up_provided, .follow_up_provided_not_printed {
-background: transparent url(&dtml-portal_url;/follow_up_provided.png) no-repeat scroll 0 1px;
-padding: 1px 0 1px 18px;
-color: green;
-font-weight: bold;
 }
 
 /* </dtml-with> */

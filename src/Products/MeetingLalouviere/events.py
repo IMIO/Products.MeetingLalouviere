@@ -8,6 +8,7 @@ def onItemLocalRolesUpdated(item, event):
     Depending on the selected Council commission (category),
     give the 'MeetingFollowUpWriter' role to the relevant Plone group
     """
+    return
     tool = api.portal.get_tool("portal_plonemeeting")
     cfg = tool.getMeetingConfig(item)
     if item.query_state() in cfg.getItemDecidedStates():

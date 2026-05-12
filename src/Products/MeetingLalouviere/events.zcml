@@ -4,7 +4,7 @@
            xmlns:i18n="http://namespaces.zope.org/i18n"
            i18n_domain="PloneMeeting">
 
-  <subscriber for="Products.PloneMeeting.interfaces.IMeetingItem
+  <!--subscriber for="Products.PloneMeeting.interfaces.IMeetingItem
                    Products.PloneMeeting.interfaces.IItemLocalRolesUpdatedEvent"
-              handler=".events.onItemLocalRolesUpdated"/>
+              handler=".events.onItemLocalRolesUpdated"/-->
 </configure>
