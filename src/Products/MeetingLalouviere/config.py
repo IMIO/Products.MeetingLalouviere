@@ -3,7 +3,6 @@
 # GNU General Public License (GPL)
 #
 
-from Products.CMFCore.permissions import setDefaultRoles
 from Products.PloneMeeting import config as PMconfig
 
 
@@ -15,12 +14,6 @@ __docformat__ = "plaintext"
 PROJECTNAME = "MeetingLalouviere"
 
 # Permissions
-DEFAULT_WRITE_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write followUp"
-setDefaultRoles(DEFAULT_WRITE_FOLLOWUP_PERMISSION, ("Manager", "MeetingManager"))
-
-DEFAULT_WRITE_PROVIDED_FOLLOWUP_PERMISSION = "MeetingLalouviere: Write providedFollowUp"
-setDefaultRoles(DEFAULT_WRITE_PROVIDED_FOLLOWUP_PERMISSION, ("Manager", "MeetingManager", "MeetingFollowUpWriter"))
-
 product_globals = globals()
 
 DG_GROUP_ID = "direction-generale-validation"

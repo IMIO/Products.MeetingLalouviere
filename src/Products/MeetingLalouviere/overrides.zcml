@@ -13,7 +13,6 @@
     factory="Products.MeetingLalouviere.adapters.MeetingItemMLLWorkflowConditions"
     provides="Products.MeetingCommunes.interfaces.IMeetingItemCommunesWorkflowConditions"/>
 
-  <!-- Searches adapters -->
   <configure package="Products.MeetingCommunes">
     <!-- Customizations for every Meetings -->
     <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
