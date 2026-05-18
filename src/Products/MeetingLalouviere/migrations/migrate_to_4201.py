@@ -13,6 +13,7 @@ class MigrateTo4201(Migrator):
 
     def _update_follow_up(self):
         """Move custom followUp to existing followUp."""
+        logger.info('Migrating follow-up...')
         for cfg in self.tool.objectValues('MeetingConfig'):
             if 'providedFollowUp' not in cfg.getUsedItemAttributes():
                 continue
@@ -53,9 +54,11 @@ class MigrateTo4201(Migrator):
                 delattr(item, 'followUp')
         # finally remove no more used getFollowUp index
         removeIndexes(self.portal, indexes=['getFollowUp'])
+        logger.info('Done.')
 
     def _migrate_interventions(self):
         """Migrate MeetingItem.interventions to MeetingItem.notes."""
+        logger.info('Migrating field \"interventions\" to \"notes\"...')
         self.update_used_attrs(
             to_replace={'interventions': 'notes'},
             cfg_ids=['meeting-config-council'])
@@ -63,6 +66,10 @@ class MigrateTo4201(Migrator):
         for brain in brains:
             item = brain.getObject()
             item.setNotes(item.interventions.getRaw())
+        self.updatePODTemplatesCode(
+            replacements={
+                '.getInterventions(': ".getNotes("})
+        logger.info('Done.')
 
     def run(self, **kwargs):
         logger.info('Migrating to MeetingLalouviere 4201...')
