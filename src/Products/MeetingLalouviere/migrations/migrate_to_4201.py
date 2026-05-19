@@ -3,6 +3,8 @@
 from ftw.labels.interfaces import ILabelJar
 from ftw.labels.labeling import ILabeling
 from imio.helpers.catalog import removeIndexes
+from imio.helpers.content import safe_delattr
+from Products.CMFPlone.utils import base_hasattr
 from Products.MeetingLalouviere import logger
 from Products.PloneMeeting.migrations import Migrator
 from Products.PloneMeeting.utils import reindex_object
@@ -19,12 +21,11 @@ class MigrateTo4201(Migrator):
                 continue
             # create follow-up labels if using field providedFollowUp
             labeljar = getAdapter(cfg, ILabelJar)
-            if 'needed-follow-up' not in labeljar.storage:
-                labeljar.add('Needed follow-up', 'orange', False)
-            if 'provided-follow-up' not in labeljar.storage:
-                labeljar.add('Provided follow-up', 'green', False)
-            if 'closed-follow-up' not in labeljar.storage:
-                labeljar.add('Closed follow-up', 'cornflowerblue-light', False)
+            if 'needed-follow-up' in labeljar.storage:
+                return self._already_migrated()
+            labeljar.add('Needed follow-up', 'orange', False)
+            labeljar.add('Provided follow-up', 'green', False)
+            labeljar.add('Closed follow-up', 'cornflowerblue-light', False)
             # configure itemFieldsConfig
             config = cfg.getItemFieldsConfig()
             config[0]['view'] = "python: item.may_view_follow_up(restricted=True)"
@@ -51,7 +52,7 @@ class MigrateTo4201(Migrator):
                 labeling.update(labeling_values)
                 reindex_object(item, idxs=['labels'], update_metadata=0)
                 # clean item
-                delattr(item, 'followUp')
+                safe_delattr(item, 'followUp')
         # finally remove no more used getFollowUp index
         removeIndexes(self.portal, indexes=['getFollowUp'])
         logger.info('Done.')
@@ -65,7 +66,10 @@ class MigrateTo4201(Migrator):
         brains = self.catalog(portal_type='MeetingItemCouncil')
         for brain in brains:
             item = brain.getObject()
+            if not base_hasattr(item, 'interventions'):
+                return self._already_migrated()
             item.setNotes(item.interventions.getRaw())
+            safe_delattr(item, 'interventions')
         self.updatePODTemplatesCode(
             replacements={
                 '.getInterventions(': ".getNotes("})
