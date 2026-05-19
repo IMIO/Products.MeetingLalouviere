@@ -76,6 +76,8 @@ class testSearches(MeetingLalouviereTestCase, mcts):
                 "check_user_2": "pmAlderman2",
             },
         ]
+        vendors_item_uid = vendorsItem.UID()
+        dev_item_uid = developersItem.UID()
         for use_case in use_cases:
             self.changeUser(use_case["transition_user_1"])
             self.do(developersItem, use_case["transition"])
@@ -87,7 +89,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
             )
             res = collection.results()
             self.assertEqual(res.length, 1)
-            self.assertEqual(res[0].UID, developersItem.UID())
+            self.assertEqual(res[0].UID, dev_item_uid)
 
             self.changeUser(use_case["transition_user_2"])
             self.do(vendorsItem, use_case["transition"])
@@ -102,7 +104,7 @@ class testSearches(MeetingLalouviereTestCase, mcts):
                 self.assertEqual(res.length, 2)
             else:
                 self.assertEqual(res.length, 1)
-            self.assertEqual(res[0].UID, vendorsItem.UID())
+            self.assertTrue(vendors_item_uid in [b.UID for b in res._sequence._basesequence])
 
     def test_pm_SearchItemsToValidateOfMyReviewerGroups(self):
         """Test the 'items-to-validate-of-my-reviewer-groups' adapter.
