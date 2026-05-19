@@ -322,7 +322,7 @@ councilMeeting.usedItemAttributes = (
     u"manuallyLinkedItems",
     u"privacy",
     u"textCheckList",
-    u"interventions",
+    u"notes",
     u"committeeTranscript",
 )
 

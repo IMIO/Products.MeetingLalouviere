@@ -10,7 +10,6 @@ from plone.app.testing.bbb import _createMemberarea
 from Products.Archetypes.event import ObjectEditedEvent
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
-from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from zope.event import notify
 
 
@@ -18,11 +17,6 @@ class testMeetingItem(MeetingLalouviereTestCase, mctmi):
     """
     Tests the MeetingItem class methods.
     """
-
-    def _extraNeutralFields(self):
-        """This method is made to be overrided by subplugins that added
-        neutral fields to the MeetingItem schema."""
-        return ["followUp", "providedFollowUp", "interventions", "committeeTranscript"]
 
     def _get_developers_all_reviewers_groups(self):
         return [

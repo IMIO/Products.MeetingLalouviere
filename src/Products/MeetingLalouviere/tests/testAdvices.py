@@ -10,7 +10,7 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLa
 
 
 class testAdvices(MeetingLalouviereTestCase, mcta):
-    """"""
+    """ """
 
 
 def test_suite():

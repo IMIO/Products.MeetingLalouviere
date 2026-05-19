@@ -97,10 +97,6 @@ collegeMeeting.itemAdviceStates = [
     "proposed_to_alderman",
 ]
 collegeMeeting.itemAdviceEditStates = ["proposed_to_alderman", "validated"]
-usedItemAttributes = list(collegeMeeting.usedItemAttributes) + [
-    u"providedFollowUp",
-]
-collegeMeeting.usedItemAttributes = tuple(usedItemAttributes)
 
 # COUNCIL
 councilMeeting = deepcopy(mc_import_data.councilMeeting)

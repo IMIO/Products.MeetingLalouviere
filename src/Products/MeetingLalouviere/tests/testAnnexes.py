@@ -10,10 +10,7 @@ from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLa
 
 
 class testAnnexes(MeetingLalouviereTestCase, mcta):
-    """"""
-
-    def _manage_custom_searchable_fields(self, item):
-        item.setCommitteeTranscript("")
+    """ """
 
 
 def test_suite():
