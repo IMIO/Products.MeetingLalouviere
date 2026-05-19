@@ -183,3 +183,20 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
     def _enable_mc_Prevalidation(self, cfg, enable_extra_suffixes=False):
         self._setUpDefaultItemWFValidationLevels(cfg)
         super(MeetingLalouviereTestingHelpers, self)._enablePrevalidation(cfg, enable_extra_suffixes)
+
+    def _setupMLFollowUp(self, cfg):
+        """ """
+        self._setupFollowUp(cfg)
+        # disable field "neededFollowUp", we use "decision" field
+        self._enableField('neededFollowUp', enable=False)
+        # follow-up labels only editable by MeetingManagers
+        labels_config = cfg.getLabelsConfig()
+        labels_config[-1]['edit_groups'] = ['configgroup_meetingmanagers']
+        labels_config[-1]['edit_access_on'] = ""
+        cfg.setLabelsConfig(labels_config)
+        # follow-up fields config
+        item_fields_config = cfg.getItemFieldsConfig()
+        item_fields_config[1]['view'] = "python: item.may_view_follow_up(restricted=True)"
+        item_fields_config[1]['edit'] = \
+            "python: item.may_edit_follow_up(field_name='providedFollowUp', " \
+            "suffixes=['followupwriters'])"

@@ -7,6 +7,7 @@ from Products.CMFCore.permissions import View
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from Products.MeetingLalouviere.tests.MeetingLalouviereTestCase import MeetingLalouviereTestCase
 from Products.PloneMeeting.config import AddAnnex
+from Products.PloneMeeting.ftw_labels.utils import get_labels
 
 
 class testWorkflows(MeetingLalouviereTestCase, mctw):
@@ -34,6 +35,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
     def _testWholeDecisionProcessCollege(self):
         """This test covers the whole decision workflow. It begins with the
         creation of some items, and ends by closing a meeting."""
+        cfg = self.meetingConfig
         # pmCreator1 creates an item with 1 annex and proposes it
         self._enableField("observations")
         self._activate_wfas(
@@ -45,7 +47,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
             ),
             keep_existing=True,
         )
-        self.meetingConfig.setItemAdviceStates(("itemcreated_waiting_advices",))
+        cfg.setItemAdviceStates(("itemcreated_waiting_advices",))
         self.changeUser("pmCreator1")
         item1 = self.create("MeetingItem", title="The first item", optionalAdvisers=(self.vendors_uid,))
         self._check_users_can_modify(item1)
@@ -177,37 +179,40 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEqual(len(meeting.get_items(list_types=["late"])), 1)
         self.assertEqual(meeting.get_items(list_types=["late"])[0], item2)
         self.do(meeting, "decide")
-        item1.activateFollowUp()
-        # followup writer cannot edit follow up on frozen items
+
+        # followUp
+        self._setupMLFollowUp(cfg)
+        item1._update_after_edit()
+        # followup writer cannot edit follow up if not asked
         self.changeUser("pmFollowup1")
         self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmManager")
-        self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
-
-        self.assertEquals(item2.query_state(), "itemfrozen")
-        self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
-
-        self.do(item1, "accept")
-        self.assertEquals(item1.query_state(), "accepted")
+        self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
+        # ask follow-up
+        # can not be asked by follow-up writer
+        self.changeUser("pmFollowup1")
+        labelingview = item1.restrictedTraverse('@@labeling')
+        self.request.form['activate_labels'] = ['needed-follow-up']
+        self.assertRaises(Unauthorized, labelingview.update)
+        self.changeUser("pmManager")
+        labelingview.update()
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
         self.changeUser("pmFollowup1")
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
         item1.setProvidedFollowUp("<p>Followed</p>")
         self.changeUser("pmManager")
+        # field still editable when meeting "closed"
         self.do(meeting, "close")
         self.changeUser("pmFollowup1")
+        self.assertTrue("needed-follow-up" in get_labels(item1))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
+        # set follow-up provided
         self.changeUser("pmManager")
-        self.assertEqual("follow_up_yes", item1.getFollowUp())
-        item1.confirmFollowUp()
-        self.assertEqual("follow_up_provided", item1.getFollowUp())
-        item1.deactivateFollowUp()
-        self.assertEqual("follow_up_no", item1.getFollowUp())
-        # every items without a decision are automatically accepted
-        self.assertEquals(item2.query_state(), "accepted")
-        self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
-        self.changeUser("pmFollowup2")
-        self.assertTrue(item2.mayQuickEdit("providedFollowUp"))
+        self.request.form['activate_labels'] = ['provided-follow-up']
+        labelingview.update()
+        self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
+        self.changeUser("pmFollowup1")
+        self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
 
     def _testWholeDecisionProcessCouncil(self):
         """
