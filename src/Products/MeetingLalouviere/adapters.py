@@ -11,7 +11,6 @@ from collective.contact.plonegroup.utils import get_all_suffixes
 from copy import deepcopy
 from imio.helpers.cache import get_current_user_id
 from imio.helpers.content import uuidsToObjects
-from plone import api
 from Products.MeetingCommunes.adapters import CustomMeeting
 from Products.MeetingCommunes.adapters import CustomMeetingConfig
 from Products.MeetingCommunes.adapters import CustomMeetingItem
@@ -19,11 +18,9 @@ from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
 from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
 from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
 from Products.MeetingCommunes.interfaces import IMeetingItemCommunesWorkflowActions
-from Products.MeetingLalouviere.config import FINANCE_GROUP_ID
 from Products.MeetingLalouviere.utils import dg_group_uid
 from Products.MeetingLalouviere.utils import intref_group_uid
 from Products.PloneMeeting.config import AddAnnex
-from Products.PloneMeeting.config import NOT_GIVEN_ADVICE_VALUE
 from Products.PloneMeeting.interfaces import IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
@@ -33,8 +30,6 @@ from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import _addIsolatedState
-from Products.PloneMeeting.utils import org_id_to_uid
-from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import implements
 
@@ -173,46 +168,6 @@ class LLCustomMeetingItem(CustomMeetingItem):
 
     MeetingItem.getLabelDescription = getLabelDescription
 
-    security.declarePublic("activateFollowUp")
-
-    def activateFollowUp(self):
-        """Activate follow-up by setting followUp to 'follow_up_yes'."""
-        self.setFollowUp("follow_up_yes")
-        self.reindexObject(idxs=["getFollowUp"])
-        return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
-
-    MeetingItem.activateFollowUp = activateFollowUp
-
-    security.declarePublic("deactivateFollowUp")
-
-    def deactivateFollowUp(self):
-        """Deactivate follow-up by setting followUp to 'follow_up_no'."""
-        self.setFollowUp("follow_up_no")
-        self.reindexObject(idxs=["getFollowUp"])
-        return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
-
-    MeetingItem.deactivateFollowUp = deactivateFollowUp
-
-    security.declarePublic("confirmFollowUp")
-
-    def confirmFollowUp(self):
-        """Confirm follow-up by setting followUp to 'follow_up_provided'."""
-        self.setFollowUp("follow_up_provided")
-        self.reindexObject(idxs=["getFollowUp"])
-        return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
-
-    MeetingItem.confirmFollowUp = confirmFollowUp
-
-    security.declarePublic("followUpNotPrinted")
-
-    def followUpNotPrinted(self):
-        """While follow-up is confirmed, we may specify that we do not want it printed in the dashboard."""
-        self.setFollowUp("follow_up_provided_not_printed")
-        self.reindexObject(idxs=["getFollowUp"])
-        return self.REQUEST.RESPONSE.redirect(self.absolute_url() + "#followup")
-
-    MeetingItem.followUpNotPrinted = followUpNotPrinted
-
     def _getGroupManagingItem(self, review_state, theObject=False):
         """See doc in interfaces.py."""
         item = self.getSelf()
@@ -316,43 +271,14 @@ class LLCustomMeetingItem(CustomMeetingItem):
         else:
             return self._get_default_item_ref(date_str, service, item_number)
 
-    security.declarePublic("showFollowUp")
-
-    def showFollowUp(self):
-        """
-        Final state, every member of the proposing group and the MeetingManager may view.
-        presented and itemfrozen, only MeetingManager
-        otherwise, only for Manager
-        """
-        showfollowUp = getRequest().get("Products.MeetingLalouviere.showFollowUp_cachekey", None)
-        if showfollowUp is None:
-            tool = api.portal.get_tool("portal_plonemeeting")
-            if self.getSelf().hasMeeting() and not self.getSelf().query_state().startswith("returned_"):
-                cfg = tool.getMeetingConfig(self.getSelf())
-                if self.getSelf().query_state() in ("presented", "itemfrozen"):
-                    showfollowUp = tool.isManager(cfg)
-                else:
-                    org_uid = self.getSelf().getProposingGroup(theObject=False)
-                    showfollowUp = tool.isManager(cfg) or tool.user_is_in_org(org_uid=org_uid)
-            else:
-                showfollowUp = tool.isManager(realManagers=True)
-
-            getRequest().set("Products.MeetingLalouviere.showFollowUp_cachekey", showfollowUp)
-        return showfollowUp
-
-    def _bypass_meeting_closed_check_for(self, fieldName):
-        """See docstring in interfaces.py"""
-        return (
-            super(LLCustomMeetingItem, self)._bypass_meeting_closed_check_for(fieldName)
-            or fieldName == "providedFollowUp"
-        )
-
     def _assign_roles_to_all_groups_managing_item_suffixes(self, cfg, item_state, org_uids, org_uid):
         """By default, every proposingGroup suffixes get the "Reader" role
-        but we do not want the "observers" to get the "Reader" role."""
+        but we do not want the "aldermans" to get the "Reader" role."""
         item = self.getSelf()
         for managing_org_uid in org_uids:
-            suffix_roles = {suffix: ["Reader"] for suffix in get_all_suffixes(managing_org_uid) if suffix != "alderman"}
+            suffix_roles = {
+                suffix: ["Reader"] for suffix in get_all_suffixes(managing_org_uid)
+                if suffix != "alderman"}
             item._assign_roles_to_group_suffixes(managing_org_uid, suffix_roles)
 
 
@@ -569,128 +495,6 @@ class LLMeetingConfig(CustomMeetingConfig):
                         "sort_reversed": True,
                         "showNumberOfItems": True,
                         "tal_condition": "python:tool.userIsAmong(['alderman'])",
-                        "roles_bypassing_talcondition": [
-                            "Manager",
-                        ],
-                    },
-                ),
-                (
-                    "searchItemsTofollow_up_yes",
-                    {
-                        "subFolderId": "searches_items",
-                        "active": True,
-                        "query": [
-                            {
-                                "i": "portal_type",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    itemType,
-                                ],
-                            },
-                            {
-                                "i": "review_state",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    "accepted",
-                                    "refused",
-                                    "delayed",
-                                    "accepted_but_modified",
-                                ],
-                            },
-                            {
-                                "i": "getFollowUp",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    "follow_up_yes",
-                                ],
-                            },
-                        ],
-                        "sort_on": u"created",
-                        "sort_reversed": True,
-                        "showNumberOfItems": False,
-                        "tal_condition": "",
-                        "roles_bypassing_talcondition": [
-                            "Manager",
-                        ],
-                    },
-                ),
-                # Items to follow provider but not to print in Dashboard'
-                (
-                    "searchItemsProvidedFollowUpButNotToPrint",
-                    {
-                        "subFolderId": "searches_items",
-                        "active": True,
-                        "query": [
-                            {
-                                "i": "portal_type",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    itemType,
-                                ],
-                            },
-                            {
-                                "i": "review_state",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    "accepted",
-                                    "refused",
-                                    "delayed",
-                                    "accepted_but_modified",
-                                ],
-                            },
-                            {
-                                "i": "getFollowUp",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    "follow_up_provided_not_printed",
-                                ],
-                            },
-                        ],
-                        "sort_on": u"created",
-                        "sort_reversed": True,
-                        "showNumberOfItems": False,
-                        "tal_condition": "",
-                        "roles_bypassing_talcondition": [
-                            "Manager",
-                        ],
-                    },
-                ),
-                # Items to follow provider and to print
-                (
-                    "searchItemsProvidedFollowUp",
-                    {
-                        "subFolderId": "searches_items",
-                        "active": True,
-                        "query": [
-                            {
-                                "i": "portal_type",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    itemType,
-                                ],
-                            },
-                            {
-                                "i": "review_state",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    "accepted",
-                                    "refused",
-                                    "delayed",
-                                    "accepted_but_modified",
-                                ],
-                            },
-                            {
-                                "i": "getFollowUp",
-                                "o": "plone.app.querystring.operation.selection.is",
-                                "v": [
-                                    "follow_up_provided",
-                                ],
-                            },
-                        ],
-                        "sort_on": u"created",
-                        "sort_reversed": True,
-                        "showNumberOfItems": False,
-                        "tal_condition": "",
                         "roles_bypassing_talcondition": [
                             "Manager",
                         ],

@@ -13,8 +13,6 @@
   <include package="Products.CMFPlacefulWorkflow"/>
   <include package="Products.MeetingCommunes"/>
   <include package="Products.PloneMeeting"/>
-  <include file="events.zcml"/>
   <include file="profiles.zcml"/>
-  <include file="vocabularies.zcml"/>
 
 </configure>

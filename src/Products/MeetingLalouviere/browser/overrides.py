@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: overrides.py
-#
-# Copyright (c) 2016 by Imio.be
-#
 # GNU General Public License (GPL)
 #
+
 from plone import api
 from Products.MeetingCommunes.browser.overrides import MCItemDocumentGenerationHelperView
 from Products.MeetingCommunes.browser.overrides import MCMeetingDocumentGenerationHelperView
