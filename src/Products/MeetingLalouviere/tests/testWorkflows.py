@@ -181,7 +181,11 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.do(meeting, "decide")
 
         # followUp
-        self._setupMLFollowUp(cfg)
+        # give access to item1 to "pmFollowup2" that is observer for vendors
+        self._enableField('copyGroups')
+        cfg.setSelectableCopyGroups((self.vendors_observers, ))
+        item1.setCopyGroups((self.vendors_observers, ))
+        self._setup_ml_follow_up(cfg)
         item1._update_after_edit()
         # followup writer cannot edit follow up if not asked
         self.changeUser("pmFollowup1")
@@ -204,8 +208,17 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         # field still editable when meeting "closed"
         self.do(meeting, "close")
         self.changeUser("pmFollowup1")
+        # in groups observers and followupwriters
+        self.assertEqual(sorted(self.member.getGroups()),
+                         sorted(['AuthenticatedUsers',
+                                 self.developers_followupwriters,
+                                 self.developers_observers]))
         self.assertTrue("needed-follow-up" in get_labels(item1))
         self.assertTrue(item1.mayQuickEdit("providedFollowUp"))
+        # another follow-up writer could not edit
+        self.changeUser("pmFollowup2")
+        self.assertTrue(self.hasPermission(View, item1))
+        self.assertFalse(item1.mayQuickEdit("providedFollowUp"))
         # set follow-up provided
         self.changeUser("pmManager")
         self.request.form['activate_labels'] = ['provided-follow-up']

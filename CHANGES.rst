@@ -10,11 +10,16 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
   [gbastien]
 - Removed useless method `LLCustomMeetingItem.mayGenerateFinanceAdvice`.
   [gbastien]
-- Adapted code to prepare moval to new follow-up management in next version:
+- Adapted code to move custom follow-up management to default functionnality:
 
-  - Removed default for field MeetingItem.providedFollowUp;
-  - Bypass default test_pm_FollowUp as we have our own that still pass.
+  - Removed fields `followUp` and `providedFollowUp`;
+  - Removed `events.onItemLocalRolesUpdated`, now `followupwriters` have access
+    to the fields thru `MeetingConfig.itemFieldsConfig`;
+  - Cleaned tests, templates, locales and no more used code.
 
+  [gbastien]
+- Removed custom field `MeetingItem.interventions` and use existing field
+  `MeetingItem.notes` instead.
   [gbastien]
 
 4.2.14 (2025-05-28)
