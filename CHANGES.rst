@@ -6,8 +6,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.16 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Adapted `follow-up` config to rely on default behavior so labels visibility
+  will determinate fields visibility. Labels are viewable by `proposingGroup`
+  and `MeetingManagers` and so are the fields.
+  [gbastien]
 
 4.2.15 (2026-05-21)
 -------------------

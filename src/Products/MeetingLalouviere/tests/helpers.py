@@ -191,12 +191,23 @@ class MeetingLalouviereTestingHelpers(MeetingCommunesTestingHelpers):
         self._enableField('neededFollowUp', enable=False)
         # follow-up labels only editable by MeetingManagers
         labels_config = cfg.getLabelsConfig()
+        # make labels only viewable by proposingGroup so will be the follow-up fields
+        # needed-follow-up
+        labels_config[-2]['view_groups_excluding'] = '0'
+        labels_config[-2]['view_groups'] = [
+            "suffix_proposing_group_creators",
+            "suffix_proposing_group_observers",
+            "suffix_proposing_group_reviewers"]
+        # provided-follow-up
         labels_config[-1]['edit_groups'] = ['configgroup_meetingmanagers']
         labels_config[-1]['edit_access_on'] = ""
+        labels_config[-1]['view_groups'] = [
+            "suffix_proposing_group_creators",
+            "suffix_proposing_group_observers",
+            "suffix_proposing_group_reviewers"]
         cfg.setLabelsConfig(labels_config)
         # follow-up fields config
         item_fields_config = cfg.getItemFieldsConfig()
-        item_fields_config[1]['view'] = "python: item.may_view_follow_up(restricted=True)"
         item_fields_config[1]['edit'] = \
             "python: item.may_edit_follow_up(field_name='providedFollowUp', " \
             "suffixes=['followupwriters'])"

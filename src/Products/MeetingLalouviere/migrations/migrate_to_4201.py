@@ -28,8 +28,8 @@ class MigrateTo4201(Migrator):
             labeljar.add('Closed follow-up', 'cornflowerblue-light', False)
             # configure itemFieldsConfig
             config = cfg.getItemFieldsConfig()
-            config[0]['view'] = "python: item.may_view_follow_up(restricted=True)"
-            config[0]['edit'] = "python: item.may_edit_follow_up(suffixes=['followupwriters'])"
+            config[1]['view'] = "python: item.may_view_follow_up()"
+            config[1]['edit'] = "python: item.may_edit_follow_up(suffixes=['followupwriters'])"
             cfg.setItemFieldsConfig(config)
             # migrate items
             brains = self.catalog(
@@ -77,6 +77,9 @@ class MigrateTo4201(Migrator):
 
     def run(self, **kwargs):
         logger.info('Migrating to MeetingLalouviere 4201...')
+        # this will upgrade dependencies
+        self.upgradeAll(omit=['Products.PloneMeeting:default',
+                              self.profile_name.replace('profile-', '')])
         self._update_follow_up()
         self._migrate_interventions()
         logger.info('Migrating to MeetingLalouviere 4201... Done.')

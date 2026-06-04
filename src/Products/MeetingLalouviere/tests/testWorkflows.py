@@ -180,7 +180,7 @@ class testWorkflows(MeetingLalouviereTestCase, mctw):
         self.assertEqual(meeting.get_items(list_types=["late"])[0], item2)
         self.do(meeting, "decide")
 
-        # followUp
+        # follow-up
         # give access to item1 to "pmFollowup2" that is observer for vendors
         self._enableField('copyGroups')
         cfg.setSelectableCopyGroups((self.vendors_observers, ))
