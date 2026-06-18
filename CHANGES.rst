@@ -10,6 +10,13 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
   will determinate fields visibility. Labels are viewable by `proposingGroup`
   and `MeetingManagers` and so are the fields.
   [gbastien]
+- Adapted `MigrateTo4201._update_follow_up`:
+
+  - enable field `MeetingItem.neededFollowUp`;
+  - setup labels before `PloneMeeting upgrade`;
+  - do not set `MeetingItem.notes` if empty to avoid broken `mimetype`.
+
+  [gbastien]
 
 4.2.15 (2026-05-21)
 -------------------

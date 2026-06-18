@@ -15,17 +15,129 @@ class MigrateTo4201(Migrator):
 
     def _update_follow_up(self):
         """Move custom followUp to existing followUp."""
+        labels_config = (
+            {'edit_groups': [],
+             'view_groups': [],
+             'view_groups_excluding': '0',
+             'view_access_on': '',
+             'view_access_on_cache': '1',
+             'label_id': '*',
+             'edit_access_on_cache': '0',
+             'view_states': [],
+             'edit_groups_excluding': '0',
+             'edit_states': [],
+             'update_local_roles': '0',
+             'edit_access_on': 'python: cfg.isManager(cfg) or checkPermission("Modify portal content", context)'},
+            {'edit_groups': ['configgroup_meetingmanagers'],
+             'view_groups': [
+                'configgroup_meetingmanagers',
+                'suffix_proposing_group_creators',
+                'suffix_proposing_group_observers',
+                'suffix_proposing_group_alderman',
+                'suffix_proposing_group_officemanagers',
+                'suffix_proposing_group_divisionheads',
+                'suffix_proposing_group_serviceheads',
+                'suffix_proposing_group_directors'],
+             'view_groups_excluding': '0',
+             'view_access_on': '',
+             'view_access_on_cache': '1',
+             'label_id': 'needed-follow-up',
+             'edit_access_on_cache': '1',
+             'view_states': [],
+             'edit_groups_excluding': '0',
+             'edit_states': [
+                'accepted',
+                'accepted_but_modified',
+                'accepted_out_of_meeting',
+                'itemfrozen',
+                'presented',
+                'refused',
+                'delayed',
+                'postponed_next_meeting',
+                'removed',
+                'returned_to_proposing_group'],
+             'update_local_roles': '0',
+             'edit_access_on': ''},
+            {'edit_groups': ['configgroup_meetingmanagers'],
+             'view_groups': [
+                'configgroup_meetingmanagers',
+                'suffix_proposing_group_creators',
+                'suffix_proposing_group_observers',
+                'suffix_proposing_group_alderman',
+                'suffix_proposing_group_officemanagers',
+                'suffix_proposing_group_divisionheads',
+                'suffix_proposing_group_serviceheads',
+                'suffix_proposing_group_directors'],
+             'view_groups_excluding': '0',
+             'view_access_on': '',
+             'view_access_on_cache': '1',
+             'label_id': 'provided-follow-up',
+             'edit_access_on_cache': '1',
+             'view_states': [],
+             'edit_groups_excluding': '0',
+             'edit_states': [
+                'accepted',
+                'accepted_but_modified',
+                'accepted_out_of_meeting',
+                'itemfrozen',
+                'presented',
+                'refused',
+                'delayed',
+                'postponed_next_meeting',
+                'removed',
+                'returned_to_proposing_group'],
+             'update_local_roles': '2',
+             'edit_access_on': ''},
+            {'edit_groups': ['configgroup_meetingmanagers'],
+             'view_groups': [
+                'configgroup_meetingmanagers',
+                'suffix_proposing_group_creators',
+                'suffix_proposing_group_observers',
+                'suffix_proposing_group_alderman',
+                'suffix_proposing_group_officemanagers',
+                'suffix_proposing_group_divisionheads',
+                'suffix_proposing_group_serviceheads',
+                'suffix_proposing_group_directors'],
+             'view_groups_excluding': '0',
+             'view_access_on': '',
+             'view_access_on_cache': '1',
+             'label_id': 'closed-follow-up',
+             'edit_access_on_cache': '1',
+             'view_states': [],
+             'edit_groups_excluding': '0',
+             'edit_states': [
+                'accepted',
+                'accepted_but_modified',
+                'accepted_out_of_meeting',
+                'itemfrozen',
+                'presented',
+                'refused',
+                'delayed',
+                'postponed_next_meeting',
+                'removed',
+                'returned_to_proposing_group'],
+             'update_local_roles': '0',
+             'edit_access_on': "python: bool(utils.get_labels(item, include_personal_labels=False, label_ids=['provided-follow-up', 'closed-follow-up']))"})
+
         logger.info('Migrating follow-up...')
         for cfg in self.tool.objectValues('MeetingConfig'):
-            if 'providedFollowUp' not in cfg.getUsedItemAttributes():
-                continue
+            cfg_id = cfg.getId()
+            # enable only in College for now
+            if cfg_id != 'meeting-config-college':
+                self.update_used_attrs(to_remove=['providedFollowUp'], cfg_ids=[cfg_id])
             # create follow-up labels if using field providedFollowUp
+            # enable "neededFollowUp"
+            self.update_used_attrs(to_add=['neededFollowUp'], cfg_ids=[cfg_id])
+            # configure labels
             labeljar = getAdapter(cfg, ILabelJar)
             if 'needed-follow-up' in labeljar.storage:
                 return self._already_migrated()
             labeljar.add('Needed follow-up', 'orange', False)
             labeljar.add('Provided follow-up', 'green', False)
             labeljar.add('Closed follow-up', 'cornflowerblue-light', False)
+            # configure labelsConfig
+            if cfg_id == 'meeting-config-college':
+                cfg.setLabelsConfig(labels_config)
             # configure itemFieldsConfig
             config = cfg.getItemFieldsConfig()
             config[1]['view'] = "python: item.may_view_follow_up()"
@@ -68,7 +180,9 @@ class MigrateTo4201(Migrator):
             item = brain.getObject()
             if not base_hasattr(item, 'interventions'):
                 return self._already_migrated()
-            item.setNotes(item.interventions.getRaw())
+            text = item.interventions.getRaw().strip()
+            if text:
+                item.setNotes(text)
             safe_delattr(item, 'interventions')
         self.updatePODTemplatesCode(
             replacements={
