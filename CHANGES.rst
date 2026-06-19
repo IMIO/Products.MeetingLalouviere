@@ -3,7 +3,7 @@ Products.MeetingLalouviere Changelog
 
 The Products.MeetingCommunes version must be the same as the Products.PloneMeeting version
 
-4.2.16 (unreleased)
+4.2.16 (2026-06-19)
 -------------------
 
 - Adapted `follow-up` config to rely on default behavior so labels visibility
