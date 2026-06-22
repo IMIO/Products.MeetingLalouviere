@@ -6,8 +6,12 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.17 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Adapted `MigrateTo4201._update_follow_up`:
 
+  - Make sure `MeetingConfig.itemFieldsConfig` contains the default value;
+  - Fixed edit field `MeetingItem.providedFollowUp` config.
+
+  [gbastien]
 
 4.2.16 (2026-06-19)
 -------------------

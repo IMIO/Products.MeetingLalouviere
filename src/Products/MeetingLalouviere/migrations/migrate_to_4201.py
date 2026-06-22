@@ -125,6 +125,7 @@ class MigrateTo4201(Migrator):
             # enable only in College for now
             if cfg_id != 'meeting-config-college':
                 self.update_used_attrs(to_remove=['providedFollowUp'], cfg_ids=[cfg_id])
+                continue
             # create follow-up labels if using field providedFollowUp
             # enable "neededFollowUp"
             self.update_used_attrs(to_add=['neededFollowUp'], cfg_ids=[cfg_id])
@@ -138,10 +139,12 @@ class MigrateTo4201(Migrator):
             # configure labelsConfig
             if cfg_id == 'meeting-config-college':
                 cfg.setLabelsConfig(labels_config)
-            # configure itemFieldsConfig
+            # configure itemFieldsConfig, make sure we have the default value
+            default_value = cfg.Schema()['itemFieldsConfig'].getDefault(cfg)
+            cfg.setItemFieldsConfig(default_value)
             config = cfg.getItemFieldsConfig()
             config[1]['view'] = "python: item.may_view_follow_up()"
-            config[1]['edit'] = "python: item.may_edit_follow_up(suffixes=['followupwriters'])"
+            config[1]['edit'] = "python: item.may_edit_follow_up('providedFollowUp', suffixes=['followupwriters'])"
             cfg.setItemFieldsConfig(config)
             # migrate items
             brains = self.catalog(
