@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   test:
-    uses: IMIO/gha-workflows/.github/workflows/package-test-legacy.yml@main
+    uses: IMIO/gha-workflows/.github/workflows/package-test-legacy.yml@v1
     secrets:
       gh_token: ${{ secrets.TOKEN_GITHUB_RO }}
       mattermost_webhook_url: ${{ secrets.DELIB_MATTERMOST_WEBHOOK_URL }}
