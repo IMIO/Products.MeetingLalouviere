@@ -6,8 +6,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 4.2.18 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Disable the `return_to_proposing_group_with_before_last_validation WFA`.
+  [gbastien]
 
 4.2.17 (2026-06-23)
 -------------------

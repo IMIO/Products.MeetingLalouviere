@@ -38,6 +38,8 @@ customWfAdaptations = list(deepcopy(MeetingConfig.wfAdaptations))
 customWfAdaptations.append("apply_council_state_label")
 customWfAdaptations.append("propose_to_budget_reviewer")
 customWfAdaptations.append("alderman_cannot_send_back_to_every_levels")
+# disable not used WFA
+customWfAdaptations.remove("return_to_proposing_group_with_before_last_validation")
 # disable not compatible waiting advice wfa
 customWfAdaptations.remove("waiting_advices_adviser_may_validate")
 customWfAdaptations.remove("waiting_advices_from_before_last_val_level")
