@@ -8,6 +8,10 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
 
 - Disable the `return_to_proposing_group_with_before_last_validation WFA`.
   [gbastien]
+- Fixed `test_pm_UpdateProposingGroupBatchActionForm`, define a not selected
+  group in charge for `dg` and `intref` organizations so they are not in the
+  `proposingGroupWithGroupInCharge` vocabulary.
+  [gbastien]
 
 4.2.17 (2026-06-23)
 -------------------

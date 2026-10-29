@@ -35,6 +35,13 @@ class testViews(MeetingLalouviereTestCase, mctv):
             (0, api.user.get("pmReviewer1")),
         ]
 
+    def test_pm_UpdateProposingGroupBatchActionForm(self):
+        """Define a not selected group in charge for "direction-generale-validation"
+           and "referent-integrite" so they are not in the vocabulary."""
+        self.direction_generale_validation.groups_in_charge = (self.endUsers_uid, )
+        self.referent_integrite.groups_in_charge = (self.endUsers_uid, )
+        super(testViews, self).test_pm_UpdateProposingGroupBatchActionForm()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
