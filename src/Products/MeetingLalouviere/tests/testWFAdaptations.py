@@ -48,6 +48,7 @@ class testWFAdaptations(MeetingLalouviereTestCase, mctwfa):
                 "meetingmanager_correct_closed_meeting",
                 "no_decide",
                 "no_freeze",
+                "no_meeting",
                 "no_publication",
                 "only_creator_may_delete",
                 "postpone_next_meeting",

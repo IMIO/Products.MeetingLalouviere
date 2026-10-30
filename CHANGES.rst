@@ -12,6 +12,8 @@ The Products.MeetingCommunes version must be the same as the Products.PloneMeeti
   group in charge for `dg` and `intref` organizations so they are not in the
   `proposingGroupWithGroupInCharge` vocabulary.
   [gbastien]
+- Fixed `test_pm_WFA_availableWFAdaptations`, `no_meeting` WFA is now available.
+  [gbastien]
 
 4.2.17 (2026-06-23)
 -------------------
